@@ -2,6 +2,8 @@
 layout: default
 title: "About"
 nav_order: 1
+editor_options: 
+  chunk_output_type: console
 ---
 
 

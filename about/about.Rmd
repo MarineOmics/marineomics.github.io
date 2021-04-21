@@ -2,6 +2,8 @@
 layout: default
 title: "About"
 nav_order: 1
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -29,7 +31,7 @@ Jon Puritz and Andrew Whitehead
 
 ``````{r, echo=FALSE,eval=FALSE}
 library(knitr)
-my.jekyll.site <- "marineomics.github.io/Template_Site_1/"
+my.jekyll.site <- "marineomics.github.io"
 KnitPost <- function(input, base.url = my.jekyll.site) {
   opts_knit$set(base.url = base.url)
   fig.path <- paste0("images/", sub(".Rmd$", "", basename(input)), "/")
@@ -39,7 +41,7 @@ KnitPost <- function(input, base.url = my.jekyll.site) {
   knit(input, envir = parent.frame())
 }
 
-setwd("C:/Users/jmcgirr/Documents/GitHub/MarineOmics/Template_Site_1.github.io/about/")
-KnitPost("C:/Users/jmcgirr/Documents/GitHub/MarineOmics/Template_Site_1.github.io/about/about.Rmd")
+setwd("C:/Users/jmcgirr/Documents/GitHub/MarineOmics/website/about/")
+KnitPost("C:/Users/jmcgirr/Documents/GitHub/MarineOmics/website/about/about.Rmd")
 
 ```
