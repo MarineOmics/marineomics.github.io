@@ -55,7 +55,7 @@ KnitPost <- function(input, base.url = my.jekyll.site) {
   knit(input, envir = parent.frame())
 }
 
-setwd("C:/Users/jmcgirr/Documents/GitHub/MarineOmics/website/about/")
-KnitPost("C:/Users/jmcgirr/Documents/GitHub/MarineOmics/website/panels.Rmd")
+setwd("C:/Users/jmcgirr/Documents/GitHub/MarineOmics/website/")
+KnitPost("C:/Users/jmcgirr/Documents/GitHub/MarineOmics/website/panel.Rmd")
 
 ```
