@@ -1,0 +1,61 @@
+---
+layout: default
+title: "Panel Seminars"
+nav_order: 1
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# About
+
+Welcome! We are a working group dedicated to promoting reproducible and robust genomic research in marine science and evolutionary biology.
+
+# Panel Seminar Series
+
+Lorem ipsum dolor sit amet, graece quidam duo ea, ut nominavi expetenda mea. Habeo nominavi repudiandae at his, et eos lorem nusquam suavitate, noster equidem his no. Commodo facilisis elaboraret eu sea. An eam eleifend evertitur. Ad eum delicata definitionem.
+
+## Seminar Schedule
+```{r, echo=FALSE,eval=FALSE}
+library(knitr)
+
+schedule_df <- data.frame(date = c("5/7", "5/14", "5/21"),
+                          speaker = c("John","Jane","Jake"),
+                          )
+dates <- 
+dates <- c("5/7", "5/14", "5/21")
+
+
+```
+
+
+| Date        | Topic       | Panelists     |
+| :---        | :---        | :---          |
+| 5/7         | topic1      | John          |
+| 5/8         | topic2      | Jane          |
+
+# Contact
+
+
+
+
+
+``````{r, echo=FALSE,eval=FALSE}
+library(knitr)
+my.jekyll.site <- "marineomics.github.io"
+KnitPost <- function(input, base.url = my.jekyll.site) {
+  opts_knit$set(base.url = base.url)
+  fig.path <- paste0("images/", sub(".Rmd$", "", basename(input)), "/")
+  opts_chunk$set(fig.path = fig.path)
+  opts_chunk$set(fig.cap = "center")
+  render_jekyll()
+  knit(input, envir = parent.frame())
+}
+
+setwd("C:/Users/jmcgirr/Documents/GitHub/MarineOmics/website/about/")
+KnitPost("C:/Users/jmcgirr/Documents/GitHub/MarineOmics/website/panels.Rmd")
+
+```
