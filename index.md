@@ -26,9 +26,9 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 
 # Contact
 
-Katherine Silliman (email)
+####[Katherine Silliman](https://ksilliman.weebly.com/) - kes0132[at]auburn.edu
 
-Sam Bogan (email)
+####[Sam Bogan](http://www.hofmannlab.com/sam-bogan.html) -snbogan[at]ucsb.edu
 
 
 
