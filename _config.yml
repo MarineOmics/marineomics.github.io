@@ -1,0 +1,7 @@
+title: "MarineOmics RCN"
+remote_theme: pmarsceill/just-the-docs
+search_enabled: true
+
+aux_links:
+  "MarineOmics on GitHub":
+    - "https://github.com/MarineOmics"
