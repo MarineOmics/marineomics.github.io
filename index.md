@@ -8,9 +8,10 @@ editor_options:
 
 
 
-# Welcome
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+# About
+The MarineOmics working group is part of the [RCN for Evolution in Changing Seas](https://rcn-ecs.github.io/), and was formed to promote reproducible and robust genomic research in marine science. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices as obsolete. To he working group will disseminate guidelines
+through an easily-interfaced website that will be released in August 2021 through the formulation of sets of recommended practices for methodological
+transparency as well as statistical and experimental soundness 
 
 # Panel Seminar Series
 
