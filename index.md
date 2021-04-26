@@ -35,10 +35,17 @@ https://auburn.zoom.us/meeting/register/tZ0ode2rpz4sG9Il_TuYexWfqd6HyjdQ58Zi).**
 
 # Working Group Members
 
-#### [Katherine Silliman](https://ksilliman.weebly.com/), Auburn University - kes0132[at]auburn.edu
-#### [Sam Bogan](http://www.hofmannlab.com/sam-bogan.html) -snbogan[at]ucsb.edu
-#### [Alan Downey-Wall](https://cos.northeastern.edu/people/alan-downey-wall/) 
-#### Chris Mantegna
+#### [Katherine Silliman, PhD](https://ksilliman.weebly.com/), Auburn University - kes0132[at]auburn.edu
+#### [Sam Bogan](http://www.hofmannlab.com/sam-bogan.html), UC-Santa Barbara -snbogan[at]ucsb.edu
+#### [Alan Downey-Wall](https://cos.northeastern.edu/people/alan-downey-wall/), Northeastern University 
+#### Chris Mantegna, University of Washington  
+#### Danielle Davenport, University of Queensland  
+#### [Hanny Rivera, PhD](https://www2.whoi.edu/staff/hrivera/), Woods Hole Oceanographic Institute  
+#### Jecy Klinkam, College of William and Mary  
+
+### Faculty Advisors
+#### Andrew Whitehead, UC-Davis 
+#### Jon Puritz, Northeastern University
 
 
 
