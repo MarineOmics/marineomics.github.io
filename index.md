@@ -9,13 +9,13 @@ editor_options:
 
 
 # About
-The MarineOmics working group is part of the [RCN for Evolution in Changing Seas](https://rcn-ecs.github.io/), and was formed to promote reproducible and robust genomic research in marine science. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices as obsolete. To support robust 'omics research now and moving forward, the working group will disseminate guidelines through an easily-interfaced and dynamic website that will be deployed in August 2021. To help develop content for the website, we are hosting Q & A panel seminars with experts on various topics relating to 'omics analyses in non-model systems.  
+The MarineOmics working group is part of the [RCN for Evolution in Changing Seas](https://rcn-ecs.github.io/), and was formed to promote reproducible and robust genomic research in marine science. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices as obsolete. To support robust 'omics research now and moving forward, the working group will disseminate guidelines through an easily-interfaced and dynamic website that will be deployed in August 2021. *Keep an eye on this URL for updates!*
 
-The working group is also currently hosting three undergraduate research interns with funding from the RCN-ECS. These interns are part of a subgroup conducting a literature survey to characterize trends in data availability, code accessibility, and methods reproducibility for a peer-reviewed article.
+The working group is also currently hosting three undergraduate research interns with funding from the RCN-ECS. These interns are part of a sub-committee conducting a literature survey to characterize trends in data availability, code accessibility, and methods reproducibility in papers that use genomics to study adaptation in marine systems. The results of this survey will be shared in a peer-reviewed article, along with guidance to improve the state of reproducibility in the field.
 
 # Panel Seminar Series
 
-Seminars are every two weeks, on **Fridays from 11:00-12:15 US Central Time**. 3-5 expert panelists will discuss each topic, with questions coming from the working group and the audience. If you would like to submit a question for the panelists ahead of time, please send an email to rcnecs.marineomics[at]gmail.com . 
+To help develop content for the website, we are hosting Q & A panel seminars with experts on various topics relating to 'omics analyses in non-model systems.  Seminars are every two weeks, on **Fridays from 11:00-12:15 US Central Time**. 3-5 expert panelists will discuss each topic, with questions coming from the working group and the audience. If you would like to submit a question for the panelists ahead of time, please send an email to rcnecs.marineomics[at]gmail.com . 
 
 Everyone is welcome to join!  
 
@@ -39,13 +39,21 @@ https://auburn.zoom.us/meeting/register/tZ0ode2rpz4sG9Il_TuYexWfqd6HyjdQ58Zi).**
 #### [Sam Bogan](http://www.hofmannlab.com/sam-bogan.html), UC-Santa Barbara -snbogan[at]ucsb.edu
 #### [Alan Downey-Wall](https://cos.northeastern.edu/people/alan-downey-wall/), Northeastern University 
 #### Chris Mantegna, University of Washington  
-#### Danielle Davenport, University of Queensland  
+#### [Danielle Davenport](https://www.researchgate.net/profile/Danielle-Davenport-2), University of Queensland  
 #### [Hanny Rivera, PhD](https://www2.whoi.edu/staff/hrivera/), Woods Hole Oceanographic Institute  
 #### Jecy Klinkam, College of William and Mary  
+#### [Joe McGirr, PhD](https://joemcgirr.github.io/), UC-Davis 
+#### Kaitlin Macaranas, CSU-Bakersfield 
+#### Megan Guidry, University of Rhode Island
+#### Natalie Ameral, University of Rhode Island & RI Dept. of Environmental Management 
+#### [Sara Schaal](https://sites.google.com/site/katielotterhos/people?authuser=0#h.p_ID_262), Northeastern University 
+#### [Sara Wuitchik, PhD](https://sjswuitchik.weebly.com/), Harvard University
+
 
 ### Faculty Advisors
-#### Andrew Whitehead, UC-Davis 
-#### Jon Puritz, Northeastern University
+#### [Andrew Whitehead, PhD](https://whiteheadresearch.wordpress.com/), UC-Davis 
+#### [Jon Puritz, PhD](https://www.marineevoeco.com/), University of Rhode Island 
+#### [Steven Roberts, PhD](http://faculty.washington.edu/sr320/?page_id=10850), University of Washington
 
 
 
