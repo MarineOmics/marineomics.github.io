@@ -46,7 +46,7 @@ The working group is also currently hosting three undergraduate research interns
 #### Kaitlin Macaranas, CSU-Bakersfield 
 #### Megan Guidry, University of Rhode Island
 #### Natalie Ameral, University of Rhode Island & RI Dept. of Environmental Management 
-#### [Sara Schaal](https://sites.google.com/site/katielotterhos/people?authuser=0#h.p_ID_262), Northeastern University 
+#### [Sara Schaal](https://schaals.wixsite.com/smschaal), Northeastern University 
 #### [Sara Wuitchik, PhD](https://sjswuitchik.weebly.com/), Harvard University
 
 
