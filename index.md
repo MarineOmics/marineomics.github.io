@@ -25,7 +25,7 @@ https://auburn.zoom.us/meeting/register/tZ0ode2rpz4sG9Il_TuYexWfqd6HyjdQ58Zi).**
 
 | Date        | Topic       | Panelists     |
 | :---        | :---        | :---          |
-| May 7         | GBS/RADseq genotyping pipelines     | [Melanie LaCava](https://melanielacava.weebly.com/), [Isaac Overcast](https://isaacovercast.github.io/), [Josephine Paris](https://josieparis.wordpress.com/), [Jon Puritz](https://www.marineevoeco.com/)   |
+| May 7         | GBS/RADseq genotyping pipelines     | [Melanie LaCava](https://melanielacava.weebly.com/), [Alicia Mastretta-Yanes](http://mastrettayanes-lab.org/), [Isaac Overcast](https://isaacovercast.github.io/), [Josephine Paris](https://josieparis.wordpress.com/), [Jon Puritz](https://www.marineevoeco.com/)   |
 | May 21       |  WGS genotyping (low and high coverage)     | [Mikhail "Misha" Matz](https://matzlab.weebly.com/), [Tim Sackton](https://scholar.harvard.edu/tsackton), [Nina Overgaard Therkildsen](https://www.therkildsenlab.com/), TBD |
 | June 4       |  Population genomic analyses and filtering data     | TBD|
 | June 18       |  Functional Genomics (RNAseq)     | TBD|
