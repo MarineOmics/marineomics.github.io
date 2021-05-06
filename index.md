@@ -21,6 +21,9 @@ Everyone is welcome to join!
 **To receive a Zoom link, please fill out the registration form [here](
 https://auburn.zoom.us/meeting/register/tZ0ode2rpz4sG9Il_TuYexWfqd6HyjdQ58Zi).**  
 
+**If you attend the seminars, also consider filling out our short participant survey [here](
+https://docs.google.com/forms/d/e/1FAIpQLScMmrIpuO7r_1wb86mz2-bzvQciCqBOVg-l3Djynr9Rjk305w/viewform?usp=sf_link).**  
+
 ## Seminar Schedule
 
 | Date        | Topic       | Panelists     |
