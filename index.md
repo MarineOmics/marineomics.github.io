@@ -14,7 +14,7 @@ The MarineOmics working group is part of the [RCN for Evolution in Changing Seas
 
 # Panel Seminar Series
 
-To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we are hosting Q & A panel seminars with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Seminars are every two weeks, on **Fridays from 11:00-12:15 US Central Time**. 3-5 expert panelists will discuss each topic, with questions coming from the working group and the audience. If you would like to submit a question for the panelists ahead of time, please send an email to rcnecs.marineomics[at]gmail.com . 
+To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we are hosting Q & A panel seminars with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Seminars are every two weeks, on **Fridays from 11:00-12:15 US Central Time**. 3-5 expert panelists will discuss each topic, with questions coming from the working group and the audience. Seminars will be recorded and available on the website after. If you would like to submit a question for the panelists ahead of time, please send an email to rcnecs.marineomics[at]gmail.com . 
 
 Everyone is welcome to join!   
 
