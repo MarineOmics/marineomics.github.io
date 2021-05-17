@@ -14,28 +14,26 @@ The MarineOmics working group is part of the [RCN for Evolution in Changing Seas
 
 # Panel Seminar Series
 
-To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we are hosting Q & A panel seminars with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Seminars are every two weeks, on **Fridays from 11:00-12:15 US Central Time**. 3-5 expert panelists will discuss each topic, with questions coming from the working group and the audience. Seminars will be recorded and available on the website after. If you would like to submit a question for the panelists ahead of time, please send an email to rcnecs.marineomics[at]gmail.com . 
+To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we are hosting Q & A panel seminars with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Seminars are every two weeks, on **Fridays from 11:00-12:15 US Central Time**. 3-5 expert panelists will discuss each topic, with questions coming from the working group and the audience. If you would like to submit a question for the panelists ahead of time, please send an email to rcnecs.marineomics[at]gmail.com . 
 
-Everyone is welcome to join!   
+Everyone is welcome to join! All seminars will be recorded and available on this website.    
 
 **To receive a Zoom link, please fill out the registration form [here](
 https://auburn.zoom.us/meeting/register/tZ0ode2rpz4sG9Il_TuYexWfqd6HyjdQ58Zi).**  
-
-**If you attend the seminars, also consider filling out our short participant survey [here](
-https://docs.google.com/forms/d/e/1FAIpQLScMmrIpuO7r_1wb86mz2-bzvQciCqBOVg-l3Djynr9Rjk305w/viewform?usp=sf_link).**  
 
 ## Seminar Schedule
 
 | Date        | Topic       | Panelists     |
 | :---        | :---        | :---          |
 | May 7         | GBS/RADseq genotyping pipelines     | [Melanie LaCava](https://melanielacava.weebly.com/), [Alicia Mastretta-Yanes](http://mastrettayanes-lab.org/), [Isaac Overcast](https://isaacovercast.github.io/), [Jon Puritz](https://www.marineevoeco.com/)   |
-| May 21       |  WGS genotyping (low and high coverage)     | [Mikhail "Misha" Matz](https://matzlab.weebly.com/), [Tim Sackton](https://scholar.harvard.edu/tsackton), [Nina Overgaard Therkildsen](https://www.therkildsenlab.com/), TBD |
-| June 4       |  Population genomic analyses and filtering data     | TBD|
-| June 18       |  Functional Genomics (RNAseq)     | TBD|
+| May 21       |  WGS genotyping (low and high coverage)     | [Jeffrey Good](http://www.thegoodlab.org/), [Mikhail "Misha" Matz](https://matzlab.weebly.com/), [Noah Reid](http://nreid.github.io/), [Tim Sackton](https://scholar.harvard.edu/tsackton), [Nina Overgaard Therkildsen](https://www.therkildsenlab.com/) |
+| June 4       |  Population genomic analyses and filtering data     | [Zach Gompert](https://gompertlab.com/), [Morgan Kelly](http://www.morgankelly.biology.lsu.edu/), [Katie Lotterhos](https://sites.google.com/site/katielotterhos/home), [Jeff Ross-Ibarra](https://rilab.ucdavis.edu/) |
+| June 18       |  Functional Genomics (RNAseq)     | [Ana Conesa](http://conesalab.org/), [Joanna Kelley](https://labs.wsu.edu/genomes/), TBD|
 
 # Reproducibility in Marine Genomics  
-The working group is also currently hosting three undergraduate research interns with funding from the [RCN-ECS](https://rcn-ecs.github.io/). These interns are part of a sub-committee conducting a literature survey to characterize trends in data availability, code accessibility, and methods reproducibility in papers that use genomics to study adaptation in marine systems. The results of this survey will be shared in a peer-reviewed article, along with guidance to improve the state of reproducibility in the field.  
-# Working Group Members
+The working group is also currently hosting three undergraduate research interns with funding from the [RCN-ECS](https://rcn-ecs.github.io/). These interns are part of a sub-committee conducting a literature survey to characterize trends in data availability, code accessibility, and methods reproducibility in papers that use genomics to study adaptation in marine systems. The results of this survey will be shared in a peer-reviewed article, along with guidance to improve the state of reproducibility in the field. 
+
+# Working Group Members  
 
 #### [Katherine Silliman, PhD](https://ksilliman.weebly.com/), Auburn University - kes0132[at]auburn.edu
 #### [Sam Bogan](http://www.hofmannlab.com/sam-bogan.html), UC-Santa Barbara -snbogan[at]ucsb.edu
@@ -44,10 +42,12 @@ The working group is also currently hosting three undergraduate research interns
 #### [Danielle Davenport](https://www.researchgate.net/profile/Danielle-Davenport-2), University of Queensland  
 #### [Hanny Rivera, PhD](https://www2.whoi.edu/staff/hrivera/), Woods Hole Oceanographic Institute  
 #### Jecy Klinkam, College of William and Mary  
+#### [Joanna Griffiths, PhD](https://joannasgriffiths.wordpress.com/), UC-Davis
 #### [Joe McGirr, PhD](https://joemcgirr.github.io/), UC-Davis 
 #### Kaitlin Macaranas, CSU-Bakersfield 
 #### Megan Guidry, University of Rhode Island
-#### Natalie Ameral, University of Rhode Island & RI Dept. of Environmental Management 
+#### Natalie Ameral, University of Rhode Island & RI Dept. of Environmental Management  
+#### Nicolas Lou, Cornell University
 #### [Sara Schaal](https://schaals.wixsite.com/smschaal), Northeastern University 
 #### [Sara Wuitchik, PhD](https://sjswuitchik.weebly.com/), Harvard University
 
