@@ -1,6 +1,9 @@
 title: "MarineOmics RCN-ECS"
 remote_theme: pmarsceill/just-the-docs
-search_enabled: true
+search_enabled: true  
+
+kramdown:
+  parse_block_html: true
 
 aux_links:
   "MarineOmics on GitHub":
