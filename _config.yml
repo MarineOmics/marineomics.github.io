@@ -2,6 +2,29 @@ title: "MarineOmics RCN-ECS"
 remote_theme: pmarsceill/just-the-docs
 search_enabled: true
 
+kramdown:
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+#kramdown:
+#  parse_block_html: true
+
 aux_links:
   "MarineOmics on GitHub":
     - "https://github.com/MarineOmics"
+    
+plugins:
+  - jekyll-toc
+  
+#toc:
+#  min_level: 1
+#  max_level: 4
+#  ordered_list: true
+#  no_toc_section_class: no_toc_section
+#  list_id: toc
+#  list_class: section-nav
+#  sublist_class: ''
+#  item_class: toc-entry
+#  item_prefix: toc-
+
