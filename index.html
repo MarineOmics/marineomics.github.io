@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Introduction</title>
+
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="tutorial.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MarineOmics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="panels.html">Panel Seminars</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Population Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="popgen_intro.html">Choosing a Population Genomics Approach</a>
+    </li>
+    <li>
+      <a href="RADseq.html">RADseq</a>
+    </li>
+    <li>
+      <a href="WGS_intro.html">Whole Genome Resqequencing</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Functional Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="RNA_coming.html">RNAseq (coming soon!)</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="discussion.html">Discussion Forum</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction</h1>
+
+</div>
+
+
+<div id="beta-test-of-site" class="section level1">
+<h1>BETA TEST OF SITE!</h1>
+<p>The MarineOmics working group is part of the <a href="https://rcn-ecs.github.io/">RCN for Evolution in Changing Seas</a>, and was formed to promote <strong>reproducible</strong> and <strong>robust</strong> genomic research in nonmodel species, but especially marine and aquatic studies. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices as obsolete. To support robust ’omics research now and moving forward, the working group helps disseminate guidelines through this dynamic, open-sourced website.</p>
+<p><strong>Rigorous</strong>: following best principles to identify and mitigate sources of error in data generation and analysis</p>
+<p><strong>Reproducible</strong>: when others can reproduce the results with accessible data, code, and documentation</p>
+</div>
+<div id="guidelines-for-omics-analyses" class="section level1">
+<h1>Guidelines for ’omics analyses</h1>
+<p>On this website you will find a collection of guidelines, tutorials, recommended readings, and method evaluations for various ’omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid “best practices”, we aim to encourage data exploration and rigorous quality control through “best practices”.</p>
+<p>Based on the expertise of the working group, we have developed content for these topics:</p>
+<div id="topics" class="section level2 tabset tabset-fade tabset-pills">
+<h2 class="tabset tabset-fade tabset-pills">Topics</h2>
+<div id="population-genomics" class="section level3">
+<h3>Population Genomics</h3>
+<ul>
+<li><a href="WGS_intro.html">Choosing a population genomics sequencing approach</a><br />
+</li>
+<li><a href="WGS_intro.html">Whole Genome Resequencing</a><br />
+</li>
+<li><a href="RADseq.html">Reduced Representation Sequencing</a></li>
+</ul>
+</div>
+<div id="functional-genomics" class="section level3">
+<h3>Functional Genomics</h3>
+<ul>
+<li>Transcriptomics with RNA-Seq (coming soon!)<br />
+</li>
+<li>Differential gene expression (coming soon!)</li>
+</ul>
+</div>
+</div>
+<div id="section" class="section level2 unnumbered">
+<h2 class="unnumbered"></h2>
+</div>
+<div id="panel-seminars" class="section level2">
+<h2>Panel Seminars</h2>
+<p>To facilitate discussions about practices and pitfalls in applying ’omics to non-model systems, we hosted <a href="panels.html">Q &amp; A panel seminars</a> with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on <a href="https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ">YouTube</a>!</p>
+</div>
+</div>
+<div id="reproducibility-in-marine-genomics" class="section level1">
+<h1>Reproducibility in Marine Genomics</h1>
+<p>The working group is also interested in evaluating and improving reproducibility in studies that use genomics to study adaptation in marine systems. utilizing genomics in marine species, through a peer-reviewed literature survey of data availability, code accessibility, and methods reproducibility. In Spring 2021, three undergraduate research interns contributed to this literature survey, with funding from the <a href="https://rcn-ecs.github.io/">RCN-ECS</a>.</p>
+</div>
+<div id="working-group-members" class="section level1">
+<h1>Working Group Members</h1>
+<div id="katherine-silliman-phd-auburn-university---kes0132atauburn.edu" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="https://ksilliman.weebly.com/">Katherine Silliman, PhD</a>, Auburn University - kes0132[at]auburn.edu</h4>
+</div>
+<div id="sam-bogan-uc-santa-barbara--snboganatucsb.edu" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="http://www.hofmannlab.com/sam-bogan.html">Sam Bogan</a>, UC-Santa Barbara -snbogan[at]ucsb.edu</h4>
+</div>
+<div id="alan-downey-wall-northeastern-university" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="https://cos.northeastern.edu/people/alan-downey-wall/">Alan Downey-Wall</a>, Northeastern University</h4>
+</div>
+<div id="chris-mantegna-university-of-washington" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered">Chris Mantegna, University of Washington</h4>
+</div>
+<div id="danielle-davenport-university-of-queensland" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="https://www.researchgate.net/profile/Danielle-Davenport-2">Danielle Davenport</a>, University of Queensland</h4>
+</div>
+<div id="hanny-rivera-phd-woods-hole-oceanographic-institute" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="https://www2.whoi.edu/staff/hrivera/">Hanny Rivera, PhD</a>, Woods Hole Oceanographic Institute</h4>
+</div>
+<div id="jecy-klinkam-college-of-william-and-mary" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered">Jecy Klinkam, College of William and Mary</h4>
+</div>
+<div id="joanna-griffiths-phd-uc-davis" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="https://joannasgriffiths.wordpress.com/">Joanna Griffiths, PhD</a>, UC-Davis</h4>
+</div>
+<div id="joe-mcgirr-phd-uc-davis" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="https://joemcgirr.github.io/">Joe McGirr, PhD</a>, UC-Davis</h4>
+</div>
+<div id="kaitlin-macaranas-csu-bakersfield" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered">Kaitlin Macaranas, CSU-Bakersfield</h4>
+</div>
+<div id="megan-guidry-university-of-rhode-island" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered">Megan Guidry, University of Rhode Island</h4>
+</div>
+<div id="natalie-ameral-university-of-rhode-island-ri-dept.-of-environmental-management" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered">Natalie Ameral, University of Rhode Island &amp; RI Dept. of Environmental Management</h4>
+</div>
+<div id="nicolas-lou-cornell-university" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered">Nicolas Lou, Cornell University</h4>
+</div>
+<div id="sara-schaal-northeastern-university" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="https://schaals.wixsite.com/smschaal">Sara Schaal</a>, Northeastern University</h4>
+</div>
+<div id="sara-wuitchik-phd-harvard-university" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="https://sjswuitchik.weebly.com/">Sara Wuitchik, PhD</a>, Harvard University</h4>
+</div>
+<div id="faculty-advisors" class="section level3 unlisted unnumbered">
+<h3 class="unlisted unnumbered">Faculty Advisors</h3>
+<div id="andrew-whitehead-phd-uc-davis" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="https://whiteheadresearch.wordpress.com/">Andrew Whitehead, PhD</a>, UC-Davis</h4>
+</div>
+<div id="jon-puritz-phd-university-of-rhode-island" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="https://www.marineevoeco.com/">Jon Puritz, PhD</a>, University of Rhode Island</h4>
+</div>
+<div id="steven-roberts-phd-university-of-washington" class="section level4 unlisted unnumbered">
+<h4 class="unlisted unnumbered"><a href="http://faculty.washington.edu/sr320/?page_id=10850">Steven Roberts, PhD</a>, University of Washington</h4>
+</div>
+</div>
+</div>
+<div id="contact" class="section level1">
+<h1>Contact</h1>
+<p>For more information about the working group or panel seminars, contact Katherine Silliman: kes0132[at]auburn.edu<br />
+For more information about the reproducibility review and undergraduate internship, contact Sam Bogan: snbogan[at]ucsb.edu</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

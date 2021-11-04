@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Choosing a Population Genomics Approach</title>
+
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="tutorial.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MarineOmics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="panels.html">Panel Seminars</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Population Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="popgen_intro.html">Choosing a Population Genomics Approach</a>
+    </li>
+    <li>
+      <a href="RADseq.html">RADseq</a>
+    </li>
+    <li>
+      <a href="WGS_intro.html">Whole Genome Resqequencing</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Functional Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="RNA_coming.html">RNAseq (coming soon!)</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="discussion.html">Discussion Forum</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Choosing a Population Genomics Approach</h1>
+
+</div>
+
+
+<p>Deciding on a sequencing approach for a new project can be challenging, and depends primarily on the questions you are interested in, but also constraints set by funding, existing genomic resources, sample size, genome characteristics, and expertise in the research group. The main categories of population genomic sequencing approaches are:</p>
+<ol style="list-style-type: decimal">
+<li>High coverage individual whole genome resequencing (hcWGS)<br />
+</li>
+</ol>
+<ol style="list-style-type: lower-roman">
+<li>Whole-genome resequencing (WGS) is where whole genomes of multiple individuals are sequenced and mapped to an assembled reference genome in order to compare variable sites between individuals or populations. Sequence coverage refers to the average number of sequencing reads per region of the genome. With more sequencing reads at a region (higher coverage), errors that arise during sequencing have a smaller impact on accurately identifying variable sites (termed “genotyping”).<br />
+</li>
+</ol>
+<ol start="2" style="list-style-type: decimal">
+<li>Low coverage individual WGS (lcWGS)<br />
+</li>
+</ol>
+<ol style="list-style-type: lower-roman">
+<li></li>
+</ol>
+<ol start="3" style="list-style-type: decimal">
+<li>pooled individuals (Poolseq)<br />
+</li>
+<li>reduced-representation sequencing</li>
+</ol>
+<ol style="list-style-type: lower-roman">
+<li>can be split into restriction-based methods (eg RADseq) and targeted capture methods (eg exome capture)</li>
+</ol>
+<p>Below we list a number of great review articles and empirical comparison studies that can help when making the decision. This topic was also discussed during the MarineOmics seminars (link).</p>
+<p>References:</p>
+<ul>
+<li>Matz 2018<span class="citation">(Zeeberg et al. 2004)</span>: great intro to ecological genomics methods in species with few to no prior genomic resources, accessible to those just getting started.<br />
+</li>
+<li>Fuentes-Pardo and Ruzzante 2017: a VERY thorough review of the different approaches to generating population genomics data, with non-model species in mind. Some of the content about relative cost and available software is a little dated, but otherwise a very valuable reference.<br />
+</li>
+<li>Benjelloun et al 2019: empirical comparison of high coverage WGS, low coverage WGS, random variants (eg. from RADseq), exome capture, and commercial SNP chip for mammals (genome size=2.6Gb). For neutral genomic diversity, found 5k-10k random variants were enough to accurately estimate, but comercial panales/exome capture had acertainment bias. To detect selection and accurate estimates of LD, at least 1M variants were required. For the studied species, 5x coverage was just as accurate as 12x coverage. Low coverage WGS (&lt; 5x) should use genotype likelihood methods, however the rate of false positives for heterozygotes is higher than classic genotyping methods at higher coverage.<br />
+</li>
+<li>Dorant et al. 2019: Case study comparing Poolseq vs. reduced representation seq (GBS) vs Rapture (targeted capture of RAD loci) for inferring population structure with weak genetic differentiation. All three detected same weak pop structure pattern, but Poolseq gave Fst values 3-5x higher than Rapture/GBS.</li>
+</ul>
+<p>It should be noted that you don’t need to choose only one approach for all samples! If you are starting a research program on a species without any genomic resources, you may want to start with de novo RADseq to understand basic population structure and genetic diversity, then once a reference genome is assembled move to high/low coverage WGS. In the <a href="link">MarineOmics seminar</a>, Misha Matz recommended choosing one individual to use for genome assembly, doing high coverage WGS on a few other individuals that represent most of the variation in your taxa, and then WGS many other individuals at low coverage. The high coverage individuals can be useful for imputing missing genotypes in the low coverage samples.</p>
+<p>This table briefly summarizes the pros and cons of five sequencing approaches and their appropriateness for answering specific questions. If you are interested in answering multiple questions (eg, neutral population structure and adaptive variation) then you would often want a method that can do both (eg, WGS).</p>
+<table class="table table-striped" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Goals
+</th>
+<th style="text-align:left;">
+hcWGS
+</th>
+<th style="text-align:left;">
+lcWGS
+</th>
+<th style="text-align:left;">
+RADseq
+</th>
+<th style="text-align:left;">
+Poolseq
+</th>
+<th style="text-align:left;">
+Target.Capture
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
+Pros
+</td>
+<td style="text-align:left;">
+provides high quality, high density genotypes; can be used to improve development of a reference genome
+</td>
+<td style="text-align:left;">
+Provides high density genotypes at a reduced cost
+</td>
+<td style="text-align:left;">
+Generally cheaper per sample, density of genotypes can be tuned to fit question, does not require a reference
+</td>
+<td style="text-align:left;">
+many individuals can be mixed for a low library prep cost, only option for some larval studies
+</td>
+<td style="text-align:left;">
+allows consistent capture of loci between batches, good for sequencing targeted regions across many samples
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
+Cons
+</td>
+<td style="text-align:left;">
+Most expensive per sample, requires a reference genome assembly, large computational resources
+</td>
+<td style="text-align:left;">
+Requires a reference, can produce false (+) heterozygotes, sensitive to batch effects, may be inappropriate to use individual SNP calls for some analyses
+</td>
+<td style="text-align:left;">
+Only 1-5% of genome covered which limits studies on adaptive variation, de novo assembly can result in paralogs without quality control, can be hard to capture the same loci between batches
+</td>
+<td style="text-align:left;">
+need higher sequencing depth so it can be more expensive than RAD (but less than other options), no info on individual genotypes (duh), requires a reference, requires some replicates to account for batch effects
+</td>
+<td style="text-align:left;">
+expensive to start a new project and requires reference of some kind to design baits (unless using method like eecSeq), only gives info on targeted region so can result in ascertainment bias for some analyses
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
+Population structure, genetic diversity
+</td>
+<td style="text-align:left;">
+Great, but cheaper methods work almost as well
+</td>
+<td style="text-align:left;">
+Good, but limited to popgen analyses based on genotype likelihoods
+</td>
+<td style="text-align:left;">
+Great, esp. for many samples
+</td>
+<td style="text-align:left;">
+good for methods that only use allele frequencies, won’t work for individual based methods (eg Admixture)
+</td>
+<td style="text-align:left;">
+ascertainment bias is likely to skew results, esp. for measures of genetic diversity
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
+Demography (mig. rates, pop. size through time)
+</td>
+<td style="text-align:left;">
+Great if incorporating haplotype-based methods
+</td>
+<td style="text-align:left;">
+Good, esp. with some high coverage samples to help with imputation
+</td>
+<td style="text-align:left;">
+Good for methods based on site frequency spectrum (eg moments), but not ideal for methods using extended haplotype or phasing info
+</td>
+<td style="text-align:left;">
+active area of method development, but still not common except in cases of multiple temporal samples (cite)
+</td>
+<td style="text-align:left;">
+likely not appropriate due to ascertainment bias
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
+Signatures of selection, GWAS
+</td>
+<td style="text-align:left;">
+Great
+</td>
+<td style="text-align:left;">
+Good
+</td>
+<td style="text-align:left;">
+Hotly debated, but unless your genome is way too big, WGS is the way to go
+</td>
+<td style="text-align:left;">
+good if covering majority of the genome
+</td>
+<td style="text-align:left;">
+only works for targeted regions
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
+Phylogenetic inference
+</td>
+<td style="text-align:left;">
+Computationally challenging, but good at all divergence levels
+</td>
+<td style="text-align:left;">
+Good for tree shapes but not branch lengths, good for extracting organelle sequences and cost-effective primers for species and hybrid ID studies
+</td>
+<td style="text-align:left;">
+good at shallow to medium divergence levels, but need to play with filtering parameters
+</td>
+<td style="text-align:left;">
+would work in certain situations
+</td>
+<td style="text-align:left;">
+an improvement over RAD as there will be less missing data among samples
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
+Genetic crosses/mapping panels
+</td>
+<td style="text-align:left;">
+Expensive
+</td>
+<td style="text-align:left;">
+Great
+</td>
+<td style="text-align:left;">
+great as it allows for many invididuals
+</td>
+<td style="text-align:left;">
+maybe
+</td>
+<td style="text-align:left;">
+poor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;border-right:1px solid;">
+molecular evolution (accurate low-freq alleles required)
+</td>
+<td style="text-align:left;">
+Best
+</td>
+<td style="text-align:left;">
+Poor
+</td>
+<td style="text-align:left;">
+poor
+</td>
+<td style="text-align:left;">
+poor
+</td>
+<td style="text-align:left;">
+good if only interested in targeted regions
+</td>
+</tr>
+</tbody>
+</table>
+<p>Presently, our site covers four approaches (WGS=whole genome (re)sequencing):</p>
+<p>For each approach, we provide guiding principles and tutorials for bioinformatic processing from raw data to genotypes. While we currently don’t discuss library preparation methods in depth, we do include advice on how to organize your sequencing runs in order to improve quality control downstream.</p>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-zeeberg2004mistaken" class="csl-entry">
+Zeeberg, Barry R, Joseph Riss, David W Kane, Kimberly J Bussey, Edward Uchio, W Marston Linehan, J Carl Barrett, and John N Weinstein. 2004. <span>“Mistaken Identifiers: Gene Name Errors Can Be Introduced Inadvertently When Using Excel in Bioinformatics.”</span> <em>BMC Bioinformatics</em> 5 (1): 80. <a href="http://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-5-80">http://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-5-80</a>.
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
