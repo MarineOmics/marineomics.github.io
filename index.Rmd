@@ -5,8 +5,6 @@ knitr::opts_chunk$set(echo = TRUE)
 title: "Introduction"
 ---
 
-# BETA TEST OF SITE!
-
 The MarineOmics working group is part of the [RCN for Evolution in Changing Seas](https://rcn-ecs.github.io/), and was formed to promote **reproducible** and **robust** genomic research in nonmodel species, but especially marine and aquatic studies. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices as obsolete. To support robust 'omics research now and moving forward, the working group helps disseminate guidelines through this dynamic, open-sourced website. 
 
 **Rigorous**:  following best principles to identify and mitigate sources of error in data generation and analysis  
@@ -16,9 +14,9 @@ The MarineOmics working group is part of the [RCN for Evolution in Changing Seas
 
 # Guidelines for 'omics analyses 
 
-On this website you will find a collection of guidelines, tutorials, recommended readings, and method evaluations for various 'omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid "best practices", we aim to encourage data exploration and rigorous quality control through "best practices".   
+On this website you will find a growing and evolving collection of guidelines, tutorials, recommended readings, and method evaluations for various 'omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid "best practices", we aim to encourage data exploration and rigorous quality control through "best principles". The guidelines are written by members of the MarineOmics working group or the community, then shared for peer review. Comments on current website content or suggestions for new content can be made through the [Discussion Forum](discussion.html).
 
-Based on the expertise of the working group, we have developed content for these topics:  
+Based on the expertise of the MarineOmics working group, the first topics include:  
 
 ## Topics {.tabset .tabset-fade .tabset-pills}
 ### Population Genomics  
@@ -34,7 +32,9 @@ Based on the expertise of the working group, we have developed content for these
 
 ## {-}
 
-## Panel Seminars 
+### The guidelines portion of the website is still under peer review and should be considered a "preprint". If you are interested in contributing to the peer review process, check out the [Discussion Forum](discussion.html). {.unlisted .unnumbered}
+
+# Panel Seminars 
 To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we hosted [Q & A panel seminars](panels.html) with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on [YouTube](https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ)!
 
 # Reproducibility in Marine Genomics  

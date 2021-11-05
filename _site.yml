@@ -1,6 +1,7 @@
 name: "MarineOmics"
 output_dir: "."
 navbar:
+  type: inverse
   title: "MarineOmics"
   href: index.html
   left:
@@ -9,7 +10,7 @@ navbar:
     - text: "Population Genomics"
       menu:
         - text: "Choosing a Population Genomics Approach"
-          href: popgen_intro.html
+          href: choosing-population-genetics.html
         - text: "RADseq"
           href: RADseq.html
         - text: "Whole Genome Resqequencing"

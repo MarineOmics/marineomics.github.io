@@ -18,15 +18,21 @@ cite_options(citation_format = "pandoc", max.names = 3, style = "html",
 
 Deciding on a sequencing approach for a new project can be challenging, and depends primarily on the questions you are interested in, but also constraints set by funding, existing genomic resources, sample size, genome characteristics, and expertise in the research group. The main categories of population genomic sequencing approaches are:   
 
-1) High coverage individual whole genome resequencing (hcWGS)  
- i) Whole-genome resequencing (WGS) is where whole genomes of multiple individuals are sequenced and mapped to an assembled reference genome in order to compare variable sites between individuals or populations. Sequence coverage refers to the average number of sequencing reads per region of the genome. With more sequencing reads at a region (higher coverage), errors that arise during sequencing have a smaller impact on accurately identifying variable sites (termed "genotyping").  
-2) Low coverage individual WGS (lcWGS)  
- i) 
-3) pooled individuals (Poolseq)  
-4) reduced-representation sequencing 
- i) can be split into restriction-based methods (eg RADseq) and targeted capture methods (eg exome capture)
+### 1) High coverage individual whole genome resequencing (hcWGS)  {.unlisted .unnumbered}
+**Whole-genome resequencing (WGS)** is where whole genomes of multiple individuals are sequenced and mapped to an assembled reference genome in order to compare variable sites between individuals or populations. **Coverage depth** refers to the average number of sequencing reads per region of the genome. With more sequencing reads at a region (higher coverage depth), errors that arise during sequencing have a smaller impact on accurately identifying variable sites (termed "genotyping") (cite).    
 
+### 2) Low coverage individual WGS (lcWGS)  {.unlisted .unnumbered}
+Low coverage whole genome sequencing is where whole genomes of many individuals are sequenced, but depth of coverage so low that individual genotypes cannot be confidently assigned (cite). Instead of assigning specific, "hard called genotypes, lcWGS data requires probabilistic analyses that account for uncertainty about the true genotype and can incororate uncertanty accross all sequenced samples. Typically, sequencing depth of > 3 reads is considered "low coverage".  
 
+### 3) Reduced-representation sequencing {.unlisted .unnumbered}
+As the name suggests, this approach aims to sequence a reduced portion of the genome across multiple individuals at moderate to high coverage for variant discovery and genotyping with high confidence. The genome fragments can be selected at random, or through targeted probe assays.
+#### RADseq/Genotype-by-sequencing  {.unlisted .unnumbered}
+This very popular class of methods involve sequencing a subset of genomic regions randomly distributed throughout the genome, often using restriction enzymes (i.e., RADseq: restriction site-associated DNA). 
+#### Targeted capture methods (e.g., exome capture)  {.unlisted .unnumbered}
+ 
+### 4) Pooled individuals (Poolseq)  {.unlisted .unnumbered} 
+
+![Figure 1 from Lou et al. 2021 comparing the distribution of sequencing reads mapped to a reference genome.](images/mec16077-fig-0001-m.jpg)
 
 Below we list a number of great review articles and empirical comparison studies that can help when making the decision. This topic was also discussed during the MarineOmics seminars (link).  
 

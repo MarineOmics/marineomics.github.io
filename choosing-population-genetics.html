@@ -336,7 +336,7 @@ div.tocify {
 
 
 
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -359,7 +359,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="popgen_intro.html">Choosing a Population Genomics Approach</a>
+      <a href="choosing-population-genetics.html">Choosing a Population Genomics Approach</a>
     </li>
     <li>
       <a href="RADseq.html">RADseq</a>
@@ -402,29 +402,24 @@ div.tocify {
 
 
 <p>Deciding on a sequencing approach for a new project can be challenging, and depends primarily on the questions you are interested in, but also constraints set by funding, existing genomic resources, sample size, genome characteristics, and expertise in the research group. The main categories of population genomic sequencing approaches are:</p>
-<ol style="list-style-type: decimal">
-<li>High coverage individual whole genome resequencing (hcWGS)<br />
-</li>
-</ol>
-<ol style="list-style-type: lower-roman">
-<li>Whole-genome resequencing (WGS) is where whole genomes of multiple individuals are sequenced and mapped to an assembled reference genome in order to compare variable sites between individuals or populations. Sequence coverage refers to the average number of sequencing reads per region of the genome. With more sequencing reads at a region (higher coverage), errors that arise during sequencing have a smaller impact on accurately identifying variable sites (termed “genotyping”).<br />
-</li>
-</ol>
-<ol start="2" style="list-style-type: decimal">
-<li>Low coverage individual WGS (lcWGS)<br />
-</li>
-</ol>
-<ol style="list-style-type: lower-roman">
-<li></li>
-</ol>
-<ol start="3" style="list-style-type: decimal">
-<li>pooled individuals (Poolseq)<br />
-</li>
-<li>reduced-representation sequencing</li>
-</ol>
-<ol style="list-style-type: lower-roman">
-<li>can be split into restriction-based methods (eg RADseq) and targeted capture methods (eg exome capture)</li>
-</ol>
+<div id="high-coverage-individual-whole-genome-resequencing-hcwgs" class="section level3 unlisted unnumbered">
+<h3 class="unlisted unnumbered">1) High coverage individual whole genome resequencing (hcWGS)</h3>
+<p><strong>Whole-genome resequencing (WGS)</strong> is where whole genomes of multiple individuals are sequenced and mapped to an assembled reference genome in order to compare variable sites between individuals or populations. <strong>Coverage depth</strong> refers to the average number of sequencing reads per region of the genome. With more sequencing reads at a region (higher coverage depth), errors that arise during sequencing have a smaller impact on accurately identifying variable sites (termed “genotyping”) (cite).</p>
+</div>
+<div id="low-coverage-individual-wgs-lcwgs" class="section level3 unlisted unnumbered">
+<h3 class="unlisted unnumbered">2) Low coverage individual WGS (lcWGS)</h3>
+<p>Low coverage whole genome sequencing is where whole genomes of many individuals are sequenced, but depth of coverage so low that individual genotypes cannot be confidently assigned (cite). Instead of assigning specific, “hard called genotypes, lcWGS data requires probabilistic analyses that account for uncertainty about the true genotype and can incororate uncertanty accross all sequenced samples. Typically, sequencing depth of &gt; 3 reads is considered”low coverage".</p>
+</div>
+<div id="reduced-representation-sequencing" class="section level3 unlisted unnumbered">
+<h3 class="unlisted unnumbered">3) Reduced-representation sequencing</h3>
+<p>As the name suggests, this approach aims to sequence a reduced portion of the genome across multiple individuals at moderate to high coverage for variant discovery and genotyping with high confidence. The genome fragments can be selected at random, or through targeted probe assays. #### RADseq/Genotype-by-sequencing {.unlisted .unnumbered} This very popular class of methods involve sequencing a subset of genomic regions randomly distributed throughout the genome, often using restriction enzymes (i.e., RADseq: restriction site-associated DNA). #### Targeted capture methods (e.g., exome capture) {.unlisted .unnumbered}</p>
+</div>
+<div id="pooled-individuals-poolseq" class="section level3 unlisted unnumbered">
+<h3 class="unlisted unnumbered">4) Pooled individuals (Poolseq)</h3>
+<div class="figure">
+<img src="images/mec16077-fig-0001-m.jpg" alt="" />
+<p class="caption">Figure 1 from Lou et al. 2021 comparing the distribution of sequencing reads mapped to a reference genome.</p>
+</div>
 <p>Below we list a number of great review articles and empirical comparison studies that can help when making the decision. This topic was also discussed during the MarineOmics seminars (link).</p>
 <p>References:</p>
 <ul>
@@ -626,6 +621,7 @@ good if only interested in targeted regions
 </table>
 <p>Presently, our site covers four approaches (WGS=whole genome (re)sequencing):</p>
 <p>For each approach, we provide guiding principles and tutorials for bioinformatic processing from raw data to genotypes. While we currently don’t discuss library preparation methods in depth, we do include advice on how to organize your sequencing runs in order to improve quality control downstream.</p>
+</div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
