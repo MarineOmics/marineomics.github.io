@@ -1,0 +1,38 @@
+name: "MarineOmics"
+output_dir: "."
+navbar:
+  type: inverse
+  title: "MarineOmics"
+  href: index.html
+  left:
+    - text: "Panel Seminars"
+      href: panels.html 
+    - text: "Population Genomics"
+      menu:
+        - text: "Choosing a Population Genomics Approach"
+          href: choosing-population-genetics.html
+        - text: "RADseq"
+          href: RADseq.html
+        - text: "Whole Genome Resequencing"
+          href: WGS_intro.html
+        - text: "Poolseq"
+          href: poolseq.html
+    - text: "Functional Genomics"
+      menu:
+        - text: "RNAseq (coming soon!)"
+          href: RNA_coming.html
+    - text: "Discussion Forum"
+      href: discussion.html
+
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+    toc_depth: 4
+    theme: cosmo
+    css: tutorial.css
+#    includes:
+#      before_body: header.html
+      
+
