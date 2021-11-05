@@ -13,8 +13,10 @@ navbar:
           href: choosing-population-genetics.html
         - text: "RADseq"
           href: RADseq.html
-        - text: "Whole Genome Resqequencing"
+        - text: "Whole Genome Resequencing"
           href: WGS_intro.html
+        - text: "Poolseq"
+          href: poolseq.html
     - text: "Functional Genomics"
       menu:
         - text: "RNAseq (coming soon!)"

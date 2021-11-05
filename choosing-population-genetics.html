@@ -365,7 +365,10 @@ div.tocify {
       <a href="RADseq.html">RADseq</a>
     </li>
     <li>
-      <a href="WGS_intro.html">Whole Genome Resqequencing</a>
+      <a href="WGS_intro.html">Whole Genome Resequencing</a>
+    </li>
+    <li>
+      <a href="poolseq.html">Poolseq</a>
     </li>
   </ul>
 </li>
@@ -401,6 +404,8 @@ div.tocify {
 </div>
 
 
+<div id="population-genomic-sequencing-approaches" class="section level1">
+<h1>Population genomic sequencing approaches</h1>
 <p>Deciding on a sequencing approach for a new project can be challenging, and depends primarily on the questions you are interested in, but also constraints set by funding, existing genomic resources, sample size, genome characteristics, and expertise in the research group. The main categories of population genomic sequencing approaches are:</p>
 <div id="high-coverage-individual-whole-genome-resequencing-hcwgs" class="section level3 unlisted unnumbered">
 <h3 class="unlisted unnumbered">1) High coverage individual whole genome resequencing (hcWGS)</h3>
@@ -420,21 +425,6 @@ div.tocify {
 <img src="images/mec16077-fig-0001-m.jpg" alt="" />
 <p class="caption">Figure 1 from <span class="citation">(Lou et al. 2021)</span> comparing the distribution of sequencing reads mapped to a reference genome.</p>
 </div>
-<p>Below we list a number of great review articles and empirical comparison studies that can help when making the decision. This topic was also discussed during the MarineOmics seminars (link).</p>
-<p>Review articles:</p>
-<ul>
-<li><span class="citation">(Matz 2018)</span>: great intro to ecological genomics methods in species with few to no prior genomic resources, accessible to those just getting started.<br />
-</li>
-<li><span class="citation">(Fuentes-Pardo and Ruzzante 2017)</span>: a VERY thorough review of the different approaches to generating population genomics data, with non-model species in mind. Some of the content about relative cost and available software is a little dated, but otherwise a very valuable reference.<br />
-</li>
-<li><span class="citation">(Lou et al. 2021)</span>: Great recent primer on low coverage WGS and how it compares to RADseq and Poolseq.</li>
-</ul>
-<p>Empiracal comparisions:</p>
-<ul>
-<li><span class="citation">(Benjelloun et al. 2019)</span>: empirical comparison of high coverage WGS, low coverage WGS, random variants (eg. from RADseq), exome capture, and commercial SNP chip for mammals (genome size=2.6Gb). For neutral genomic diversity, found 5k-10k random variants were enough to accurately estimate, but comercial panales/exome capture had acertainment bias. To detect selection and accurate estimates of LD, at least 1M variants were required. For the studied species, 5x coverage was just as accurate as 12x coverage. Low coverage WGS (&lt; 5x) should use genotype likelihood methods, however the rate of false positives for heterozygotes is higher than classic genotyping methods at higher coverage.<br />
-</li>
-<li><span class="citation">(Dorant et al. 2019)</span>: Case study comparing Poolseq vs. reduced representation seq (GBS) vs Rapture (targeted capture of RAD loci) for inferring population structure with weak genetic differentiation. All three detected same weak pop structure pattern, but Poolseq gave Fst values 3-5x higher than Rapture/GBS.</li>
-</ul>
 <p>It should be noted that you don’t need to choose only one approach for all samples! If you are starting a research program on a species without any genomic resources, you may want to start with de novo RADseq to understand basic population structure and genetic diversity, then once a reference genome is assembled move to high/low coverage WGS. In the <a href="link">MarineOmics seminar</a>, Misha Matz recommended choosing one individual to use for genome assembly, doing high coverage WGS on a few other individuals that represent most of the variation in your taxa, and then WGS many other individuals at low coverage. The high coverage individuals can be useful for imputing missing genotypes in the low coverage samples.</p>
 <p>This table briefly summarizes the pros and cons of five sequencing approaches and their appropriateness for answering specific questions. If you are interested in answering multiple questions (eg, neutral population structure and adaptive variation) then you would often want a method that can do both (eg, WGS).</p>
 <table class="table table-striped" style="font-size: 13px; margin-left: auto; margin-right: auto;">
@@ -623,7 +613,36 @@ good if only interested in targeted regions
 </tr>
 </tbody>
 </table>
-<p>Presently, our site covers four approaches (WGS=whole genome (re)sequencing):</p>
+</div>
+</div>
+<div id="recommended-readings" class="section level1">
+<h1>Recommended readings</h1>
+<p>Below we list a number of great review articles and empirical comparison studies that can help when making the decision. This topic was also discussed during the MarineOmics seminars (link).</p>
+<p>Review articles:</p>
+<ul>
+<li><span class="citation">(Matz 2018)</span>: great intro to ecological genomics methods in species with few to no prior genomic resources, accessible to those just getting started.<br />
+</li>
+<li><span class="citation">(Fuentes-Pardo and Ruzzante 2017)</span>: a VERY thorough review of the different approaches to generating population genomics data, with non-model species in mind. Some of the content about relative cost and available software is a little dated, but otherwise a very valuable reference.<br />
+</li>
+<li><span class="citation">(Lou et al. 2021)</span>: Great recent primer on low coverage WGS and how it compares to RADseq and Poolseq.</li>
+</ul>
+<p>Empirical comparisons:</p>
+<ul>
+<li><span class="citation">(Benjelloun et al. 2019)</span>: empirical comparison of high coverage WGS, low coverage WGS, random variants (eg. from RADseq), exome capture, and commercial SNP chip for mammals (genome size=2.6Gb). For neutral genomic diversity, found 5k-10k random variants were enough to accurately estimate, but comercial panales/exome capture had acertainment bias. To detect selection and accurate estimates of LD, at least 1M variants were required. For the studied species, 5x coverage was just as accurate as 12x coverage. Low coverage WGS (&lt; 5x) should use genotype likelihood methods, however the rate of false positives for heterozygotes is higher than classic genotyping methods at higher coverage.<br />
+</li>
+<li><span class="citation">(Dorant et al. 2019)</span>: Case study comparing Poolseq vs. reduced representation seq (GBS) vs Rapture (targeted capture of RAD loci) for inferring population structure with weak genetic differentiation. All three detected same weak pop structure pattern, but Poolseq gave Fst values 3-5x higher than Rapture/GBS.</li>
+</ul>
+</div>
+<div id="marineomics-guidelines" class="section level1">
+<h1>MarineOmics Guidelines</h1>
+<p>Presently, our site covers four approaches:</p>
+<ul>
+<li><a href="RADseq.html">RADseq</a><br />
+</li>
+<li><a href="WGS_intro.html">hcWGS</a></li>
+<li><a href="https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md">lcWGS, maintained by MarineOmics member Nicolas Lou</a></li>
+<li><a href="poolseq.html">Poolseq</a></li>
+</ul>
 <p>For each approach, we provide guiding principles and tutorials for bioinformatic processing from raw data to genotypes. While we currently don’t discuss library preparation methods in depth, we do include advice on how to organize your sequencing runs in order to improve quality control downstream.</p>
 </div>
 <div id="references" class="section level1 unnumbered">

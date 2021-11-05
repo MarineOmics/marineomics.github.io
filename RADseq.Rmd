@@ -10,7 +10,7 @@
 ```
 ---
 title: 'RADseq'
-subtitle: '*NJ Gr&uuml;nwald, ZN Kamvar, and SE Everhart*'
+subtitle: '*Katherine Silliman, Danielle Davenport*'
 ---
 
 ```{r setup, include=FALSE}

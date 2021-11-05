@@ -21,9 +21,10 @@ Based on the expertise of the MarineOmics working group, the first topics includ
 ## Topics {.tabset .tabset-fade .tabset-pills}
 ### Population Genomics  
 
-* [Choosing a population genomics sequencing approach](WGS_intro.html)  
+* [Choosing a population genomics sequencing approach](choosing-population-genetics.html)  
 * [Whole Genome Resequencing](WGS_intro.html)  
 * [Reduced Representation Sequencing](RADseq.html) 
+* [Poolseq](poolseq.html)
 
 ### Functional Genomics  
 
