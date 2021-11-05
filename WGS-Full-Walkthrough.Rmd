@@ -1,10 +1,6 @@
 ---
-layout: default
 title: WGS fastq2vcf walkthrough
-parent: Whole Genome Resequencing
-grand_parent: Choosing a PopGenomics Approach
-editor_options: 
-  chunk_output_type: console
+
 ---
 
 ## Walkthrough Data

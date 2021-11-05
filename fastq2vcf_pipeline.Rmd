@@ -1,0 +1,204 @@
+---
+title: "FASTQ -> VCF workflow for WGS data"
+author: "Sara JS Wuitchik"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# fastq2bam
+This is a more fleshed out explanation of the pipeline developed and maintained by [Harvard Informatics](https://github.com/harvardinformatics) in the [shortRead_mapping_variantCalling repo](https://github.com/harvardinformatics/shortRead_mapping_variantCalling)
+
+### Trimming adapters
+
+Before aligning your sequences to a reference genome, you will need to trim off the adapters. We use FastP in our pipeline as below, but there are other programs that could be suitable (e.g., Trimmomatic, TrimGalore/Cutadapt, BBDuk).
+
+```{bash, eval = F}
+fastp --in1 {r1} --in2 {r2} --out1 {r1} --out2 {r2} --detect_adapter_for_pe 2> {summary.out}
+```
+
+Where <br>
+```--in``` and ```--out``` are the flags for the input and output reads <br>
+```--detect_adapter_for_pe``` enables auto-detection of adapters for paired end data (because auto-detection is only enabled for single end data by default). 
+
+FastP (and other trimming software) can be used for quality control before aligning your sequences to the reference genome, but there are arguments on both sides for whether or not trimming your reads at this stage is useful (add references in here). 
+
+### Mapping
+
+Our pipeline uses the Burrows-Wheeler transform (Li and Durbin 2010) to align reads to the reference genome, but there are many software that can be used for aligning short reads to a reference (e.g., Bowtie2, STAR). To make the alignment process more efficient, you need to index the reference genome.
+
+```{bash, eval = F}
+bwa index {reference.fa}
+```
+
+Where ```reference.fa``` is your reference genome. Once your reference has been indexed, you can do a local alignment of your FASTQs, and pipe directly into ```samtools``` to sort the alignment by coordinate and converted to the BAM (Binary ALignment/Map) format.<br>
+
+```{bash, eval = F}
+bwa mem -M -R {string} {ref} {r1} {r2} | samtools sort -o {output.bam}
+```
+
+Where <br>
+```-M``` marks shorter split hits as secondary (required for Picard compatibility downstream) <br>
+```-R``` defines a read group header e.g., @RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA <br>
+```{ref}``` is the indexed reference genome <br>
+```{r1}``` and ```{r2}``` are the first and second reads you are aligning <br>
+```-o``` is the output file name
+
+Once you have a sorted and indexed alignment, you can locate and tag duplicate records, which are reads that have originated from a single fragment of DNA. This can happen during sample preparation (e.g., during PCR) or from sequencing artifacts (e.g., optical duplicates).If you have multiple runs for the same sample, you would want to merge and index the BAMs before the deduplication tagging, which you can do with ```samtools merge```. 
+
+```{bash, eval = F}
+picard MarkDuplicates I={input.bam} O={output.bam} METRICS_FILE={output} REMOVE_DUPLICATES=false TAGGING_POLICY=All
+```
+
+Where <br>
+```I``` is the input BAM that has been coordinate sorted (the output of ```samtools sort```) <br>
+```O``` is the output BAM file <br>
+```METRICS_FILE``` writes the deduplication metrics to the output file name (this is a required argument) <br>
+```REMOVE_DUPLICATES``` writes the apropriate flags to the record rather than removing the reads without telling you what they are (```false``` is the default setting) <br>
+```TAGGING_POLICY``` will set the duplicates to be recorded in the DT attribute when the parameter is set to ```All```
+
+Once you have tagged the duplicated records in your BAM, you will want to generate a .bai index file
+
+```{bash, eval = F}
+picard BuildBamIndex I={input.bam}
+```
+
+Where <br>
+```I``` is the input dedup'd BAM (the output of ```picard MarkDuplicates```)
+
+### Quality control and filtering
+
+It's important to take a look at your alignments to check for quality, potentially filter out sites or samples that don't meet adequate thresholds, etc. The pipeline outputs various statistics automatically along the way, but we have collected some of the QC commands here. <br>
+
+We use ```samtools``` to compute the depth at each position or region, with the tabulated output containing information for the chromosome, start position, end position, number of reads aligned in that region after filtering, number of covered bases with a depth greater than or equal to 1 in that region, the proportion of coverage bases, the mean depth of coverage, mean baseQ, and mean mapQ.
+```{bash, eval = F}
+samtools coverage --output {output} {input.bam}
+```
+
+Where <br>
+```--output``` is the file name you want to write the output to <br>
+```input.bam``` is the input BAM file <br><br>
+
+To produce a summary of the alignment metrics, including the quality of read alignments and the quality filters, we use ```Picard```
+```{bash, eval = F}
+picard ValidateSamFile I={input.bam} R={reference.fa} O={output}
+```
+
+Where <br>
+```I``` is the input BAM file <br> 
+```R``` is the reference genome <br>
+```O``` is the file name you want to write the output to <br><br>
+
+To ensure the alignments meet file format specifications:
+```{bash, eval = F}
+picard ValidateSamFile I={input.bam} R={reference.fa} O={output} IGNORE=VALID_TAG_NM || true
+```
+
+
+# bam2vcf
+### Variant Calling 
+
+Two of the major variant callers you can use (at the time of writing) are Genome Analysis Toolkit (GATK) and freebayes. You can call variants with either of these software in our pipeline and the downstream steps are the same, so here we present parameters for variant calling with both GATK and freebayes. Regardless of the software used, variant calling is computationally intensive but can be parallelized for more efficient resource use by splitting the reference genome into intervals. The interval creation is automated in our pipeline but parameter guidelines will differ depending on your reference genome. <br><br>
+
+To call germline single nucleotide polymorphisms (SNPs) and insertion/deletions (indels) via local re-assembly of haplotypes using GATK: 
+```{bash, eval = F}
+gatk HaplotypeCaller -R {reference.fa} -I {input.bam} -O {output.gvcf} -L {interval.list} --emit-ref-confidence GVCF --min-pruning 2 --min-dangling-branch-length 4
+```
+
+Where <br>
+```-R``` is the reference genome <br>
+```-I``` is the input BAM <br>
+```-O``` is the output gVCF <br>
+```-L``` is the interval file <br>
+```--emit-ref-confidence``` yields the reference confidence scores as gVCF <br>
+```--min-pruning``` sets the minimum support to not prune paths in the graph <br>
+```--min-dangling-branch-length``` sets the minimum lenght of a dangling branch to attempt recovery <br><br>
+
+A note about coverage: when calling variants where the coverage is less than 10x, we suggest setting ```--min-pruning``` and ```--min-dangling-branch-length``` each to 1. The parameters in the code above are more appropriate for data where the coverage exceeds 10x. <br>
+
+There are some constraints when using clusters and job scheduling managers, including command lengths. When you have many samples and are trying to run GATK on all of them, the command may get too long, causing SLURM (or another job scheduler) to throw an error. To get around this, you can create DB map files (which is done automatically in our pipeline). Then we can import many gVCFs into a GenomicsDB for a given scaffold:
+```{bash, eval = F}
+export TILEDB_DISABLE_FILE_LOCKING=1
+gatk GenomicsDBImport --genomicsdb-workspace-path {output.db} -L --sample-name-map {input.db}
+```
+
+Where <br>
+the ```export``` command can remedy sluggish performance <br> 
+```--genomicsdb-workspace-path``` is the working directory to point to for GenomicsDB <br>
+```-L``` is the interval file <br>
+```--sample-name-map``` is the path to a file that contains a sample to file map in a tab delimited format <br><br>
+
+Now you can use the genomic databases from ```gatk GenomicsDBImport``` to create VCF files (one per interval file)
+```{bash, eval = F}
+gatk GenotypeGVCFs -R {reference.fa} -V {input.DB} -O {output.vcf}
+```
+
+Where <br>
+```-R``` is the reference genome <br>
+```-V``` is the DB map file <br>
+```-O``` is the output VCF <br><br>
+
+If you want to use freebayes the variant caller, rather than starting with ```gatk HaplotypeCaller```, you would instead use:
+```{bash, eval = F}
+freebayes -f {reference.fa} -r {interval} -g {maxDP} {inputs.bam} > {output.vcf}
+```
+
+Where <br>
+```-f``` is the reference genome (creates a .fai index if one doesn't already exist) <br>
+```-r``` limits the analysis to a specific interval (region) <br>
+```-g``` skips processing of alignments overlapping positions with coverage greater than the value; we use the maxDP for this parameter <br> 
+```{inputs.bam}``` are the input BAMs; you can input all BAMs at once but you need to set the output as one VCF per interval <br>
+```{output.vcf}``` the output VCF for each interval e.g., {i}.vcf per interval <br><br>
+
+Regardless of the variant caller you use, before combining all the VCFs for the intervals into one final VCF, it is computationally more efficient to filter each of the VCFs, then gather them. 
+```{bash, eval = F}
+gatk VariantFiltration -R {reference.fa} -V {input.vcf} --output {output.vcf} \
+--filter-name "RPRS_filter" \
+--filter-expression "(vc.isSNP() && (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -8.0)) || ((vc.isIndel() || vc.isMixed()) && (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -20.0)) || (vc.hasAttribute('QD') && QD < 2.0)" \
+--filter-name "FS_SOR_filter" \
+--filter-expression "(vc.isSNP() && ((vc.hasAttribute('FS') && FS > 60.0) || (vc.hasAttribute('SOR') &&  SOR > 3.0))) || ((vc.isIndel() || vc.isMixed()) && ((vc.hasAttribute('FS') && FS > 200.0) || (vc.hasAttribute('SOR') &&  SOR > 10.0)))" \
+--filter-name "MQ_filter" \
+--filter-expression "vc.isSNP() && ((vc.hasAttribute('MQ') && MQ < 40.0) || (vc.hasAttribute('MQRankSum') && MQRankSum < -12.5))" \
+--filter-name "QUAL_filter" \
+--filter-expression "QUAL < 30.0" \
+--invalidate-previous-filters
+
+gatk GatherVcfs {input.vcfs} -O {output.vcf}
+```
+
+Where <br>
+```-R``` is the reference genome <br>
+```-V``` is the input VCF (per interval)
+```--output``` is the filtered VCF (per interval)
+<br>
+```{input.vcfs}``` is a custom script invoked by the pipeline to gather all the filtered VCFs for each interval into a single input command using the intervals list <br>
+```-O``` is the final output VCF
+<br>
+
+The filter expressions more or less follow the GATK hard filtering recommendations but are split to treat SNPs and indels with different thresholds within each filter expression, as well as keeping different quality tags separate to make downstream filtering easier.
+
+<br>
+
+#### Quality control and statistics <br>
+NB: this section will likely be better suited to be included in a QC section (and it's not fully fleshed out itself yet), but here are two of the pipeline outputs that can be used for downstream QC. <br>
+
+```{bash, eval = F}
+vcftools --gzvcf {input.vcf} --remove-filtered-all --minDP 1 --missing-indv --stdout > {output}
+```
+Where <br>
+```--gzvcf``` is the input VCF, gzipped (use ```--vcf``` if working with an uncompressed VCF) <br>
+```--remove-filtered-all``` removes all the sites with a FILTER flag other than PASS <br>
+```--minDP``` includes only the genotypes greater than or equal to the parameter value (this requires the DP FORMAT tag to be specified) <br>
+```--missing-indv``` generates a file reporting the missingness per indivdual <br>
+```--stdout``` redirects the output to stdout so it can be redirected to a file name of your choosing (in this code, the file name would be where ```{output}``` is)
+<br>
+<br>
+```{bash, eval = F}
+bedtools intersect -a {input.intervals} -b {input.vcf} -c > {output}
+```
+Where <br>
+```-a``` is the intervals BED produced by the pipeline automatically for use in freebayes <br>
+```-b``` is the final VCF file output by ```gatk GatherVcfs``` <br>
+```-c``` reports the number of hits in ```-b``` for each entry in ```-a``` <br>
+```{output}``` is the file name of the output, which is a text file that reports the number of SNPs per interval
