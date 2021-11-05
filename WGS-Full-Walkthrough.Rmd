@@ -611,6 +611,8 @@ for(i in 1:length(samps)){
   
 }
 ```
+![Output](images/Pop1_17291100XcoveragePlot10000.png)
+
 <!-- <img src="./Pop1_17291100XcoveragePlot10000.png" width="500">  -->
 
 #### Results (R script for 5 samples):
