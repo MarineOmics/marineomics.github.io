@@ -11,7 +11,7 @@
 
 
 
-<title>WGS_intro.knit</title>
+<title>Whole Genome Resequencing for Population Genomics</title>
 
 <script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -383,7 +383,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="discussion.html">Discussion Forum</a>
+  <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -397,22 +397,27 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">Whole Genome Resequencing for Population Genomics</h1>
 
 </div>
 
 
-<div id="whole-genome-resequencing-for-population-genomics" class="section level1">
-<h1>Whole Genome Resequencing for Population Genomics</h1>
-<p>For the purposes of this guide, we use "whole genome (re)sequencing (WGS)) to refer to methods where a reference genome exists (whether for the focal species or a related species), and samples are sequenced and then mapped to most or all of the reference genome. This method can provide high density SNPs, structural information…for population genomic analyses. This is separate from whole-genome de novo sequencing, which aims to produce a reference genome by sequencing and assembling a complete genome for the first time.</p>
-<p>An excellent and thorough review of the pros between these approaches, esp. as they apply to nonmodel organisms, is <span class="citation">(Fuentes-Pardo and Ruzzante 2017)</span>.</p>
+<p>For the purposes of this guide, we use "whole genome (re)sequencing (WGS)) to refer to methods where a reference genome exists (whether for the focal species or a related species), and samples are sequenced and then mapped to most or all of the reference genome. This method can provide high density genetic variants (e.g., SNPs) and structural information for population genomic analyses, while also facilitating functional insights if the reference genome is functionally annotated. This is separate from whole-genome <em>de novo</em> sequencing, which aims to produce a reference genome by sequencing and assembling a complete genome for the first time.</p>
+<p>An excellent and thorough review of the methodology and consideration for WGS approaches, especially as they apply to nonmodel organisms, is <span class="citation">(Fuentes-Pardo and Ruzzante 2017)</span>.</p>
 <div id="tutorials" class="section level2">
 <h2>Tutorials</h2>
-<p>Here we provide a couple different tutorials by our working group members, as well as links to other detailed tutorials on the web. The goal of the MarineOmics tutorials are to provide extensive detail on “why” certain parameters are chosen, and some guidance on how to evaluate different parameter options to fit your data.</p>
+<p>Here we provide a couple different tutorials by our working group members, as well as links to other detailed tutorials on the web. The goal of these MarineOmics tutorials are to provide extensive detail on “why” certain parameters are chosen, and some guidance on how to evaluate different parameter options to fit your data.</p>
+<div id="high-to-moderate-coverage-wgs" class="section level3">
+<h3>High to moderate coverage WGS</h3>
 <ul>
 <li><a href="fastq2vcf_pipeline.html">Fastq-to-VCF SnakeMate pipeline</a>: In-depth explanation of automated short-read mapping and variant calling pipeline maintained by <a href="https://github.com/harvardinformatics/shortRead_mapping_variantCalling">Harvard Informatics</a>. Useful for moderate to high coverage data, where <em>add description of why one would use pipeline</em><br />
 </li>
 <li><a href="WGS-Full-Walkthrough.html">Fastq-to-VCF workflow</a>: detailed walkthrough of processing 15x sequencing depth WGS data for cod, from raw reads to a VCF.</li>
 </ul>
+</div>
+<div id="low-coverage-wgs" class="section level3">
+<h3>Low coverage WGS</h3>
+<p>Check out <span class="citation">(Lou et al. 2021)</span>(<a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077" class="uri">https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077</a>) and the associated <a href="https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md">Github repository</a> for a great primer on lcWGS analysis.</p>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
@@ -420,6 +425,9 @@ div.tocify {
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Fuentes-Pardo2017-nu" class="csl-entry">
 Fuentes-Pardo, Angela P, and Daniel E Ruzzante. 2017. <span>“Whole-Genome Sequencing Approaches for Conservation Biology: Advantages, Limitations and Practical Recommendations.”</span> <em>Mol. Ecol.</em> 26 (20): 5369–5406. <a href="https://doi.org/10.1111/mec.14264">https://doi.org/10.1111/mec.14264</a>.
+</div>
+<div id="ref-Lou2021-me" class="csl-entry">
+Lou, Runyang Nicolas, Arne Jacobs, Aryn P Wilder, and Nina Overgaard Therkildsen. 2021. <span>“A Beginner’s Guide to Low-Coverage Whole Genome Sequencing for Population Genomics.”</span> <em>Mol. Ecol.</em>, July. <a href="https://doi.org/10.1111/mec.16077">https://doi.org/10.1111/mec.16077</a>.
 </div>
 </div>
 </div>

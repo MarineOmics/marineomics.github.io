@@ -22,7 +22,7 @@ navbar:
         - text: "RNAseq (coming soon!)"
           href: RNA_coming.html
     - text: "Discussion Forum"
-      href: discussion.html
+      href: https://github.com/MarineOmics/marineomics.github.io/discussions
 
 output:
   html_document:
