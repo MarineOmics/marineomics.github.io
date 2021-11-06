@@ -1,5 +1,6 @@
 ---
 bibliography: RCN_site-Nov05.bib
+title:  Whole Genome Resequencing for Population Genomics 
 ---
 
 ```{r setup, include=FALSE}
@@ -13,16 +14,20 @@ cite_options(citation_format = "pandoc", max.names = 3, style = "html",
 ```
 
 
-# Whole Genome Resequencing for Population Genomics  
-For the purposes of this guide, we use "whole genome (re)sequencing (WGS)) to refer to  methods where a reference genome exists (whether for the focal species or a related species), and samples are sequenced and then mapped to most or all of the reference genome. This method can provide high density SNPs, structural information...for population genomic analyses. This is separate from whole-genome de novo sequencing, which aims to produce a reference genome by sequencing and assembling a complete genome for the first time.   
+For the purposes of this guide, we use "whole genome (re)sequencing (WGS)) to refer to  methods where a reference genome exists (whether for the focal species or a related species), and samples are sequenced and then mapped to most or all of the reference genome. This method can provide high density genetic variants (e.g., SNPs) and structural information for population genomic analyses, while also facilitating functional insights if the reference genome is functionally annotated. This is separate from whole-genome *de novo* sequencing, which aims to produce a reference genome by sequencing and assembling a complete genome for the first time.   
 
-An excellent and thorough review of the pros  between these approaches, esp. as they apply to nonmodel organisms, is [@Fuentes-Pardo2017-nu]. 
+An excellent and thorough review of the methodology and consideration for WGS approaches, especially as they apply to nonmodel organisms, is [@Fuentes-Pardo2017-nu]. 
 
 ## Tutorials  
 
-Here we provide a couple different tutorials by our working group members, as well as links to other detailed tutorials on the web. The goal of the MarineOmics tutorials are to provide extensive detail on "why" certain parameters are chosen, and some guidance on how to evaluate different parameter options to fit your data.  
+Here we provide a couple different tutorials by our working group members, as well as links to other detailed tutorials on the web. The goal of these MarineOmics tutorials are to provide extensive detail on "why" certain parameters are chosen, and some guidance on how to evaluate different parameter options to fit your data.  
+
+### High to moderate coverage WGS  
 
 * [Fastq-to-VCF SnakeMate pipeline](fastq2vcf_pipeline.html): In-depth explanation of automated short-read mapping and variant calling pipeline maintained by [Harvard Informatics](https://github.com/harvardinformatics/shortRead_mapping_variantCalling). Useful for moderate to high coverage data, where *add description of why one would use pipeline*  
 * [Fastq-to-VCF workflow](WGS-Full-Walkthrough.html): detailed walkthrough of processing 15x sequencing depth WGS data for cod, from raw reads to a VCF.
+
+### Low coverage WGS  
+Check out [@Lou2021-me](https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077) and the associated [Github repository](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md) for a great primer on lcWGS analysis.  
 
 # References

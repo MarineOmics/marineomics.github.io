@@ -14,7 +14,7 @@ The MarineOmics working group is part of the [RCN for Evolution in Changing Seas
 
 # Guidelines for 'omics analyses 
 
-On this website you will find a growing and evolving collection of guidelines, tutorials, recommended readings, and method evaluations for various 'omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid "best practices", we aim to encourage data exploration and rigorous quality control through "best principles". The guidelines are written by members of the MarineOmics working group or the community, then shared for peer review. Comments on current website content or suggestions for new content can be made through the [Discussion Forum](discussion.html).
+On this website you will find a growing and evolving collection of guidelines, tutorials, recommended readings, and method evaluations for various 'omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid "best practices", we aim to encourage data exploration and rigorous quality control through "best principles". The guidelines are written by members of the MarineOmics working group or the community, then shared for peer review. Comments on current website content or suggestions for new content can be made through the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions).
 
 Based on the expertise of the MarineOmics working group, the first topics include:  
 
@@ -22,7 +22,8 @@ Based on the expertise of the MarineOmics working group, the first topics includ
 ### Population Genomics  
 
 * [Choosing a population genomics sequencing approach](choosing-population-genetics.html)  
-* [Whole Genome Resequencing](WGS_intro.html)  
+* [Whole Genome Resequencing (WGS)](WGS_intro.html)  
+  * [Low coverage WGS](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md)
 * [Reduced Representation Sequencing](RADseq.html) 
 * [Poolseq](poolseq.html)
 
