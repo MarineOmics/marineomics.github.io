@@ -1,16 +1,18 @@
 ```{r,message = FALSE,echo = FALSE}
-  library("knitcitations")
-  library("knitr")
-  cite_options(citation_format = "pandoc", max.names = 3, style = "html", hyperlink = "to.doc")
-  bib <- read.bibtex("bibtexlib.bib")
-  opts_chunk$set(tidy = FALSE, message = FALSE, warning = FALSE,
-                 fig.width = 10, fig.height = 6, cache = TRUE)
-  # use this to set knitr options:
-  # http://yihui.name/knitr/options #chunk_options
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+library(knitcitations)
+library(kableExtra)
+opts_chunk$set(fig.width = 10,
+               fig.height = 5,
+               cache = FALSE)
+cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
+             hyperlink = "to.doc")
 ```
 ---
 title: 'RADseq'
 subtitle: '*Katherine Silliman, Danielle Davenport*'
+bibliography: RCN_site-Nov05.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -50,25 +52,26 @@ library(SNPRelate)
 We also provide alternative coding examples that are based only on the command line, requiring these software packages: 
 
 * [vcftools](https://vcftools.github.io/man_latest.html)
-* gnuplot  
+* [gnuplot](https://riptutorial.com/gnuplot/example/11275/installation-or-setup)  
 
 # Reduced Representation Sequencing (RADseq/GBS)
 
-"Restriction-site   Associated   DNA   sequencing"  - RADseq - combines  restriction  enzymes  with next-gen, massively parallel,  short-read  sequencing. RADseq involves the use of restriction enzymes which are used to shear DNA at restriction enzyme cutsite. RADseq comes in different flavors. Double-digest RADseq (ddRAD; Peterson et al.,2012)  selects  markers  with  two  restriction enzymes  with  different  cut  frequencies. Genotype-by-Sequencing  (GBS;  Elshire  et  al.,  2011)  uses  a  frequent-cutting  restriction  enzyme  with PCR size selection. See this review for a comparison of some of the more popular protocols (link). In this guide we use the term "RADseq" to refer to any of these protocols, including those that don't involve random shearing of data. When recommendations are specific to a certain type of RAD/GBS, we will explicitly say so.  
+"Restriction-site   Associated   DNA   sequencing"  - RADseq - combines  restriction  enzymes  with next-gen, massively parallel,  short-read  sequencing. RADseq involves the use of restriction enzymes which are used to shear DNA at restriction enzyme cutsite. RADseq comes in different flavors. Double-digest RADseq (ddRAD; Peterson et al.,2012)  selects  markers  with  two  restriction enzymes  with  different  cut  frequencies. Genotype-by-Sequencing  (GBS;  [@Elshire2011-or])  uses  a  frequent-cutting  restriction  enzyme  with PCR size selection. There are a number of reviews comparing different RADseq.GBS methods (e.g., [@Andrews2016-ay]). In this guide we use the term "RADseq" to refer to any of these protocols, including those that don't involve random shearing of data. When recommendations are specific to a certain type of RAD/GBS, we will explicitly say so.  
 
-Some aspects of RADseq data that are unique compared to whole genome resequencing (more):
+<!--Some aspects of RADseq data that are unique compared to whole genome resequencing (more):-->
 
 Using RADseq to generate single nucleotide polymorphisms (SNPs) involves 1) library preparation in the lab, 2) bioinformatic processing through assembly and/or mapping to a reference, then 3) filtering of SNPs and individuals for quality. All of these steps can (and will) introduce some error, so the goal is to minimize this error through mitigation steps at all three parts of the process. Every dataset is different [add more about philosophy over best practices].   
-Much of this guide is directly inspired by this [excellent review paper by O'Leary et al. (2018)](link), especially the section on minimizing errors due to library prep. We recommend reading and cross-referencing with this paper, and citing it if you follow its suggestions. Table 1 from this paper summarizes the various potential issues that can arise from RAD datasets and some mitigation steps. The goal of this guide is to expand on the O'Leary paper and provide some example code to help implement quality control and mitigation steps.
+Much of this guide is directly inspired by [this excellent review paper](https://onlinelibrary.wiley.com/doi/10.1111/mec.14792) by [@OLeary2018-iy], especially the section on minimizing errors due to library prep. We recommend reading and cross-referencing with this paper, and citing it if you follow its suggestions. Table 1 from this paper summarizes the various potential issues that can arise from RAD datasets and some mitigation steps. The goal of this guide is to expand on the O'Leary paper and provide some example code to help implement quality control and mitigation steps.
 
-![Table 1 from O'Leary et al. 2018.](images/oleary_table1.png)
+![Table 1 from [@OLeary2018-iy].](images/oleary_table1.png)
 
 # Considerations During Lab Work {#labwork}  
 
 There are steps you can take before you even sequence RAD libraries that can help minimize issues downstream. Here, we use "library" to refer to a set of RADseq fragments from a group of individuals that are barcoded and sequenced together on a single lane or group of lanes. While specific RAD library prep methods have their own nuances for minimizing error, there are some steps you can take that are common across methods.      
 
 * If this RAD/GBS method has not been done in your species or in your molecular lab setup before, spend some time optimizing the protocol using a representative subset of individuals. Then try to keep everything about the library prep as consistent as possible across samples (eg, DNA extraction kit, PCR cycles, sequencing platform). This isn't always possible, especially if you need to optimize the protocol for certain tricky samples. Just make sure to keep track of everything!   
-* Randomize samples across library prep batches and sequencing lanes! For example, if you are sequencing two different groups of samples on two different sequencing lanes, make sure they are randomized in respect to sample location or whatever your groups of interest are. If you are preparing groups of individuals in different batches to be pooled later, randomize across these batches. Alicia MY even recommends randomizing across DNA extractions, especially if the person doing the extractions is new to molecular work. This is to allow you to control for potential [batch effects](#batch) that are often observed with RAD data.  
+
+* Randomize samples across library prep batches and sequencing lanes! For example, if you are sequencing two different groups of samples on two different sequencing lanes, make sure they are randomized in respect to sample location or whatever your groups of interest are. If you are preparing groups of individuals in different batches to be pooled later, randomize across these batches. [Alicia Mastretta-Yanes](https://mastrettayanes-lab.org/) even recommends randomizing across DNA extractions, especially if the person doing the extractions is new to molecular work. This is to allow you to control for potential [batch effects](#batch) that are often observed with RAD data.  
 ```{r, eval = F, include=FALSE}
 # This code reads in a comma-delimited STRATA/meta-data file, randomises samples, and returns a file with wells and plates and duplicates which may be used to assist with plating libraries
 # ** TODO** will need to consider where to duplicate samples - need to consider STARTA, DOC, ect..?
@@ -99,7 +102,7 @@ data.out = cbind(
 This is just one approach for working through your data. Some people will prefer to run just a subset of samples through a pipeline at first and evaluate parameters, then run all the samples through. Either way, be prepared to make MULTIPLE assemblies and go through this process iteratively, especially if this is a new-to-you study system.  
 
 1) [Look at your raw data.](#fastqc)
-2) [Run an assembly pipeline](link assembly) through to a SNP dataset, using either all samples or a representative subset. Parameters can come from those used in a similar study, or default parameters.
+2) [Run an assembly pipeline](#assembly) through to a SNP dataset, using either all samples or a representative subset. Parameters can come from those used in a similar study, or default parameters.
 3) Filter your data minimally, then [evaluate for potential sources of error.](#error)
 4) Subset or remove individuals based on initial evaluation.  
 5) Using a representative subset of samples, [test key parameters](#test) to optimize your assembly.
@@ -108,9 +111,9 @@ This is just one approach for working through your data. Some people will prefer
 8) Repeat as needed.  
 
 ## First, look at the raw data! {#fastqc}  
-Always look at your data with fastqc(link) before starting an assembly. First, this is a good check to just make sure the sequencing worked. If you have demultiplexed data, you can use multiqc(link) to generate fastqc plots for all individuals and quickly identify ones that did not sequence well.  
-Check out [this informative tutorial](https://datacarpentry.org/wrangling-genomics/02-quality-control/index.html) on running fastqc and interpreting the output.  
-Do you have a lot of adapter sequences? Are the ends of your reads very low quality? If so, you should expect a fair amount of trimming and read filtering to occur prior to assembly. If that doesn't occur or if too many reads are being filtered so as to only recover a small number of SNPs, something might need to be tweaked with your trimming and filtering step.
+Always look at your data with [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) before starting an assembly. First, this is a good check to just make sure the sequencing worked. If you have demultiplexed data, you can use [MultiQC](https://multiqc.info/) to generate FastQC plots for all individuals and quickly identify ones that did not sequence well.  
+Check out [this informative tutorial](https://datacarpentry.org/wrangling-genomics/02-quality-control/index.html) on running FastQC and interpreting the output.  
+**Questions to ask:** Do you have a lot of adapter sequences? Are the ends of your reads very low quality? If so, you should expect a fair amount of trimming and read filtering to occur prior to assembly. If that doesn't occur or if too many reads are being filtered so as to only recover a small number of SNPs, something might need to be tweaked with your trimming and filtering step.
 
 You should also look at the top few reads in the Terminal.  
 ```
@@ -141,15 +144,17 @@ GGAGAAA.<AGAA.G.GGAGA<.GGA.<GAAGGAAGGIA<...<GA<..<G.<.<<.<AAAGGGG..<GGGGG<G.A.<G
 
 ```
 
-If the sequencing center gave you one fastq file with all your samples, you should expect to see a barcode sequence, followed by the cutsite at the start of the read. If the Data are already demultiplexed (as the example is), you should only see the cutsite overhang (in this case, CWGC). Sometimes you can look at your fastq data files and see that there was a problem with the sequencing such that the cut site is either offset by one or more bases, or contains many errors. If this is not being addressed by the default filtering steps in your assembly pipeline, you can trim off N bases from the beginning or end of R1 and R2 reads in ipyrad (`trim_reads` param), or with cutadapt before using stacks, or customize the Trimmoatic step for dDocent.  
+If the sequencing center gave you one fastq file with all your samples, you should expect to see a barcode sequence, followed by the cutsite at the start of the read. If the Data are already demultiplexed (as the example is), you should only see the cutsite overhang (in this case, CWGC). Sometimes you can look at your fastq data files and see that there was a problem with the sequencing such that the cut site is either offset by one or more bases, or contains many errors. If this is not being addressed by the default filtering steps in your assembly pipeline, you can trim off N bases from the beginning or end of R1 and R2 reads in [ipyrad](https://ipyrad.readthedocs.io/en/latest/index.html) (`trim_reads` param), or with cutadapt before using stacks, or customize the Trimmoatic step for [dDocent](https://www.ddocent.com/).  
 
 ## Run an assembly pipeline {#assembly}  
 
-There are a number of freely available pipelines for processing RADseq data, with the most popular being dDocent, Stacks, and ipyrad. These pipelines vary slightly in their underlying methodologies, customization options, and additional included analyses.  
+There are a number of freely available pipelines for processing RADseq data, with the most popular being [dDocent](https://www.ddocent.com/), [Stacks](https://catchenlab.life.illinois.edu/stacks/), and [ipyrad](https://ipyrad.readthedocs.io/en/latest/index.html). These pipelines vary slightly in their underlying methodologies, customization options, and additional included analyses.  
 
-|  | dDocent | ipyrad | Stacks2 |
+|  | [dDocent](https://www.ddocent.com/) | [ipyrad](https://ipyrad.readthedocs.io/en/latest/index.html)| [Stacks2](https://catchenlab.life.illinois.edu/stacks/) |
 |---|---|---|---|
-| Supported datatypes | Paired-end: ddRAD, ezRAD, RAD (random shearing), data with large overlap  between forward and reverse reads Single-end: any RADseq method  de novo and reference-based  If doing de novo assembly, reads cannot be trimmed outside of dDocent |  |  |
+| Supported datatypes | Paired-end: ddRAD, ezRAD, RAD (random shearing), data with large overlap  between forward and reverse reads  
+Single-end: any RADseq method  de novo and reference-based.  
+If doing de novo assembly, reads cannot be trimmed outside of dDocent |  |  |
 | Unique aspects | Novel data reduction approach used to inform coverage cutoffs |  |  |
 | Documentation | Very good (esp. tutorials), active community support on Google Groups | Excellent (esp. installation, parameter explanations, and tutorials), active community support on Gitter | Very good, active community support on Google Groups |
 | Speed/Accuracy | fastest and most accurate | close to dDocent accuracy, more over-splitting is possible  if parameters are not tuned | produces some untrue genome fragments (esp. with higher levels of indel polymorphism), but can be addressed with downstream filtering |
@@ -159,7 +164,7 @@ There are a number of freely available pipelines for processing RADseq data, wit
 | Popgen analyses | No additional popgen analyses included  |  |  |
 |  |  |  |  |  
 
-Some groups have also developed pipelines for specific flavors of lab (e.g., Matz lab and 2bRAD) or proprietary software (eg, DARTseq), which we touch on below. **In most cases, it is recommended that you use a pipeline developed and tested for RAD data, especially if you are making a de novo assembly.** LaCava et al, 2019 have an excellent study where they review various de novo assemblers that are used in these pipelines. Assemblers that were not explicitly developed for short reads (eg, Velvet, ABySS) performed very poorly, while CD-HIT (the assembler in dDocent) performed the best. Stacks/Stacks2 and vsearch (the assembler in ipyrad) both performed worse when analyzing simulated data with indels. It should be noted that all of these RAD pipelines have optimized the specific parameters of these de novo assemblers to work with RAD data of various flavors, which may not be fully reflected in the LaCava study. Based on the MarineOmics RAD panel, the general consensus is that all the popular pipelines can produce adequately accurate datasets (with appropriate parameter optimization and data filtering).     
+Some groups have also developed pipelines for specific flavors of RAD (e.g., [Matz lab for 2b-RAD](https://github.com/z0on/2bRAD_denovo/blob/master/2bRAD_README.sh)) or proprietary software (eg, [DARTseq](http://georges.biomatix.org/storage/app/media/uploaded-files/dartR_Workbook.pdf)), which we touch on below. **In most cases, it is recommended that you use a pipeline developed and tested for RAD data, especially if you are making a de novo assembly.** [@LaCava2020-bg] have an excellent study where they review various *de novo* assemblers that are used in these pipelines. Assemblers that were not explicitly developed for short reads (eg, Velvet, ABySS) performed very poorly, while CD-HIT (the assembler in dDocent) performed the best. Stacks/Stacks2 and vsearch (the assembler in ipyrad) both performed worse when analyzing simulated data with indels. It should be noted that all of these RAD pipelines have optimized the specific parameters of these de novo assemblers to work with RAD data of various flavors, which may not be fully reflected in the LaCava study. Based on the MarineOmics RAD panel, the general consensus is that all the popular pipelines can produce adequately accurate datasets (with appropriate parameter optimization and data filtering).     
 ![Table 3 from LaCava et al 2019. CD-HIT is used in dDocent, VSEARCH is used in ipyrad.](images/lacavaTable3.png)
 
 
@@ -170,7 +175,7 @@ Once you have processed your samples (or a subset of samples) through a genotypi
 **Using SeqArray in R** 
 If you are following along with the R code examples, we need to 1st read in our data (skip this section if not running R code).  
 
-For the code examples in this section, we primarily make use of the R package SeqArray [Zheng et al., 2017](https://doi.org/10.1093/bioinformatics/btx145), which can read and manipulate VCFs. If you’re familiar with R, SeqArray is simple to use. The package can efficiently store sequence variant calls with hundreds of thousands of individuals,  variants (e.g., SNVs, indels and structural variation calls) and annotations.  It employs a data container called a CoreArray Genomic Data Structure (GDS). It’s super-fast (5X faster than PLINK v1.9; 16X faster than vcftools) and it integrates well with other R packages you might use in your analysis pipeline. (i.e. SNPRelate, SeqVarTools). We also like it because you can filter your data before running certain analyses without generating a separate filtered VCF file.  
+For the code examples in this section, we primarily make use of the R package SeqArray [@Zheng2017-pl], which can read and manipulate VCFs. If you’re familiar with R, SeqArray is simple to use. The package can efficiently store sequence variant calls with hundreds of thousands of individuals, variants (e.g., SNPs, indels and structural variation calls) and annotations.  It employs a data container called a CoreArray Genomic Data Structure (GDS). It’s super-fast (5X faster than PLINK v1.9; 16X faster than vcftools) and it integrates well with other R packages you might use in your analysis pipeline. (i.e. SNPRelate, SeqVarTools). We also like it because you can filter your data before running certain analyses without 1st generating a separate filtered VCF file.  
 
 First, we need to convert our VCF file into the GDS format. We will do this once here, then use the GDS file for subsequent code examples.
 ```{r}
@@ -183,7 +188,7 @@ gdsin = SeqArray::seqOpen(filename.gds)
 print(paste0("The number of SAMPLES in data: ", length(c(SeqArray::seqGetData(gdsin, "sample.id")))))
 print(paste0("The number of SNPs in data: ",  length(c(SeqArray::seqGetData(gdsin, "variant.id")))))
 ```
-It is always helpful to have a metadata file with information for each sample, such as sampling site, sequencing library, etc. In our example, our matadata file (OL.popmap) is tab-delimited and has the column headers:  
+It is always helpful to have a metadata file with information for each sample, such as sampling site, sequencing library, etc. In our example, our metadata file (OL.popmap) is tab-delimited and has the column headers:  
 ID: sample ID
 STRATA: sampling location/population
 PLATE: sequencing batch  
@@ -217,7 +222,8 @@ cbind(samples,m2)[order(-m2),]
 hist(m2,breaks=50)
 ```
 
-Another common method of filtering and evaluating you data without ever using R is [VCFtools](https://vcftools.github.io/man_latest.html). 
+Another common method of filtering and evaluating you data without ever using R is [VCFtools](https://vcftools.github.io/man_latest.html).  
+
 **Missingness with vcftools, on the command line**  
 ```{bash, eval = T}
 vcftools --vcf RAD_data/OL_subset.vcf --missing-indv --out RAD_data/OL_subset
@@ -247,7 +253,7 @@ EOF
 
 It looks like samples X,Y,Z have a lot of missing data relative to other samples. We can remove them from our dataset for now, and just keep exploring our data, but if you decide to exclude them permanently from the analysis you should eventually rerun your genotyping pipeline without those samples, esp. if doing a de novo assembly. 
 
-2) Another great way to explore missingness with your data is to construct a heatmap of loci that are genoptyped between pairs of samples. Generally, samples that are more closely related will share more loci with each other due to cutsite dropout (link). Deviations from that pattern can pinpoint bad samples as well as batch effects.
+2) Another great way to explore missingness with your data is to construct a heatmap of loci that are genoptyped between pairs of samples. Generally, samples that are more closely related will share more loci with each other due to cutsite dropout (cite). Deviations from that pattern can pinpoint bad samples as well as batch effects.
   + [ipyrad API tutorial](https://ipyrad.readthedocs.io/en/latest/API-analysis/cookbook-sharing.html) for making a locus sharing heatmap, requires ipyrad output or ipyrad's vcf2hdf5 conversion  
   + [code to generate locus sharing/missingness heatmap from a VCF](https://github.com/atcg/clustOpt)
 
@@ -257,7 +263,9 @@ One of the most powerful methods for exploring your data is a Principle Componen
 
 When you have a VCF file with SNPs, use PCA before extensive filtering or playing with parameters to look at the data. Check which SNPs are associated with axes showing the most variation. 
 
-Here we use SeqArray and SNPRelate to run a PCA in R. Other popular methods for PCA include pcangsd(link), ...., but note that ... requires some file conversions everytime you filter.
+Here we use SeqArray and SNPRelate to run a PCA in R. 
+
+<!--Other popular methods for PCA include pcangsd(link), ...., but note that ... requires some file conversions everytime you filter.-->
 
 *Reminder:* Missing data is a feature of RAD. Be aware of how different analysis tools deal with missingness, especially PCA which will fill in all missing data with some values. Here, the PCA from SNPRelate imputes missing genotypes as the dosage mean. 
 
@@ -268,7 +276,7 @@ Here we use SeqArray and SNPRelate to run a PCA in R. Other popular methods for 
 #open the gds file previously created, if not already open
 #filename.gds = "RAD_data/OL_subset.gds" #replace with your file name 
 #gdsin = SeqArray::seqOpen(filename.gds)
-# exclude samples previously identified as having too much missin g data
+# exclude samples previously identified as having too much missing data
 bad_samples = c("OR3_13_C3","CA4_12_C1","OR3_3_C7","CA4_13_C1","BC2_6_C2","BC2_9_C4")
 sample.ids = seqGetData(gdsin, "sample.id")
 keep = sample.ids[which(!sample.ids %in% bad_samples)]
@@ -447,15 +455,15 @@ Another useful approach is to visually inspect alignments for SNPs or loci that 
 
 
 ### Batch effects {#batch}
-As discussed in [Setting up for success](#labwork), batch effects can arise by minor (or not so minor) differences during the library prep and sequencing stage. Randomizing samples across libraries and sequencing lanes can help mitigate the influence of batch effects on your downstream analyses, but sometimes this isn't possible, esp. when using pre-existing data. Even if you randomize your samples, it is a good idea to check for batch effects with a PCA and then try to mitigate them.  
+As discussed in [Considerations During Lab Work](#labwork), batch effects can arise by minor (or not so minor) differences during the library prep and sequencing stage. Randomizing samples across libraries and sequencing lanes can help mitigate the influence of batch effects on your downstream analyses, but sometimes this isn't possible, esp. when using pre-existing data. Even if you randomize your samples, it is a good idea to check for batch effects with a PCA and then try to mitigate them.  
 
 Nicolas Lou and Nina Therkildsen have a [great preprint](https://www.authorea.com/users/380682/articles/532568-batch-effects-in-population-genomic-studies-with-low-coverage-whole-genome-sequencing-data-causes-detection-and-mitigation) and [Github repo](https://github.com/therkildsen-lab/batch-effect) discussing causes, detection, and mitigation of batch effects in low coverage WGS, where batch effects can have particularly large effects. While some of their recommendations are specific to reference-based analyses, others are relevant to RAD methods too (eg, batch effects due to different sequencing platforms, DNA degradation levels, and sequencing depth).
 
-`r colorize("PCA figure of batch effect", "red")`
+<!--`r colorize("PCA figure of batch effect", "red")`-->
 
 You can identify which loci are driving the batch effect by 1) identifying the top SNPs contributing to PC variation (termed "loadings") and/or 2) do an Fst outlier analysis with the batches specified as populations (eg, Bayescan). Both of these methods are most appropriate if you've randomized your samples between batches. If you have not randomized samples but are certain there is a batch effect driving variation in your dataset, you can still remove loci this way but you may also be removing biologically informative loci.  
 
-In SeqArray/SNPRelate, if you have batch effects that are identifiable by PCA, you would extract the PC loadings for each SNP atthe PC which represents the batch effect, then filter those SNPs out and create a new VCF for downstream analyses. 
+In SeqArray/SNPRelate, if you have batch effects that are identifiable by PCA, you would extract the PC loadings for each SNP at the PC which represents the batch effect, plot a histogram to see the distribution, choose a cutoff, then filter those SNPs out and create a new VCF for downstream analyses. For this example, let's pretend that we see a batch effect on PC1. 
 ```{r, eval=T}
 # assume you have a GDS object called gdsin and a PCA object called pca.out
 # extract PCA loadings
@@ -466,9 +474,9 @@ dim(SnpLoad$snploading)
 pc<-1
 hist(sort(abs(SnpLoad$snploading[pc,]),decreasing=T,index.return=T)[[1]],breaks = 30,main="PC loadings: PC1",)
 ```
-Let's remove the largest effect loci over abs(0.010) and see if it changes our PCA
+Let's remove the largest effect loci over abs(0.010) and see if it changes our PCA.
 ```{r}
-#extract SNP.IDs for loadings on PC 1 > abs(0.015) 
+#extract SNP.IDs for loadings on PC 1 > abs(0.010) 
 batch.snp.ids <- SnpLoad$snp.id[which(abs(SnpLoad$snploading[1,]) >= 0.010)]
 
 #rerun PCA
@@ -491,11 +499,13 @@ print(
 )
 
 ```
-To save your filtered GDS object as a VCF: 
+
+Our PCA is now clustering better by population, so we will now export a new VCF that includes all the filtering we've done so far: 1) removed individuals with missing data, 2) thinned our SNPs for linkage, and 3) removed SNPs driving a batch effect. 
+
+To save your filtered GDS object as a VCF in SeqArray: 
 ```{r}
 # set a filter to exclude samples with missing data, and SNPs in linkage or with a batch effect
 seqSetFilter(gdsin, sample.id=keep,variant.id=snp.id.allfilt)
-
 
 # convert to vcf
 seqGDS2VCF(gdsin, "RAD_data/OL-miss-pc1-linkage-filt.vcf.gz")
@@ -516,7 +526,7 @@ You can also check heterozygosity. Large differences in heterozygosity between o
 Large differences in heterozygosity between samples are clear, with one location showing two distinct clusters of samples. These samples were later determined using mtDNA and morphological analysis to be cryptic species.
 *Unpublished data from a marine species in Australian waters.*-->
 
-You can then estimate genetic divergence between these clusters using pairwise Fst and/or phylogenetic inference to determine how diverged the groups are. If they are very diverged, it may be better to assemble each cryptic species separately, especially for denovo assemblies with dDocent and Stacks, especially since often times restriction cut-sites are not always conserved; see [Wagner et al., 2013](link), [Rubin et al., 2012](link)  These two pipelines used a set of given samples to create a "reference" or "catalog" to which all other samples are mapped. If highly diverged samples are included in creating this reference, it can lead to [oversplitting](#cluster).  
+You can then estimate genetic divergence between these clusters using pairwise Fst and/or phylogenetic inference to determine how diverged the groups are. If they are very diverged, it may be better to assemble each cryptic species separately, especially for denovo assemblies with dDocent and Stacks, especially since often times restriction cut-sites are not always conserved; see [@Wagner2013-ff,@Rubin2012-hw]. These two pipelines used a set of given samples to create a "reference" or "catalog" to which all other samples are mapped. If highly diverged samples are included in creating this reference, it can lead to [oversplitting](#cluster).  
 
 Cryptic clones can also dramatically throw off population genetic analyses. In a PCA, clones will often appear as their own very tight cluster, similar to sample replicates. A calculation of sample pairwise distance (e.g., Manhattan distance) can very duplicates/clones.
 
@@ -525,23 +535,26 @@ Cryptic clones can also dramatically throw off population genetic analyses. In a
 
 ## Test a range of key parameters {#test}  
 
-### Clustering threshold (de novo assembly) {#cluster}  
-During de novo RADseq assembly, reads are assembled into contigs so that each contig represents a single locus. This can occur separately for each individual (ipyrad) or jointly for all or a subset of individuals (dDocent, Stacks). To call SNPs, in the case of ipyrad, contigs are then clustered and aligned across individuals, while in dDocent and Stacks, reads for each individual are mapped to the "reference" contigs. All of these pipelines use sequence similarity thresholds to determine if fragments are homologous (from the same place in the genome) and therefore should be clustered together. If the sequence similarity threshold is too low, *undersplitting* can occur so that multiple loci are combined into a single contig.  
-Undersplitting is common with repetitive regions and paralogs. It can inflate mean observed heterozygosity.  
+There are many parameter choices to make when assembling and genotyping, and those parameters vary slightly across pipelines. The parameters below are general across RADseq pipelines (although with different names), and are shown to have the largest impact on genoyping error rates. 
+### Clustering threshold {#cluster}
+#### (de novo assembly only)
+During *de novo* RADseq assembly, reads are assembled into contigs (contiguous sequences), so that each contig represents a single locus. This assembly can occur separately for each individual (ipyrad) or jointly for multiple individuals (dDocent, Stacks). To call SNPs, in the case of ipyrad, contigs are then clustered and aligned across individuals, while in dDocent and Stacks, reads for each individual are mapped to the "reference" contigs. All of these pipelines use sequence similarity (or **clustering threshold**) to determine if fragments are homologous (from the same place in the genome) and therefore should be clustered together. 
 
-If the threshold is too high, it can lead to *oversplitting*, where alleles of the same locus are split into two or more contigs. This can lead to reduced mean observed heterozygosity.  
+If the clustering threshold is too low, *undersplitting* can occur so that multiple loci are combined into a single contig. Undersplitting is common with repetitive regions and paralogs. It can inflate mean observed heterozygosity. If the threshold is too high, it can lead to *oversplitting*, where alleles of the same locus are split into two or more contigs. This can lead to reduced mean observed heterozygosity.  
 
 If severely off, both of these issues can bias the models used to identify SNPs. Undersplitting a little is better than oversplitting, as it is easier to identify lumped paralogs downstream and remove them.  
-**What influences the "optimal" clustering threshold of your data?**  
-Clustering threshold is usually determined by how much genetic diversity you have in your dataset. If your dataset has high genetic diversity (eg., a single species with high heterozygosity, multiple highly diverged populations, multiple species), then you will need a lower clustering threshold. If your dataset has low genetic diversity (a single species with lower heterozygosity, a single family), then you will need a higher clustering threshold. Polyploid or highly repetitive (ie large) genomes may also have different requirements than diplod species with smaller genomes. Other factors, such as sequencing error rate, may play a role as well so it is usually a good idea to always test a few clustering thresholds with a new dataset. However, as long as your clustering threshold is in the ballpark it shouldn't affect downstream analyses (according to Isaac).
+
+#### **What influences the "optimal" clustering threshold of your data?**  
+Clustering threshold is usually determined by how much genetic diversity you have in your dataset. If your dataset has high genetic diversity (eg., a single species with high heterozygosity, multiple highly diverged populations, multiple species), then you will need a lower clustering threshold. If your dataset has low genetic diversity (a single species with lower heterozygosity, a single family), then you will need a higher clustering threshold. Polyploid or highly repetitive (i.e., large) genomes may also have different requirements than diploid species with smaller genomes. Other factors, such as sequencing error rate, may play a role as well. **We recommend always testing a few clustering thresholds with a new dataset and/or new species**. However, as long as your clustering threshold is in the ballpark it shouldn't affect downstream analyses (according to [Isaac Overcast](https://isaacovercast.github.io/)).
 
 There are a few strategies to identify a good clustering threshold for your data, all of which require assembling your data with a range of clustering thresholds.  
-1) Metrics developed by [McCartney-Melstad 2017](link), based on popgen theory and landscape genetic expectations  
-2) Utilize sample replicates (either exact replicates or individuals from the same locality) to quantify genotyping error and minimize error while maximizing the number of informative loci [Mastretta-Yanes 2015](link)
-3) Evaluating the number of haplotypes across loci, with many 3+ haplotypes indicating undersplitting [Harvey 2015](link), [Ilut 2014](link)  
-4) Make assemblies at a range of thresholds and parameters, plot the # of SNPs or contigs per assembly, and make a judgement call [example in dDocent tutorial](link). If most parameters give you about the same # of SNPs or contigs, you can feel confident that this parameter doesn't matter much for your data and just choose a reasonable value.  
+1) Metrics developed by [@McCartney-Melstad2019-ac], based on popgen theory and landscape genetic expectations  
+2) Utilize sample replicates (either exact replicates or individuals from the same locality) to quantify genotyping error and minimize error while maximizing the number of informative loci [@Mastretta-Yanes2015-jb]
+3) Evaluating the number of haplotypes across loci, with many 3+ haplotypes indicating undersplitting [@Harvey2015-vh;@Ilut2014-ja]
+4) Make assemblies at a range of thresholds and parameters, plot the # of SNPs or contigs per assembly, and make a judgement call [example in dDocent tutorial](https://www.ddocent.com/assembly/). If most parameters give you about the same # of SNPs or contigs, you can feel confident that this parameter doesn't matter much for your data and just choose a reasonable value.  
 
-### Mapping parameters (reference-based and some de novo assemblers)   
+### Mapping parameters 
+#### (reference-based and some de novo assemblers) {.unlisted .unnumbered}    
 When a sequencing read maps to the wrong assembled contig or place in a reference genome (ie, a non-homologous locus), this can result in erroneous SNPs. In many cases, these SNPs can be filtered out later (link to filtering). However, data should be checked to make sure there aren't systematic, wide-scale mapping issues that need to be addressed.
 
 For referenced-based assembly, both dDocent and ipyrad make use of bwa(link) to map reads, while Stacks allows the user to choose their aligner. dDocent also utilizes bwa for de novo assemblies. 
@@ -563,7 +576,7 @@ Our whole genome resequencing section has some good content on mapping(link). Ge
 
 * how many reads aligned for each sample? If many reads didn't aligned, this could be an issue with the reference, read trimming/filtering, or the mapping parameters.
 * What is the distribution of mapping scores?  
-* ratio of mean (across inds) mapping quality scores for reference and alternate allele (O'Leary cite). 0.25-1.75 cut off implemented in dDocent.  
+* ratio of mean (across individuals) mapping quality scores for reference and alternate allele [@OLeary2018-iy]. 0.25-1.75 cut off implemented in dDocent.  
   + this info might not be coded in all VCFs
 
 ### Read depth threshold {#seq}  
@@ -573,7 +586,7 @@ The best ways to minimize the impact of sequencing error during bioinformatic pr
 
 ##### 1) Filtering reads  
 
-FASTQ files that typically come from the sequencing center include a [Phred scale quality score](link) for each base, which indicates the probability of that base call being correct. This information can be used prior to assembly to trim low-quality sections from either end of reads or remove reads altogether. Some SNP callers, including FreeBayes which is part of dDocent, also use Phred scores when calling SNPs (ipyrad and Stacks do not). All three of the most popular RAD pipelines include steps to filter reads due to low quality bases low quality bases or adapter sequences, but vary slightly on what kinds of read trimming are allowed. Always make sure to filter out adapter sequences (this is not default with stacks), otherwise default parameters are usually adequate. If your initial [fastqc](#fastqc) indicates that you have many low quality bases in your reads, you may lose too much of your data during filtering. In this case, you may want to make your read filtering a little more permissible (keeping in mind that this may increase SNP error rate).  
+FASTQ files that typically come from the sequencing center include a [Phred scale quality score](https://gatk.broadinstitute.org/hc/en-us/articles/360035531872-Phred-scaled-quality-scores) for each base, which indicates the probability of that base call being correct. This information can be used prior to assembly to trim low-quality sections from either end of reads or remove reads altogether. Some SNP callers, including FreeBayes which is part of dDocent, also use Phred scores when calling SNPs (ipyrad and Stacks do not). All three of the most popular RAD pipelines include steps to filter reads due to low quality bases low quality bases or adapter sequences, but vary slightly on what kinds of read trimming are allowed. Always make sure to filter out adapter sequences (this is not default with stacks), otherwise default parameters are usually adequate. If your initial [fastqc](#fastqc) indicates that you have many low quality bases in your reads, you may lose too much of your data during filtering. In this case, you may want to make your read filtering a little more permissible (keeping in mind that this may increase SNP error rate).  
 **Always make sure to check with your sequencing center to see if they have done anything to the raw reads before you received them!**
 <!---turn these into html tabs--->  
 
@@ -587,13 +600,24 @@ FASTQ files that typically come from the sequencing center include a [Phred scal
 * requires your reads to be all the same length, so if they were previously trimmed of low quality bases or adapter sequence this must be specified and they will be truncated to the same length.  
 
 ##### 2) Require higher read depth thresholds for assembly and genotyping.  
-For RADseq, ideally you are generating an average of *at least* 10-20 sequence reads (10x-20x coverage) for each RAD locus in your library preparation (but this doesn't always happen...). For diploid species, this would be sequencing each RAD haplotype at least 5x-10x. The SNP calling step of RAD pipelines all require setting a minimum number of reads to determine whether a site is homozygous or heterozygous **add image example**. If this threshold is too low, sequencing errors are more likely to be included and the SNP caller will have a harder time accurately identifying SNPs ([but see our section on low coverage WGS methods!](link). If it's too high, then real polymorphic loci will be excluded. All of the three major pipelines allow users to implement read depth thresholds   
+For RADseq, ideally you are generating an average of *at least* 10-20 sequence reads (10x-20x coverage) for each RAD locus in your library preparation (but this doesn't always happen...). For diploid species, this would be sequencing each RAD haplotype at least 5x-10x. The SNP calling step of RAD pipelines all require setting a minimum number of reads to determine whether a site is homozygous or heterozygous. If this threshold is too low, sequencing errors are more likely to be included and the SNP caller will have a harder time accurately identifying SNPs ([in which case, you'd be better off with genotype likelihood methods](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md). If it's too high, then real polymorphic loci will be excluded. All of the three major pipelines allow users to implement read depth thresholds   
 
 Generating multiple sequencing reads per locus is helpful when calling SNPs in order to  distinguishing between reads with sequencing errors and.
 
+## Filtering SNPs
+### (and embrace the missingness!) {.unlisted .unnumbered}  
 
-## Filter your data many ways
-### (and embrace the missingness!) {.unlisted .unnumbered}
+`r colorize("This section is still under development! Please contribute on Github or provide feedback in [Discussions](https://github.com/MarineOmics/marineomics.github.io/discussions)", "red")`
+Even with a reduced representation sequencing approach, your assembly and genotyping pipeline will generate data for thousands of SNPs across your individuals. These SNPs will always need to be filtered before doing downstream analyses.  
+#### Main reasons to filter your data:  
+
+* Remove potentially erroneous SNPs that remain after optimizing your assembly pipeline
+* Remove SNPs that are uninformative for downstream analyses 
+* Subsample to remove SNPs that are in linkage disequilibrium (required for analyses that assume independence like PCA, Structure)
+
+Unique to RADseq approaches is the missingness of RAD data. 
+
+
 * Don't over filter for missingness
  + papers showing how too much filtering can skew results  
   + Empirical: Diaz-Arce 2019, Tripp 2017, Silliman 2021, Eaton 2017, Martin-Hernanz (2019)
@@ -602,7 +626,8 @@ Generating multiple sequencing reads per locus is helpful when calling SNPs in o
 
 * some ways to account for missing data in downstream analyses
  + impute (PCA), subsample (PCA, structure, pretty much anything with SNPs), try a few different missing filters and see what impact it has on results
- + use [pcANGSD](link)
+
+<!-- use [pcANGSD](link)-->
 
 
 
