@@ -49,10 +49,10 @@ library(SNPRelate)
 
 We also provide alternative coding examples that are based only on the command line, requiring these software packages: 
 
-* vcftools(link)
+* [vcftools](https://vcftools.github.io/man_latest.html)
 * gnuplot  
 
-# Reduced Representation Sequencing (RADseq/GBS)  
+# Reduced Representation Sequencing (RADseq/GBS)
 
 "Restriction-site   Associated   DNA   sequencing"  - RADseq - combines  restriction  enzymes  with next-gen, massively parallel,  short-read  sequencing. RADseq involves the use of restriction enzymes which are used to shear DNA at restriction enzyme cutsite. RADseq comes in different flavors. Double-digest RADseq (ddRAD; Peterson et al.,2012)  selects  markers  with  two  restriction enzymes  with  different  cut  frequencies. Genotype-by-Sequencing  (GBS;  Elshire  et  al.,  2011)  uses  a  frequent-cutting  restriction  enzyme  with PCR size selection. See this review for a comparison of some of the more popular protocols (link). In this guide we use the term "RADseq" to refer to any of these protocols, including those that don't involve random shearing of data. When recommendations are specific to a certain type of RAD/GBS, we will explicitly say so.  
 
@@ -63,7 +63,7 @@ Much of this guide is directly inspired by this [excellent review paper by O'Lea
 
 ![Table 1 from O'Leary et al. 2018.](images/oleary_table1.png)
 
-## Considerations During Lab Work -- Setting up for Success {#labwork}  
+# Considerations During Lab Work {#labwork}  
 
 There are steps you can take before you even sequence RAD libraries that can help minimize issues downstream. Here, we use "library" to refer to a set of RADseq fragments from a group of individuals that are barcoded and sequenced together on a single lane or group of lanes. While specific RAD library prep methods have their own nuances for minimizing error, there are some steps you can take that are common across methods.      
 
@@ -93,9 +93,9 @@ data.out = cbind(
 * Keep track of all potential batch effect sources in a Metadata file (eg, storage conditions of tissue/DNA, date/method of DNA extraction, date/method library prep batch, sequencing lane).   
 * Have a core set of 2-4 technical sample replicates across all libraries. Ideally these are true technical replicates from library preparation to sequencing, but even just sequencing replicates can be useful for downstream quality control.
 
-## Principles for Analyzing Your Data
+# Principles for Analyzing Your Data
 
-### Steps for a robust RAD analysis 
+## Steps for a robust RAD analysis 
 This is just one approach for working through your data. Some people will prefer to run just a subset of samples through a pipeline at first and evaluate parameters, then run all the samples through. Either way, be prepared to make MULTIPLE assemblies and go through this process iteratively, especially if this is a new-to-you study system.  
 
 1) [Look at your raw data.](#fastqc)
@@ -107,7 +107,7 @@ This is just one approach for working through your data. Some people will prefer
 7) Evaluate the difference between multiple filtering schemes for your analyses of interest. *Popgen analysis guide coming soon*
 8) Repeat as needed.  
 
-### First, look at the raw data! {#fastqc}  
+## First, look at the raw data! {#fastqc}  
 Always look at your data with fastqc(link) before starting an assembly. First, this is a good check to just make sure the sequencing worked. If you have demultiplexed data, you can use multiqc(link) to generate fastqc plots for all individuals and quickly identify ones that did not sequence well.  
 Check out [this informative tutorial](https://datacarpentry.org/wrangling-genomics/02-quality-control/index.html) on running fastqc and interpreting the output.  
 Do you have a lot of adapter sequences? Are the ends of your reads very low quality? If so, you should expect a fair amount of trimming and read filtering to occur prior to assembly. If that doesn't occur or if too many reads are being filtered so as to only recover a small number of SNPs, something might need to be tweaked with your trimming and filtering step.
@@ -143,7 +143,7 @@ GGAGAAA.<AGAA.G.GGAGA<.GGA.<GAAGGAAGGIA<...<GA<..<G.<.<<.<AAAGGGG..<GGGGG<G.A.<G
 
 If the sequencing center gave you one fastq file with all your samples, you should expect to see a barcode sequence, followed by the cutsite at the start of the read. If the Data are already demultiplexed (as the example is), you should only see the cutsite overhang (in this case, CWGC). Sometimes you can look at your fastq data files and see that there was a problem with the sequencing such that the cut site is either offset by one or more bases, or contains many errors. If this is not being addressed by the default filtering steps in your assembly pipeline, you can trim off N bases from the beginning or end of R1 and R2 reads in ipyrad (`trim_reads` param), or with cutadapt before using stacks, or customize the Trimmoatic step for dDocent.  
 
-### Run an assembly pipeline {#assembly}  
+## Run an assembly pipeline {#assembly}  
 
 There are a number of freely available pipelines for processing RADseq data, with the most popular being dDocent, Stacks, and ipyrad. These pipelines vary slightly in their underlying methodologies, customization options, and additional included analyses.  
 
@@ -162,13 +162,8 @@ There are a number of freely available pipelines for processing RADseq data, wit
 Some groups have also developed pipelines for specific flavors of lab (e.g., Matz lab and 2bRAD) or proprietary software (eg, DARTseq), which we touch on below. **In most cases, it is recommended that you use a pipeline developed and tested for RAD data, especially if you are making a de novo assembly.** LaCava et al, 2019 have an excellent study where they review various de novo assemblers that are used in these pipelines. Assemblers that were not explicitly developed for short reads (eg, Velvet, ABySS) performed very poorly, while CD-HIT (the assembler in dDocent) performed the best. Stacks/Stacks2 and vsearch (the assembler in ipyrad) both performed worse when analyzing simulated data with indels. It should be noted that all of these RAD pipelines have optimized the specific parameters of these de novo assemblers to work with RAD data of various flavors, which may not be fully reflected in the LaCava study. Based on the MarineOmics RAD panel, the general consensus is that all the popular pipelines can produce adequately accurate datasets (with appropriate parameter optimization and data filtering).     
 ![Table 3 from LaCava et al 2019. CD-HIT is used in dDocent, VSEARCH is used in ipyrad.](images/lacavaTable3.png)
 
-#### iPyrad walkthrough  
 
-
-
-Link to annotated ipyrad notebook
-
-### Evaluate potential confounding factors {#confound}
+## Evaluate potential confounding factors {#confound}
 
 Once you have processed your samples (or a subset of samples) through a genotyping pipeline, you will have a bunch of different output file options for genetic data. The VCF file is one of the most popular file formats, and is the most versatile for initial data exploration as many programs exist to filter and accept VCF files. Below are a list of potential confounding factors that may exist in your data, and how to tease them out.  
 
@@ -201,7 +196,7 @@ sample.strata =  read.table(metafile, header = T, sep = "\t") %>%
 ```
 Now, on to evaluating our data!  
 
-#### "Bad" samples {#bad}  
+### "Bad" samples {#bad}  
 
 Sometimes a sample doesn't sequence well (few sequencing reads, higher error rate). This can be due to DNA quality, an issue during library prep, or not enough sequencing depth (average # of reads per sample). Generally, it will lead to a sample with fewer sequencing reads, higher missing data in a SNP dataset, and fewer shared loci with other samples. Identifying and then removing these samples *prior* to the final RADseq assembly analysis can help minimize mis-assembled loci, genotyping errors, and excessive filtering of acceptable loci.
 
@@ -220,12 +215,9 @@ samples <- SeqArray::seqGetData(gdsin, "sample.id")
 cbind(samples,m2)[order(-m2),]
 #plot histogram 
 hist(m2,breaks=50)
-
-# close the GDS file
-seqClose(gdsin)
 ```
 
-Another common method of filtering and evaluating you data without ever using R is VCFtools(link). 
+Another common method of filtering and evaluating you data without ever using R is [VCFtools](https://vcftools.github.io/man_latest.html). 
 **Missingness with vcftools, on the command line**  
 ```{bash, eval = T}
 vcftools --vcf RAD_data/OL_subset.vcf --missing-indv --out RAD_data/OL_subset
@@ -259,7 +251,7 @@ It looks like samples X,Y,Z have a lot of missing data relative to other samples
   + [ipyrad API tutorial](https://ipyrad.readthedocs.io/en/latest/API-analysis/cookbook-sharing.html) for making a locus sharing heatmap, requires ipyrad output or ipyrad's vcf2hdf5 conversion  
   + [code to generate locus sharing/missingness heatmap from a VCF](https://github.com/atcg/clustOpt)
 
-#### The power of PCA   
+### The power of PCA   
 
 One of the most powerful methods for exploring your data is a Principle Components Analysis. From [this genetics tutorial](https://comppopgenworkshop2019.readthedocs.io/en/latest/contents/03_pca/pca.html): "To understand how PCA works, consider a single individual and its representation by its 593,124 markers. Formally, each individual is a point in a 593,124-dimensional space, where each dimension can take only the three possible genotypes indicated above, or have missing data. To visualize this high-dimensional dataset, we would like to project it down to two dimensions. But as there are many ways to project the shadow of a three-dimensional object on a two dimensional plane, there are many (and even more) ways to project a 593,124-dimensional cloud of points to two dimensions. What PCA does is figuring out the “best” way to do this project in order to visualise the major components of variance in the data." See [here](https://michaelaalcorn.medium.com/yet-another-pca-explanation-727dff6ce26a) for a linear algebra-based explanation of PCA).   
 
@@ -273,9 +265,9 @@ Here we use SeqArray and SNPRelate to run a PCA in R. Other popular methods for 
 
 
 ```{r}
-#open the gds file previously created
-filename.gds = "RAD_data/OL_subset.gds" #replace with your file name 
-gdsin = SeqArray::seqOpen(filename.gds)
+#open the gds file previously created, if not already open
+#filename.gds = "RAD_data/OL_subset.gds" #replace with your file name 
+#gdsin = SeqArray::seqOpen(filename.gds)
 # exclude samples previously identified as having too much missin g data
 bad_samples = c("OR3_13_C3","CA4_12_C1","OR3_3_C7","CA4_13_C1","BC2_6_C2","BC2_9_C4")
 sample.ids = seqGetData(gdsin, "sample.id")
@@ -290,7 +282,7 @@ snpset.id <- unlist(unname(snpset))
 
 Now we will actually run the PCA, again removing the samples with missing data, keeping unlinked SNPs, and removing SNPs with less than 5% minor allele frequency. 
 ```{r}
-# PCA only on SNPs with a minor allele freq greater than 2.5%
+# PCA only on SNPs with a minor allele freq greater than 5%
 pca.out = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, remove.monosnp = T, maf = 0.05,
                                snp.id=snpset.id,
                                sample.id = keep) # filtering for pruned SNPs
@@ -301,8 +293,8 @@ eig = pca.out$eigenval[!is.na(pca.out$eigenval)]
 barplot(100*eig/sum(eig), main="PCA Eigenvalues")
 ```
 
-Data Info: Below we use RAD data from an Australian marine species complex.
-```{r, eval =F}
+<!-- Data Info: Below we use RAD data from an Australian marine species complex. ---> 
+```{r, eval =F,include=F}
 
 ## The following code will read from a text file containing a list of the VCF files you wish to explore (one file per line) 
 ## Each line must contain the full file path 
@@ -375,12 +367,12 @@ print(
 
 ```{r, eval=T}
 #PLOT PCA
-#PC1 v PC2 colored by collection location
+#PC1 v PC2 with Sample Labels
 print(
   as.data.frame(pca.out$eigenvect) %>%
       tibble::add_column(., ID =  sample.strata.order$ID) %>%
       ggplot(., aes(x=V1, y=V2, label = ID)) +
-      geom_text(size =1.5) +
+      geom_text(size =3) +
       geom_hline(yintercept = 0) +
       geom_vline(xintercept = 0) +
       theme_bw() +
@@ -390,7 +382,7 @@ print(
 )
 ```
 
-```{r}
+```{r, eval=F}
 # which samples have PC1 > -0.7 and PC2 < -0.3?
 as.data.frame(pca.out$eigenvect) %>%
       tibble::add_column(., ID =  sample.strata.order$ID) %>%
@@ -403,13 +395,14 @@ as.data.frame(pca.out$eigenvect) %>%
   + issues with how you are [filtering the data](#filter) (eg, too strict or too lax)
   + issues with how your PCA is treating missing data
   + or you actually have no structure in your dataset!
-  + `r colorize("figure example, no clustering", "red")`
+
+<!--`r colorize("figure example, no clustering", "red")`-->
 
 * If you used sample replicates, first see if replicates cluster very close together. If not, then there may be batch effects or bioinformatic artifacts leading to genotyping error that must be addressed. Then remove replicates for a subsequent PCA evaluation. 
 
-Here is an example of a PCA with sample replicates, and then with sample replicates removed: 
+<!--Here is an example of a PCA with sample replicates, and then with sample replicates removed: -->
 
-When removing a sample replicate, you can choose one at random or pick the replicate with the least missing data(link). 
+When removing a sample replicate, you can choose one at random or pick the replicate with the least [missing data](#bad). 
 ```{r, eval=FALSE}
 # example code for removing samples from a SNPRelate PCA 
 # assumes you have already loaded a vcf file as a GDS
@@ -421,7 +414,6 @@ keep = sample.ids[which(!sample.ids %in% bad_samples)]
 pca.out.noreps= SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=1, remove.monosnp = T, maf = 0.05,
                                snp.id=snpset.id,
                                sample.id = keep)
-#close gds file (saves memory)
 
 ```
 
@@ -446,13 +438,15 @@ print(
 
 * Do any observed clusters match a source of batch effect? [how to remove batch effects](#batch)  
 
-#### Visually inspect alignments {#align}  
+<!-- #### Visually inspect alignments {#align}  
 Another useful approach is to visually inspect alignments for SNPs or loci that are identified as "weird" in the subsequent analyses. In ipyrad this can be done by searching the .loci file, in dDocent... If the alignment looks wonky, you can feel better about removing the whole locus (?).  
 `r colorize("code example .loci", "red")`
 `r colorize("code dDocent", "red")`  
 `r colorize("code stacks", "red")`    
+-->
 
-#### Batch effects {#batch}
+
+### Batch effects {#batch}
 As discussed in [Setting up for success](#labwork), batch effects can arise by minor (or not so minor) differences during the library prep and sequencing stage. Randomizing samples across libraries and sequencing lanes can help mitigate the influence of batch effects on your downstream analyses, but sometimes this isn't possible, esp. when using pre-existing data. Even if you randomize your samples, it is a good idea to check for batch effects with a PCA and then try to mitigate them.  
 
 Nicolas Lou and Nina Therkildsen have a [great preprint](https://www.authorea.com/users/380682/articles/532568-batch-effects-in-population-genomic-studies-with-low-coverage-whole-genome-sequencing-data-causes-detection-and-mitigation) and [Github repo](https://github.com/therkildsen-lab/batch-effect) discussing causes, detection, and mitigation of batch effects in low coverage WGS, where batch effects can have particularly large effects. While some of their recommendations are specific to reference-based analyses, others are relevant to RAD methods too (eg, batch effects due to different sequencing platforms, DNA degradation levels, and sequencing depth).
@@ -461,39 +455,77 @@ Nicolas Lou and Nina Therkildsen have a [great preprint](https://www.authorea.co
 
 You can identify which loci are driving the batch effect by 1) identifying the top SNPs contributing to PC variation (termed "loadings") and/or 2) do an Fst outlier analysis with the batches specified as populations (eg, Bayescan). Both of these methods are most appropriate if you've randomized your samples between batches. If you have not randomized samples but are certain there is a batch effect driving variation in your dataset, you can still remove loci this way but you may also be removing biologically informative loci.  
 
-Let's pretend like we have batch effects that were observed on PC 1. With SNPRelate we would extract the PC loadings for each SNP at each PC, then 
-```{r}
-
+In SeqArray/SNPRelate, if you have batch effects that are identifiable by PCA, you would extract the PC loadings for each SNP atthe PC which represents the batch effect, then filter those SNPs out and create a new VCF for downstream analyses. 
+```{r, eval=T}
+# assume you have a GDS object called gdsin and a PCA object called pca.out
+# extract PCA loadings
 SnpLoad <- snpgdsPCASNPLoading(pca.out, gdsin)
-#load.df <- cbind(SnpLoad$snp.id,SnpLoad$snploading)
-#colnames(load.df) <- c("Snp.ID",)
-
+names(SnpLoad)
+dim(SnpLoad$snploading)
+#plot a histogram of absolute PC loading values for PC1, with larger loading meaning more effect on PC1
+pc<-1
+hist(sort(abs(SnpLoad$snploading[pc,]),decreasing=T,index.return=T)[[1]],breaks = 30,main="PC loadings: PC1",)
 ```
-
-Once you've identified these batch effect SNPs, it can be useful to [visualize the alignments](#align) before removing them. If the entire alignment for that locus looks wonky, you should remove all SNPs from that RAD locus from your final dataset before conducting analyses.   
-
-#### Cryptic species/contamination/clones {#cryptic}  
-One issue that is particularly common, especially for marine invertebrates, are cryptic, yet highly diverged lineages occurring in the same geographic location. If you are trying to do a landscape/seascape genetics study, cryptic species can dramatically throw off population genetic analyses. A PCA using all the samples can help identify cryptic species if samples are forming clusters that do not align with any other possible factor (eg, geography, sequencing batch).   
-`r colorize("PCA figure of cryptic species", "red")`  
-
-Note: Notice the huge variation explained along the first PC-axis.
-
-You can also check heterozygosity, and missingness!
-
+Let's remove the largest effect loci over abs(0.010) and see if it changes our PCA
 ```{r}
+#extract SNP.IDs for loadings on PC 1 > abs(0.015) 
+batch.snp.ids <- SnpLoad$snp.id[which(abs(SnpLoad$snploading[1,]) >= 0.010)]
+
+#rerun PCA
+snp.id.allfilt <- setdiff(snpset.id,batch.snp.ids)
+pca.out.pcfilt = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, remove.monosnp = T, maf = 0.05,
+                               snp.id=snp.id.allfilt,
+                               sample.id = keep) # filtering for pruned SNPs
+print(
+  as.data.frame(pca.out.pcfilt$eigenvect) %>%
+      tibble::add_column(., STRATA =  sample.strata.order$STRATA) %>%
+      ggplot(., aes(x=V1, y=V2, color = STRATA)) + 
+      geom_point(size=2) +
+      stat_ellipse(level = 0.95, size = 1) +
+      geom_hline(yintercept = 0) +
+      geom_vline(xintercept = 0) +
+      theme_bw() +
+      xlab(paste0("PC1 [",paste0(round(eig[1], 2)), "%]")) +
+      ylab(paste0("PC2 [",paste0(round(eig[2], 2)), "%]")) +
+      ggtitle("PCA Colored by Collection Location")
+)
+
+```
+To save your filtered GDS object as a VCF: 
+```{r}
+# set a filter to exclude samples with missing data, and SNPs in linkage or with a batch effect
+seqSetFilter(gdsin, sample.id=keep,variant.id=snp.id.allfilt)
+
+
+# convert to vcf
+seqGDS2VCF(gdsin, "RAD_data/OL-miss-pc1-linkage-filt.vcf.gz")
+
+#close the gds file to save memory
+closefn.gds(gdsin)
+
 ```
 
- Note: Two outliers are obvious. Large differences in heterozygosity between samples are clear, with one location showing two distinct clusters of samples. These samples were later determined using mtDNA and morphological analysis to be cryptic species.
-*Unpublished data from a marine species in Australian waters.*
+### Cryptic species/contamination/clones {#cryptic}  
+One issue that is particularly common, especially for marine invertebrates, are cryptic, yet highly diverged lineages occurring in the same geographic location. If you are trying to do a landscape/seascape genetics study, cryptic species can dramatically throw off population genetic analyses. A PCA using all the samples can help identify cryptic species if samples are forming clusters that do not align with any other possible factor (eg, geography, sequencing batch).   
+
+<!--Note: Notice the huge variation explained along the first PC-axis.-->
+
+You can also check heterozygosity. Large differences in heterozygosity between outliers can suggest different species or cryptic hybrids.
+
+<!--Note: Two outliers are obvious.
+Large differences in heterozygosity between samples are clear, with one location showing two distinct clusters of samples. These samples were later determined using mtDNA and morphological analysis to be cryptic species.
+*Unpublished data from a marine species in Australian waters.*-->
 
 You can then estimate genetic divergence between these clusters using pairwise Fst and/or phylogenetic inference to determine how diverged the groups are. If they are very diverged, it may be better to assemble each cryptic species separately, especially for denovo assemblies with dDocent and Stacks, especially since often times restriction cut-sites are not always conserved; see [Wagner et al., 2013](link), [Rubin et al., 2012](link)  These two pipelines used a set of given samples to create a "reference" or "catalog" to which all other samples are mapped. If highly diverged samples are included in creating this reference, it can lead to [oversplitting](#cluster).  
 
-Cryptic clones can also dramatically throw off population genetic analyses. In a PCA, clones will often appear as their own very tight cluster, similar to sample replicates. Below the PCA shows x and a simple calculate of pairwise-distance (i.e. here manhattan distance) shows x known duplicates, and x unknown clones. *other ways to tell they are clones*  
-`r colorize("PCA figure of cryptic clones", "red")`
+Cryptic clones can also dramatically throw off population genetic analyses. In a PCA, clones will often appear as their own very tight cluster, similar to sample replicates. A calculation of sample pairwise distance (e.g., Manhattan distance) can very duplicates/clones.
 
-### Test a range of key parameters {#test}  
+<!--Below the PCA shows x and a simple calculate of pairwise-distance (i.e. here manhattan distance) shows x known duplicates, and x unknown clones. 
+`r colorize("PCA figure of cryptic clones", "red")`-->
 
-#### Clustering threshold (de novo assembly) {#cluster}  
+## Test a range of key parameters {#test}  
+
+### Clustering threshold (de novo assembly) {#cluster}  
 During de novo RADseq assembly, reads are assembled into contigs so that each contig represents a single locus. This can occur separately for each individual (ipyrad) or jointly for all or a subset of individuals (dDocent, Stacks). To call SNPs, in the case of ipyrad, contigs are then clustered and aligned across individuals, while in dDocent and Stacks, reads for each individual are mapped to the "reference" contigs. All of these pipelines use sequence similarity thresholds to determine if fragments are homologous (from the same place in the genome) and therefore should be clustered together. If the sequence similarity threshold is too low, *undersplitting* can occur so that multiple loci are combined into a single contig.  
 Undersplitting is common with repetitive regions and paralogs. It can inflate mean observed heterozygosity.  
 
@@ -509,7 +541,7 @@ There are a few strategies to identify a good clustering threshold for your data
 3) Evaluating the number of haplotypes across loci, with many 3+ haplotypes indicating undersplitting [Harvey 2015](link), [Ilut 2014](link)  
 4) Make assemblies at a range of thresholds and parameters, plot the # of SNPs or contigs per assembly, and make a judgement call [example in dDocent tutorial](link). If most parameters give you about the same # of SNPs or contigs, you can feel confident that this parameter doesn't matter much for your data and just choose a reasonable value.  
 
-#### Mapping parameters (reference-based and some de novo assemblers)   
+### Mapping parameters (reference-based and some de novo assemblers)   
 When a sequencing read maps to the wrong assembled contig or place in a reference genome (ie, a non-homologous locus), this can result in erroneous SNPs. In many cases, these SNPs can be filtered out later (link to filtering). However, data should be checked to make sure there aren't systematic, wide-scale mapping issues that need to be addressed.
 
 For referenced-based assembly, both dDocent and ipyrad make use of bwa(link) to map reads, while Stacks allows the user to choose their aligner. dDocent also utilizes bwa for de novo assemblies. 
@@ -534,7 +566,7 @@ Our whole genome resequencing section has some good content on mapping(link). Ge
 * ratio of mean (across inds) mapping quality scores for reference and alternate allele (O'Leary cite). 0.25-1.75 cut off implemented in dDocent.  
   + this info might not be coded in all VCFs
 
-#### Read depth threshold {#seq}  
+### Read depth threshold {#seq}  
 
 Mistakes that occur during sequencing can lead to a base-calling error in a read, which can then lead to an erroneous SNP. This type of error most commonly manifests as rare alleles (eg, only observed in one individual) or singletons (only one copy of the minor allele across all individuals). A conservative approach to deal with these errors is to filter out all loci with rare alleles (link filtering), but for some demographic analyses this filtering is inappropriate as they require the site frequency spectrum.  
 The best ways to minimize the impact of sequencing error during bioinformatic processing is to 1) properly trim and filter your data, and 2) require higher read depth thresholds for assembly and genotyping.   
@@ -560,7 +592,8 @@ For RADseq, ideally you are generating an average of *at least* 10-20 sequence r
 Generating multiple sequencing reads per locus is helpful when calling SNPs in order to  distinguishing between reads with sequencing errors and.
 
 
-### Filter your data many ways (and embrace the missingness!)
+## Filter your data many ways
+### (and embrace the missingness!) {.unlisted .unnumbered}
 * Don't over filter for missingness
  + papers showing how too much filtering can skew results  
   + Empirical: Diaz-Arce 2019, Tripp 2017, Silliman 2021, Eaton 2017, Martin-Hernanz (2019)
@@ -579,14 +612,15 @@ Generating multiple sequencing reads per locus is helpful when calling SNPs in o
 
 
 
-## Special Cases  
+<!--## Special Cases  
 ### DARTseq  
 ### 2bRAD
 
 ### Reference-based vs. de novo RADseq
-<!---brief outline on general pipeline--->  
+-->
 
-## Good tutorials  
+
+# Helpful tutorials  
 * [Marine Genomics open course](https://baylab.github.io/MarineGenomics/)
 * [UNIX tutorial](http://evomics.org/learning/unix-tutorial/)
 * [what is a VCF file and how can I filter it?](http://evomics.org/learning/population-and-speciation-genomics/2020-population-and-speciation-genomics/first-steps-in-genomic-data-analysis/)

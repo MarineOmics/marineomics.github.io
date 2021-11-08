@@ -29,7 +29,7 @@ output:
     toc: true
     toc_float:
       collapsed: false
-    toc_depth: 4
+    toc_depth: 3
     theme: cosmo
     css: tutorial.css
 #    includes:
