@@ -1,85 +1,73 @@
----
-layout: default
-title: "Panel Seminars"
-nav_order: 1
-editor_options: 
-  chunk_output_type: console
----
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+---
+title: "Introduction"
+---
 
-# About
+The MarineOmics working group is part of the [RCN for Evolution in Changing Seas](https://rcn-ecs.github.io/), and was formed to promote **reproducible** and **robust** genomic research in nonmodel species, but especially marine and aquatic studies. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices as obsolete. To support robust 'omics research now and moving forward, the working group helps disseminate guidelines through this dynamic, open-sourced website. 
 
-The MarineOmics working group is part of the [RCN for Evolution in Changing Seas](https://rcn-ecs.github.io/), and was formed to promote reproducible and robust genomic research in marine science. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices as obsolete. To support robust 'omics research now and moving forward, the working group will disseminate guidelines through an easily-interfaced and dynamic website that will be deployed in August 2021. *Keep an eye on this URL for updates!*
+**Rigorous**:  following best principles to identify and mitigate sources of error in data generation and analysis  
 
-# Panel Seminar Series
+**Reproducible**: when others can reproduce the results with accessible data, code, and documentation 
 
-To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we are hosting Q & A panel seminars with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Seminars are every two weeks, on **Fridays from 11:00-12:15 US Central Time**. 3-5 expert panelists will discuss each topic, with questions coming from the working group and the audience. If you would like to submit a question for the panelists ahead of time, please send an email to rcnecs.marineomics[at]gmail.com . 
 
-Everyone is welcome to join! All seminars will be recorded and available on this website.    
+# Guidelines for 'omics analyses 
 
-**To receive a Zoom link, please fill out the registration form [here](
-https://auburn.zoom.us/meeting/register/tZ0ode2rpz4sG9Il_TuYexWfqd6HyjdQ58Zi).**  
+On this website you will find a growing and evolving collection of guidelines, tutorials, recommended readings, and method evaluations for various 'omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid "best practices", we aim to encourage data exploration and rigorous quality control through "best principles". The guidelines are written by members of the MarineOmics working group or the community, then shared for peer review. Comments on current website content or suggestions for new content can be made through the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions).
 
-## Seminar Schedule
+Based on the expertise of the MarineOmics working group, the first topics include:  
 
-| Date        | Topic       | Panelists     | Video     |
-| :---        | :---        | :---          | :---      |
-| May 7         | GBS/RADseq genotyping pipelines     | [Melanie LaCava](https://melanielacava.weebly.com/), [Alicia Mastretta-Yanes](http://mastrettayanes-lab.org/), [Isaac Overcast](https://isaacovercast.github.io/), [Jon Puritz](https://www.marineevoeco.com/)   | [View video](https://www.youtube.com/watch?v=C74GBESeIq4)     |
-| May 21       |  WGS genotyping (low and high coverage)     | [Jeffrey Good](http://www.thegoodlab.org/), [Mikhail "Misha" Matz](https://matzlab.weebly.com/), [Noah Reid](http://nreid.github.io/), [Tim Sackton](https://scholar.harvard.edu/tsackton), [Nina Overgaard Therkildsen](https://www.therkildsenlab.com/) | [View Video](https://www.youtube.com/watch?v=ObJ3OT3dwSw)    |
-| June 4       |  Population genomic analyses and filtering data     | [Zach Gompert](https://gompertlab.com/), [Morgan Kelly](http://www.morgankelly.biology.lsu.edu/), [Katie Lotterhos](https://sites.google.com/site/katielotterhos/home), [Jeff Ross-Ibarra](https://rilab.ucdavis.edu/) |  [View Video](https://youtu.be/dZyuqVEGPMo)   |
-| June 18       |  RNAseq (experimental design through differential expression)     | [Ana Conesa](http://conesalab.org/), [Sarah Davies](http://sites.bu.edu/davieslab/), [Martin Hölzer](https://hoelzer-lab.github.io/), [Joanna Kelley](https://labs.wsu.edu/genomes/), [Harold Pimentel](https://pimentellab.com/)     |  [View Video](https://youtu.be/-gQ59m2cck0)   |
+## Topics {.tabset .tabset-fade .tabset-pills}
+### Population Genomics  
+
+* [Choosing a population genomics sequencing approach](choosing-population-genetics.html)  
+* [Whole Genome Resequencing (WGS)](WGS_intro.html)  
+  * [Low coverage WGS](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md)
+* [Reduced Representation Sequencing](RADseq.html) 
+* [Poolseq](poolseq.html)
+
+### Functional Genomics  
+
+* Transcriptomics with RNA-Seq (coming soon!)  
+* Differential gene expression (coming soon!)  
+
+## {-}
+
+### The guidelines portion of the website is still under peer review and should be considered a "preprint". If you are interested in contributing to the peer review process, check out the [Discussion Forum](discussion.html). {.unlisted .unnumbered}
+
+# Panel Seminars 
+To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we hosted [Q & A panel seminars](panels.html) with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on [YouTube](https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ)!
 
 # Reproducibility in Marine Genomics  
-The working group is also currently hosting three undergraduate research interns with funding from the [RCN-ECS](https://rcn-ecs.github.io/). These interns are part of a sub-committee conducting a literature survey to characterize trends in data availability, code accessibility, and methods reproducibility in papers that use genomics to study adaptation in marine systems. The results of this survey will be shared in a peer-reviewed article, along with guidance to improve the state of reproducibility in the field. 
+The working group is also interested in evaluating and improving reproducibility in studies that use genomics to study adaptation in marine systems. utilizing genomics in marine species, through a peer-reviewed literature survey of data availability, code accessibility, and methods reproducibility. In Spring 2021, three undergraduate research interns contributed to this literature survey, with funding from the [RCN-ECS](https://rcn-ecs.github.io/). 
 
 # Working Group Members  
 
-#### [Katherine Silliman, PhD](https://ksilliman.weebly.com/), Auburn University - kes0132[at]auburn.edu
-#### [Sam Bogan](http://www.hofmannlab.com/sam-bogan.html), UC-Santa Barbara -snbogan[at]ucsb.edu
-#### [Alan Downey-Wall](https://cos.northeastern.edu/people/alan-downey-wall/), Northeastern University 
-#### Chris Mantegna, University of Washington  
-#### [Danielle Davenport](https://www.researchgate.net/profile/Danielle-Davenport-2), University of Queensland  
-#### [Hanny Rivera, PhD](https://www2.whoi.edu/staff/hrivera/), Woods Hole Oceanographic Institute  
-#### Jecy Klinkam, College of William and Mary  
-#### [Joanna Griffiths, PhD](https://joannasgriffiths.wordpress.com/), UC-Davis
-#### [Joe McGirr, PhD](https://joemcgirr.github.io/), UC-Davis 
-#### Kaitlin Macaranas, CSU-Bakersfield 
-#### Megan Guidry, University of Rhode Island
-#### Natalie Ameral, University of Rhode Island & RI Dept. of Environmental Management  
-#### Nicolas Lou, Cornell University
-#### [Sara Schaal](https://schaals.wixsite.com/smschaal), Northeastern University 
-#### [Sara Wuitchik, PhD](https://sjswuitchik.weebly.com/), Harvard University
+#### [Katherine Silliman, PhD](https://ksilliman.weebly.com/), Auburn University - kes0132[at]auburn.edu {.unlisted .unnumbered}
+#### [Sam Bogan](http://www.hofmannlab.com/sam-bogan.html), UC-Santa Barbara -snbogan[at]ucsb.edu {.unlisted .unnumbered}
+#### [Alan Downey-Wall](https://cos.northeastern.edu/people/alan-downey-wall/), Northeastern University {.unlisted .unnumbered}
+#### Chris Mantegna, University of Washington  {.unlisted .unnumbered}
+#### [Danielle Davenport](https://www.researchgate.net/profile/Danielle-Davenport-2), University of Queensland {.unlisted .unnumbered}  
+#### [Hanny Rivera, PhD](https://www2.whoi.edu/staff/hrivera/), Woods Hole Oceanographic Institute  {.unlisted .unnumbered}
+#### Jecy Klinkam, College of William and Mary  {.unlisted .unnumbered}
+#### [Joanna Griffiths, PhD](https://joannasgriffiths.wordpress.com/), UC-Davis {.unlisted .unnumbered}
+#### [Joe McGirr, PhD](https://joemcgirr.github.io/), UC-Davis {.unlisted .unnumbered}
+#### Kaitlin Macaranas, CSU-Bakersfield {.unlisted .unnumbered}
+#### Megan Guidry, University of Rhode Island {.unlisted .unnumbered}
+#### Natalie Ameral, University of Rhode Island & RI Dept. of Environmental Management {.unlisted .unnumbered}  
+#### Nicolas Lou, Cornell University {.unlisted .unnumbered}
+#### [Sara Schaal](https://schaals.wixsite.com/smschaal), Northeastern University {.unlisted .unnumbered} 
+#### [Sara Wuitchik, PhD](https://sjswuitchik.weebly.com/), Harvard University {.unlisted .unnumbered}
 
 
-### Faculty Advisors
-#### [Andrew Whitehead, PhD](https://whiteheadresearch.wordpress.com/), UC-Davis 
-#### [Jon Puritz, PhD](https://www.marineevoeco.com/), University of Rhode Island 
-#### [Steven Roberts, PhD](http://faculty.washington.edu/sr320/?page_id=10850), University of Washington
-
+### Faculty Advisors {.unlisted .unnumbered}
+#### [Andrew Whitehead, PhD](https://whiteheadresearch.wordpress.com/), UC-Davis {.unlisted .unnumbered}
+#### [Jon Puritz, PhD](https://www.marineevoeco.com/), University of Rhode Island {.unlisted .unnumbered}
+#### [Steven Roberts, PhD](http://faculty.washington.edu/sr320/?page_id=10850), University of Washington {.unlisted .unnumbered}
 
 
 # Contact 
 For more information about the working group or panel seminars, contact Katherine Silliman: kes0132[at]auburn.edu  
 For more information about the reproducibility review and undergraduate internship, contact Sam Bogan: snbogan[at]ucsb.edu
 
-
-
-``````{r, echo=FALSE,eval=FALSE}
-library(knitr)
-my.jekyll.site <- "marineomics.github.io"
-KnitPost <- function(input, base.url = my.jekyll.site) {
-  opts_knit$set(base.url = base.url)
-  fig.path <- paste0("images/", sub(".Rmd$", "", basename(input)), "/")
-  opts_chunk$set(fig.path = fig.path)
-  opts_chunk$set(fig.cap = "center")
-  render_jekyll()
-  knit(input, envir = parent.frame())
-}
-
-setwd("~/Postdoc_Projects/RCN_MarineOmics/Website/marineomics.github.io/")
-KnitPost("~/Postdoc_Projects/RCN_MarineOmics/Website/marineomics.github.io/index.Rmd")
-
-```
