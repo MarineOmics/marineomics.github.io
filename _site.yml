@@ -32,7 +32,7 @@ output:
     toc_depth: 3
     theme: cosmo
     css: tutorial.css
-#    includes:
-#      before_body: header.html
+    includes:
+      before_body: header.html
       
 
