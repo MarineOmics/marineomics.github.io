@@ -16,7 +16,7 @@ cite_options(citation_format = "pandoc", max.names = 3, style = "html",
 ```
 
 # Population Genomic Sequencing Approaches
-Deciding on a sequencing approach for a new project can be challenging. Your choice depends primarily on the questions of interest, but also constraints set by funding, existing genomic resources, sample size, genome characteristics and expertise in the research group. 
+Deciding on a sequencing approach for a new project can be challenging. Your choice depends primarily on the questions of interest, but also constraints set by funding, existing genomic resources, sample size, genome characteristics and expertise in the research group.
 
 The main categories of population genomic sequencing approaches include...
 
@@ -25,10 +25,10 @@ Two approaches for whole-genome resequencing are distinguished by their coverage
 
 ### High coverage individual whole-genome resequencing (hcWGS)  {.unlisted .unnumbered}
 **Whole-genome resequencing (WGS)** is where whole genomes of multiple individuals are sequenced and mapped to an assembled reference genome in order to compare variable sites between individuals or populations.
-High-coverage (>20x) sequencing is able to find rare variants with high confidence. This approach is considered the is the 'gold standard' for DNA resequencing because it includes all variant types (i.e SNVs, indels, structural variants and CNVs) [@sims2014sequencing]. 
+High-coverage (>20x) sequencing is able to find rare variants with high confidence. This approach is considered the 'gold standard' for DNA re-sequencing because it includes all variant types (i.e SNVs, indels, structural variants and CNVs) [@sims2014sequencing].
 
 ### Low coverage individual WGS (lcWGS)  {.unlisted .unnumbered}
-**Low coverage whole genome sequencing (lcWGS)** is where whole genomes of many individuals are sequenced, but depth of coverage is so low (<5× per site per individual, on average [@nielsen2011genotype]) that individual genotypes cannot be confidently assigned . Instead of assigning specific, “hard called" genotypes, lcWGS data requires probabilistic analyses that account for uncertainty about the true genotype and can incorporate uncertainty across all sequenced samples [@korneliussen2014angsd]. This approach is useful in cases where the research questions of interest are targeted at the population-level (i.e. allele frequencies, linkage disequilibrium (LD) patterns, etc) [@Lou2021-me].
+**Low coverage whole genome sequencing (lcWGS)** is where whole genomes of many individuals are sequenced, but depth of coverage is so low (<5× per site per individual, on average [@nielsen2011genotype]) that individual genotypes cannot be confidently assigned. Instead of assigning specific (“hard called") genotypes, lcWGS data requires probabilistic analyses that account for uncertainty about the true genotype and can incorporate uncertainty across all sequenced samples [@korneliussen2014angsd]. This approach is useful in cases where the research questions of interest are targeted at the population-level (i.e. allele frequencies, linkage disequilibrium (LD) patterns, etc) [@Lou2021-me].
 
 ## 2) Reduced-representation sequencing {.unlisted .unnumbered}
 As the name suggests, this approach aims to sequence a reduced portion of the genome across multiple individuals at moderate to high coverage for variant discovery and genotyping with high confidence. The genome fragments can be selected at random, or through targeted probe assays. Variations of this type of sequencing approach include...
@@ -97,4 +97,4 @@ Presently, our site covers four approaches:
 For each approach, we provide guiding principles and tutorials for bioinformatic processing from raw data to genotypes. While we currently don't discuss library preparation methods in depth, we do include advice on how to organize your sequencing runs in order to improve quality control downstream.  
 
 
-References: 
+# References

@@ -13,12 +13,22 @@
 
 <title>Choosing a Population Genomics Approach</title>
 
+<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -28,12 +38,16 @@
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -46,30 +60,27 @@ if (window.hljs) {
 
 
 
+
 <style type="text/css">
-h1 {
-  font-size: 34px;
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
 }
-h1.title {
-  font-size: 38px;
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
 }
-h2 {
-  font-size: 30px;
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
 }
-h3 {
-  font-size: 24px;
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
 }
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
+div.csl-indent {
+  margin-left: 2em;
 }
 </style>
 
@@ -82,10 +93,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -102,40 +109,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -163,7 +143,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -175,7 +155,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -186,10 +166,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -201,7 +194,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -333,7 +325,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -413,7 +405,7 @@ div.tocify {
 
 </script>
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -430,28 +422,28 @@ div.tocify {
 <h2>1) Whole-genome resequencing</h2>
 <p>Two approaches for whole-genome resequencing are distinguished by their coverage depth. <strong>Coverage depth</strong> refers to the average number of sequencing reads per region of the genome (distinct from coverage breadth, see <span class="citation">(Sims et al. 2014)</span>). With more sequencing reads at a region (higher coverage), errors that arise during sequencing have a smaller impact on accurately identifying variable sites (termed “genotyping”) <span class="citation">(Fuentes-Pardo and Ruzzante 2017)</span>.</p>
 <div id="high-coverage-individual-whole-genome-resequencing-hcwgs" class="section level3 unlisted unnumbered">
-<h3>High coverage individual whole-genome resequencing (hcWGS)</h3>
-<p><strong>Whole-genome resequencing (WGS)</strong> is where whole genomes of multiple individuals are sequenced and mapped to an assembled reference genome in order to compare variable sites between individuals or populations. High-coverage (&gt;20x) sequencing is able to find rare variants with high confidence. This approach is considered the is the ‘gold standard’ for DNA resequencing because it includes all variant types (i.e SNVs, indels, structural variants and CNVs) <span class="citation">(Sims et al. 2014)</span>.</p>
+<h3 class="unlisted unnumbered">High coverage individual whole-genome resequencing (hcWGS)</h3>
+<p><strong>Whole-genome resequencing (WGS)</strong> is where whole genomes of multiple individuals are sequenced and mapped to an assembled reference genome in order to compare variable sites between individuals or populations. High-coverage (&gt;20x) sequencing is able to find rare variants with high confidence. This approach is considered the ‘gold standard’ for DNA re-sequencing because it includes all variant types (i.e SNVs, indels, structural variants and CNVs) <span class="citation">(Sims et al. 2014)</span>.</p>
 </div>
 <div id="low-coverage-individual-wgs-lcwgs" class="section level3 unlisted unnumbered">
-<h3>Low coverage individual WGS (lcWGS)</h3>
-<p><strong>Low coverage whole genome sequencing (lcWGS)</strong> is where whole genomes of many individuals are sequenced, but depth of coverage is so low (&lt;5× per site per individual, on average <span class="citation">(Nielsen et al. 2011)</span>) that individual genotypes cannot be confidently assigned . Instead of assigning specific, “hard called” genotypes, lcWGS data requires probabilistic analyses that account for uncertainty about the true genotype and can incorporate uncertainty across all sequenced samples <span class="citation">(Korneliussen, Albrechtsen, and Nielsen 2014)</span>. This approach is useful in cases where the research questions of interest are targeted at the population-level (i.e. allele frequencies, linkage disequilibrium (LD) patterns, etc) <span class="citation">(Lou et al. 2021)</span>.</p>
+<h3 class="unlisted unnumbered">Low coverage individual WGS (lcWGS)</h3>
+<p><strong>Low coverage whole genome sequencing (lcWGS)</strong> is where whole genomes of many individuals are sequenced, but depth of coverage is so low (&lt;5× per site per individual, on average <span class="citation">(Nielsen et al. 2011)</span>) that individual genotypes cannot be confidently assigned. Instead of assigning specific (“hard called”) genotypes, lcWGS data requires probabilistic analyses that account for uncertainty about the true genotype and can incorporate uncertainty across all sequenced samples <span class="citation">(Korneliussen, Albrechtsen, and Nielsen 2014)</span>. This approach is useful in cases where the research questions of interest are targeted at the population-level (i.e. allele frequencies, linkage disequilibrium (LD) patterns, etc) <span class="citation">(Lou et al. 2021)</span>.</p>
 </div>
 </div>
 <div id="reduced-representation-sequencing" class="section level2 unlisted unnumbered">
-<h2>2) Reduced-representation sequencing</h2>
+<h2 class="unlisted unnumbered">2) Reduced-representation sequencing</h2>
 <p>As the name suggests, this approach aims to sequence a reduced portion of the genome across multiple individuals at moderate to high coverage for variant discovery and genotyping with high confidence. The genome fragments can be selected at random, or through targeted probe assays. Variations of this type of sequencing approach include…</p>
 <div id="radseqgenotype-by-sequencing" class="section level3 unlisted unnumbered">
-<h3>RADseq/Genotype-by-sequencing</h3>
+<h3 class="unlisted unnumbered">RADseq/Genotype-by-sequencing</h3>
 <p>A class of methods involving sequencing a subset of genomic regions randomly distributed throughout the genome, often using restriction enzymes (i.e. <strong>restriction site-associated DNA (RADseq)</strong>).</p>
 </div>
 <div id="targeted-capture-methods" class="section level3 unlisted unnumbered">
-<h3>Targeted capture methods</h3>
+<h3 class="unlisted unnumbered">Targeted capture methods</h3>
 <p>Sequence capture methods use a set of probes designed with a-priori knowledge to focus sequencing effort on a set of hundreds to tens of thousands of specific loci. Several capture approaches for non-model species can utilise other sequencing strategies to design probes corresponding to genomic regions (i.e. <strong>Whole-exome sequencing (WES)</strong>, see <span class="citation">(Jones and Good 2016)</span> for a review, <strong>Expressed Exome Capture Sequencing (eecSeq)</strong><span class="citation">(Puritz and Lotterhos 2018)</span>).</p>
 </div>
 </div>
 <div id="pooled-individuals-poolseq" class="section level2 unlisted unnumbered">
-<h2>3) Pooled individuals (Poolseq)</h2>
+<h2 class="unlisted unnumbered">3) Pooled individuals (Poolseq)</h2>
 <p>Sequencing pools of individuals to provide information on genome-wide population allele frequencies (see review in <span class="citation">(Futschik and Schlötterer 2010)</span>).</p>
 <div class="figure">
 <img src="images/mec16077-fig-0001-m.jpg" alt="" />
@@ -675,40 +667,42 @@ good if only interested in targeted regions
 <li><a href="poolseq.html">Poolseq</a></li>
 </ul>
 <p>For each approach, we provide guiding principles and tutorials for bioinformatic processing from raw data to genotypes. While we currently don’t discuss library preparation methods in depth, we do include advice on how to organize your sequencing runs in order to improve quality control downstream.</p>
-<p>References:</p>
-<div id="refs" class="references">
-<div id="ref-Benjelloun2019-dq">
-<p>Benjelloun, Badr, Frédéric Boyer, Ian Streeter, Wahid Zamani, Stefan Engelen, Adriana Alberti, Florian J Alberto, et al. 2019. “An Evaluation of Sequencing Coverage and Genotyping Strategies to Assess Neutral and Adaptive Diversity.” <em>Mol. Ecol. Resour.</em> 19 (6): 1497–1515. <a href="https://doi.org/10.1111/1755-0998.13070">https://doi.org/10.1111/1755-0998.13070</a>.</p>
 </div>
-<div id="ref-Dorant2019-fb">
-<p>Dorant, Yann, Laura Benestan, Quentin Rougemont, Eric Normandeau, Brian Boyle, Rémy Rochette, and Louis Bernatchez. 2019. “Comparing Pool-Seq, Rapture, and GBS Genotyping for Inferring Weak Population Structure: The American Lobster (Homarus Americanus) as a Case Study.” <em>Ecol. Evol.</em> 9 (11): 6606–23. <a href="https://doi.org/10.1002/ece3.5240">https://doi.org/10.1002/ece3.5240</a>.</p>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Benjelloun2019-dq" class="csl-entry">
+Benjelloun, Badr, Frédéric Boyer, Ian Streeter, Wahid Zamani, Stefan Engelen, Adriana Alberti, Florian J Alberto, et al. 2019. <span>“An Evaluation of Sequencing Coverage and Genotyping Strategies to Assess Neutral and Adaptive Diversity.”</span> <em>Mol. Ecol. Resour.</em> 19 (6): 1497–1515. <a href="https://doi.org/10.1111/1755-0998.13070">https://doi.org/10.1111/1755-0998.13070</a>.
 </div>
-<div id="ref-Fuentes-Pardo2017-nu">
-<p>Fuentes-Pardo, Angela P, and Daniel E Ruzzante. 2017. “Whole-Genome Sequencing Approaches for Conservation Biology: Advantages, Limitations and Practical Recommendations.” <em>Mol. Ecol.</em> 26 (20): 5369–5406. <a href="https://doi.org/10.1111/mec.14264">https://doi.org/10.1111/mec.14264</a>.</p>
+<div id="ref-Dorant2019-fb" class="csl-entry">
+Dorant, Yann, Laura Benestan, Quentin Rougemont, Eric Normandeau, Brian Boyle, Rémy Rochette, and Louis Bernatchez. 2019. <span>“Comparing Pool-Seq, Rapture, and <span>GBS</span> Genotyping for Inferring Weak Population Structure: The American Lobster (Homarus Americanus) as a Case Study.”</span> <em>Ecol. Evol.</em> 9 (11): 6606–23. <a href="https://doi.org/10.1002/ece3.5240">https://doi.org/10.1002/ece3.5240</a>.
 </div>
-<div id="ref-futschik2010next">
-<p>Futschik, Andreas, and Christian Schlötterer. 2010. “The Next Generation of Molecular Markers from Massively Parallel Sequencing of Pooled Dna Samples.” <em>Genetics</em> 186 (1): 207–18.</p>
+<div id="ref-Fuentes-Pardo2017-nu" class="csl-entry">
+Fuentes-Pardo, Angela P, and Daniel E Ruzzante. 2017. <span>“Whole-Genome Sequencing Approaches for Conservation Biology: Advantages, Limitations and Practical Recommendations.”</span> <em>Mol. Ecol.</em> 26 (20): 5369–5406. <a href="https://doi.org/10.1111/mec.14264">https://doi.org/10.1111/mec.14264</a>.
 </div>
-<div id="ref-jones2016targeted">
-<p>Jones, Matthew R, and Jeffrey M Good. 2016. “Targeted Capture in Evolutionary and Ecological Genomics.” <em>Molecular Ecology</em> 25 (1): 185–202.</p>
+<div id="ref-futschik2010next" class="csl-entry">
+Futschik, Andreas, and Christian Schlötterer. 2010. <span>“The Next Generation of Molecular Markers from Massively Parallel Sequencing of Pooled DNA Samples.”</span> <em>Genetics</em> 186 (1): 207–18.
 </div>
-<div id="ref-korneliussen2014angsd">
-<p>Korneliussen, Thorfinn Sand, Anders Albrechtsen, and Rasmus Nielsen. 2014. “ANGSD: Analysis of Next Generation Sequencing Data.” <em>BMC Bioinformatics</em> 15 (1): 1–13.</p>
+<div id="ref-jones2016targeted" class="csl-entry">
+Jones, Matthew R, and Jeffrey M Good. 2016. <span>“Targeted Capture in Evolutionary and Ecological Genomics.”</span> <em>Molecular Ecology</em> 25 (1): 185–202.
 </div>
-<div id="ref-Lou2021-me">
-<p>Lou, Runyang Nicolas, Arne Jacobs, Aryn P Wilder, and Nina Overgaard Therkildsen. 2021. “A Beginner’s Guide to Low-Coverage Whole Genome Sequencing for Population Genomics.” <em>Mol. Ecol.</em>, July. <a href="https://doi.org/10.1111/mec.16077">https://doi.org/10.1111/mec.16077</a>.</p>
+<div id="ref-korneliussen2014angsd" class="csl-entry">
+Korneliussen, Thorfinn Sand, Anders Albrechtsen, and Rasmus Nielsen. 2014. <span>“ANGSD: Analysis of Next Generation Sequencing Data.”</span> <em>BMC Bioinformatics</em> 15 (1): 1–13.
 </div>
-<div id="ref-Matz2018-vl">
-<p>Matz, Mikhail V. 2018. “Fantastic Beasts and How to Sequence Them: Ecological Genomics for Obscure Model Organisms.” <em>Trends Genet.</em> 34 (2): 121–32. <a href="https://doi.org/10.1016/j.tig.2017.11.002">https://doi.org/10.1016/j.tig.2017.11.002</a>.</p>
+<div id="ref-Lou2021-me" class="csl-entry">
+Lou, Runyang Nicolas, Arne Jacobs, Aryn P Wilder, and Nina Overgaard Therkildsen. 2021. <span>“A Beginner’s Guide to Low-Coverage Whole Genome Sequencing for Population Genomics.”</span> <em>Mol. Ecol.</em>, July. <a href="https://doi.org/10.1111/mec.16077">https://doi.org/10.1111/mec.16077</a>.
 </div>
-<div id="ref-nielsen2011genotype">
-<p>Nielsen, Rasmus, Joshua S Paul, Anders Albrechtsen, and Yun S Song. 2011. “Genotype and Snp Calling from Next-Generation Sequencing Data.” <em>Nature Reviews Genetics</em> 12 (6): 443–51.</p>
+<div id="ref-Matz2018-vl" class="csl-entry">
+Matz, Mikhail V. 2018. <span>“Fantastic Beasts and How to Sequence Them: Ecological Genomics for Obscure Model Organisms.”</span> <em>Trends Genet.</em> 34 (2): 121–32. <a href="https://doi.org/10.1016/j.tig.2017.11.002">https://doi.org/10.1016/j.tig.2017.11.002</a>.
 </div>
-<div id="ref-puritz2018expressed">
-<p>Puritz, Jonathan B, and Katie E Lotterhos. 2018. “Expressed Exome Capture Sequencing: A Method for Cost-Effective Exome Sequencing for All Organisms.” <em>Molecular Ecology Resources</em> 18 (6): 1209–22.</p>
+<div id="ref-nielsen2011genotype" class="csl-entry">
+Nielsen, Rasmus, Joshua S Paul, Anders Albrechtsen, and Yun S Song. 2011. <span>“Genotype and SNP Calling from Next-Generation Sequencing Data.”</span> <em>Nature Reviews Genetics</em> 12 (6): 443–51.
 </div>
-<div id="ref-sims2014sequencing">
-<p>Sims, David, Ian Sudbery, Nicholas E Ilott, Andreas Heger, and Chris P Ponting. 2014. “Sequencing Depth and Coverage: Key Considerations in Genomic Analyses.” <em>Nature Reviews Genetics</em> 15 (2): 121–32.</p>
+<div id="ref-puritz2018expressed" class="csl-entry">
+Puritz, Jonathan B, and Katie E Lotterhos. 2018. <span>“Expressed Exome Capture Sequencing: A Method for Cost-Effective Exome Sequencing for All Organisms.”</span> <em>Molecular Ecology Resources</em> 18 (6): 1209–22.
+</div>
+<div id="ref-sims2014sequencing" class="csl-entry">
+Sims, David, Ian Sudbery, Nicholas E Ilott, Andreas Heger, and Chris P Ponting. 2014. <span>“Sequencing Depth and Coverage: Key Considerations in Genomic Analyses.”</span> <em>Nature Reviews Genetics</em> 15 (2): 121–32.
 </div>
 </div>
 </div>
@@ -724,7 +718,7 @@ good if only interested in targeted regions
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -742,7 +736,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
