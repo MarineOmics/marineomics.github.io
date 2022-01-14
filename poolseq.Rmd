@@ -177,7 +177,7 @@ exit
 ## Compiling SNPs for all samples
 This script compiles all the identified SNPs for each sample into a matrix. This sync file format is required for downstream analyses such as Fst, creating Manhattan plots, or CMH tests to be used in both the PoPoolation and PoPoolation2 pipelines. You will want to make sure that the --fastq-type flag is set to "sanger" (this is for Phred quality score matching--yes, this is correct even if you used Illumina sequencing). The min-qual flag must be above 0, the default is 20 which gives you a 99% base call accuracy rate).
 
-What is an Mpileup file?\
+**What is an Mpileup file?**\
 Pileup format is a text-based format for summarizing the base calls of aligned reads to a reference sequence. This format facilitates visual display of SNP/indel calling and alignment. (Source: Wikipedia)
 ```{bash eval = FALSE}
 #!/bin/bash
@@ -218,34 +218,33 @@ samtools mpileup -f full_genome_mito_tigs.fasta SD_out.sorted > SD.mpileup
 ```
 
 ## Pop Gen and Downstream Statistical Analyses
-These in-depth notes are not on the tutorial or manual page, but detailed descriptions for each flag can be found using the --help option when running each script. e.g. perl fst-sliding.pl --help
+These in-depth notes are not on the tutorial or manual page, but detailed descriptions for each flag can be found using the `--help` option when running each script. e.g. `perl fst-sliding.pl --help`
 
 You will want to play around with the min-coverage, max-coverage, and min-count based on the mean coverage of your samples/populations. Minimum coverages that are too high and max coverages that are too low may result in an empty output file, which is why it's a good idea to have an estimate of your mean/min/max coverage for each sample/population. The minimum count must be less than the minimum coverage. You may want to modify this flag based on the number of individuals pooled per sample/population.
 
 ***Important considerations:***\
---suppress-noninformative: Output files will not report results for windows with no SNPs or insufficient coverage. Including this flag will make it easier for downstream manipulation of the output file, such as creating figures.
+`--suppress-noninformative`: Output files will not report results for windows with no SNPs or insufficient coverage. Including this flag will make it easier for downstream manipulation of the output file, such as creating figures.
 
---pool-size: the number of individuals pooled per sample; If the pool sizes differ among each sample, you can provide the size for each sample individually:
+`--pool-size`: the number of individuals pooled per sample; If the pool sizes differ among each sample, you can provide the size for each sample individually:
     --pool-size 500 .. all samples/populations have a pool size of 500
     --pool-size 500:300:600 .. first sample/population has a pool size of 500, the second of 300 etc;
 
---min-coverage: the minimum coverage used for SNP identification, the coverage in ALL samples/populations has to be     higher or equal to this threshold, otherwise no SNP will be called. default=4
+`--min-coverage`: the minimum coverage used for SNP identification, the coverage in ALL samples/populations has to be     higher or equal to this threshold, otherwise no SNP will be called. default=4
 
---max-coverage: The maximum coverage; All populations are required to have coverages lower or equal than the maximum coverage; Mandatory
-The maximum coverage may be provided as one of the following:
-
- '500' a maximum coverage of 500 will be used for all samples/populations\
- '300,400,500' a maximum coverage of 300 will be used for the first sample/population, a maximum coverage of 400 for the second sample/population and so on\
- '2%' the 2% highest coverages will be ignored, this value is independently estimated for every sample/population
+`--max-coverage`: The maximum coverage; All populations are required to have coverages lower or equal than the maximum coverage; Mandatory.\
+The maximum coverage may be provided as one of the following:\
+`500` a maximum coverage of 500 will be used for all samples/populations\
+`300,400,500` a maximum coverage of 300 will be used for the first sample/population, a maximum coverage of 400 for the second sample/population and so on\
+`2%` the 2% highest coverages will be ignored, this value is independently estimated for every sample/population
 
 ***NOTE ABOUT MAX COVERAGE***\
 When genotyping individually barcoded samples, max coverage requirements are generally not recommended. However, pool-seq analyses require a max coverage for calculating Fst, cmh, allele frequency changes, etc. because allele frequency estimates are based on the number allele count, which are prone to PCR duplicates. PCR duplicates from a single individual in the pool may skew allele frequency estimates.
 
---min-covered-fraction:the minimum fraction of a window being between min-coverage and max-coverage in ALL                    samples/populations; float; default=0.0   
+`--min-covered-fraction`:the minimum fraction of a window being between min-coverage and max-coverage in ALL                    samples/populations; float; default=0.0   
     The tutorial provides an example script with a min-covered fraction of 1, however, you will most likely run into an       error or an empty output file. The min-covered-fraction flag must be smaller than 1: this flag defines what percent     of the window must meet the requirements (e.g. flags: min-count, min-coverage, max-coverage). It is most likely           impossible that your entire sequencing window will meet all of these requirements (unless of course you chose a         window size of 1 bp!).
 
 
---min-count: the minimum count of the minor allele, used for SNP identification. SNPs will be identified considering all samples/populations simultaneously. default=2. The minimum count MUST be smaller than the min-coverage flag for this script to run.
+`--min-count`: the minimum count of the minor allele, used for SNP identification. SNPs will be identified considering all samples/populations simultaneously. default=2. The minimum count MUST be smaller than the min-coverage flag for this script to run.
 
 
 ## Calculate sliding window Fst
@@ -277,7 +276,7 @@ exit
 
 ## Calculate Fisher's Exact Test
 This script will calculate significant allele frequency differences for each SNP position between two samples. Results can be plotted in a Manhattan plot. 
-Depending on the experimental method, the --window-summary-method flag can be used to determine p-value for windows of SNPs. The default is to multiply the p-value of all SNPs for the window. Alternatively, you can specify how p-values within a window should be summarized. Options include multiple, geometric mean, or median.  The summary of p-values within a window is dependent on the experimental design and how recent selection was expected to occur. For example, the default parameter might be appropriate if your treatment comparisons are geographically separated populations, where selection is expected to have occurred over hundreds of thousands of years. However, this might be inappropriate for short-term experimental evolution studies, such as the example dataset here. In this dataset, copepods were selected in the lab for 15-20 generations, therefore, we expect relatively large linkage blocks that prevent us from identifying the true targets of selection, and therefore I use the geometric mean option.
+Depending on the experimental method, the `--window-summary-method` flag can be used to determine p-value for windows of SNPs. The default is to multiply the p-value of all SNPs for the window. Alternatively, you can specify how p-values within a window should be summarized. Options include multiple, geometric mean, or median.  The summary of p-values within a window is dependent on the experimental design and how recent selection was expected to occur. For example, the default parameter might be appropriate if your treatment comparisons are geographically separated populations, where selection is expected to have occurred over hundreds of thousands of years. However, this might be inappropriate for short-term experimental evolution studies, such as the example dataset here. In this dataset, copepods were selected in the lab for 15-20 generations, therefore, we expect relatively large linkage blocks that prevent us from identifying the true targets of selection, and therefore I use the geometric mean option.
 
 ```{bash eval=FALSE}
 #!/bin/bash
