@@ -5,7 +5,7 @@ knitr::opts_chunk$set(echo = TRUE)
 title: "Introduction"
 ---
 
-The MarineOmics working group is part of the [RCN for Evolution in Changing Seas](https://rcn-ecs.github.io/), and was formed to promote **reproducible** and **robust** genomic research in nonmodel species, but especially marine and aquatic studies. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices as obsolete. To support robust 'omics research now and moving forward, the working group helps disseminate guidelines through this dynamic, open-sourced website. 
+The MarineOmics working group is part of the [RCN for Evolution in Changing Seas](https://rcn-ecs.github.io/), and was formed to promote **reproducible** and **robust** genomic research in nonmodel species, but especially marine and aquatic studies. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices obsolete. MarineOmics aims to support robust genomic research in ecology and evolution by disseminating guidelines through this dynamic, open-sourced website addressing introductory and advanced topics of population- and functional genomics. 
 
 **Rigorous**:  following best principles to identify and mitigate sources of error in data generation and analysis  
 
@@ -14,12 +14,12 @@ The MarineOmics working group is part of the [RCN for Evolution in Changing Seas
 
 # Guidelines for 'omics analyses 
 
-On this website you will find a growing and evolving collection of guidelines, tutorials, recommended readings, and method evaluations for various 'omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid "best practices", we aim to encourage data exploration and rigorous quality control through "best principles". The guidelines are written by members of the MarineOmics working group or the community, then shared for peer review. Comments on current website content or suggestions for new content can be made through the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions).
+On this website you will find a growing and evolving collection of guidelines, tutorials, recommended readings, and method evaluations for various 'omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid "best practices", we aim to encourage data exploration and rigorous quality control through "best principles", paying particular attention to topics for which open access guidelines are scarce. The guidelines are written by members of the MarineOmics working group or the community, then shared for peer review. Comments on current website content or suggestions for new content can be made through the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions).
 
 Based on the expertise of the MarineOmics working group, the first topics include:  
 
-## Topics {.tabset .tabset-fade .tabset-pills}
-### Population Genomics  
+### Topics {.tabset .tabset-fade .tabset-pills}
+#### Population Genomics  
 
 * [Choosing a population genomics sequencing approach](choosing-population-genetics.html)  
 * [Whole Genome Resequencing (WGS)](WGS_intro.html)  
@@ -27,12 +27,12 @@ Based on the expertise of the MarineOmics working group, the first topics includ
 * [Reduced Representation Sequencing](RADseq.html) 
 * [Poolseq](poolseq.html)
 
-### Functional Genomics  
+#### Functional Genomics  
 
 * Transcriptomics with RNA-Seq (coming soon!)  
 * Differential gene expression (coming soon!)  
 
-## {-}
+### {-}
 
 ### The guidelines portion of the website is still under peer review and should be considered a "preprint". If you are interested in contributing to the peer review process, check out the [Discussion Forum](discussion.html). {.unlisted .unnumbered}
 
@@ -40,20 +40,20 @@ Based on the expertise of the MarineOmics working group, the first topics includ
 To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we hosted [Q & A panel seminars](panels.html) with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on [YouTube](https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ)!
 
 # Reproducibility in Marine Genomics  
-The working group is also interested in evaluating and improving reproducibility in studies that use genomics to study adaptation in marine systems. utilizing genomics in marine species, through a peer-reviewed literature survey of data availability, code accessibility, and methods reproducibility. In Spring 2021, three undergraduate research interns contributed to this literature survey, with funding from the [RCN-ECS](https://rcn-ecs.github.io/). 
+Marineomics is also interested in evaluating and improving reproducibility in studies that use genomics to study adaptation in marine systems. We are conducting a meta-analysis of reproducibility across genomic studies of environmental adaptation in marine populations with the aim of identifying obstacles and opportunities for reproducing and synthesizing population genomic research. In Spring 2021, three undergraduate research interns contributed to this literature survey, with funding from the [RCN-ECS](https://rcn-ecs.github.io/). 
 
 # Working Group Members  
 
 #### [Katherine Silliman, PhD](https://ksilliman.weebly.com/), Auburn University - kes0132[at]auburn.edu {.unlisted .unnumbered}
 #### [Sam Bogan](http://www.hofmannlab.com/sam-bogan.html), UC-Santa Barbara -snbogan[at]ucsb.edu {.unlisted .unnumbered}
 #### [Alan Downey-Wall](https://cos.northeastern.edu/people/alan-downey-wall/), Northeastern University {.unlisted .unnumbered}
-#### Chris Mantegna, University of Washington  {.unlisted .unnumbered}
+#### Chris Mantegna, University of Washington (Intern)  {.unlisted .unnumbered}
 #### [Danielle Davenport](https://www.researchgate.net/profile/Danielle-Davenport-2), University of Queensland {.unlisted .unnumbered}  
 #### [Hanny Rivera, PhD](https://www2.whoi.edu/staff/hrivera/), Woods Hole Oceanographic Institute  {.unlisted .unnumbered}
-#### Jecy Klinkam, College of William and Mary  {.unlisted .unnumbered}
+#### Jecy Klinkam, College of William and Mary (Intern) {.unlisted .unnumbered}
 #### [Joanna Griffiths, PhD](https://joannasgriffiths.wordpress.com/), UC-Davis {.unlisted .unnumbered}
 #### [Joe McGirr, PhD](https://joemcgirr.github.io/), UC-Davis {.unlisted .unnumbered}
-#### Kaitlin Macaranas, CSU-Bakersfield {.unlisted .unnumbered}
+#### Kaitlin Macaranas, CSU-Bakersfield (Intern) {.unlisted .unnumbered}
 #### Megan Guidry, University of Rhode Island {.unlisted .unnumbered}
 #### Natalie Ameral, University of Rhode Island & RI Dept. of Environmental Management {.unlisted .unnumbered}  
 #### Nicolas Lou, Cornell University {.unlisted .unnumbered}
@@ -66,8 +66,10 @@ The working group is also interested in evaluating and improving reproducibility
 #### [Jon Puritz, PhD](https://www.marineevoeco.com/), University of Rhode Island {.unlisted .unnumbered}
 #### [Steven Roberts, PhD](http://faculty.washington.edu/sr320/?page_id=10850), University of Washington {.unlisted .unnumbered}
 
+# Internship 
+In Spring 2021, MarineOmics hosted three virtual undergraduate research interns with funding from the [RCN-ECS](https://rcn-ecs.github.io/): Jecy Klinkam, Kaitlin Macaranas, and Chris Mantegna. These interns were paired with graduate student mentors within the MarineOmics group, as well as participated in training activities while contributing to the Reproducibility literature review.
+
 
 # Contact 
-For more information about the working group or panel seminars, contact Katherine Silliman: kes0132[at]auburn.edu  
-For more information about the reproducibility review and undergraduate internship, contact Sam Bogan: snbogan[at]ucsb.edu
+For any and all inquiries about the MarineOmics Working Group, our website and its material, or other activities, please contact us at rcnecs.marineomics@gmail.com.
 
