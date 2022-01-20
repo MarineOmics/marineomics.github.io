@@ -13,7 +13,7 @@
 
 <title>Whole Genome Resequencing for Population Genomics</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -392,6 +392,16 @@ div.tocify {
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'G-53GH9PV49T', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
 <div id="header">
 
@@ -402,22 +412,37 @@ div.tocify {
 </div>
 
 
-<p>For the purposes of this guide, we use "whole genome (re)sequencing (WGS)) to refer to methods where a reference genome exists (whether for the focal species or a related species), and samples are sequenced and then mapped to most or all of the reference genome. This method can provide high density genetic variants (e.g., SNPs) and structural information for population genomic analyses, while also facilitating functional insights if the reference genome is functionally annotated. This is separate from whole-genome <em>de novo</em> sequencing, which aims to produce a reference genome by sequencing and assembling a complete genome for the first time.</p>
-<p>An excellent and thorough review of the methodology and consideration for WGS approaches, especially as they apply to nonmodel organisms, is <span class="citation">(Fuentes-Pardo and Ruzzante 2017)</span>.</p>
-<div id="tutorials" class="section level2">
-<h2>Tutorials</h2>
-<p>Here we provide a couple different tutorials by our working group members, as well as links to other detailed tutorials on the web. The goal of these MarineOmics tutorials are to provide extensive detail on “why” certain parameters are chosen, and some guidance on how to evaluate different parameter options to fit your data.</p>
-<div id="high-to-moderate-coverage-wgs" class="section level3">
-<h3>High to moderate coverage WGS</h3>
-<ul>
-<li><a href="fastq2vcf_pipeline.html">Fastq-to-VCF SnakeMate pipeline</a>: In-depth explanation of automated short-read mapping and variant calling pipeline maintained by <a href="https://github.com/harvardinformatics/shortRead_mapping_variantCalling">Harvard Informatics</a>. Useful for moderate to high coverage data, where <em>add description of why one would use pipeline</em><br />
-</li>
-<li><a href="WGS-Full-Walkthrough.html">Fastq-to-VCF workflow</a>: detailed walkthrough of processing 15x sequencing depth WGS data for cod, from raw reads to a VCF.</li>
-</ul>
+<p><br></p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>For the purpose of this guide, we use "whole genome (re)sequencing (WGS)) to refer to methods where a reference genome already exists (whether for the focal species or a related species), and uniquely barcoded samples are sequenced and then mapped to most or all of the reference genome. This method can provide high density genetic variants (e.g., SNPs) and structural information for population genomic analyses, while also facilitating functional insights if the reference genome is functionally annotated. This is separate from whole-genome <em>de novo</em> sequencing, which aims to produce a reference genome by sequencing and assembling a complete genome for a species for the first time.</p>
+<p>An excellent and thorough review of the methodology and consideration for WGS approaches, especially as they apply to non-model organisms, is <a href="https://doi.org/10.1111/mec.14264"><span class="citation">(Fuentes-Pardo and Ruzzante 2017)</span></a>. But briefly, current WGS approaches can be broadly categorized into two types: high-to-moderate-coverage WGS, and low-coverage WGS. Their major distinction is that with high-to-moderate-coverage WGS, each individual is sequenced at a depth with which genotype can be confidently called at most sites, whereas with low-coverage WGS, each individual is sequenced at a depth too low to call genotype with, and downstream analyses should take such genotype uncertainties into acount.</p>
+<p>However, the line between high-to-moderate-coverage WGS and low-coverage WGS is not always as clear-cut as presented above. For example, with moderate-coverage WGS (e.g. 5-20x), many sites within an individual can still have low coverage due to random sampling, resulting in unreliable genotype calls and/or missing data that can become problematic in downstream analysis. Therefore, it could be preferrable to avoid hard-calling genotypes with moderate-coverage WGS in certain applications. On the other hand, in populations with high levels of linkage disequilibrium (LD), it could be possible to leverage LD to carry out genotype imputation, making genotype calling a lot more accurate with low-coverage WGS data. Imputation is more likely to be successful when a high-quality reference panel exists in the system (<a href="https://www.science.org/doi/10.1126/science.aba4674">Fuller et al. 2020</a>, <a href="https://www.nature.com/articles/s41588-020-00756-0">Rubinacci et al. 2021</a>), but methods for imputation without such reference panels have also been developed (in which case a very large sample size would be required, <a href="https://www.nature.com/articles/ng.3594">Davis et al. 2016</a>).</p>
+<p>This said, here are the main differences between these two approaches in practice: with same sample size, high-to-moderate-coverage WGS tends to provide higher resolution data that are more versatile and less susceptible to technical artefacts (especially those caused by sequencing errors) when compared with low-coverage WGS, but it could be a lot more costly. Low-coverage WGS, in contrast, can be used to achieve higher sample size with a fixed budget, which can then contribute to higher-resolution population-level inferences, but it does require a different computational toolbox that takes genotype uncertainties into account, and is thus constrained by limitations of the current toolbox (see Section 6 in <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077"><span class="citation">(Lou et al. 2021)</span></a> for a more detailed discussion on this).</p>
+<p><br></p>
 </div>
-<div id="low-coverage-wgs" class="section level3">
-<h3>Low coverage WGS</h3>
-<p>Check out <span class="citation">(Lou et al. 2021)</span>(<a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077" class="uri">https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077</a>) and the associated <a href="https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md">Github repository</a> for a great primer on lcWGS analysis.</p>
+<div id="tutorials" class="section level1">
+<h1>Tutorials</h1>
+<p>Here we provide a couple different tutorials by our working group members, as well as links to other detailed tutorials on the web. The goal of these MarineOmics tutorials are to provide extensive details on “why” certain parameters are chosen, and some guidance on how to evaluate different parameter options to fit your data.</p>
+<p><br></p>
+<div id="high-to-moderate-coverage-wgs" class="section level2">
+<h2>High to moderate coverage WGS</h2>
+<ul>
+<li><p><a href="fastq2vcf_pipeline.html">Fastq-to-VCF SnakeMake pipeline</a>: in-depth explanation of an automated short-read mapping and variant calling pipeline maintained by <a href="https://github.com/harvardinformatics/shortRead_mapping_variantCalling">Harvard Informatics</a>. Useful if you plan to adopt this pre-packaged automated and parallelizable pipeline, would like to understand its different components but not necessarily change it substantially.</p></li>
+<li><p><a href="WGS-Full-Walkthrough.html">Fastq-to-VCF workflow</a>: detailed walkthrough of processing 15x sequencing depth WGS data for cod, from raw reads to a VCF. Useful if you would like to run each component of the pipeline yourself and potentially tweak some of them for your own purpose. In other words, you can more easily add, skip, or change parts of this pipeline, but will lose the convenience offered by an automated pipeline.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="low-coverage-wgs" class="section level2">
+<h2>Low coverage WGS</h2>
+<p>The quality control and read alignment part of the pipeline for high-to-moderate-coverage WGS also applies for low-coverage WGS. Therefore, the two tutorials for high-to-moderate-coverage WGS are also useful for low-coverage WGS until the point where variants and genotypes are called. In addition to these, here are some resources specifically designed for low-coverage WGS.</p>
+<ul>
+<li><p><a href="https://github.com/nt246/lcwgs-guide-tutorial">Low-coverage WGS tutorial</a>: a tutorial for the processing and analysis of low-coverage WGS data (i.e. from raw fastq files to population genomic inference), with example datasets and hands-on exercises. It is associated with the paper <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077"><span class="citation">(Lou et al. 2021)</span></a>.</p></li>
+<li><p><a href="https://github.com/therkildsen-lab/batch-effect/blob/main/tutorial/tutorial.md">Detection and mitigation of batch effects</a>: a tutorial for the detection and mitigation of batch effects with low-coverage WGS data, with example datasets and hands-on exercises. It is associated with the paper <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.13559">(Lou and Therkildsen 2021)</a>.</p></li>
+<li><p><a href="https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md">Low-coverage WGS data analysis pipeline</a>: a collection of scripts for the efficient and reproducible analysis of low-coverage WGS data (i.e. from bam to population genomic inference).</p></li>
+<li><p><a href="https://github.com/therkildsen-lab/data-processing/blob/master/lcwgs_data_processing.md">Low-coverage WGS data processing pipeline</a>: a collection of script for the efficient and reproducible processing of low-coverage WGS data (i.e. from raw fastq to bam). This pipeline should also be compatible with high-to-moderate-coverage WGS data.</p></li>
+</ul>
+<p><br></p>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
