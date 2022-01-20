@@ -48,7 +48,7 @@ The quality control and read alignment part of the pipeline for high-to-moderate
 
 * [Low-coverage WGS tutorial](https://github.com/nt246/lcwgs-guide-tutorial): a tutorial for the processing and analysis of low-coverage WGS data (i.e. from raw fastq files to population genomic inference), with example datasets and hands-on exercises. It is associated with the paper [[@Lou2021-me]](https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077).
 
-* [Detection and mitigation of batch effects](https://github.com/therkildsen-lab/batch-effect/blob/main/tutorial/tutorial.md): a tutorial for the detection and mitigation of batch effects with low-coverage WGS data, with example datasets and hands-on exercises. It is associated with the paper [(Lou and Therkildsen 2021)](https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.13559).
+* [Detection and mitigation of batch effects](https://github.com/therkildsen-lab/batch-effect/blob/main/tutorial/tutorial.md): a tutorial for the detection and mitigation of batch effects with low-coverage WGS data, with example datasets and hands-on exercises. It is associated with the paper [@Lou2021-ew](https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.13559).
 
 * [Low-coverage WGS data analysis pipeline](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md): a collection of scripts for the efficient and reproducible analysis of low-coverage WGS data (i.e. from bam to population genomic inference).
 
