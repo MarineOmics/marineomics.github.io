@@ -1,6 +1,7 @@
 ---
 bibliography: RCN_site-Nov05.bib
 title:  Whole Genome Resequencing for Population Genomics 
+subtitle: '*Katherine Silliman, Nicolas Lou*'
 ---
 
 ```{r setup, include=FALSE}
