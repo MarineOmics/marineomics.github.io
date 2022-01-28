@@ -13,8 +13,8 @@
 
 <title>Whole Genome Resequencing for Population Genomics</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -408,6 +408,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Whole Genome Resequencing for Population Genomics</h1>
+<h3 class="subtitle"><em>Katherine Silliman, Nicolas Lou</em></h3>
 
 </div>
 
@@ -417,7 +418,7 @@ div.tocify {
 <h1>Introduction</h1>
 <p>For the purpose of this guide, we use "whole genome (re)sequencing (WGS)) to refer to methods where a reference genome already exists (whether for the focal species or a related species), and uniquely barcoded samples are sequenced and then mapped to most or all of the reference genome. This method can provide high density genetic variants (e.g., SNPs) and structural information for population genomic analyses, while also facilitating functional insights if the reference genome is functionally annotated. This is separate from whole-genome <em>de novo</em> sequencing, which aims to produce a reference genome by sequencing and assembling a complete genome for a species for the first time.</p>
 <p>An excellent and thorough review of the methodology and consideration for WGS approaches, especially as they apply to non-model organisms, is <a href="https://doi.org/10.1111/mec.14264"><span class="citation">(Fuentes-Pardo and Ruzzante 2017)</span></a>. But briefly, current WGS approaches can be broadly categorized into two types: high-to-moderate-coverage WGS, and low-coverage WGS. Their major distinction is that with high-to-moderate-coverage WGS, each individual is sequenced at a depth with which genotype can be confidently called at most sites, whereas with low-coverage WGS, each individual is sequenced at a depth too low to call genotype with, and downstream analyses should take such genotype uncertainties into acount.</p>
-<p>However, the line between high-to-moderate-coverage WGS and low-coverage WGS is not always as clear-cut as presented above. For example, with moderate-coverage WGS (e.g. 5-20x), many sites within an individual can still have low coverage due to random sampling, resulting in unreliable genotype calls and/or missing data that can become problematic in downstream analysis. Therefore, it could be preferrable to avoid hard-calling genotypes with moderate-coverage WGS in certain applications. On the other hand, in populations with high levels of linkage disequilibrium (LD), it could be possible to leverage LD to carry out genotype imputation, making genotype calling a lot more accurate with low-coverage WGS data. Imputation is more likely to be successful when a high-quality reference panel exists in the system (<a href="https://www.science.org/doi/10.1126/science.aba4674">Fuller et al. 2020</a>, <a href="https://www.nature.com/articles/s41588-020-00756-0">Rubinacci et al. 2021</a>), but methods for imputation without such reference panels have also been developed (in which case a very large sample size would be required, <a href="https://www.nature.com/articles/ng.3594">Davis et al. 2016</a>).</p>
+<p>However, the line between high-to-moderate-coverage WGS and low-coverage WGS is not always as clear-cut as presented above. For example, with moderate-coverage WGS (e.g. 5-20x), many sites within an individual can still have low coverage due to random sampling, resulting in unreliable genotype calls and/or missing data that can become problematic in downstream analysis. Therefore, it could be preferrable to avoid hard-calling genotypes with moderate-coverage WGS in certain applications. On the other hand, in populations with high levels of linkage disequilibrium (LD), it could be possible to leverage LD to carry out genotype imputation, making genotype calling a lot more accurate with low-coverage WGS data. Imputation is more likely to be successful when a high-quality reference panel exists in the system (<span class="citation">(Fuller et al. 2020)</span>(<a href="https://www.science.org/doi/10.1126/science.aba4674" class="uri">https://www.science.org/doi/10.1126/science.aba4674</a>), <span class="citation">(Rubinacci et al. 2021)</span>(<a href="https://www.nature.com/articles/s41588-020-00756-0" class="uri">https://www.nature.com/articles/s41588-020-00756-0</a>)), but methods for imputation without such reference panels have also been developed (in which case a very large sample size would be required, <span class="citation">(Davies et al. 2016)</span>(<a href="https://www.nature.com/articles/ng.3594" class="uri">https://www.nature.com/articles/ng.3594</a>)).</p>
 <p>This said, here are the main differences between these two approaches in practice: with same sample size, high-to-moderate-coverage WGS tends to provide higher resolution data that are more versatile and less susceptible to technical artefacts (especially those caused by sequencing errors) when compared with low-coverage WGS, but it could be a lot more costly. Low-coverage WGS, in contrast, can be used to achieve higher sample size with a fixed budget, which can then contribute to higher-resolution population-level inferences, but it does require a different computational toolbox that takes genotype uncertainties into account, and is thus constrained by limitations of the current toolbox (see Section 6 in <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077"><span class="citation">(Lou et al. 2021)</span></a> for a more detailed discussion on this).</p>
 <p><br></p>
 </div>
@@ -438,7 +439,7 @@ div.tocify {
 <p>The quality control and read alignment part of the pipeline for high-to-moderate-coverage WGS also applies for low-coverage WGS. Therefore, the two tutorials for high-to-moderate-coverage WGS are also useful for low-coverage WGS until the point where variants and genotypes are called. In addition to these, here are some resources specifically designed for low-coverage WGS.</p>
 <ul>
 <li><p><a href="https://github.com/nt246/lcwgs-guide-tutorial">Low-coverage WGS tutorial</a>: a tutorial for the processing and analysis of low-coverage WGS data (i.e. from raw fastq files to population genomic inference), with example datasets and hands-on exercises. It is associated with the paper <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077"><span class="citation">(Lou et al. 2021)</span></a>.</p></li>
-<li><p><a href="https://github.com/therkildsen-lab/batch-effect/blob/main/tutorial/tutorial.md">Detection and mitigation of batch effects</a>: a tutorial for the detection and mitigation of batch effects with low-coverage WGS data, with example datasets and hands-on exercises. It is associated with the paper <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.13559">(Lou and Therkildsen 2021)</a>.</p></li>
+<li><p><a href="https://github.com/therkildsen-lab/batch-effect/blob/main/tutorial/tutorial.md">Detection and mitigation of batch effects</a>: a tutorial for the detection and mitigation of batch effects with low-coverage WGS data, with example datasets and hands-on exercises. It is associated with the paper <span class="citation">(Lou and Therkildsen 2021)</span>(<a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.13559" class="uri">https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.13559</a>).</p></li>
 <li><p><a href="https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md">Low-coverage WGS data analysis pipeline</a>: a collection of scripts for the efficient and reproducible analysis of low-coverage WGS data (i.e. from bam to population genomic inference).</p></li>
 <li><p><a href="https://github.com/therkildsen-lab/data-processing/blob/master/lcwgs_data_processing.md">Low-coverage WGS data processing pipeline</a>: a collection of script for the efficient and reproducible processing of low-coverage WGS data (i.e. from raw fastq to bam). This pipeline should also be compatible with high-to-moderate-coverage WGS data.</p></li>
 </ul>
@@ -448,11 +449,23 @@ div.tocify {
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Davies2016-rq" class="csl-entry">
+Davies, Robert W, Jonathan Flint, Simon Myers, and Richard Mott. 2016. <span>“Rapid Genotype Imputation from Sequence Without Reference Panels.”</span> <em>Nat. Genet.</em> 48 (8): 965–69. <a href="https://doi.org/10.1038/ng.3594">https://doi.org/10.1038/ng.3594</a>.
+</div>
 <div id="ref-Fuentes-Pardo2017-nu" class="csl-entry">
 Fuentes-Pardo, Angela P, and Daniel E Ruzzante. 2017. <span>“Whole-Genome Sequencing Approaches for Conservation Biology: Advantages, Limitations and Practical Recommendations.”</span> <em>Mol. Ecol.</em> 26 (20): 5369–5406. <a href="https://doi.org/10.1111/mec.14264">https://doi.org/10.1111/mec.14264</a>.
 </div>
+<div id="ref-Fuller2020" class="csl-entry">
+Fuller, Zachary L., Veronique J. L. Mocellin, Luke A. Morris, Neal Cantin, Jihanne Shepherd, Luke Sarre, Julie Peng, et al. 2020. <span>“Population Genetics of the Coral &lt;i&gt;acropora Millepora&lt;/i&gt;: Toward Genomic Prediction of Bleaching.”</span> <em>Science</em> 369 (6501): eaba4674. <a href="https://doi.org/10.1126/science.aba4674">https://doi.org/10.1126/science.aba4674</a>.
+</div>
 <div id="ref-Lou2021-me" class="csl-entry">
 Lou, Runyang Nicolas, Arne Jacobs, Aryn P Wilder, and Nina Overgaard Therkildsen. 2021. <span>“A Beginner’s Guide to Low-Coverage Whole Genome Sequencing for Population Genomics.”</span> <em>Mol. Ecol.</em>, July. <a href="https://doi.org/10.1111/mec.16077">https://doi.org/10.1111/mec.16077</a>.
+</div>
+<div id="ref-Lou2021-ew" class="csl-entry">
+Lou, Runyang Nicolas, and Nina Overgaard Therkildsen. 2021. <span>“Batch Effects in Population Genomic Studies with Low-Coverage Whole Genome Sequencing Data: Causes, Detection, and Mitigation.”</span> <em>Authorea Preprints</em>, August. <a href="https://doi.org/10.22541/au.162791857.78788821/v2">https://doi.org/10.22541/au.162791857.78788821/v2</a>.
+</div>
+<div id="ref-Rubinacci2021-dm" class="csl-entry">
+Rubinacci, Simone, Diogo M Ribeiro, Robin J Hofmeister, and Olivier Delaneau. 2021. <span>“Efficient Phasing and Imputation of Low-Coverage Sequencing Data Using Large Reference Panels.”</span> <em>Nat. Genet.</em> 53 (1): 120–26. <a href="https://doi.org/10.1038/s41588-020-00756-0">https://doi.org/10.1038/s41588-020-00756-0</a>.
 </div>
 </div>
 </div>
