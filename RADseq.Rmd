@@ -31,7 +31,7 @@ knitr::opts_chunk$set(engine.opts = list(bash = "-l"))
 
 ```
 
-If you would like to run the R code examples that are scattered throughout the guide (recommended but not required!), you will need to install some R packages:  
+If you would like to run the R code examples that are scattered throughout the guide (recommended but not required!), you will need to install some R packages. Only need to run this code once:  
 ```{r, eval=F}
 install.packages("tidyverse")
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -43,25 +43,32 @@ BiocManager::install("SNPRelate")
 
 Now load those packages, if using:  
 ```{r}
-library(ggplot2)
-library(SeqArray)
-library(tidyverse)
-library(SNPRelate)
+library(SeqArray) # efficient storage and filtering of genomic data
+library(tidyverse) # plotting data formatting and manipulation
+library(SNPRelate) # PCA and other popgen analyses
 ```
 
-We also provide alternative coding examples that are based only on the command line, requiring these software packages: 
+We also provide optional alternative coding examples that are based only on the command line, requiring these software packages: 
 
 * [vcftools](https://vcftools.github.io/man_latest.html)
 * [gnuplot](https://riptutorial.com/gnuplot/example/11275/installation-or-setup)  
 
 # Reduced Representation Sequencing (RADseq/GBS)
 
-"Restriction-site   Associated   DNA   sequencing"  - RADseq - combines  restriction  enzymes  with next-gen, massively parallel,  short-read  sequencing. RADseq involves the use of restriction enzymes which are used to shear DNA at restriction enzyme cutsite. RADseq comes in different flavors. Double-digest RADseq (ddRAD; Peterson et al.,2012)  selects  markers  with  two  restriction enzymes  with  different  cut  frequencies. Genotype-by-Sequencing  (GBS;  [@Elshire2011-or])  uses  a  frequent-cutting  restriction  enzyme  with PCR size selection. There are a number of reviews comparing different RADseq.GBS methods (e.g., [@Andrews2016-ay]). In this guide we use the term "RADseq" to refer to any of these protocols, including those that don't involve random shearing of data. When recommendations are specific to a certain type of RAD/GBS, we will explicitly say so.  
+"Restriction-site   Associated   DNA   sequencing"  - RADseq - combines  restriction  enzymes  with next-gen, massively parallel,  short-read  sequencing. RADseq involves the use of restriction enzymes, which are used to shear DNA at restriction enzyme cutsites. RADseq comes in different flavors. Double-digest RADseq (ddRAD; [@Peterson2012-tr])  selects  markers  with  two  restriction enzymes  with  different  cut  frequencies. Genotype-by-Sequencing  (GBS;  [@Elshire2011-or])  uses  a  frequent-cutting  restriction  enzyme  with PCR size selection. There are a number of reviews comparing different RADseq and GBS methods (e.g., [@Andrews2016-ay]). In this guide we use the term "RADseq" to refer to any of these protocols, including those that don't involve random shearing of data. When recommendations are specific to a certain type of RAD/GBS, we will explicitly say so.  
 
 <!--Some aspects of RADseq data that are unique compared to whole genome resequencing (more):-->
 
-Using RADseq to generate single nucleotide polymorphisms (SNPs) involves 1) library preparation in the lab, 2) bioinformatic processing through assembly and/or mapping to a reference, then 3) filtering of SNPs and individuals for quality. All of these steps can (and will) introduce some error, so the goal is to minimize this error through mitigation steps at all three parts of the process. Every dataset is different [add more about philosophy over best practices].   
-Much of this guide is directly inspired by [this excellent review paper](https://onlinelibrary.wiley.com/doi/10.1111/mec.14792) by [@OLeary2018-iy], especially the section on minimizing errors due to library prep. We recommend reading and cross-referencing with this paper, and citing it if you follow its suggestions. Table 1 from this paper summarizes the various potential issues that can arise from RAD datasets and some mitigation steps. The goal of this guide is to expand on the O'Leary paper and provide some example code to help implement quality control and mitigation steps.
+Using RADseq to generate single nucleotide polymorphisms (SNPs) involves: 
+
+1. library preparation in the lab
+2. bioinformatic processing through assembly and/or mapping to a reference, then 
+3. filtering of SNPs and individuals for quality.  
+
+All of these steps can (and will) introduce some error, so the goal is to minimize this error through mitigation steps at all three parts of the process. Every dataset is different!  
+<!--add more about philosophy over best practices-->
+
+Much of this guide is directly inspired by [this excellent review paper](https://onlinelibrary.wiley.com/doi/10.1111/mec.14792) [@OLeary2018-iy], especially the section on minimizing errors due to library prep. We recommend reading and cross-referencing with this paper, and citing it if you follow its suggestions. Table 1 from this paper summarizes the various potential issues that can arise from RAD datasets and some mitigation steps. The goal of this guide is to expand on the O'Leary paper and provide some example code to help implement quality control and mitigation steps.
 
 ![Table 1 from [@OLeary2018-iy].](images/oleary_table1.png)
 
@@ -71,7 +78,9 @@ There are steps you can take before you even sequence RAD libraries that can hel
 
 * If this RAD/GBS method has not been done in your species or in your molecular lab setup before, spend some time optimizing the protocol using a representative subset of individuals. Then try to keep everything about the library prep as consistent as possible across samples (eg, DNA extraction kit, PCR cycles, sequencing platform). This isn't always possible, especially if you need to optimize the protocol for certain tricky samples. Just make sure to keep track of everything!   
 
-* Randomize samples across library prep batches and sequencing lanes! For example, if you are sequencing two different groups of samples on two different sequencing lanes, make sure they are randomized in respect to sample location or whatever your groups of interest are. If you are preparing groups of individuals in different batches to be pooled later, randomize across these batches. [Alicia Mastretta-Yanes](https://mastrettayanes-lab.org/) even recommends randomizing across DNA extractions, especially if the person doing the extractions is new to molecular work. This is to allow you to control for potential [batch effects](#batch) that are often observed with RAD data.  
+* Randomize samples across library prep batches and sequencing lanes! For example, if you are sequencing two different groups of samples on two different sequencing lanes, make sure they are randomized with respect to sample location or whatever your groups of interest are. If you are preparing groups of individuals in different batches to be pooled later, randomize across these batches. [Alicia Mastretta-Yanes](https://mastrettayanes-lab.org/) even recommends randomizing across DNA extractions, especially if the person doing the extractions is new to molecular work. This is to allow you to control for potential [batch effects](#batch) that are often observed with RAD data.  
+
+<!--ADW: add figure showing random plate design-->
 ```{r, eval = F, include=FALSE}
 # This code reads in a comma-delimited STRATA/meta-data file, randomises samples, and returns a file with wells and plates and duplicates which may be used to assist with plating libraries
 # ** TODO** will need to consider where to duplicate samples - need to consider STARTA, DOC, ect..?
@@ -94,7 +103,9 @@ data.out = cbind(
 
 ```
 * Keep track of all potential batch effect sources in a Metadata file (eg, storage conditions of tissue/DNA, date/method of DNA extraction, date/method library prep batch, sequencing lane).   
-* Have a core set of 2-4 technical sample replicates across all libraries. Ideally these are true technical replicates from library preparation to sequencing, but even just sequencing replicates can be useful for downstream quality control.
+* Have a core set of 2-4 technical sample replicates across all libraries. Ideally these are true technical replicates, meaning the same tissue/DNA sample is processed multiple times all the way from library preparation to sequencing. Sequencing replicates, where you sequence the same sample library preparation multiple times, can also be useful for downstream quality control.
+
+<!--ADW: add figure or text to define sequencing replicates vs technical replicates-->
 
 # Principles for Analyzing Your Data
 
@@ -109,6 +120,15 @@ This is just one approach for working through your data. Some people will prefer
 6) Run your optimized assembly on all non-removed samples.
 7) Evaluate the difference between multiple filtering schemes for your analyses of interest. *Popgen analysis guide coming soon*
 8) Repeat as needed.  
+
+1) [Look at your raw data.](#fastqc)
+2) [Run an assembly pipeline](#assembly), using either all samples or a representative subset.
+3) [Evaluate potential sources of error.](#error)
+4) [Remove individuals based on initial evaluation](#bad).  
+5) [Test a range of key parameters](#test) to optimize your assembly.
+6) Run your optimized assembly on all non-removed samples.
+7) [Filter your SNPs](#filter)
+8) Repeat as needed!  
 
 ## First, look at the raw data! {#fastqc}  
 Always look at your data with [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) before starting an assembly. First, this is a good check to just make sure the sequencing worked. If you have demultiplexed data, you can use [MultiQC](https://multiqc.info/) to generate FastQC plots for all individuals and quickly identify ones that did not sequence well.  
@@ -168,7 +188,7 @@ Some groups have also developed pipelines for specific flavors of RAD (e.g., [Ma
 ![Table 3 from LaCava et al 2019. CD-HIT is used in dDocent, VSEARCH is used in ipyrad.](images/lacavaTable3.png)
 
 
-## Evaluate potential confounding factors {#confound}
+## Evaluate potential sources of error {#error}
 
 Once you have processed your samples (or a subset of samples) through a genotyping pipeline, you will have a bunch of different output file options for genetic data. The VCF file is one of the most popular file formats, and is the most versatile for initial data exploration as many programs exist to filter and accept VCF files. Below are a list of potential confounding factors that may exist in your data, and how to tease them out.  
 
@@ -604,7 +624,7 @@ For RADseq, ideally you are generating an average of *at least* 10-20 sequence r
 
 Generating multiple sequencing reads per locus is helpful when calling SNPs in order to  distinguishing between reads with sequencing errors and.
 
-## Filtering SNPs
+## Filtering SNPs {#filter}
 ### (and embrace the missingness!) {.unlisted .unnumbered}  
 
 `r colorize("This section is still under development! Please contribute on Github or provide feedback in [Discussions](https://github.com/MarineOmics/marineomics.github.io/discussions)", "red")`
