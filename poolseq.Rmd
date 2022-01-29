@@ -3,10 +3,6 @@ title: "PoPoolation Pipeline"
 subtitle: '*Joanna Griffiths*'
 date: "8/12/2021"
 bibliography: RCN_site-Nov05.bib
-#output:
-#  html_document: default
-#  pdf_document: default
-#  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -216,6 +212,25 @@ samtools mpileup -f full_genome_mito_tigs.fasta SD_out.sorted > SD.mpileup
 
 ```
 
+Sample of a synchronized file:
+
+```{bash eval = FALSE}
+2  2302    N   0:7:0:0:0:0 0:7:0:0:0:0
+2  2303    N   0:8:0:0:0:0 0:8:0:0:0:0
+2  2304    N   0:0:9:0:0:0 0:0:9:0:0:0
+2  2305    N   1:0:9:0:0:0 0:0:9:1:0:0
+```
+
+* col1: reference contig
+* col2: position within the refernce contig
+* col3: reference character
+* col4: allele frequencies of population number 1
+* col5: allele frequencies of population number 2
+* coln: allele frequencies of population number n
+
+The allele frequencies are in the format A:T:C:G:N:del, i.e: count of bases 'A', count of bases 'T',... and deletion count in the end (character '*' in the mpileup)
+
+
 ## Pop Gen and Downstream Statistical Analyses
 These in-depth notes are not on the tutorial or manual page, but detailed descriptions for each flag can be found using the `--help` option when running each script. e.g. `perl fst-sliding.pl --help`
 
@@ -272,10 +287,31 @@ exit
 
 ```
 
+The following R script can be used to plot Fst results in a Manhattan plot
+```{r eval = FALSE}
+
+library("qqman")
+library("DataCombine")
+
+fst = read.table("all_PE_w10000_step10000.fst", header = T) 
+fst <- fst[c("CHR", "BP", "X1.11", "X1.12", "X2.11", "X2.12", "X3.11", "X3.12", "X4.11", "X4.12", "X5.11", "X5.12", "X6.11", "X6.12", "X7.11", "X7.12", "X8.11", "X8.12", "X9.11", "X9.12", "X10.11", "X10.12", "X11.12")] #rename column headers
+fst$ID <- paste(fst$CHR,fst$BP,sep=".")
+
+#tidying file
+Replaces <- data.frame(from=c("Chromosome_"), to=c(""))
+fst2 <- FindReplace(data = fst, Var = "CHR", replaceData = Replaces,
+                       from = "from", to = "to", exact = FALSE)
+fst2$CHR <- as.numeric(fst2$CHR)
+
+manhattan(fst2, chr="CHR", bp="BP", snp="ID", p="X1.11", suggestiveline = F, genomewideline = F, logp = F, ylim =c(0,1)) #p here refers to pvalue or in this case the Fst value, substitute with which column comparison you are interested in graphing
+
+```
+![Manhattan plot of mean Fst values for 10,000-bp windows of all the selected lines versus the pure Bodega population.](images/Fst_SvsBR_SDmap.png)
+
 
 ## Calculate Fisher's Exact Test
 This script will calculate significant allele frequency differences for each SNP position between two samples. Results can be plotted in a Manhattan plot. 
-Depending on the experimental method, the `--window-summary-method` flag can be used to determine p-value for windows of SNPs. The default is to multiply the p-value of all SNPs for the window. Alternatively, you can specify how p-values within a window should be summarized. Options include multiple, geometric mean, or median.  The summary of p-values within a window is dependent on the experimental design and how recent selection was expected to occur. For example, the default parameter might be appropriate if your treatment comparisons are geographically separated populations, where selection is expected to have occurred over hundreds of thousands of years. However, this might be inappropriate for short-term experimental evolution studies, such as the example dataset here. In this dataset, copepods were selected in the lab for 15-20 generations, therefore, we expect relatively large linkage blocks that prevent us from identifying the true targets of selection, and therefore I use the geometric mean option.
+Depending on the experimental method, the `--window-summary-method` flag can be used to determine p-value for windows of SNPs. The default is to multiply the p-value of all SNPs for the window. Alternatively, you can specify how p-values within a window should be summarized. Options include multiply, geometric mean, or median.  The summary of p-values within a window is dependent on the experimental design and how recent selection was expected to occur. For example, the default parameter might be appropriate if your treatment comparisons are geographically separated populations, where selection is expected to have occurred over hundreds of thousands of years. However, this might be inappropriate for short-term experimental evolution studies, such as the example dataset here. In this dataset, copepods were selected in the lab for 15-20 generations, therefore, we expect relatively large linkage blocks that prevent us from identifying the true targets of selection, and therefore I use the geometric mean option.
 
 ```{bash eval=FALSE}
 #!/bin/bash
@@ -293,9 +329,6 @@ date
 
 cd /work/jgrif61/Tigs/raw_data
 
-#You may need to run this on the command line to install twotailed perl Module before running Fisher-test.pl: 
-perl -MCPAN -e 'install Text::NSP::Measures::2D::Fisher2::twotailed', see also LSU HPC for details: http://www.hpc.lsu.edu/docs/faq/installation-details.php
-
 
 perl /work/jgrif61/Tigs/popoolation2_1201/fisher-test.pl --input all_indiv.sync --output all_indiv.fet --suppress-noninformative --min-count 2 --min-coverage 20 --max-coverage 200 --min-covered-fraction 0.2 --window-summary-method geometricmean
 
@@ -309,6 +342,7 @@ perl -MCPAN -e 'install Text::NSP::Measures::2D::Fisher2::twotailed'
 
 
 ## Calculate Exact Allele Frequencies in Samples
+Exact allele frequencies can be used to determine differences in allele frequencies among populations or before and after a selection experiment, for example. These result could be plotted in a PCA or Manhattan plot.
 ```{bash eval=FALSE}
 #!/bin/bash
 
@@ -331,6 +365,21 @@ date
 exit
 
 ```
+This script creates two output files having two different extensions:
+
+`_rc`: this file contains the major and minor alleles for every SNP in a concise format
+`_pwc`: this file contains the differences in allele frequencies for every pairwise comparision of the populations present in the synchronized file
+For details see the man pages of the script
+The allele frequency differences can be found in the `_pwc` file, a small sample:
+
+```{bash eval=FALSE}
+##chr   pos     rc      allele_count    allele_states   deletion_sum    snp_type        most_variable_allele    diff:1-2
+2      4459    N       2       C/T     0       pop     T       0.133
+2      9728    N       2       T/C     0       pop     T       0.116
+```
+
+The last column contains the obtained differences in allele frequencies for the allele provided in column 8. Note that in this example the last column refers to a pairwise comparison between population 1 vs 2, in case several populations are provided all pairwise comparisons will be appended in additional columns.
+
 
 ## Cochran-Mantel-Haenszel (CMH) test
 This script will detect consistent allele frequency changes in biological replicates.
@@ -450,11 +499,11 @@ write.table(cmh_p_ave_allchr2, file = "cmh_window_geomean_p", sep = "\t")
 
 
 ```
-
+I then analyzed the results of the CMH test by plotting the geometric mean for each 10,000bp window on a Manhattan plot.
 
 ## PoPoolation Pipelines for analyses
 ## Nucleotide Diversity
-Calculate Pi (nucleotide diversity) for individual samples. Use mpileup files that were created for a single sample as the input. Below is an example for one sample.
+Calculate Pi (nucleotide diversity) for individual samples. Use mpileup files that were created for a single sample as the input. Below is an example for one sample. 
 ```{bash eval=FALSE}
 #!/bin/bash
 
@@ -479,8 +528,137 @@ exit
 
 ```
 
+I used nucleotide diversity for creating a PCA plot to compare genetic diversity among my samples and to look for broad patterns across my data and I ran an Adonis test to determine if there were significant differences among groups (in this example, selected vs control lines)
+```{r eval=FALSE}
+
+#import each pi file and do some cleanup:
+pi_1S <- read.delim("1S.pi", header = F)
+colnames(pi_1S) <- c("Chromosome", "window", "num.snps", "frac", "pi_1S")
+pi_1S$ID <- paste(pi_1S$Chromosome, pi_1S$window, sep = '_')
+pi_1S <- pi_1S[!pi_1S$pi_1S == "na",] #remove rows with na
+pi_1S <- pi_1S[,c(6,5)]
+
+pi_1U <- read.delim("1U.pi", header = F)
+colnames(pi_1U) <- c("Chromosome", "window", "num.snps", "frac", "pi_1U")
+pi_1U$ID <- paste(pi_1U$Chromosome, pi_1U$window, sep = '_')
+pi_1U <- pi_1U[!pi_1U$pi_1U == "na",]
+pi_1U <- pi_1U[,c(6,5)]
+
+pi_2S <- read.delim("2S.pi", header = F)
+colnames(pi_2S) <- c("Chromosome", "window", "num.snps", "frac", "pi_2S")
+pi_2S$ID <- paste(pi_2S$Chromosome, pi_2S$window, sep = '_')
+pi_2S <- pi_2S[!pi_2S$pi_2S == "na",] #remove rows with na
+pi_2S <- pi_2S[,c(6,5)]
+
+pi_2U <- read.delim("2U.pi", header = F)
+colnames(pi_2U) <- c("Chromosome", "window", "num.snps", "frac", "pi_2U")
+pi_2U$ID <- paste(pi_2U$Chromosome, pi_2U$window, sep = '_')
+pi_2U <- pi_2U[!pi_2U$pi_2U == "na",]
+pi_2U <- pi_2U[,c(6,5)]
+
+pi_3S <- read.delim("3S.pi", header = F)
+colnames(pi_3S) <- c("Chromosome", "window", "num.snps", "frac", "pi_3S")
+pi_3S$ID <- paste(pi_3S$Chromosome, pi_3S$window, sep = '_')
+pi_3S <- pi_3S[!pi_3S$pi_3S == "na",] #remove rows with na
+pi_3S <- pi_3S[,c(6,5)]
+
+pi_4S <- read.delim("4S.pi", header = F)
+colnames(pi_4S) <- c("Chromosome", "window", "num.snps", "frac", "pi_4S")
+pi_4S$ID <- paste(pi_4S$Chromosome, pi_4S$window, sep = '_')
+pi_4S <- pi_4S[!pi_4S$pi_4S == "na",] #remove rows with na
+pi_4S <- pi_4S[,c(6,5)]
+
+pi_4U <- read.delim("4U.pi", header = F)
+colnames(pi_4U) <- c("Chromosome", "window", "num.snps", "frac", "pi_4U")
+pi_4U$ID <- paste(pi_4U$Chromosome, pi_4U$window, sep = '_')
+pi_4U <- pi_4U[!pi_4U$pi_4U == "na",]
+pi_4U <- pi_4U[,c(6,5)]
+
+pi_5S <- read.delim("5S.pi", header = F)
+colnames(pi_5S) <- c("Chromosome", "window", "num.snps", "frac", "pi_5S")
+pi_5S$ID <- paste(pi_5S$Chromosome, pi_5S$window, sep = '_')
+pi_5S <- pi_5S[!pi_5S$pi_5S == "na",] #remove rows with na
+pi_5S <- pi_5S[,c(6,5)]
+
+pi_5U <- read.delim("5U.pi", header = F)
+colnames(pi_5U) <- c("Chromosome", "window", "num.snps", "frac", "pi_5U")
+pi_5U$ID <- paste(pi_5U$Chromosome, pi_5U$window, sep = '_')
+pi_5U <- pi_5U[!pi_5U$pi_5U == "na",]
+pi_5U <- pi_5U[,c(6,5)]
+
+pi_6U <- read.delim("6U.pi", header = F)
+colnames(pi_6U) <- c("Chromosome", "window", "num.snps", "frac", "pi_6U")
+pi_6U$ID <- paste(pi_6U$Chromosome, pi_6U$window, sep = '_')
+pi_6U <- pi_6U[!pi_6U$pi_6U == "na",]
+pi_6U <- pi_6U[,c(6,5)]
+
+pi_SD <- read.delim("SD.pi", header = F)
+colnames(pi_SD) <- c("Chromosome", "window", "num.snps", "frac", "pi_SD")
+pi_SD$ID <- paste(pi_SD$Chromosome, pi_SD$window, sep = '_')
+pi_SD <- pi_SD[!pi_SD$pi_SD == "na",]
+pi_SD <- pi_SD[,c(6,5)]
+
+pi_BR <- read.delim("BR.pi", header = F)
+colnames(pi_BR) <- c("Chromosome", "window", "num.snps", "frac", "pi_BR")
+pi_BR$ID <- paste(pi_BR$Chromosome, pi_BR$window, sep = '_')
+pi_BR <- pi_BR[!pi_BR$pi_BR == "na",]
+pi_BR <- pi_BR[,c(6,5)]
+
+
+#merge all pi results into one file
+pi_all1 <- merge(pi_1S, pi_1U, by="ID")
+pi_all2 <- merge(pi_all1, pi_2S, by="ID")
+pi_all3 <- merge(pi_all2, pi_2U, by="ID")
+pi_all4 <- merge(pi_all3, pi_3S, by="ID")
+pi_all5 <- merge(pi_all4, pi_4S, by="ID")
+pi_all6 <- merge(pi_all5, pi_4U, by="ID")
+pi_all7 <- merge(pi_all6, pi_5S, by="ID")
+pi_all8 <- merge(pi_all7, pi_5U, by="ID")
+pi_all9 <- merge(pi_all8, pi_6U, by="ID")
+pi_all10 <- merge(pi_all9, pi_SD, by="ID")
+pi_all <- merge(pi_all10, pi_BR, by="ID")
+
+pi_all$pi_1S <- as.numeric(pi_all$pi_1S)
+pi_all$pi_1U <- as.numeric(pi_all$pi_1U)
+pi_all$pi_2S <- as.numeric(pi_all$pi_2S)
+pi_all$pi_2U <- as.numeric(pi_all$pi_2U)
+pi_all$pi_3S <- as.numeric(pi_all$pi_3S)
+pi_all$pi_4S <- as.numeric(pi_all$pi_4S)
+pi_all$pi_4U <- as.numeric(pi_all$pi_4U)
+pi_all$pi_5S <- as.numeric(pi_all$pi_5S)
+pi_all$pi_5U <- as.numeric(pi_all$pi_5U)
+pi_all$pi_6U <- as.numeric(pi_all$pi_6U)
+pi_all$pi_BR <- as.numeric(pi_all$pi_BR)
+pi_all$pi_SD <- as.numeric(pi_all$pi_SD)
+
+dds.pcoa=pcoa(vegdist(t((pi_all[,2:13])), method="euclidean")/1000)
+scores=dds.pcoa$vectors
+percent <- dds.pcoa$values$Eigenvalues
+percent / sum(percent) #percent for each axes; change in caption below
+
+windows()
+plot(scores[,1], scores[,2],
+     col=c("red", "blue", "red", "blue", "red", "red", "blue", "red", "blue", "blue", "black", "black"), 
+     pch = c(19,19,19,19,19,19,19,19,19,19,1,19),
+     xlab = "PC1 (24.33%)", ylab = "PC2 (21.24%)")
+
+treat_df <- data.frame(
+  ID = c("1S_pi", "1U_pi", "2S_pi", "2U_pi", "3S_pi", "4S_pi", "4U_pi", "5S_pi", "5U_pi","6U_pi"),
+  line = c("S", "U", "S", "U", "S", "S", "U", "S", "U", "U")
+)
+
+line <- treat_df$line
+
+adonis2(t(pi_all[,2:11])~line, data = treat_df, permutations = 1000000, method = "manhattan")
+
+
+```
+![Principle coordinate analysis of allele frequencies for selected lines (red), control lines (blue), the pure Bodega population (white), and the pure San Diego population (black).](images/pi_PCA.png)
+
 ## References
 
 Griffiths JS, Kawji Y, Kelly MW. 2020. An experimental test of adaptive introgression in locally adapted populations of splash pool copepods. Mol Biol and Evol. 38(4):1306-1316. https://doi.org/10.1093/molbev/msaa289
+
 Schlötterer C, Tobler R, Kofler R, Nolte V. 2014 Sequencing pools of individuals-mining genome-wide polymorphism data without big funding. Nat. Rev. Genet. 15, 749–763. (doi:10.1038/nrg3803)
+
 
