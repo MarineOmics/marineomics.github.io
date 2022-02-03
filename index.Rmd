@@ -4,7 +4,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ---
 title: "Introduction"
 ---
-Test
+
 The MarineOmics working group is part of the [RCN for Evolution in Changing Seas](https://rcn-ecs.github.io/), and was formed to promote **reproducible** and **robust** genomic research in nonmodel species, but especially marine and aquatic studies. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices obsolete. MarineOmics aims to support robust genomic research in ecology and evolution by disseminating guidelines through this dynamic, open-sourced website addressing introductory and advanced topics of population- and functional genomics. 
 
 **Rigorous**:  following best principles to identify and mitigate sources of error in data generation and analysis  
