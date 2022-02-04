@@ -13,8 +13,8 @@
 
 <title>RADseq</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -392,6 +392,16 @@ div.tocify {
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'G-53GH9PV49T', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
 <div id="header">
 
@@ -403,7 +413,7 @@ div.tocify {
 </div>
 
 
-<p>If you would like to run the R code examples that are scattered throughout the guide (recommended but not required!), you will need to install some R packages:</p>
+<p>If you would like to run the R code examples that are scattered throughout the guide (recommended but not required!), you will need to install some R packages. Only need to run this code once:</p>
 <pre class="r"><code>install.packages(&quot;tidyverse&quot;)
 if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
     install.packages(&quot;BiocManager&quot;)
@@ -411,21 +421,39 @@ if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
 BiocManager::install(&quot;SeqArray&quot;)
 BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
 <p>Now load those packages, if using:</p>
-<pre class="r"><code>library(ggplot2)
-library(SeqArray)
-library(tidyverse)
-library(SNPRelate)</code></pre>
-<p>We also provide alternative coding examples that are based only on the command line, requiring these software packages:</p>
+<pre class="r"><code>library(SeqArray) # efficient storage and filtering of genomic data</code></pre>
+<pre><code>## Loading required package: gdsfmt</code></pre>
+<pre class="r"><code>library(tidyverse) # plotting data formatting and manipulation</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.6     ✓ dplyr   1.0.7
+## ✓ tidyr   1.2.0     ✓ stringr 1.4.0
+## ✓ readr   2.1.2     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter()     masks stats::filter()
+## x stringr::fixed()    masks SeqArray::fixed()
+## x dplyr::group_rows() masks kableExtra::group_rows()
+## x dplyr::lag()        masks stats::lag()</code></pre>
+<pre class="r"><code>library(SNPRelate) # PCA and other popgen analyses</code></pre>
+<pre><code>## SNPRelate -- supported by Streaming SIMD Extensions 2 (SSE2)</code></pre>
+<p>We also provide optional alternative coding examples that are based only on the command line, requiring these software packages:</p>
 <ul>
 <li><a href="https://vcftools.github.io/man_latest.html">vcftools</a></li>
 <li><a href="https://riptutorial.com/gnuplot/example/11275/installation-or-setup">gnuplot</a></li>
 </ul>
 <div id="reduced-representation-sequencing-radseqgbs" class="section level1">
 <h1>Reduced Representation Sequencing (RADseq/GBS)</h1>
-<p>“Restriction-site Associated DNA sequencing” - RADseq - combines restriction enzymes with next-gen, massively parallel, short-read sequencing. RADseq involves the use of restriction enzymes which are used to shear DNA at restriction enzyme cutsite. RADseq comes in different flavors. Double-digest RADseq (ddRAD; Peterson et al.,2012) selects markers with two restriction enzymes with different cut frequencies. Genotype-by-Sequencing (GBS; <span class="citation">(Elshire et al. 2011)</span>) uses a frequent-cutting restriction enzyme with PCR size selection. There are a number of reviews comparing different RADseq.GBS methods (e.g., <span class="citation">(Andrews et al. 2016)</span>). In this guide we use the term “RADseq” to refer to any of these protocols, including those that don’t involve random shearing of data. When recommendations are specific to a certain type of RAD/GBS, we will explicitly say so.</p>
+<p>“Restriction-site Associated DNA sequencing” - RADseq - combines restriction enzymes with next-gen, massively parallel, short-read sequencing. RADseq involves the use of restriction enzymes, which are used to shear DNA at restriction enzyme cutsites. RADseq comes in different flavors. Double-digest RADseq (ddRAD; <span class="citation">(Peterson et al. 2012)</span>) selects markers with two restriction enzymes with different cut frequencies. Genotype-by-Sequencing (GBS; <span class="citation">(Elshire et al. 2011)</span>) uses a frequent-cutting restriction enzyme with PCR size selection. There are a number of reviews comparing different RADseq and GBS methods (e.g., <span class="citation">(Andrews et al. 2016)</span>). In this guide we use the term “RADseq” to refer to any of these protocols, including those that don’t involve random shearing of data. When recommendations are specific to a certain type of RAD/GBS, we will explicitly say so.</p>
 <!--Some aspects of RADseq data that are unique compared to whole genome resequencing (more):-->
-<p>Using RADseq to generate single nucleotide polymorphisms (SNPs) involves 1) library preparation in the lab, 2) bioinformatic processing through assembly and/or mapping to a reference, then 3) filtering of SNPs and individuals for quality. All of these steps can (and will) introduce some error, so the goal is to minimize this error through mitigation steps at all three parts of the process. Every dataset is different [add more about philosophy over best practices].<br />
-Much of this guide is directly inspired by <a href="https://onlinelibrary.wiley.com/doi/10.1111/mec.14792">this excellent review paper</a> by <span class="citation">(O’Leary et al. 2018)</span>, especially the section on minimizing errors due to library prep. We recommend reading and cross-referencing with this paper, and citing it if you follow its suggestions. Table 1 from this paper summarizes the various potential issues that can arise from RAD datasets and some mitigation steps. The goal of this guide is to expand on the O’Leary paper and provide some example code to help implement quality control and mitigation steps.</p>
+<p>Using RADseq to generate single nucleotide polymorphisms (SNPs) involves:</p>
+<ol style="list-style-type: decimal">
+<li>library preparation in the lab</li>
+<li>bioinformatic processing through assembly and/or mapping to a reference, then</li>
+<li>filtering of SNPs and individuals for quality.</li>
+</ol>
+<p>All of these steps can (and will) introduce some error, so the goal is to minimize this error through mitigation steps at all three parts of the process. Every dataset is different!<br />
+<!--add more about philosophy over best practices--></p>
+<p>Much of this guide is directly inspired by <a href="https://onlinelibrary.wiley.com/doi/10.1111/mec.14792">this excellent review paper</a> <span class="citation">(O’Leary et al. 2018)</span>, especially the section on minimizing errors due to library prep. We recommend reading and cross-referencing with this paper, and citing it if you follow its suggestions. Table 1 from this paper summarizes the various potential issues that can arise from RAD datasets and some mitigation steps. The goal of this guide is to expand on the O’Leary paper and provide some example code to help implement quality control and mitigation steps.</p>
 <div class="figure">
 <img src="images/oleary_table1.png" alt="" />
 <p class="caption">Table 1 from <span class="citation">(O’Leary et al. 2018)</span>.</p>
@@ -436,34 +464,46 @@ Much of this guide is directly inspired by <a href="https://onlinelibrary.wiley.
 <p>There are steps you can take before you even sequence RAD libraries that can help minimize issues downstream. Here, we use “library” to refer to a set of RADseq fragments from a group of individuals that are barcoded and sequenced together on a single lane or group of lanes. While specific RAD library prep methods have their own nuances for minimizing error, there are some steps you can take that are common across methods.</p>
 <ul>
 <li><p>If this RAD/GBS method has not been done in your species or in your molecular lab setup before, spend some time optimizing the protocol using a representative subset of individuals. Then try to keep everything about the library prep as consistent as possible across samples (eg, DNA extraction kit, PCR cycles, sequencing platform). This isn’t always possible, especially if you need to optimize the protocol for certain tricky samples. Just make sure to keep track of everything!</p></li>
-<li><p>Randomize samples across library prep batches and sequencing lanes! For example, if you are sequencing two different groups of samples on two different sequencing lanes, make sure they are randomized in respect to sample location or whatever your groups of interest are. If you are preparing groups of individuals in different batches to be pooled later, randomize across these batches. <a href="https://mastrettayanes-lab.org/">Alicia Mastretta-Yanes</a> even recommends randomizing across DNA extractions, especially if the person doing the extractions is new to molecular work. This is to allow you to control for potential <a href="#batch">batch effects</a> that are often observed with RAD data.</p></li>
-<li><p>Keep track of all potential batch effect sources in a Metadata file (eg, storage conditions of tissue/DNA, date/method of DNA extraction, date/method library prep batch, sequencing lane).<br />
-</p></li>
-<li><p>Have a core set of 2-4 technical sample replicates across all libraries. Ideally these are true technical replicates from library preparation to sequencing, but even just sequencing replicates can be useful for downstream quality control.</p></li>
+<li><p>Randomize samples across library prep batches and sequencing lanes! For example, if you are sequencing two different groups of samples on two different sequencing lanes, make sure they are randomized with respect to sample location or whatever your groups of interest are. If you are preparing groups of individuals in different batches to be pooled later, randomize across these batches. <a href="https://mastrettayanes-lab.org/">Alicia Mastretta-Yanes</a> even recommends randomizing across DNA extractions, especially if the person doing the extractions is new to molecular work. This is to allow you to control for potential <a href="#batch">batch effects</a> that are often observed with RAD data.</p></li>
 </ul>
+<!--ADW: add figure showing random plate design-->
+<ul>
+<li>Keep track of all potential batch effect sources in a Metadata file (eg, storage conditions of tissue/DNA, date/method of DNA extraction, date/method library prep batch, sequencing lane).<br />
+</li>
+<li>Have a core set of 2-4 technical sample replicates across all libraries. Ideally these are true technical replicates, meaning the same tissue/DNA sample is processed multiple times all the way from library preparation to sequencing. Sequencing replicates, where you sequence the same sample library preparation multiple times, can also be useful for downstream quality control.</li>
+</ul>
+<!--ADW: add figure or text to define sequencing replicates vs technical replicates-->
 </div>
 <div id="principles-for-analyzing-your-data" class="section level1">
 <h1>Principles for Analyzing Your Data</h1>
 <div id="steps-for-a-robust-rad-analysis" class="section level2">
 <h2>Steps for a robust RAD analysis</h2>
 <p>This is just one approach for working through your data. Some people will prefer to run just a subset of samples through a pipeline at first and evaluate parameters, then run all the samples through. Either way, be prepared to make MULTIPLE assemblies and go through this process iteratively, especially if this is a new-to-you study system.</p>
+<!-- 1) [Look at your raw data.](#fastqc)
+2) [Run an assembly pipeline](#assembly) through to a SNP dataset, using either all samples or a representative subset. Parameters can come from those used in a similar study, or default parameters.
+3) Filter your data minimally, then [evaluate for potential sources of error.](#error)
+4) Subset or remove individuals based on initial evaluation.  
+5) Using a representative subset of samples, [test key parameters](#test) to optimize your assembly.
+6) Run your optimized assembly on all non-removed samples.
+7) Evaluate the difference between multiple filtering schemes for your analyses of interest. *Popgen analysis guide coming soon*
+8) Repeat as needed. -->
 <ol style="list-style-type: decimal">
 <li><a href="#fastqc">Look at your raw data.</a></li>
-<li><a href="#assembly">Run an assembly pipeline</a> through to a SNP dataset, using either all samples or a representative subset. Parameters can come from those used in a similar study, or default parameters.</li>
-<li>Filter your data minimally, then <a href="#error">evaluate for potential sources of error.</a></li>
-<li>Subset or remove individuals based on initial evaluation.<br />
+<li><a href="#assembly">Run an assembly pipeline</a>, using either all samples or a representative subset.</li>
+<li><a href="#error">Evaluate potential sources of error.</a></li>
+<li><a href="#bad">Remove individuals based on initial evaluation</a>.<br />
 </li>
-<li>Using a representative subset of samples, <a href="#test">test key parameters</a> to optimize your assembly.</li>
+<li><a href="#test">Test a range of key parameters</a> to optimize your assembly.</li>
 <li>Run your optimized assembly on all non-removed samples.</li>
-<li>Evaluate the difference between multiple filtering schemes for your analyses of interest. <em>Popgen analysis guide coming soon</em></li>
-<li>Repeat as needed.</li>
+<li><a href="#filter">Filter your SNPs</a></li>
+<li><a href="#repeat">Repeat as needed!</a></li>
 </ol>
 </div>
 <div id="fastqc" class="section level2">
 <h2>First, look at the raw data!</h2>
-<p>Always look at your data with <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> before starting an assembly. First, this is a good check to just make sure the sequencing worked. If you have demultiplexed data, you can use <a href="https://multiqc.info/">MultiQC</a> to generate FastQC plots for all individuals and quickly identify ones that did not sequence well.<br />
-Check out <a href="https://datacarpentry.org/wrangling-genomics/02-quality-control/index.html">this informative tutorial</a> on running FastQC and interpreting the output.<br />
-<strong>Questions to ask:</strong> Do you have a lot of adapter sequences? Are the ends of your reads very low quality? If so, you should expect a fair amount of trimming and read filtering to occur prior to assembly. If that doesn’t occur or if too many reads are being filtered so as to only recover a small number of SNPs, something might need to be tweaked with your trimming and filtering step.</p>
+<p>Always look at your data with <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> before starting an assembly. First, this is a good check to just make sure the sequencing worked. If you have demultiplexed data, you can use <a href="https://multiqc.info/">MultiQC</a> to generate FastQC plots for all individuals and quickly identify ones that did not sequence well.</p>
+<p>Check out <a href="https://datacarpentry.org/wrangling-genomics/02-quality-control/index.html">this informative tutorial</a> on running FastQC and interpreting the output.</p>
+<p><strong>Questions to ask:</strong> Do you have a lot of adapter sequences? Are the ends of your reads very low quality? If so, you should expect a fair amount of trimming and read filtering to occur prior to assembly. If that doesn’t occur or if too many reads are being filtered so as to only recover a small number of SNPs, something might need to be tweaked with your trimming and filtering step. <!--ADW: elaborating what you mean by 'tweaked' or possibly providing a link to some resources for how someone might thoughtfully change the parameters for their trimming and filtering steps.--></p>
 <p>You should also look at the top few reads in the Terminal.</p>
 <pre><code>## zcat: unZip and conCATenate the file to the screen
 ## head -n 20: Just take the first 8 lines of input
@@ -524,8 +564,8 @@ If doing de novo assembly, reads cannot be trimmed outside of dDocent | | | | Un
 <p>Some groups have also developed pipelines for specific flavors of RAD (e.g., <a href="https://github.com/z0on/2bRAD_denovo/blob/master/2bRAD_README.sh">Matz lab for 2b-RAD</a>) or proprietary software (eg, <a href="http://georges.biomatix.org/storage/app/media/uploaded-files/dartR_Workbook.pdf">DARTseq</a>), which we touch on below. <strong>In most cases, it is recommended that you use a pipeline developed and tested for RAD data, especially if you are making a de novo assembly.</strong> <span class="citation">(LaCava et al. 2020)</span> have an excellent study where they review various <em>de novo</em> assemblers that are used in these pipelines. Assemblers that were not explicitly developed for short reads (eg, Velvet, ABySS) performed very poorly, while CD-HIT (the assembler in dDocent) performed the best. Stacks/Stacks2 and vsearch (the assembler in ipyrad) both performed worse when analyzing simulated data with indels. It should be noted that all of these RAD pipelines have optimized the specific parameters of these de novo assemblers to work with RAD data of various flavors, which may not be fully reflected in the LaCava study. Based on the MarineOmics RAD panel, the general consensus is that all the popular pipelines can produce adequately accurate datasets (with appropriate parameter optimization and data filtering).<br />
 <img src="images/lacavaTable3.png" alt="Table 3 from LaCava et al 2019. CD-HIT is used in dDocent, VSEARCH is used in ipyrad." /></p>
 </div>
-<div id="confound" class="section level2">
-<h2>Evaluate potential confounding factors</h2>
+<div id="error" class="section level2">
+<h2>Evaluate potential sources of error</h2>
 <p>Once you have processed your samples (or a subset of samples) through a genotyping pipeline, you will have a bunch of different output file options for genetic data. The VCF file is one of the most popular file formats, and is the most versatile for initial data exploration as many programs exist to filter and accept VCF files. Below are a list of potential confounding factors that may exist in your data, and how to tease them out.</p>
 <p><strong>Using SeqArray in R</strong> If you are following along with the R code examples, we need to 1st read in our data (skip this section if not running R code).</p>
 <p>For the code examples in this section, we primarily make use of the R package SeqArray <span class="citation">(Zheng et al. 2017)</span>, which can read and manipulate VCFs. If you’re familiar with R, SeqArray is simple to use. The package can efficiently store sequence variant calls with hundreds of thousands of individuals, variants (e.g., SNPs, indels and structural variation calls) and annotations. It employs a data container called a CoreArray Genomic Data Structure (GDS). It’s super-fast (5X faster than PLINK v1.9; 16X faster than vcftools) and it integrates well with other R packages you might use in your analysis pipeline. (i.e. SNPRelate, SeqVarTools). We also like it because you can filter your data before running certain analyses without 1st generating a separate filtered VCF file.</p>
@@ -535,11 +575,12 @@ filename.gds = paste0(&quot;RAD_data/&quot;, paste0(filename, &quot;.gds&quot;))
 filename.vcf = paste0(&quot;RAD_data/&quot;, paste0(filename, &quot;.vcf&quot;))
   # 1 . Convert VCF to GDS
 SeqArray::seqVCF2GDS(vcf.fn = filename.vcf, out.fn = filename.gds, storage.option=&quot;ZIP_RA&quot;)</code></pre>
-<pre><code>## Mon Nov  8 14:56:19 2021
+<pre><code>## Fri Feb  4 12:54:55 2022
 ## Variant Call Format (VCF) Import:
 ##     file(s):
 ##         OL_subset.vcf (22.3M)
 ##     file format: VCFv4.0
+##     genome reference: pseudo-reference (most common base at site)
 ##     the number of sets of chromosomes (ploidy): 2
 ##     the number of samples: 18
 ##     genotype storage: bit2
@@ -565,7 +606,7 @@ SeqArray::seqVCF2GDS(vcf.fn = filename.vcf, out.fn = filename.gds, storage.optio
 ##     annotation/format/DP  [md5: ae6991de5adbf082a733198faf0f11ca]
 ##     annotation/format/CATG  [md5: 71d62ffa848999a375e8bb5f329be275]
 ## Done.
-## Mon Nov  8 14:56:20 2021
+## Fri Feb  4 12:54:57 2022
 ## Optimize the access efficiency ...
 ## Clean up the fragments of GDS file:
 ##     open the file &#39;RAD_data/OL_subset.gds&#39; (2.8M)
@@ -573,7 +614,7 @@ SeqArray::seqVCF2GDS(vcf.fn = filename.vcf, out.fn = filename.gds, storage.optio
 ##     save to &#39;RAD_data/OL_subset.gds.tmp&#39;
 ##     rename &#39;RAD_data/OL_subset.gds.tmp&#39; (2.8M, reduced: 1.8K)
 ##     # of fragments: 64
-## Mon Nov  8 14:56:20 2021</code></pre>
+## Fri Feb  4 12:54:57 2022</code></pre>
 <pre class="r"><code>gdsin = SeqArray::seqOpen(filename.gds)
 print(paste0(&quot;The number of SAMPLES in data: &quot;, length(c(SeqArray::seqGetData(gdsin, &quot;sample.id&quot;)))))</code></pre>
 <pre><code>## [1] &quot;The number of SAMPLES in data: 18&quot;</code></pre>
@@ -647,7 +688,7 @@ cat RAD_data/OL_subset.imiss | (read h; echo &quot;$h&quot;; sort -k5 -r) </code
 ## After filtering, kept 18 out of 18 Individuals
 ## Outputting Individual Missingness
 ## After filtering, kept 69989 out of a possible 69989 Sites
-## Run Time = 0.00 seconds
+## Run Time = 1.00 seconds
 ## INDV N_DATA  N_GENOTYPES_FILTERED    N_MISS  F_MISS
 ## OR3_13_C3    69989   0   64227   0.917673
 ## CA4_12_C1    69989   0   62048   0.886539
@@ -750,16 +791,19 @@ pca.out = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, remove.mo
                                sample.id = keep) # filtering for pruned SNPs</code></pre>
 <pre><code>## Principal Component Analysis (PCA) on genotypes:
 ## Calculating allele counts/frequencies ...
-## Excluding 5,386 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
-## Working space: 12 samples, 22,645 SNVs
-##     using 2 (CPU) cores
+## # of selected variants: 22,712
+## Excluding 5,319 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
+##     # of samples: 12
+##     # of SNVs: 22,712
+##     using 2 threads
+##     # of principal components: 32
 ## CPU capabilities: Double-Precision SSE2
-## Mon Nov  8 14:57:25 2021    (internal increment: 29696)
+## Fri Feb  4 12:56:09 2022    (internal increment: 29696)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Mon Nov  8 14:57:25 2021    Begin (eigenvalues and eigenvectors)
-## Mon Nov  8 14:57:25 2021    Done.</code></pre>
+## Fri Feb  4 12:56:09 2022    Begin (eigenvalues and eigenvectors)
+## Fri Feb  4 12:56:09 2022    Done.</code></pre>
 <pre class="r"><code>#close the gds file (saves memory)
 #seqClose(gdsin)
 
@@ -890,20 +934,21 @@ Another useful approach is to visually inspect alignments for SNPs or loci that 
 <pre class="r"><code># assume you have a GDS object called gdsin and a PCA object called pca.out
 # extract PCA loadings
 SnpLoad &lt;- snpgdsPCASNPLoading(pca.out, gdsin)</code></pre>
-<pre><code>## SNP loading:
-## Working space: 12 samples, 22645 SNPs
-##     using 1 (CPU) core
+<pre><code>## SNP Loading:
+##     # of samples: 12
+##     # of SNPs: 22,712
+##     using 1 thread
 ##     using the top 12 eigenvectors
-## Mon Nov  8 14:57:26 2021    (internal increment: 65536)
+## Fri Feb  4 12:56:10 2022    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Mon Nov  8 14:57:26 2021    Done.</code></pre>
+## Fri Feb  4 12:56:10 2022    Done.</code></pre>
 <pre class="r"><code>names(SnpLoad)</code></pre>
-<pre><code>## [1] &quot;sample.id&quot;  &quot;snp.id&quot;     &quot;eigenval&quot;   &quot;snploading&quot; &quot;TraceXTX&quot;   &quot;Bayesian&quot;  
-## [7] &quot;avgfreq&quot;    &quot;scale&quot;</code></pre>
+<pre><code>## [1] &quot;sample.id&quot;  &quot;snp.id&quot;     &quot;eigenval&quot;   &quot;snploading&quot; &quot;TraceXTX&quot;  
+## [6] &quot;Bayesian&quot;   &quot;avgfreq&quot;    &quot;scale&quot;</code></pre>
 <pre class="r"><code>dim(SnpLoad$snploading)</code></pre>
-<pre><code>## [1]    12 22645</code></pre>
+<pre><code>## [1]    12 22712</code></pre>
 <pre class="r"><code>#plot a histogram of absolute PC loading values for PC1, with larger loading meaning more effect on PC1
 pc&lt;-1
 hist(sort(abs(SnpLoad$snploading[pc,]),decreasing=T,index.return=T)[[1]],breaks = 30,main=&quot;PC loadings: PC1&quot;,)</code></pre>
@@ -918,16 +963,19 @@ pca.out.pcfilt = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, re
                                sample.id = keep) # filtering for pruned SNPs</code></pre>
 <pre><code>## Principal Component Analysis (PCA) on genotypes:
 ## Calculating allele counts/frequencies ...
-## Excluding 5,386 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
-## Working space: 12 samples, 19,854 SNVs
-##     using 2 (CPU) cores
+## # of selected variants: 19,922
+## Excluding 5,319 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
+##     # of samples: 12
+##     # of SNVs: 19,922
+##     using 2 threads
+##     # of principal components: 32
 ## CPU capabilities: Double-Precision SSE2
-## Mon Nov  8 14:57:27 2021    (internal increment: 29696)
+## Fri Feb  4 12:56:10 2022    (internal increment: 29696)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Mon Nov  8 14:57:27 2021    Begin (eigenvalues and eigenvectors)
-## Mon Nov  8 14:57:27 2021    Done.</code></pre>
+## Fri Feb  4 12:56:10 2022    Begin (eigenvalues and eigenvectors)
+## Fri Feb  4 12:56:10 2022    Done.</code></pre>
 <pre class="r"><code>print(
   as.data.frame(pca.out.pcfilt$eigenvect) %&gt;%
       tibble::add_column(., STRATA =  sample.strata.order$STRATA) %&gt;%
@@ -947,21 +995,21 @@ pca.out.pcfilt = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, re
 <pre class="r"><code># set a filter to exclude samples with missing data, and SNPs in linkage or with a batch effect
 seqSetFilter(gdsin, sample.id=keep,variant.id=snp.id.allfilt)</code></pre>
 <pre><code>## # of selected samples: 12
-## # of selected variants: 25,240</code></pre>
+## # of selected variants: 25,241</code></pre>
 <pre class="r"><code># convert to vcf
 seqGDS2VCF(gdsin, &quot;RAD_data/OL-miss-pc1-linkage-filt.vcf.gz&quot;)</code></pre>
 <pre><code>## Loading required namespace: Rsamtools</code></pre>
-<pre><code>## Hint: install Rsamtools to enable the bgzf output.</code></pre>
-<pre><code>## Mon Nov  8 14:57:28 2021
+<pre><code>## Hint: install Rsamtools to enable the outfmt output.</code></pre>
+<pre><code>## Fri Feb  4 12:56:11 2022
 ## VCF Export: OL-miss-pc1-linkage-filt.vcf.gz
-##     12 samples, 25,240 variants
+##     12 samples, 25,241 variants
 ##     INFO Field: NS, DP
 ##     FORMAT Field: DP, CATG
 ##     output to a general gzip file
 ## 
 [..................................................]  0%, ETC: ---    
 [==================================================] 100%, completed, 1s
-## Mon Nov  8 14:57:29 2021    Done.</code></pre>
+## Fri Feb  4 12:56:12 2022    Done.</code></pre>
 <pre class="r"><code>#close the gds file to save memory
 closefn.gds(gdsin)</code></pre>
 </div>
@@ -1041,7 +1089,7 @@ The best ways to minimize the impact of sequencing error during bioinformatic pr
 </div>
 </div>
 </div>
-<div id="filtering-snps" class="section level2">
+<div id="filter" class="section level2">
 <h2>Filtering SNPs</h2>
 <div id="and-embrace-the-missingness" class="section level3 unlisted unnumbered">
 <h3 class="unlisted unnumbered">(and embrace the missingness!)</h3>
@@ -1070,6 +1118,9 @@ The best ways to minimize the impact of sequencing error during bioinformatic pr
 ### Reference-based vs. de novo RADseq
 -->
 </div>
+</div>
+<div id="repeat" class="section level2">
+<h2>Repeat as needed</h2>
 </div>
 </div>
 <div id="helpful-tutorials" class="section level1">
@@ -1106,6 +1157,9 @@ McCartney-Melstad, Evan, Müge Gidiş, and H Bradley Shaffer. 2019. <span>“An 
 </div>
 <div id="ref-OLeary2018-iy" class="csl-entry">
 O’Leary, Shannon J, Jonathan B Puritz, Stuart C Willis, Christopher M Hollenbeck, and David S Portnoy. 2018. <span>“These Aren’t the Loci You’e Looking for: Principles of Effective <span>SNP</span> Filtering for Molecular Ecologists.”</span> <em>Mol. Ecol.</em>, July. <a href="https://doi.org/10.1111/mec.14792">https://doi.org/10.1111/mec.14792</a>.
+</div>
+<div id="ref-Peterson2012-tr" class="csl-entry">
+Peterson, Brant K, Jesse N Weber, Emily H Kay, Heidi S Fisher, and Hopi E Hoekstra. 2012. <span>“Double Digest <span>RADseq</span>: An Inexpensive Method for de Novo <span>SNP</span> Discovery and Genotyping in Model and Non-Model Species.”</span> <em>PLoS One</em> 7 (5): e37135. <a href="https://doi.org/10.1371/journal.pone.0037135">https://doi.org/10.1371/journal.pone.0037135</a>.
 </div>
 <div id="ref-Rubin2012-hw" class="csl-entry">
 Rubin, Benjamin E R, Richard H Ree, and Corrie S Moreau. 2012. <span>“Inferring Phylogenies from <span>RAD</span> Sequence Data.”</span> <em>PLoS One</em> 7 (4): e33394. <a href="https://doi.org/10.1371/journal.pone.0033394">https://doi.org/10.1371/journal.pone.0033394</a>.

@@ -112,14 +112,14 @@ data.out = cbind(
 ## Steps for a robust RAD analysis 
 This is just one approach for working through your data. Some people will prefer to run just a subset of samples through a pipeline at first and evaluate parameters, then run all the samples through. Either way, be prepared to make MULTIPLE assemblies and go through this process iteratively, especially if this is a new-to-you study system.  
 
-1) [Look at your raw data.](#fastqc)
+<!-- 1) [Look at your raw data.](#fastqc)
 2) [Run an assembly pipeline](#assembly) through to a SNP dataset, using either all samples or a representative subset. Parameters can come from those used in a similar study, or default parameters.
 3) Filter your data minimally, then [evaluate for potential sources of error.](#error)
 4) Subset or remove individuals based on initial evaluation.  
 5) Using a representative subset of samples, [test key parameters](#test) to optimize your assembly.
 6) Run your optimized assembly on all non-removed samples.
 7) Evaluate the difference between multiple filtering schemes for your analyses of interest. *Popgen analysis guide coming soon*
-8) Repeat as needed.  
+8) Repeat as needed. --> 
 
 1) [Look at your raw data.](#fastqc)
 2) [Run an assembly pipeline](#assembly), using either all samples or a representative subset.
@@ -128,12 +128,15 @@ This is just one approach for working through your data. Some people will prefer
 5) [Test a range of key parameters](#test) to optimize your assembly.
 6) Run your optimized assembly on all non-removed samples.
 7) [Filter your SNPs](#filter)
-8) Repeat as needed!  
+8) [Repeat as needed!](#repeat)  
 
 ## First, look at the raw data! {#fastqc}  
 Always look at your data with [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) before starting an assembly. First, this is a good check to just make sure the sequencing worked. If you have demultiplexed data, you can use [MultiQC](https://multiqc.info/) to generate FastQC plots for all individuals and quickly identify ones that did not sequence well.  
+
 Check out [this informative tutorial](https://datacarpentry.org/wrangling-genomics/02-quality-control/index.html) on running FastQC and interpreting the output.  
+
 **Questions to ask:** Do you have a lot of adapter sequences? Are the ends of your reads very low quality? If so, you should expect a fair amount of trimming and read filtering to occur prior to assembly. If that doesn't occur or if too many reads are being filtered so as to only recover a small number of SNPs, something might need to be tweaked with your trimming and filtering step.
+<!--ADW: elaborating what you mean by 'tweaked' or possibly providing a link to some resources for how someone might thoughtfully change the parameters for their trimming and filtering steps.-->
 
 You should also look at the top few reads in the Terminal.  
 ```
@@ -625,6 +628,7 @@ For RADseq, ideally you are generating an average of *at least* 10-20 sequence r
 Generating multiple sequencing reads per locus is helpful when calling SNPs in order to  distinguishing between reads with sequencing errors and.
 
 ## Filtering SNPs {#filter}
+
 ### (and embrace the missingness!) {.unlisted .unnumbered}  
 
 `r colorize("This section is still under development! Please contribute on Github or provide feedback in [Discussions](https://github.com/MarineOmics/marineomics.github.io/discussions)", "red")`
@@ -665,6 +669,7 @@ Unique to RADseq approaches is the missingness of RAD data.
 -->
 
 
+## Repeat as needed {#repeat}
 # Helpful tutorials  
 * [Marine Genomics open course](https://baylab.github.io/MarineGenomics/)
 * [UNIX tutorial](http://evomics.org/learning/unix-tutorial/)
