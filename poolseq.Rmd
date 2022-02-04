@@ -657,8 +657,5 @@ adonis2(t(pi_all[,2:11])~line, data = treat_df, permutations = 1000000, method =
 
 ## References
 
-Griffiths JS, Kawji Y, Kelly MW. 2020. An experimental test of adaptive introgression in locally adapted populations of splash pool copepods. Mol Biol and Evol. 38(4):1306-1316. https://doi.org/10.1093/molbev/msaa289
-
-Schlötterer C, Tobler R, Kofler R, Nolte V. 2014 Sequencing pools of individuals-mining genome-wide polymorphism data without big funding. Nat. Rev. Genet. 15, 749–763. (doi:10.1038/nrg3803)
 
 
