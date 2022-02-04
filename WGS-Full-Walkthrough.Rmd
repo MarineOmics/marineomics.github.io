@@ -19,41 +19,42 @@ Samples used as examples throughout this walkthrough were multiplexed using 3 di
 
 
 #### Example Fastq File from Sequencing Facility 
+To inspect an example data file, download files i5-4-i7-11_R1_exampleData.fastq.gz & i5-4-i7-11_R2_exampleData.fastq.gz which are truncated fastq files as examples for how data look from the sequencing facility. 
 
 ##### Read 1
 ```
-[schaal.s@login-00 CodGenomes]$ zcat i5-2-i7-9_R1_001.fastq.gz | head -n 10
-
-@GWNJ-1012:218:GW191226406th:1:1101:1090:1000 1:N:0:GATCAG+ATAGAGGC
-ACTTGACTGTGCGTTGGCCTGCGGGCTGACTCGGTCCTGAGATGGACTGCTGTGTAGTTTGAACCATAGATTCATTATATAGAACACGGTCTCCTCTGCGCTGCTGGCCAATGGAGCCGAACGTCCGCACTGGCGGGCGGCCATCTTGCC
+[schaal.s@login-00 workingGroupFiles]$ head i5-4-i7-11_R1_exampleData.fastq.gz 
+@GWNJ-1012:218:GW191226406th:1:1101:1181:1000 1:N:0:GGCTAC+GGCTCTGA
+CGATGTTTGGAAAGACAAAAAATACATTTAGATCCAAATGACTTCTATAATGGATTTTGAAATTATATATACGAGATGCTTTAGTTCAAAACATTTGACACAAATGAGGTTCAACATAAAGAACATCGAGATCGGAAGAGCACACGTCTG
 +
-FF:,FF,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFF,:FFFFFFFFF:FFFFFFF:FFFFFFFFFFFFF:FFFFFFF
-@GWNJ-1012:218:GW191226406th:1:1101:1687:1000 1:N:0:GATCAG+ATAGAGGC
-ACTTGATCCCTCTCACTCTCCTCTCCGTCTCCTCTTTTGTCCTCGTCTCTCTCCTCTCTCCCTCTCTCCCATCTCCCTCTCTATCAAGTAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGATCAGATCTCGTATGCCGTCTTCTGC
+FFF:FF,FFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF:FFFFFFFFFF:F,FFF:FFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,FFFFFFFFFFFFF:FFFF,F:FFFFFFF:FFF
+@GWNJ-1012:218:GW191226406th:1:1101:1651:1000 1:N:0:GGCTAC+GGCTCTGA
+CTTGCATTGAGATTTCTGAAAGAAGAGCTCCATCCAGTGGCAGAAAGGGGACGTTTCAAAAGCACGAATGCAAGCCTTTTAATTTTTCCAAAATAAAAATATGCAAGAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGGCTACATC
 +
-FFFFFF,FFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFF:FFFF:::F,F::FFFFF
-@GWNJ-1012:218:GW191226406th:1:1101:6840:1000 1:N:0:GATCAG+ATAGAGGC
-ACTTGAAAAAAATACATAGCGGCCATGGACAGGATGACCTCTATGACAATGATAGAAACAGAAAGGACGCGGAGACTCTTGAGTCATCAAGTAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGATCAGATCTCGTATGCCGTCTTC
+FFFFFF,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+@GWNJ-1012:218:GW191226406th:1:1101:2193:1000 1:N:0:GGCTAC+GGCTCTGA
+CGATGTTGCATGGAGTGGCTGGTGTCTGTGCCGACCACTCTGGTTCCAGAGGTAATGAAGACCAGCTTCCCCCCTGGCCACACAGTGGACTCAATCTTCCCTGAGATAAAGGTGAAGAGTTCCTCCTTGTTCTTAGGGTAACATCGAGAT
 ```	
 ##### Read 2
 ```
-[schaal.s@login-00 CodGenomes]$ zcat i5-2-i7-9_R2_001.fastq.gz | head -n 10
-
-@GWNJ-1012:218:GW191226406th:1:1101:1090:1000 2:N:0:GATCAG+ATAGAGGC
-ACTTGAAGGCAAGATGGCCGCCCGCCAGTGCGGACGTTCGGCTCCATTGGCCAGCAGCGCAGAGGAGACCGTGTTCTATATAATGAATCTATGGTTCAAACTACACAGCAGTCCATCTCAGGACCGAGTCAGCCCGCAGGCCAACGCACA
+[schaal.s@login-00 workingGroupFiles]$ head i5-4-i7-11_R2_exampleData.fastq.gz 
+@GWNJ-1012:218:GW191226406th:1:1101:1181:1000 2:N:0:GGCTAC+GGCTCTGA
+CGATGTGCTTTATGTTGAACCTCATTTGTGTCAAATGTTTTGAACTAAAGCATCTCGTATATATAATTTCAAAATCCATTATAGAAGTCATTTGGATCTAAATGTATTTTTTGTCTTTCCAAACATCGAGATCGGAAGAGCGTCGGGTAG
 +
-FFFFFF,FFFF:FFFFFF:FFFFFFFFFFFFFFFFFF:FFFFFFF:,FFFFF:FF,FFFFFFFFFFFFFFF,F,:FFFF:F,FFFFF:FF,FFFF,FFFFFF,FFF,FF:FFFFF:F:FFFF,FFF:F:F:FFFFFFFFFFF,:FFFFFF
-@GWNJ-1012:218:GW191226406th:1:1101:1687:1000 2:N:0:GATCAG+ATAGAGGC
-ACTTGAAAGAGAGGGAGATGGGAGAGAGGGAGAGAGGAGAGAGACGAGGACAAAAGAGGAGACGGAGAGGAGAGTGAGAGGGATCAAGTAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTGCCTCTATGTGTAGATCTCGGTGGTCGC
+FFFFFF,FF,FFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFF:FFFF:F,F:FFF,:FFFFFFFFFF,,:,:FFFFFFFF,FFFFFFFFF:F:FFF:F,F,FFFFF:FFF:FFF,,F::FFFFF,,F:FFFFFFF,F,,F
+@GWNJ-1012:218:GW191226406th:1:1101:1651:1000 2:N:0:GGCTAC+GGCTCTGA
+CTTGCATATTTTTATTTTGGAAAAATTAAAAGGCTTGCATTCGTGCTTTTGAAACGTCCCCTTTCTGCCACTGGATGGAGCTCTTCTTTCAGAAATCTCAATGCAAGAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTTCAGAGCCGT
 +
-FFFFFF,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,FFFF:FFFFFFFFFFFFFFFFFFFFFFFFFFFF:FF,FF:
-@GWNJ-1012:218:GW191226406th:1:1101:6840:1000 2:N:0:GATCAG+ATAGAGGC
-ACTTGAAGACTCAAGAGTCTCCGCGTCCTTTCTGTTTCTATCATTGTCATAGAGGTCATCCTGTCCATGGCCGCTATGTATTTTTATCAAGTAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTGCCTCTATGTGTAGATCTCGGTGGT
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFF,
+@GWNJ-1012:218:GW191226406th:1:1101:2193:1000 2:N:0:GGCTAC+GGCTCTGA
+CGATGTTACCCTAAGAACAAGGAGGAACTCTTCACCTTTATCTCAGGGAAGATTGAGTCCACTGTGTGGCCAGGGGGGAAGCTGGTCTTCATTACCTCTGGAACCAGAGTGGTCGGCACAGACACCAGCCACTCCATGCAACATCGAGAT
 ```
+
+What these files show are XXXX. 
 
 ### Stacks - process_radtags
 
-Barcode File: For each set of paired end files that need to be demultiplexed, a barcode file needs to be created. For example, for files i5-4-i7-11_R1_001.fastq.gz and i5-4-i7-11_R2_001.fastq.gz its barcode file is as follows:
+Barcode File: For each set of paired end files that need to be demultiplexed, a barcode file needs to be created. For example, for files i5-4-i7-11_R1_exampleData.fastq.gz and i5-4-i7-11_R2_exampleData.fastq.gz its barcode file is as follows:
 
 ```
 ATCACG	ATCACG	Pop6_18001
@@ -70,7 +71,7 @@ GGCTAC	GGCTAC	Pop7_18190
 CTTGCA	CTTGCA	Pop1_17327
 ```
 
-This file contains the 12 barcodes that have the i5_4 and i7_11 index and which sample that combination belongs to. This file is tab delimited and because I had inline barcodes, meaning they were the same on both ends of the read, I have the same barcode sequence in the first and second column. Then the sample ID is on the right. 
+This file contains the 12 barcodes that have the i5_4 and i7_11 index and which sample that combination belongs to. This file is tab delimited and because I had inline barcodes, meaning they were the same on both ends of the read, I have the same barcode sequence in the first and second column. Then the sample ID is in the far right column. 
 
 Sample naming convention is important for downstream steps. The way the example samples are named are first a “Pop” identifier for what a priori population they belonged to (see Sample Notes file for example population IDs). Then a 5-digit identifier for the specific sample from that population where the first two digits represent the year the sample was collected and the last 3 digits represent the individual sample ID from that sampling year.
 
@@ -94,7 +95,7 @@ We provide a simple R script to create the barcode files for each primer index c
 
 #### Code for running Stacks
 ```
-process_radtags -P -p {Path to genome files} -o .{Path for output} -b {barcode file} --inline_inline --disable_rad_check -r
+process_radtags -P -p {Path to genome files} -o {Path for output} -b {barcode file} --inline_inline --disable_rad_check -r
 
 ```
 
@@ -102,13 +103,12 @@ process_radtags -P -p {Path to genome files} -o .{Path for output} -b {barcode f
 ```
 #!/bin/bash
 #SBATCH --job-name=stacks_i54_i711                # sets the job name
-#SBATCH --mem=1Gb                                 # reserves 10 GB memory
-#SBATCH --partition=lotterhos                     # requests that the job is executed in lotterhos partition 
-#SBATCH --mail-user=schaal.s@northeastern.edu
-#SBATCH --mail-type=FAIL
+#SBATCH --mem=1Gb                                 # reserves 1 GB memory
+#SBATCH --mail-user=schaal.s@northeastern.edu     # add your email address to get notifications
+#SBATCH --mail-type=FAIL                          # set what email notifications you want to receive here I only want emails when my script fails
 #SBATCH --time=24:00:00                           # reserves machines/cores for 24 hours.
-#SBATCH --output=stacksi54_i711.%j.out                # sets the standard output to be stored in file, where %j is the job id
-#SBATCH --error=stacksi54_i711.%j.err                 # sets the standard error to be stored in file
+#SBATCH --output=stacksi54_i711.%j.out            # sets the standard output to be stored in file, where %j is the job id
+#SBATCH --error=stacksi54_i711.%j.err             # sets the standard error to be stored in file
 
 process_radtags -P -p i54_i711/GenomeFilesi54_i711/ -o ../Stacks_Out/ -b i54_i711/barcodeFilei54_i711.txt --inline_inline --disable_rad_check -r
 ```
