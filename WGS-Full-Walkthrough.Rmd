@@ -1,7 +1,5 @@
 ---
-layout: page
 title: WGS fastq2vcf walkthrough
-permalink: /WGSwalkthrough/
 ---
 
 # **Stacks**
