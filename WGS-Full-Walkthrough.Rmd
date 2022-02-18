@@ -1,6 +1,6 @@
 ---
 layout: page
-title: WGS Full Walkthrough
+title: WGS fastq2vcf walkthrough
 permalink: /WGSwalkthrough/
 ---
 
