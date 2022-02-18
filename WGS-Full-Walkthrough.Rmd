@@ -1,15 +1,13 @@
 ---
-title: WGS fastq2vcf walkthrough
-
+layout: page
+title: WGS Full Walkthrough
+permalink: /WGSwalkthrough/
 ---
-
-## Walkthrough Data
-In this walkthrough, data files from whole genome sequences at 15x coverage from Atlantic cod will be referenced. Their naming struction are a population ID in the form of "Pop#" with the number being which population the sample came from, a "\_"\, and a 5 digit sample ID which is two digits for the year it was sampled and a three digit sample ID number. Here is an example, "Pop6_18001". We will walk through steps from demultiplexing when unique indexes are used through variant calling with Freebayes. 
 
 # **Stacks**
 If your samples need to be demultiplexed, running the program Stacks is a necessary first step. Stack’s process_radtags function searches sequence reads for barcodes that you provide and demultiplexes the reads using your barcode file. This file specifies which barcode belongs to which sample and will trim off those barcodes once it demultiplexes. 
 
-### Example scenario 
+### Example scenario
 Samples used as examples throughout this walkthrough were multiplexed using 3 different unique sequences. Every sample had a unique combination of an i5 primer, i7 primer and adapter barcode. Data from the sequencing facility will demultiplex to the level of unique combinations of i5 and i7 primers. Therefore for these samples, there were 32 unique i5 and i7 primer combinations and so the sequencing facility sent 64 fastq.gz files: one for the forward sequence and one for the reverse for all 32 combinations. We will take one file as an example in the following code. 
 
 ### Helpful Links
@@ -19,7 +17,6 @@ Samples used as examples throughout this walkthrough were multiplexed using 3 di
 
 
 #### Example Fastq File from Sequencing Facility 
-To inspect an example data file, download files i5-4-i7-11_R1_exampleData.fastq.gz & i5-4-i7-11_R2_exampleData.fastq.gz which are truncated fastq files as examples for how data look from the sequencing facility. 
 
 ##### Read 1
 ```
@@ -50,11 +47,11 @@ FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 CGATGTTACCCTAAGAACAAGGAGGAACTCTTCACCTTTATCTCAGGGAAGATTGAGTCCACTGTGTGGCCAGGGGGGAAGCTGGTCTTCATTACCTCTGGAACCAGAGTGGTCGGCACAGACACCAGCCACTCCATGCAACATCGAGAT
 ```
 
-What these files show are XXXX. 
+### Stacks Walkthrough
 
-### Stacks - process_radtags
+#### process_radtags walkthrough
 
-Barcode File: For each set of paired end files that need to be demultiplexed, a barcode file needs to be created. For example, for files i5-4-i7-11_R1_exampleData.fastq.gz and i5-4-i7-11_R2_exampleData.fastq.gz its barcode file is as follows:
+Barcode File: For each set of paired end files that need to be demultiplexed, a barcode file needs to be created. For example, for files i5-4-i7-11_R1_001.fastq.gz and i5-4-i7-11_R2_001.fastq.gz its barcode file is as follows:
 
 ```
 ATCACG	ATCACG	Pop6_18001
@@ -71,11 +68,11 @@ GGCTAC	GGCTAC	Pop7_18190
 CTTGCA	CTTGCA	Pop1_17327
 ```
 
-This file contains the 12 barcodes that have the i5_4 and i7_11 index and which sample that combination belongs to. This file is tab delimited and because I had inline barcodes, meaning they were the same on both ends of the read, I have the same barcode sequence in the first and second column. Then the sample ID is in the far right column. 
+This file contains the 12 barcodes that have the i5_4 and i7_11 index and which sample that combination belongs to. This file is tab delimited and because I had inline barcodes, meaning they were the same on both ends of the read, I have the same barcode sequence in the first and second column. Then the sample ID is on the right. 
 
 Sample naming convention is important for downstream steps. The way the example samples are named are first a “Pop” identifier for what a priori population they belonged to (see Sample Notes file for example population IDs). Then a 5-digit identifier for the specific sample from that population where the first two digits represent the year the sample was collected and the last 3 digits represent the individual sample ID from that sampling year.
 
-We provide a simple R script to create the barcode files for each primer index combination. See file: Stacks_FileCreate.R
+We provide a simple R script to create the barcode files for each primer index combination. See file: Stacks_FileCreate_OmicsWG.R. You can use the practice files provide to see how the code works or just input your own to make the files you need. This file may be modified to fit your needs and there are annotations where that would be the case. 
 
 #### Additional Flags 
  
@@ -85,13 +82,14 @@ We provide a simple R script to create the barcode files for each primer index c
 
 ```-b``` path to your barcode file 
 
-```--inline_inline ``` The barcode option flag has 6 different options and you have to use the proper flag for your barcodes or indexes need to be demultiplexed. Because my samples have inline barcodes on either end of the sequence I need to use the --inline_inline flag. 
+```--inline_inline ``` The barcode option flag has 6 different options and you have to use the proper flag for your barcodes or indexes that need to be demultiplexed. Because the example samples have inline barcodes on either end of the sequence if using the practice data you need to use the --inline_inline flag. 
 
-```-P``` If paired end sequencing was used you need to add the -P flag to indicate this.
+```-P``` If paired end sequencing was used, you need to add the -P flag to indicate this.
 
 ```--disable_rad_check``` this flag is needed if you are doing anything other than RAD-seq. Stacks defaults to requiring cutsite sequences that are used in RAD-seq, but for WGS you won't have cut sites and need to disable the rad check.
 
-```-r``` this flag allows Stacks to rescue any barcodes that are off by one bp 
+```-r``` this flag allows Stacks to rescue any barcodes that are off by one bp. For example, the barcode ACTTGA might appear as CTTGA or TACTTGA. This should only be a small percentage of reads and will probably recover about 1% of reads.
+
 
 #### Code for running Stacks
 ```
@@ -99,24 +97,28 @@ process_radtags -P -p {Path to genome files} -o {Path for output} -b {barcode fi
 
 ```
 
-#### Example code for running on a Cluster 
+#### Example code for running on a Cluster  
+You can run the practice data files using the format below while changing the path on your computer to fit your needs. 
 ```
 #!/bin/bash
 #SBATCH --job-name=stacks_i54_i711                # sets the job name
 #SBATCH --mem=1Gb                                 # reserves 1 GB memory
-#SBATCH --mail-user=schaal.s@northeastern.edu     # add your email address to get notifications
-#SBATCH --mail-type=FAIL                          # set what email notifications you want to receive here I only want emails when my script fails
+#SBATCH --mail-user=schaal.s@northeastern.edu     # set your email to get notifications about your run
+#SBATCH --mail-type=FAIL                          # if the job fails for any reason email the provided email
 #SBATCH --time=24:00:00                           # reserves machines/cores for 24 hours.
 #SBATCH --output=stacksi54_i711.%j.out            # sets the standard output to be stored in file, where %j is the job id
 #SBATCH --error=stacksi54_i711.%j.err             # sets the standard error to be stored in file
 
-process_radtags -P -p i54_i711/GenomeFilesi54_i711/ -o ../Stacks_Out/ -b i54_i711/barcodeFilei54_i711.txt --inline_inline --disable_rad_check -r
+process_radtags -P -p ./genomeFilesi54_i711/ -o ./Stacks_Out/ -b barcodeFilei54_i711.txt --inline_inline --disable_rad_check -r
 ```
+This will create four new fastq files for each sample provided in the barcodeFile. Because the practice data is a subset of the full dataset, this will only fill files with reads that are included in the subset file. The process_radtags program wants to keep the reads in phase, so that the first read in the sample_XXX.1.fq file is the mate of the first read in the sample_XXX.2.fq file. Likewise for the second pair of reads being the second record in each of the two files and so on. When one read in a pair is discarded due to low quality or a missing restriction enzyme cut site, the remaining read can't simply be output to the sample_XXX.1.fq or sample_XXX.2.fq files as it would cause the remaining reads to fall out of phase. Instead, this read is considered a remainder read and is output into the sample_XXX.rem.1.fq file if the paired-end was discarded, or the sample_XXX.rem.2.fq file if the single-end was discarded.
 
-### Results 
+There will also be a log file that summarizes the number of reads per sample that were retained, were low quality, or that had noRADtag (only relevant for rad data). 
+
+#### Results for a run with one primer combination on the full paired end data files that for each ~30GB in size
 Time: 				each file took approx. 7 hrs  
 Memory: 			approx. 80 MB RAM
-
+Run description: run on separate cluster nodes for 32 different primer combinations
 
 #### Read 1 Post Stacks for example sample Pop3_17304 
 
@@ -203,7 +205,6 @@ fastp --in1 {Path to fastq file for forward reads} --in2 {Path to fastq file for
 #SBATCH --mem=2Gb
 #SBATCH --mail-user=schaal.s@northeastern.edu
 #SBATCH --mail-type=FAIL
-#SBATCH --partition=lotterhos
 #SBATCH --time=1:00:00
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
@@ -611,9 +612,7 @@ for(i in 1:length(samps)){
   
 }
 ```
-![Output](images/Pop1_17291100XcoveragePlot10000.png)
-
-<!-- <img src="./Pop1_17291100XcoveragePlot10000.png" width="500">  -->
+<img src="./Pop1_17291100XcoveragePlot10000.png" width="500"> 
 
 #### Results (R script for 5 samples):
 Time: about 4.5 hours  
@@ -818,7 +817,6 @@ freebayes-parallel regionsFiles/NC_044048.1_100kbRegions.txt 128 -f ${REF} -b ..
 Time: 6-12 hours each (total about 36 hours)   
 Memory: 60-65GB 
 
-
 ```{r, echo=FALSE,eval=FALSE}
 library(knitr)
 my.jekyll.site <- "marineomics.github.io"
@@ -830,8 +828,7 @@ KnitPost <- function(input, base.url = my.jekyll.site) {
   render_jekyll()
   knit(input, envir = parent.frame())
 }
-
 setwd("~/Postdoc_Projects/RCN_MarineOmics/Website/marineomics.github.io/guidelines")
 KnitPost("~/Postdoc_Projects/RCN_MarineOmics/Website/marineomics.github.io/guidelines/WGSFullWalkthrough.Rmd")
-
 ```
+
