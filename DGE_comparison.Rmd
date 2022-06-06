@@ -1,16 +1,6 @@
 ---
 title: "Fitting Multifactorial Models of Differential Expression"
-author: "Sam Bogan"
-csl: molecular-ecology.csl
-output:
-  html_document:
-    toc: yes
-    toc_depth: 3
-  word_document:
-    toc: yes
-    toc_depth: '3'
-  pdf_document: default
-  github_document: default
+author: "Samuel N Bogan"
 bibliography: DGE_Comp.bib
 ---
 
@@ -903,4 +893,4 @@ count(lmer_lrt_filt)
 
 |         If you've made it this far, you've probably found it to be a common theme that popular DE packages do not provide all of the flexibility necessary for fitting models to data coming from multifactorial experimental designs, even some of the more standard designs. It should be restated that our walkthrough only scratches the surface of (i) available packages that can facilitate multifactorial DE tests and (ii) opportunities that custom scripts for model fitting provide. For example, our example code for fitting linear and linear mixed models before testing for effects using likelihood ratio tests can easily be edited to fit negative binomial GLMs such as those used by edgeR and DESeq2 input with $\theta$ estimates (e.g., dispersion) from edgeR or custom estimates, and we encourage readers to try out this strategy! If you have personal code that you believe would make a valuable addition to this walkthrough, don't hesitate to post a GitHub issue or submit a pull-request to us. We will review the suggestions and add your name to the list this page's authors! We hope that this page and others on the website can serve as a living document that can keep pace with advances in multifactorial RNA-seq analyses, which lend fidelity to experimental designs that are necessary for generating reproducible and predictive results.
 
-
+#References
