@@ -19,8 +19,8 @@ navbar:
           href: poolseq.html
     - text: "Functional Genomics"
       menu:
-        - text: "RNAseq (coming soon!)"
-          href: RNA_coming.html
+        - text: "Mutifactorial RNAseq"
+          href: DGE_comparison.html
     - text: "Discussion Forum"
       href: https://github.com/MarineOmics/marineomics.github.io/discussions
 
