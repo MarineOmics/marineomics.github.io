@@ -13,7 +13,6 @@
 
 <title>Introduction</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -60,6 +59,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="tutorial.css" type="text/css" />
 
 
@@ -84,6 +84,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -315,7 +318,7 @@ div.tocify {
 <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -328,7 +331,7 @@ div.tocify {
   <a href="panels.html">Panel Seminars</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Population Genomics
      
     <span class="caret"></span>
@@ -349,14 +352,14 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Functional Genomics
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="RNA_coming.html">RNAseq (coming soon!)</a>
+      <a href="DGE_comparison.html">Mutifactorial RNAseq</a>
     </li>
   </ul>
 </li>
@@ -394,20 +397,19 @@ div.tocify {
 <p><strong>Rigorous</strong>: following best principles to identify and mitigate sources of error in data generation and analysis</p>
 <p><strong>Reproducible</strong>: when others can reproduce the results with accessible data, code, and documentation</p>
 <div id="guidelines-for-omics-analyses" class="section level1">
-<h1>Guidelines for ’omics analyses</h1>
-<p>On this website you will find a growing and evolving collection of guidelines, tutorials, recommended readings, and method evaluations for various ’omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid “best practices”, we aim to encourage data exploration and rigorous quality control through “best principles”, paying particular attention to topics for which open access guidelines are scarce. The guidelines are written by members of the MarineOmics working group or the community, then shared for peer review. Comments on current website content or suggestions for new content can be made through the <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>.</p>
+<h1>Guidelines for 'omics analyses</h1>
+<p>On this website you will find a growing and evolving collection of guidelines, tutorials, recommended readings, and method evaluations for various 'omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid &quot;best practices&quot;, we aim to encourage data exploration and rigorous quality control through &quot;best principles&quot;, paying particular attention to topics for which open access guidelines are scarce. The guidelines are written by members of the MarineOmics working group or the community, then shared for peer review. Comments on current website content or suggestions for new content can be made through the <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>.</p>
 <p>Based on the expertise of the MarineOmics working group, the first topics include:</p>
 <div id="topics" class="section level3 tabset tabset-fade tabset-pills">
-<h3 class="tabset tabset-fade tabset-pills">Topics</h3>
+<h3>Topics</h3>
 <div id="population-genomics" class="section level4">
 <h4>Population Genomics</h4>
 <ul>
 <li><a href="choosing-population-genetics.html">Choosing a population genomics sequencing approach</a><br />
 </li>
-<li><a href="WGS_intro.html">Whole Genome Resequencing (WGS)</a>
-<ul>
+<li><a href="WGS_intro.html">Whole Genome Resequencing (WGS)</a><br />
+</li>
 <li><a href="https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md">Low coverage WGS</a></li>
-</ul></li>
 <li><a href="RADseq.html">Reduced Representation Sequencing</a></li>
 <li><a href="poolseq.html">Poolseq</a></li>
 </ul>
@@ -415,22 +417,25 @@ div.tocify {
 <div id="functional-genomics" class="section level4">
 <h4>Functional Genomics</h4>
 <ul>
-<li>Transcriptomics with RNA-Seq (coming soon!)<br />
+<li><a href="DGE_comparison.html">Multifactorial RNAseq analyses</a><br />
 </li>
-<li>Differential gene expression (coming soon!)</li>
+<li>Aligning and counting RNAseq reads (coming soon!)
+<ul>
+<li>De novo, reference-based, and Tag-seq methods</li>
+</ul></li>
 </ul>
 </div>
 </div>
 <div id="section" class="section level3 unnumbered">
-<h3 class="unnumbered"></h3>
+<h3></h3>
 </div>
 <div id="the-guidelines-portion-of-the-website-is-still-under-peer-review-and-should-be-considered-a-preprint.-if-you-are-interested-in-contributing-to-the-peer-review-process-check-out-the-discussion-forum." class="section level3 unlisted unnumbered">
-<h3 class="unlisted unnumbered">The guidelines portion of the website is still under peer review and should be considered a “preprint”. If you are interested in contributing to the peer review process, check out the <a href="discussion.html">Discussion Forum</a>.</h3>
+<h3>The guidelines portion of the website is still under peer review and should be considered a &quot;preprint&quot;. If you are interested in contributing to the peer review process, check out the <a href="discussion.html">Discussion Forum</a>.</h3>
 </div>
 </div>
 <div id="panel-seminars" class="section level1">
 <h1>Panel Seminars</h1>
-<p>To facilitate discussions about practices and pitfalls in applying ’omics to non-model systems, we hosted <a href="panels.html">Q &amp; A panel seminars</a> with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on <a href="https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ">YouTube</a>!</p>
+<p>To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we hosted <a href="panels.html">Q &amp; A panel seminars</a> with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on <a href="https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ">YouTube</a>!</p>
 </div>
 <div id="reproducibility-in-marine-genomics" class="section level1">
 <h1>Reproducibility in Marine Genomics</h1>
@@ -439,60 +444,60 @@ div.tocify {
 <div id="working-group-members" class="section level1">
 <h1>Working Group Members</h1>
 <div id="katherine-silliman-phd-auburn-university---kes0132atauburn.edu" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="https://ksilliman.weebly.com/">Katherine Silliman, PhD</a>, Auburn University - kes0132[at]auburn.edu</h4>
+<h4><a href="https://ksilliman.weebly.com/">Katherine Silliman, PhD</a>, Auburn University - kes0132[at]auburn.edu</h4>
 </div>
 <div id="sam-bogan-uc-santa-barbara--snboganatucsb.edu" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="http://www.hofmannlab.com/sam-bogan.html">Sam Bogan</a>, UC-Santa Barbara -snbogan[at]ucsb.edu</h4>
+<h4><a href="http://www.hofmannlab.com/sam-bogan.html">Sam Bogan</a>, UC-Santa Barbara -snbogan[at]ucsb.edu</h4>
 </div>
 <div id="alan-downey-wall-northeastern-university" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="https://cos.northeastern.edu/people/alan-downey-wall/">Alan Downey-Wall</a>, Northeastern University</h4>
+<h4><a href="https://cos.northeastern.edu/people/alan-downey-wall/">Alan Downey-Wall</a>, Northeastern University</h4>
 </div>
 <div id="chris-mantegna-university-of-washington-intern" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered">Chris Mantegna, University of Washington (Intern)</h4>
+<h4>Chris Mantegna, University of Washington (Intern)</h4>
 </div>
 <div id="danielle-davenport-university-of-queensland" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="https://www.researchgate.net/profile/Danielle-Davenport-2">Danielle Davenport</a>, University of Queensland</h4>
+<h4><a href="https://www.researchgate.net/profile/Danielle-Davenport-2">Danielle Davenport</a>, University of Queensland</h4>
 </div>
 <div id="hanny-rivera-phd-woods-hole-oceanographic-institute" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="https://www2.whoi.edu/staff/hrivera/">Hanny Rivera, PhD</a>, Woods Hole Oceanographic Institute</h4>
+<h4><a href="https://www2.whoi.edu/staff/hrivera/">Hanny Rivera, PhD</a>, Woods Hole Oceanographic Institute</h4>
 </div>
 <div id="jecy-klinkam-college-of-william-and-mary-intern" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered">Jecy Klinkam, College of William and Mary (Intern)</h4>
+<h4>Jecy Klinkam, College of William and Mary (Intern)</h4>
 </div>
 <div id="joanna-griffiths-phd-uc-davis" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="https://joannasgriffiths.wordpress.com/">Joanna Griffiths, PhD</a>, UC-Davis</h4>
+<h4><a href="https://joannasgriffiths.wordpress.com/">Joanna Griffiths, PhD</a>, UC-Davis</h4>
 </div>
 <div id="joe-mcgirr-phd-uc-davis" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="https://joemcgirr.github.io/">Joe McGirr, PhD</a>, UC-Davis</h4>
+<h4><a href="https://joemcgirr.github.io/">Joe McGirr, PhD</a>, UC-Davis</h4>
 </div>
 <div id="kaitlin-macaranas-csu-bakersfield-intern" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered">Kaitlin Macaranas, CSU-Bakersfield (Intern)</h4>
+<h4>Kaitlin Macaranas, CSU-Bakersfield (Intern)</h4>
 </div>
 <div id="megan-guidry-university-of-rhode-island" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered">Megan Guidry, University of Rhode Island</h4>
+<h4>Megan Guidry, University of Rhode Island</h4>
 </div>
 <div id="natalie-ameral-university-of-rhode-island-ri-dept.-of-environmental-management" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered">Natalie Ameral, University of Rhode Island &amp; RI Dept. of Environmental Management</h4>
+<h4>Natalie Ameral, University of Rhode Island &amp; RI Dept. of Environmental Management</h4>
 </div>
 <div id="nicolas-lou-cornell-university" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered">Nicolas Lou, Cornell University</h4>
+<h4>Nicolas Lou, Cornell University</h4>
 </div>
 <div id="sara-schaal-northeastern-university" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="https://schaals.wixsite.com/smschaal">Sara Schaal</a>, Northeastern University</h4>
+<h4><a href="https://schaals.wixsite.com/smschaal">Sara Schaal</a>, Northeastern University</h4>
 </div>
 <div id="sara-wuitchik-phd-harvard-university" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="https://sjswuitchik.weebly.com/">Sara Wuitchik, PhD</a>, Harvard University</h4>
+<h4><a href="https://sjswuitchik.weebly.com/">Sara Wuitchik, PhD</a>, Harvard University</h4>
 </div>
 <div id="faculty-advisors" class="section level3 unlisted unnumbered">
-<h3 class="unlisted unnumbered">Faculty Advisors</h3>
+<h3>Faculty Advisors</h3>
 <div id="andrew-whitehead-phd-uc-davis" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="https://whiteheadresearch.wordpress.com/">Andrew Whitehead, PhD</a>, UC-Davis</h4>
+<h4><a href="https://whiteheadresearch.wordpress.com/">Andrew Whitehead, PhD</a>, UC-Davis</h4>
 </div>
 <div id="jon-puritz-phd-university-of-rhode-island" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="https://www.marineevoeco.com/">Jon Puritz, PhD</a>, University of Rhode Island</h4>
+<h4><a href="https://www.marineevoeco.com/">Jon Puritz, PhD</a>, University of Rhode Island</h4>
 </div>
 <div id="steven-roberts-phd-university-of-washington" class="section level4 unlisted unnumbered">
-<h4 class="unlisted unnumbered"><a href="http://faculty.washington.edu/sr320/?page_id=10850">Steven Roberts, PhD</a>, University of Washington</h4>
+<h4><a href="http://faculty.washington.edu/sr320/?page_id=10850">Steven Roberts, PhD</a>, University of Washington</h4>
 </div>
 </div>
 </div>
@@ -502,7 +507,7 @@ div.tocify {
 </div>
 <div id="contact" class="section level1">
 <h1>Contact</h1>
-<p>For any and all inquiries about the MarineOmics Working Group, our website and its material, or other activities, please contact us at <a href="mailto:rcnecs.marineomics@gmail.com" class="email">rcnecs.marineomics@gmail.com</a>.</p>
+<p>For any and all inquiries about the MarineOmics Working Group, our website and its material, or other activities, please contact us at <a href="mailto:rcnecs.marineomics@gmail.com">rcnecs.marineomics@gmail.com</a>.</p>
 </div>
 
 

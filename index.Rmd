@@ -29,8 +29,9 @@ Based on the expertise of the MarineOmics working group, the first topics includ
 
 #### Functional Genomics  
 
-* Transcriptomics with RNA-Seq (coming soon!)  
-* Differential gene expression (coming soon!)  
+* [Multifactorial RNAseq analyses](DGE_comparison.html)  
+* Aligning and counting RNAseq reads (coming soon!)
+    * De novo, reference-based, and Tag-seq methods
 
 ### {-}
 
