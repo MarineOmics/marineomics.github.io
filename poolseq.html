@@ -13,7 +13,8 @@
 
 <title>PoPoolation Pipeline</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -59,6 +60,29 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="tutorial.css" type="text/css" />
 
 
@@ -83,6 +107,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -314,7 +341,7 @@ div.tocify {
 <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -327,7 +354,7 @@ div.tocify {
   <a href="panels.html">Panel Seminars</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Population Genomics
      
     <span class="caret"></span>
@@ -348,14 +375,14 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Functional Genomics
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="RNA_coming.html">RNAseq (coming soon!)</a>
+      <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
     </li>
   </ul>
 </li>
@@ -391,21 +418,122 @@ div.tocify {
 </div>
 
 
-<p>I mostly followed the PoPoolation and PoPoolation2 pipelines by Robert Kofler and Christian Schlötterer (<a href="https://sourceforge.net/p/popoolation2/wiki/Main/" class="uri">https://sourceforge.net/p/popoolation2/wiki/Main/</a>). The website has an easy-to-follow tutorial for using PoPoolation2 and how to use their scripts. This pipeline extends the use of the scripts for running on a Linux cluster. I highly recommend following the PoPoolation2 tutorial and manual and using these scripts if you have any modifications from default flags. *Note: These scripts were written for use on Louisiana State University’s high performance cluster “SuperMike-II” running Red Hat Enterprise Linux 6 (more info found here: <a href="http://www.hpc.lsu.edu/resources/hpc/system.php?system=SuperMike-II" class="uri">http://www.hpc.lsu.edu/resources/hpc/system.php?system=SuperMike-II</a>)</p>
-<p>The following scripts were used to analyze data from an experimental evolution study on <em>Tigriopus californicus</em> copepods <span class="citation">(Griffiths, Kawji, and Kelly 2020)</span>. Raw sequencing data are deposited in NCBI’s Short Reads Archive (<a href="https://www.ncbi.nlm.nih.gov/bioproject/PRJNA597336/" class="uri">https://www.ncbi.nlm.nih.gov/bioproject/PRJNA597336/</a>). To download this dataset, go to: <a href="https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=run_browser" class="uri">https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=run_browser</a> , then type in the accession number for the identified files you want to download (e.g., the accession no. for the file Bodega population file is SRR10760095, identified under the “Run” heading). Then click on the “Data access” tab, and there will be a downloadable link. Additional analyses and scripts can be found at: <a href="https://github.com/JoannaGriffiths/Tigriopus_HER" class="uri">https://github.com/JoannaGriffiths/Tigriopus_HER</a></p>
+<p>I mostly followed the PoPoolation and PoPoolation2 pipelines by
+Robert Kofler and Christian Schlötterer (<a
+href="https://sourceforge.net/p/popoolation2/wiki/Main/"
+class="uri">https://sourceforge.net/p/popoolation2/wiki/Main/</a>). The
+website has an easy-to-follow tutorial for using PoPoolation2 and how to
+use their scripts. This pipeline extends the use of the scripts for
+running on a Linux cluster. I highly recommend following the
+PoPoolation2 tutorial and manual and using these scripts if you have any
+modifications from default flags. *Note: These scripts were written for
+use on Louisiana State University’s high performance cluster
+“SuperMike-II” running Red Hat Enterprise Linux 6 (more info found here:
+<a
+href="http://www.hpc.lsu.edu/resources/hpc/system.php?system=SuperMike-II"
+class="uri">http://www.hpc.lsu.edu/resources/hpc/system.php?system=SuperMike-II</a>)</p>
+<p>The following scripts were used to analyze data from an experimental
+evolution study on <em>Tigriopus californicus</em> copepods <span
+class="citation">(Griffiths, Kawji, and Kelly 2020)</span>. Raw
+sequencing data are deposited in NCBI’s Short Reads Archive (<a
+href="https://www.ncbi.nlm.nih.gov/bioproject/PRJNA597336/"
+class="uri">https://www.ncbi.nlm.nih.gov/bioproject/PRJNA597336/</a>).
+To download this dataset, go to: <a
+href="https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=run_browser"
+class="uri">https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=run_browser</a>
+, then type in the accession number for the identified files you want to
+download (e.g., the accession no. for the file Bodega population file is
+SRR10760095, identified under the “Run” heading). Then click on the
+“Data access” tab, and there will be a downloadable link. Additional
+analyses and scripts can be found at: <a
+href="https://github.com/JoannaGriffiths/Tigriopus_HER"
+class="uri">https://github.com/JoannaGriffiths/Tigriopus_HER</a></p>
 <p><strong><em>Strengths and weaknesses of Pool-seq</em></strong><br />
-Due to the nature of Pool-seq where multiple individuals are pooled to prepare a single library, this results in a loss of haplotype information. Therefore, analyses rely on allele frequency estimates rather than hard “genotype calls”. PoPoolation2 is primarily used for comparing allele frequency differences between populations or treatments in comparison to a reference genome. The pooling of many individuals can be a cost-effective tool to characterize genetic variation present at the population level (e.g., genome wide association studies and experimental evolution). For example, to identify small changes in allele frequencies, you would need to genotype hundreds of individuals across the entire genome, which may be too cost-prohibitive with individual barcoding. However, individual genotype information is lost, as well as information on dominance and effect sizes. For example, individual genotypes cannot be linked to individual phenotypes. Additionally, estimations of linkage disequilibrium are limited to a single sequencing read since that is the known limit of haplotype information for a single individual. Finally, distinguishing between sequencing errors and rare, low-frequency alleles is limited. Unlike sequencing of individuals, this cannot be solved by analyzing multiple reads from the same region of a single chromosome. One way to ameliorate this issue is to sequence replicates of pools. In addition, Pool-seq analyses can be prone to inaccurate estimations of allele frequencies based on the experimental methods. Care must be taken to ensure the the experimental design maximizes the ratio sequencing coverage to the number of individuals pooled.</p>
-<p><strong><em>Notes on Experimental Design for Downstream Analyses:</em></strong><br />
-It is important to try to standardize the number of individuals (and thus DNA) pooled for each sample. Robert Kofler and team also recommend that the pool size should be larger than the goal coverage for sequencing, because this minimizes re-sampling the same allele from a single individual several times. Because PoPoolation is designed for comparing differences in allele frequencies among treatments/population, accuracy will depend on the pool size and sequencing coverage. For example, smaller differences in allele frequency changes can be seen if you have a large number of individuals in a single pool and more coverage. The PoPoolation2 Manual page provides the following calculation to detect significant allele frequency differences:"To detect a significant (Fisher’s exact test; p=0.01) allele frequency difference between two populations of 30%, a coverage (and pool size) of 50 will be sufficient. If however significant (Fisher’s exact test; p=0.01) allele frequency differences of 10% need to be detected the coverage as well as the pool size should be about 400."<br />
-It is critical to note, the sequencing accuracy of Pool-seq increases with larger pool sizes; if the number of sequenced individuals is approximately equal to the coverage, then the sequency accuracy is no longer superior to an individual level of sequencing (see Fig. 1a from <span class="citation">(Schlötterer et al. 2014)</span>).</p>
+Due to the nature of Pool-seq where multiple individuals are pooled to
+prepare a single library, this results in a loss of haplotype
+information. Therefore, analyses rely on allele frequency estimates
+rather than hard “genotype calls”. PoPoolation2 is primarily used for
+comparing allele frequency differences between populations or treatments
+in comparison to a reference genome. The pooling of many individuals can
+be a cost-effective tool to characterize genetic variation present at
+the population level (e.g., genome wide association studies and
+experimental evolution). For example, to identify small changes in
+allele frequencies, you would need to genotype hundreds of individuals
+across the entire genome, which may be too cost-prohibitive with
+individual barcoding. However, individual genotype information is lost,
+as well as information on dominance and effect sizes. For example,
+individual genotypes cannot be linked to individual phenotypes.
+Additionally, estimations of linkage disequilibrium are limited to a
+single sequencing read since that is the known limit of haplotype
+information for a single individual. Finally, distinguishing between
+sequencing errors and rare, low-frequency alleles is limited. Unlike
+sequencing of individuals, this cannot be solved by analyzing multiple
+reads from the same region of a single chromosome. One way to ameliorate
+this issue is to sequence replicates of pools. In addition, Pool-seq
+analyses can be prone to inaccurate estimations of allele frequencies
+based on the experimental methods. Care must be taken to ensure the the
+experimental design maximizes the ratio sequencing coverage to the
+number of individuals pooled.</p>
+<p><strong><em>Notes on Experimental Design for Downstream
+Analyses:</em></strong><br />
+It is important to try to standardize the number of individuals (and
+thus DNA) pooled for each sample. Robert Kofler and team also recommend
+that the pool size should be larger than the goal coverage for
+sequencing, because this minimizes re-sampling the same allele from a
+single individual several times. Because PoPoolation is designed for
+comparing differences in allele frequencies among treatments/population,
+accuracy will depend on the pool size and sequencing coverage. For
+example, smaller differences in allele frequency changes can be seen if
+you have a large number of individuals in a single pool and more
+coverage. The PoPoolation2 Manual page provides the following
+calculation to detect significant allele frequency differences:"To
+detect a significant (Fisher’s exact test; p=0.01) allele frequency
+difference between two populations of 30%, a coverage (and pool size) of
+50 will be sufficient. If however significant (Fisher’s exact test;
+p=0.01) allele frequency differences of 10% need to be detected the
+coverage as well as the pool size should be about 400.”<br />
+It is critical to note, the sequencing accuracy of Pool-seq increases
+with larger pool sizes; if the number of sequenced individuals is
+approximately equal to the coverage, then the sequency accuracy is no
+longer superior to an individual level of sequencing (see Fig. 1a from
+<span class="citation">(Schlötterer et al. 2014)</span>).</p>
 <p><strong><em>Alternative Pipelines</em></strong><br />
-Low Coverage Pool-seq <a href="Data:\" class="uri">Data:\</a> <a href="https://github.com/petrov-lab/HAFpipe-line" class="uri">https://github.com/petrov-lab/HAFpipe-line</a><br />
-Alternative pipelines have been created for low coverage (&lt;5x) pool-seq data that can provide accurate estimates of allele frequencies. This pipeline is designed for Evolve and Re-sequence studies where the founder haplotypes are known.</p>
-<p>Customizable Filtering and Assessing Quality of Pool-Seq <a href="Data:\" class="uri">Data:\</a> <a href="https://github.com/ToBoDev/assessPool" class="uri">https://github.com/ToBoDev/assessPool</a><br />
-This pipeline filters SNPs based on adjustable criterion with suggestions for pooled data. It determines pool number and prepares proper data structure for analysis, creates a customizable run script for Popoolation2 for all pairwise comparisons, runs Popoolation2 and poolfstat, imports Popoolation2 and poolfstat output, and finally, generates population genetic statistics and plots for data visualization.</p>
+Low Coverage Pool-seq <a href="Data:\" class="uri">Data:\</a> <a
+href="https://github.com/petrov-lab/HAFpipe-line"
+class="uri">https://github.com/petrov-lab/HAFpipe-line</a><br />
+Alternative pipelines have been created for low coverage (&lt;5x)
+pool-seq data that can provide accurate estimates of allele frequencies.
+This pipeline is designed for Evolve and Re-sequence studies where the
+founder haplotypes are known.</p>
+<p>Customizable Filtering and Assessing Quality of Pool-Seq <a
+href="Data:\" class="uri">Data:\</a> <a
+href="https://github.com/ToBoDev/assessPool"
+class="uri">https://github.com/ToBoDev/assessPool</a><br />
+This pipeline filters SNPs based on adjustable criterion with
+suggestions for pooled data. It determines pool number and prepares
+proper data structure for analysis, creates a customizable run script
+for Popoolation2 for all pairwise comparisons, runs Popoolation2 and
+poolfstat, imports Popoolation2 and poolfstat output, and finally,
+generates population genetic statistics and plots for data
+visualization.</p>
 <div id="filter-raw-sequences" class="section level2">
 <h2>Filter Raw Sequences</h2>
-<p>The script below uses the wrapper TrimGalore to remove Adapter/Barcode sequences and removes poor quality reads. This example dataset uses paired end sequencing so I used the flag (–paired) in TrimGalore. Because these example files had high coverage, I was able to use conservative filters. For example, the default length of reads is 20 bp (so if a read is less than 20 bp then the read will be removed). Since I had high coverage and long read lengths (150 bp), I used a minimum read length of 40 bp. The –max_n flag specifies how many “Ns” can be in the read before the read if discarded as “poor quality”. Again, depending on your sequencing depth you may want to be more or less conservative. There is no default value specified in TrimGalore, but I used a highly conservative value of 1 (ie any instances of N in the read and that read will be discarded). This is probably more conservative than you need to be, because the read may still contain informative sequencing data. Please note that these parameters are not specific to a Pool Seq dataset.</p>
+<p>The script below uses the wrapper TrimGalore to remove
+Adapter/Barcode sequences and removes poor quality reads. This example
+dataset uses paired end sequencing so I used the flag (–paired) in
+TrimGalore. Because these example files had high coverage, I was able to
+use conservative filters. For example, the default length of reads is 20
+bp (so if a read is less than 20 bp then the read will be removed).
+Since I had high coverage and long read lengths (150 bp), I used a
+minimum read length of 40 bp. The –max_n flag specifies how many “Ns”
+can be in the read before the read if discarded as “poor quality”.
+Again, depending on your sequencing depth you may want to be more or
+less conservative. There is no default value specified in TrimGalore,
+but I used a highly conservative value of 1 (ie any instances of N in
+the read and that read will be discarded). This is probably more
+conservative than you need to be, because the read may still contain
+informative sequencing data. Please note that these parameters are not
+specific to a Pool Seq dataset.</p>
 <pre class="bash"><code>#!/bin/bash
 
 #PBS -q checkpt
@@ -501,9 +629,14 @@ samtools view -bS allU_out_PE.sam | samtools sort -o allU_out.sorted
 date 
 exit</code></pre>
 </div>
-<div id="determine-mean-coverage-across-the-genome" class="section level2">
+<div id="determine-mean-coverage-across-the-genome"
+class="section level2">
 <h2>Determine mean coverage across the genome</h2>
-<p>This code can be used to determine the mean coverage across the genome for each sample/library. This information can be used to inform the min and max coverage used in downstream analyses (such as the Fisher’s exact test and Fst analyses). You will want to choose a min and max coverage window spanning the mean coverage.</p>
+<p>This code can be used to determine the mean coverage across the
+genome for each sample/library. This information can be used to inform
+the min and max coverage used in downstream analyses (such as the
+Fisher’s exact test and Fst analyses). You will want to choose a min and
+max coverage window spanning the mean coverage.</p>
 <pre class="bash"><code>#!/bin/bash
 
 #PBS -q workq
@@ -534,9 +667,18 @@ exit</code></pre>
 </div>
 <div id="compiling-snps-for-all-samples" class="section level2">
 <h2>Compiling SNPs for all samples</h2>
-<p>This script compiles all the identified SNPs for each sample into a matrix. This sync file format is required for downstream analyses such as Fst, creating Manhattan plots, or CMH tests to be used in both the PoPoolation and PoPoolation2 pipelines. You will want to make sure that the –fastq-type flag is set to “sanger” (this is for Phred quality score matching–yes, this is correct even if you used Illumina sequencing). The min-qual flag must be above 0, the default is 20 which gives you a 99% base call accuracy rate).</p>
+<p>This script compiles all the identified SNPs for each sample into a
+matrix. This sync file format is required for downstream analyses such
+as Fst, creating Manhattan plots, or CMH tests to be used in both the
+PoPoolation and PoPoolation2 pipelines. You will want to make sure that
+the –fastq-type flag is set to “sanger” (this is for Phred quality score
+matching–yes, this is correct even if you used Illumina sequencing). The
+min-qual flag must be above 0, the default is 20 which gives you a 99%
+base call accuracy rate).</p>
 <p><strong>What is an Mpileup file?</strong><br />
-Pileup format is a text-based format for summarizing the base calls of aligned reads to a reference sequence. This format facilitates visual display of SNP/indel calling and alignment. (Source: Wikipedia)</p>
+Pileup format is a text-based format for summarizing the base calls of
+aligned reads to a reference sequence. This format facilitates visual
+display of SNP/indel calling and alignment. (Source: Wikipedia)</p>
 <pre class="bash"><code>#!/bin/bash
 
 #PBS -q checkpt
@@ -584,30 +726,77 @@ samtools mpileup -f full_genome_mito_tigs.fasta SD_out.sorted &gt; SD.mpileup
 <li>col5: allele frequencies of population number 2</li>
 <li>coln: allele frequencies of population number n</li>
 </ul>
-<p>The allele frequencies are in the format A:T:C:G:N:del, i.e: count of bases ‘A’, count of bases ‘T’,… and deletion count in the end (character ’*’ in the mpileup)</p>
+<p>The allele frequencies are in the format A:T:C:G:N:del, i.e: count of
+bases ‘A’, count of bases ‘T’,… and deletion count in the end (character
+’*’ in the mpileup)</p>
 </div>
-<div id="pop-gen-and-downstream-statistical-analyses" class="section level2">
+<div id="pop-gen-and-downstream-statistical-analyses"
+class="section level2">
 <h2>Pop Gen and Downstream Statistical Analyses</h2>
-<p>These in-depth notes are not on the tutorial or manual page, but detailed descriptions for each flag can be found using the <code>--help</code> option when running each script. e.g. <code>perl fst-sliding.pl --help</code></p>
-<p>You will want to play around with the min-coverage, max-coverage, and min-count based on the mean coverage of your samples/populations. Minimum coverages that are too high and max coverages that are too low may result in an empty output file, which is why it’s a good idea to have an estimate of your mean/min/max coverage for each sample/population. The minimum count must be less than the minimum coverage. You may want to modify this flag based on the number of individuals pooled per sample/population.</p>
+<p>These in-depth notes are not on the tutorial or manual page, but
+detailed descriptions for each flag can be found using the
+<code>--help</code> option when running each script.
+e.g. <code>perl fst-sliding.pl --help</code></p>
+<p>You will want to play around with the min-coverage, max-coverage, and
+min-count based on the mean coverage of your samples/populations.
+Minimum coverages that are too high and max coverages that are too low
+may result in an empty output file, which is why it’s a good idea to
+have an estimate of your mean/min/max coverage for each
+sample/population. The minimum count must be less than the minimum
+coverage. You may want to modify this flag based on the number of
+individuals pooled per sample/population.</p>
 <p><strong><em>Important considerations:</em></strong><br />
-<code>--suppress-noninformative</code>: Output files will not report results for windows with no SNPs or insufficient coverage. Including this flag will make it easier for downstream manipulation of the output file, such as creating figures.</p>
-<p><code>--pool-size</code>: the number of individuals pooled per sample; If the pool sizes differ among each sample, you can provide the size for each sample individually: –pool-size 500 .. all samples/populations have a pool size of 500 –pool-size 500:300:600 .. first sample/population has a pool size of 500, the second of 300 etc;</p>
-<p><code>--min-coverage</code>: the minimum coverage used for SNP identification, the coverage in ALL samples/populations has to be higher or equal to this threshold, otherwise no SNP will be called. default=4</p>
-<p><code>--max-coverage</code>: The maximum coverage; All populations are required to have coverages lower or equal than the maximum coverage; Mandatory.<br />
+<code>--suppress-noninformative</code>: Output files will not report
+results for windows with no SNPs or insufficient coverage. Including
+this flag will make it easier for downstream manipulation of the output
+file, such as creating figures.</p>
+<p><code>--pool-size</code>: the number of individuals pooled per
+sample; If the pool sizes differ among each sample, you can provide the
+size for each sample individually: –pool-size 500 .. all
+samples/populations have a pool size of 500 –pool-size 500:300:600 ..
+first sample/population has a pool size of 500, the second of 300
+etc;</p>
+<p><code>--min-coverage</code>: the minimum coverage used for SNP
+identification, the coverage in ALL samples/populations has to be higher
+or equal to this threshold, otherwise no SNP will be called.
+default=4</p>
+<p><code>--max-coverage</code>: The maximum coverage; All populations
+are required to have coverages lower or equal than the maximum coverage;
+Mandatory.<br />
 The maximum coverage may be provided as one of the following:<br />
-<code>500</code> a maximum coverage of 500 will be used for all samples/populations<br />
-<code>300,400,500</code> a maximum coverage of 300 will be used for the first sample/population, a maximum coverage of 400 for the second sample/population and so on<br />
-<code>2%</code> the 2% highest coverages will be ignored, this value is independently estimated for every sample/population</p>
+<code>500</code> a maximum coverage of 500 will be used for all
+samples/populations<br />
+<code>300,400,500</code> a maximum coverage of 300 will be used for the
+first sample/population, a maximum coverage of 400 for the second
+sample/population and so on<br />
+<code>2%</code> the 2% highest coverages will be ignored, this value is
+independently estimated for every sample/population</p>
 <p><strong><em>NOTE ABOUT MAX COVERAGE</em></strong><br />
-When genotyping individually barcoded samples, max coverage requirements are generally not recommended. However, pool-seq analyses require a max coverage for calculating Fst, cmh, allele frequency changes, etc. because allele frequency estimates are based on the number allele count, which are prone to PCR duplicates. PCR duplicates from a single individual in the pool may skew allele frequency estimates.</p>
-<p><code>--min-covered-fraction</code>:the minimum fraction of a window being between min-coverage and max-coverage in ALL samples/populations; float; default=0.0<br />
-The tutorial provides an example script with a min-covered fraction of 1, however, you will most likely run into an error or an empty output file. The min-covered-fraction flag must be smaller than 1: this flag defines what percent of the window must meet the requirements (e.g. flags: min-count, min-coverage, max-coverage). It is most likely impossible that your entire sequencing window will meet all of these requirements (unless of course you chose a window size of 1 bp!).</p>
-<p><code>--min-count</code>: the minimum count of the minor allele, used for SNP identification. SNPs will be identified considering all samples/populations simultaneously. default=2. The minimum count MUST be smaller than the min-coverage flag for this script to run.</p>
+When genotyping individually barcoded samples, max coverage requirements
+are generally not recommended. However, pool-seq analyses require a max
+coverage for calculating Fst, cmh, allele frequency changes, etc.
+because allele frequency estimates are based on the number allele count,
+which are prone to PCR duplicates. PCR duplicates from a single
+individual in the pool may skew allele frequency estimates.</p>
+<p><code>--min-covered-fraction</code>:the minimum fraction of a window
+being between min-coverage and max-coverage in ALL samples/populations;
+float; default=0.0<br />
+The tutorial provides an example script with a min-covered fraction of
+1, however, you will most likely run into an error or an empty output
+file. The min-covered-fraction flag must be smaller than 1: this flag
+defines what percent of the window must meet the requirements
+(e.g. flags: min-count, min-coverage, max-coverage). It is most likely
+impossible that your entire sequencing window will meet all of these
+requirements (unless of course you chose a window size of 1 bp!).</p>
+<p><code>--min-count</code>: the minimum count of the minor allele, used
+for SNP identification. SNPs will be identified considering all
+samples/populations simultaneously. default=2. The minimum count MUST be
+smaller than the min-coverage flag for this script to run.</p>
 </div>
 <div id="calculate-sliding-window-fst" class="section level2">
 <h2>Calculate sliding window Fst</h2>
-<p>This script will calculate Fst pair-wise comparisons for all samples.</p>
+<p>This script will calculate Fst pair-wise comparisons for all
+samples.</p>
 <pre class="bash"><code>#!/bin/bash
 
 #PBS -q workq
@@ -628,7 +817,8 @@ perl /work/jgrif61/Tigs/popoolation2_1201/fst-sliding.pl --input all_indiv.sync 
 date
 exit
 </code></pre>
-<p>The following R script can be used to plot Fst results in a Manhattan plot</p>
+<p>The following R script can be used to plot Fst results in a Manhattan
+plot</p>
 <pre class="r"><code>library(&quot;qqman&quot;)
 library(&quot;DataCombine&quot;)
 
@@ -645,12 +835,30 @@ fst2$CHR &lt;- as.numeric(fst2$CHR)
 manhattan(fst2, chr=&quot;CHR&quot;, bp=&quot;BP&quot;, snp=&quot;ID&quot;, p=&quot;X1.11&quot;, suggestiveline = F, genomewideline = F, logp = F, ylim =c(0,1)) #p here refers to pvalue or in this case the Fst value, substitute with which column comparison you are interested in graphing</code></pre>
 <div class="figure">
 <img src="images/Fst_SvsBR_SDmap.png" alt="" />
-<p class="caption">Manhattan plot of mean Fst values for 10,000-bp windows of all the selected lines versus the pure Bodega population.</p>
+<p class="caption">Manhattan plot of mean Fst values for 10,000-bp
+windows of all the selected lines versus the pure Bodega population.</p>
 </div>
 </div>
 <div id="calculate-fishers-exact-test" class="section level2">
 <h2>Calculate Fisher’s Exact Test</h2>
-<p>This script will calculate significant allele frequency differences for each SNP position between two samples. Results can be plotted in a Manhattan plot. Depending on the experimental method, the <code>--window-summary-method</code> flag can be used to determine p-value for windows of SNPs. The default is to multiply the p-value of all SNPs for the window. Alternatively, you can specify how p-values within a window should be summarized. Options include multiply, geometric mean, or median. The summary of p-values within a window is dependent on the experimental design and how recent selection was expected to occur. For example, the default parameter might be appropriate if your treatment comparisons are geographically separated populations, where selection is expected to have occurred over hundreds of thousands of years. However, this might be inappropriate for short-term experimental evolution studies, such as the example dataset here. In this dataset, copepods were selected in the lab for 15-20 generations, therefore, we expect relatively large linkage blocks that prevent us from identifying the true targets of selection, and therefore I use the geometric mean option.</p>
+<p>This script will calculate significant allele frequency differences
+for each SNP position between two samples. Results can be plotted in a
+Manhattan plot. Depending on the experimental method, the
+<code>--window-summary-method</code> flag can be used to determine
+p-value for windows of SNPs. The default is to multiply the p-value of
+all SNPs for the window. Alternatively, you can specify how p-values
+within a window should be summarized. Options include multiply,
+geometric mean, or median. The summary of p-values within a window is
+dependent on the experimental design and how recent selection was
+expected to occur. For example, the default parameter might be
+appropriate if your treatment comparisons are geographically separated
+populations, where selection is expected to have occurred over hundreds
+of thousands of years. However, this might be inappropriate for
+short-term experimental evolution studies, such as the example dataset
+here. In this dataset, copepods were selected in the lab for 15-20
+generations, therefore, we expect relatively large linkage blocks that
+prevent us from identifying the true targets of selection, and therefore
+I use the geometric mean option.</p>
 <pre class="bash"><code>#!/bin/bash
 
 #PBS -q workq
@@ -669,12 +877,20 @@ cd /work/jgrif61/Tigs/raw_data
 
 perl /work/jgrif61/Tigs/popoolation2_1201/fisher-test.pl --input all_indiv.sync --output all_indiv.fet --suppress-noninformative --min-count 2 --min-coverage 20 --max-coverage 200 --min-covered-fraction 0.2 --window-summary-method geometricmean
 </code></pre>
-<p>You may need to run the following code on the command line (not in the queues) to install twotailed perl Module before running Fisher-test.pl. See LSU HPC for details: <a href="http://www.hpc.lsu.edu/docs/faq/installation-details.php" class="uri">http://www.hpc.lsu.edu/docs/faq/installation-details.php</a></p>
+<p>You may need to run the following code on the command line (not in
+the queues) to install twotailed perl Module before running
+Fisher-test.pl. See LSU HPC for details: <a
+href="http://www.hpc.lsu.edu/docs/faq/installation-details.php"
+class="uri">http://www.hpc.lsu.edu/docs/faq/installation-details.php</a></p>
 <pre class="bash"><code>perl -MCPAN -e &#39;install Text::NSP::Measures::2D::Fisher2::twotailed&#39;</code></pre>
 </div>
-<div id="calculate-exact-allele-frequencies-in-samples" class="section level2">
+<div id="calculate-exact-allele-frequencies-in-samples"
+class="section level2">
 <h2>Calculate Exact Allele Frequencies in Samples</h2>
-<p>Exact allele frequencies can be used to determine differences in allele frequencies among populations or before and after a selection experiment, for example. These result could be plotted in a PCA or Manhattan plot.</p>
+<p>Exact allele frequencies can be used to determine differences in
+allele frequencies among populations or before and after a selection
+experiment, for example. These result could be plotted in a PCA or
+Manhattan plot.</p>
 <pre class="bash"><code>#!/bin/bash
 
 #PBS -q workq
@@ -695,16 +911,29 @@ perl /work/jgrif61/Tigs/popoolation2_1201/snp-frequency-diff.pl --input all_indi
 date
 exit
 </code></pre>
-<p>This script creates two output files having two different extensions:</p>
-<p><code>_rc</code>: this file contains the major and minor alleles for every SNP in a concise format <code>_pwc</code>: this file contains the differences in allele frequencies for every pairwise comparision of the populations present in the synchronized file For details see the man pages of the script The allele frequency differences can be found in the <code>_pwc</code> file, a small sample:</p>
+<p>This script creates two output files having two different
+extensions:</p>
+<p><code>_rc</code>: this file contains the major and minor alleles for
+every SNP in a concise format <code>_pwc</code>: this file contains the
+differences in allele frequencies for every pairwise comparision of the
+populations present in the synchronized file For details see the man
+pages of the script The allele frequency differences can be found in the
+<code>_pwc</code> file, a small sample:</p>
 <pre class="bash"><code>##chr   pos     rc      allele_count    allele_states   deletion_sum    snp_type        most_variable_allele    diff:1-2
 2      4459    N       2       C/T     0       pop     T       0.133
 2      9728    N       2       T/C     0       pop     T       0.116</code></pre>
-<p>The last column contains the obtained differences in allele frequencies for the allele provided in column 8. Note that in this example the last column refers to a pairwise comparison between population 1 vs 2, in case several populations are provided all pairwise comparisons will be appended in additional columns.</p>
+<p>The last column contains the obtained differences in allele
+frequencies for the allele provided in column 8. Note that in this
+example the last column refers to a pairwise comparison between
+population 1 vs 2, in case several populations are provided all pairwise
+comparisons will be appended in additional columns.</p>
 </div>
 <div id="cochran-mantel-haenszel-cmh-test" class="section level2">
 <h2>Cochran-Mantel-Haenszel (CMH) test</h2>
-<p>This script will detect consistent allele frequency changes in biological replicates. In my case, I was comparing selected samples to one control sample, but if you have replicates of treatments and controls, you can compare columns 1-2, 3-4, etc.</p>
+<p>This script will detect consistent allele frequency changes in
+biological replicates. In my case, I was comparing selected samples to
+one control sample, but if you have replicates of treatments and
+controls, you can compare columns 1-2, 3-4, etc.</p>
 <pre class="bash"><code>#!/bin/bash
 
 #PBS -q workq
@@ -724,7 +953,19 @@ cd /work/jgrif61/Tigs/raw_data
 
 date
 exit</code></pre>
-<p>Due to constraints of the test, you can only compare allele frequency changes for individual SNPs and not windows. I expected high levels of linkage disequilibrium in my samples because individuals were exposed to strong selection pressure. Depending on the amount of linkage disequilibrium you expect in your populations, you may want to account for the non-independence of SNPs following the CMH test. One way to do this, would be to calculate the mean (or geometric mean) p-value for all SNPs in a window. I provide some example R code below for how to do this. I used the program SeqMonk to map cmh results to the genome and an annotated genome file I created with probes for the desired window size (i.e. 10,000 bp). Output files from SeqMonk will tell you which 10,000 bp window a particular SNP falls into. Thus, SNPs can be grouped for each 10,000bp window on each chromosome.</p>
+<p>Due to constraints of the test, you can only compare allele frequency
+changes for individual SNPs and not windows. I expected high levels of
+linkage disequilibrium in my samples because individuals were exposed to
+strong selection pressure. Depending on the amount of linkage
+disequilibrium you expect in your populations, you may want to account
+for the non-independence of SNPs following the CMH test. One way to do
+this, would be to calculate the mean (or geometric mean) p-value for all
+SNPs in a window. I provide some example R code below for how to do
+this. I used the program SeqMonk to map cmh results to the genome and an
+annotated genome file I created with probes for the desired window size
+(i.e. 10,000 bp). Output files from SeqMonk will tell you which 10,000
+bp window a particular SNP falls into. Thus, SNPs can be grouped for
+each 10,000bp window on each chromosome.</p>
 <pre class="r"><code>library(&quot;psych&quot;)
 
 cmh &lt;-read.table(&quot;10000window_BR_cmh_overlap.txt&quot;, header=TRUE)
@@ -811,14 +1052,17 @@ cmh_p_ave_allchr2$BP_ID &lt;- paste(cmh_p_ave_allchr2$BP_start + 5000) #I wanted
 cmh_p_ave_allchr2$ID &lt;- paste(cmh_p_ave_allchr2$CHR,cmh_p_ave_allchr2$BP_start,sep=&quot;.&quot;)
 
 write.table(cmh_p_ave_allchr2, file = &quot;cmh_window_geomean_p&quot;, sep = &quot;\t&quot;)</code></pre>
-<p>I then analyzed the results of the CMH test by plotting the geometric mean for each 10,000bp window on a Manhattan plot.</p>
+<p>I then analyzed the results of the CMH test by plotting the geometric
+mean for each 10,000bp window on a Manhattan plot.</p>
 </div>
 <div id="popoolation-pipelines-for-analyses" class="section level2">
 <h2>PoPoolation Pipelines for analyses</h2>
 </div>
 <div id="nucleotide-diversity" class="section level2">
 <h2>Nucleotide Diversity</h2>
-<p>Calculate Pi (nucleotide diversity) for individual samples. Use mpileup files that were created for a single sample as the input. Below is an example for one sample.</p>
+<p>Calculate Pi (nucleotide diversity) for individual samples. Use
+mpileup files that were created for a single sample as the input. Below
+is an example for one sample.</p>
 <pre class="bash"><code>#!/bin/bash
 
 #PBS -q workq
@@ -840,7 +1084,11 @@ perl /work/jgrif61/Tigs/popoolation_1.2.2/Variance-sliding.pl --measure pi --inp
 date
 exit
 </code></pre>
-<p>I used nucleotide diversity for creating a PCA plot to compare genetic diversity among my samples and to look for broad patterns across my data and I ran an Adonis test to determine if there were significant differences among groups (in this example, selected vs control lines)</p>
+<p>I used nucleotide diversity for creating a PCA plot to compare
+genetic diversity among my samples and to look for broad patterns across
+my data and I ran an Adonis test to determine if there were significant
+differences among groups (in this example, selected vs control
+lines)</p>
 <pre class="r"><code>#import each pi file and do some cleanup:
 pi_1S &lt;- read.delim(&quot;1S.pi&quot;, header = F)
 colnames(pi_1S) &lt;- c(&quot;Chromosome&quot;, &quot;window&quot;, &quot;num.snps&quot;, &quot;frac&quot;, &quot;pi_1S&quot;)
@@ -962,17 +1210,28 @@ line &lt;- treat_df$line
 adonis2(t(pi_all[,2:11])~line, data = treat_df, permutations = 1000000, method = &quot;manhattan&quot;)</code></pre>
 <div class="figure">
 <img src="images/pi_PCA.png" alt="" />
-<p class="caption">Principle coordinate analysis of allele frequencies for selected lines (red), control lines (blue), the pure Bodega population (white), and the pure San Diego population (black).</p>
+<p class="caption">Principle coordinate analysis of allele frequencies
+for selected lines (red), control lines (blue), the pure Bodega
+population (white), and the pure San Diego population (black).</p>
 </div>
 </div>
 <div id="references" class="section level2 unnumbered">
-<h2>References</h2>
-<div id="refs" class="references">
-<div id="ref-Griffiths2020">
-<p>Griffiths, Joanna S, Yasmeen Kawji, and Morgan W Kelly. 2020. “An Experimental Test of Adaptive Introgression in Locally Adapted Populations of Splash Pool Copepods.” <em>Molecular Biology and Evolution</em> 38 (4): 1306–16. <a href="https://doi.org/10.1093/molbev/msaa289">https://doi.org/10.1093/molbev/msaa289</a>.</p>
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Griffiths2020" class="csl-entry">
+Griffiths, Joanna S, Yasmeen Kawji, and Morgan W Kelly. 2020.
+<span>“<span class="nocase">An Experimental Test of Adaptive
+Introgression in Locally Adapted Populations of Splash Pool
+Copepods</span>.”</span> <em>Molecular Biology and Evolution</em> 38
+(4): 1306–16. <a
+href="https://doi.org/10.1093/molbev/msaa289">https://doi.org/10.1093/molbev/msaa289</a>.
 </div>
-<div id="ref-Schlotterer2014">
-<p>Schlötterer, Christian, Raymond Tobler, Robert Kofler, and Viola Nolte. 2014. “Sequencing pools of individuals-mining genome-wide polymorphism data without big funding.” <em>Nature Reviews Genetics</em> 15 (11): 749–63. <a href="https://doi.org/10.1038/nrg3803">https://doi.org/10.1038/nrg3803</a>.</p>
+<div id="ref-Schlotterer2014" class="csl-entry">
+Schlötterer, Christian, Raymond Tobler, Robert Kofler, and Viola Nolte.
+2014. <span>“<span class="nocase">Sequencing pools of individuals-mining
+genome-wide polymorphism data without big funding</span>.”</span>
+<em>Nature Reviews Genetics</em> 15 (11): 749–63. <a
+href="https://doi.org/10.1038/nrg3803">https://doi.org/10.1038/nrg3803</a>.
 </div>
 </div>
 </div>

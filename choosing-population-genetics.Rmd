@@ -8,7 +8,7 @@ title: Choosing a Population Genomics Approach
 knitr::opts_chunk$set(echo = TRUE)
 library(knitcitations)
 library(kableExtra)
-opts_chunk$set(fig.width = 10,
+knitr::opts_chunk$set(fig.width = 10,
                fig.height = 5,
                cache = FALSE)
 cite_options(citation_format = "pandoc", max.names = 3, style = "html",

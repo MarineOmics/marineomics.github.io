@@ -31,6 +31,8 @@ knitr::opts_chunk$set(engine.opts = list(bash = "-l"))
 
 ```
 
+# Setup for running code  
+
 If you would like to run the R code examples that are scattered throughout the guide (recommended but not required!), you will need to install some R packages. Only need to run this code once:  
 ```{r, eval=F}
 install.packages("tidyverse")
@@ -175,16 +177,14 @@ There are a number of freely available pipelines for processing RADseq data, wit
 
 |  | [dDocent](https://www.ddocent.com/) | [ipyrad](https://ipyrad.readthedocs.io/en/latest/index.html)| [Stacks2](https://catchenlab.life.illinois.edu/stacks/) |
 |---|---|---|---|
-| Supported datatypes | Paired-end: ddRAD, ezRAD, RAD (random shearing), data with large overlap  between forward and reverse reads  
-Single-end: any RADseq method  de novo and reference-based.  
-If doing de novo assembly, reads cannot be trimmed outside of dDocent |  |  |
-| Unique aspects | Novel data reduction approach used to inform coverage cutoffs |  |  |
+| Supported datatypes | Paired-end: ddRAD, ezRAD, RAD (random shearing), data with large overlap between forward and reverse reads; Single-end: any RADseq method  de novo and reference-based. If doing de novo assembly, reads cannot be trimmed outside of dDocent | Wide range of RAD/GBS methods with paired/single end data, see [ipyrad documentation](https://ipyrad.readthedocs.io/en/master/4-data.html) | Paired-end and single-end data for single and double digest RAD and DART; GBS with single-end sequencing. NOT suitable for paired-end GBS. |
+| Unique aspects | Novel data reduction approach used to inform coverage cutoffs | Python API for popgene and phylogenetic analyses written specifically for RAD data |  |
 | Documentation | Very good (esp. tutorials), active community support on Google Groups | Excellent (esp. installation, parameter explanations, and tutorials), active community support on Gitter | Very good, active community support on Google Groups |
 | Speed/Accuracy | fastest and most accurate | close to dDocent accuracy, more over-splitting is possible  if parameters are not tuned | produces some untrue genome fragments (esp. with higher levels of indel polymorphism), but can be addressed with downstream filtering |
-| Open source/development | Open source | Open source | no |
-| Filtering options | Minimal default filtering as implemented in VCFtools. Ideal for those who want full freedom in filtering their SNPs. |  |  |
-| Output options | Only produces a VCF, fasta of the de novo assembly, and individual BAM files  from mapping to the reference  |  |  |
-| Popgen analyses | No additional popgen analyses included  |  |  |
+| Open source/development | Open source | Open source, primarily combines existing software | No |
+| Filtering options | Minimal default filtering as implemented in VCFtools. Ideal for those who want full freedom in filtering their SNPs. | Wide range of filtering options  | Moderate range of filtering options |
+| Output options | Only produces a VCF, fasta of the de novo assembly, and individual BAM files  from mapping to the reference  | Lots of output formats (see [documentation](https://ipyrad.readthedocs.io/en/master/output_formats.html)) | Lots of Stacks-specific output and log files, as well as various inputs for popgen programs (see [documentation](https://catchenlab.life.illinois.edu/stacks/comp/populations.php)) |
+| Popgen analyses | No additional popgen analyses included  | Unique, flexible Python API implementing range of popgen and phylogenetic methods (see [documentation](https://ipyrad.readthedocs.io/en/master/API-analysis/index.html))   | Popgen summary statistics (F-statistics, pi), including kernel-smoothing along reference genome. Underlying equations and assumptions for these are not very clear. |
 |  |  |  |  |  
 
 Some groups have also developed pipelines for specific flavors of RAD (e.g., [Matz lab for 2b-RAD](https://github.com/z0on/2bRAD_denovo/blob/master/2bRAD_README.sh)) or proprietary software (eg, [DARTseq](http://georges.biomatix.org/storage/app/media/uploaded-files/dartR_Workbook.pdf)), which we touch on below. **In most cases, it is recommended that you use a pipeline developed and tested for RAD data, especially if you are making a de novo assembly.** [@LaCava2020-bg] have an excellent study where they review various *de novo* assemblers that are used in these pipelines. Assemblers that were not explicitly developed for short reads (eg, Velvet, ABySS) performed very poorly, while CD-HIT (the assembler in dDocent) performed the best. Stacks/Stacks2 and vsearch (the assembler in ipyrad) both performed worse when analyzing simulated data with indels. It should be noted that all of these RAD pipelines have optimized the specific parameters of these de novo assemblers to work with RAD data of various flavors, which may not be fully reflected in the LaCava study. Based on the MarineOmics RAD panel, the general consensus is that all the popular pipelines can produce adequately accurate datasets (with appropriate parameter optimization and data filtering).     
@@ -256,7 +256,7 @@ cat RAD_data/OL_subset.imiss | (read h; echo "$h"; sort -k5 -r)
 You can open the file analysis/OL_subset.imiss in any text editor an look at the missingness values by eye.  
 
 To plot the missingness on the command line, you can use gnuplot:
-```{bash}
+```{bash, eval = T}
 #code from Jon Puritz
 mawk '!/IN/' RAD_data/OL_subset.imiss | cut -f5 > totalmissing
 gnuplot << \EOF
@@ -558,9 +558,10 @@ Cryptic clones can also dramatically throw off population genetic analyses. In a
 
 ## Test a range of key parameters {#test}  
 
-There are many parameter choices to make when assembling and genotyping, and those parameters vary slightly across pipelines. The parameters below are general across RADseq pipelines (although with different names), and are shown to have the largest impact on genoyping error rates. 
-### Clustering threshold {#cluster}
-#### (de novo assembly only)
+There are many parameter choices to make when assembling and genotyping, and those parameters vary slightly across pipelines. The parameters below are general across RADseq pipelines (although with different names), and are shown to have the largest impact on genoyping error rates.  
+
+### Clustering threshold {#cluster}  
+#### (de novo assembly only)  
 During *de novo* RADseq assembly, reads are assembled into contigs (contiguous sequences), so that each contig represents a single locus. This assembly can occur separately for each individual (ipyrad) or jointly for multiple individuals (dDocent, Stacks). To call SNPs, in the case of ipyrad, contigs are then clustered and aligned across individuals, while in dDocent and Stacks, reads for each individual are mapped to the "reference" contigs. All of these pipelines use sequence similarity (or **clustering threshold**) to determine if fragments are homologous (from the same place in the genome) and therefore should be clustered together. 
 
 If the clustering threshold is too low, *undersplitting* can occur so that multiple loci are combined into a single contig. Undersplitting is common with repetitive regions and paralogs. It can inflate mean observed heterozygosity. If the threshold is too high, it can lead to *oversplitting*, where alleles of the same locus are split into two or more contigs. This can lead to reduced mean observed heterozygosity.  
@@ -631,8 +632,10 @@ Generating multiple sequencing reads per locus is helpful when calling SNPs in o
 
 ### (and embrace the missingness!) {.unlisted .unnumbered}  
 
-`r colorize("This section is still under development! Please contribute on Github or provide feedback in [Discussions](https://github.com/MarineOmics/marineomics.github.io/discussions)", "red")`
+`r colorize("This section is still under development! Please contribute on Github or provide feedback in [Discussions](https://github.com/MarineOmics/marineomics.github.io/discussions)", "red")`  
+
 Even with a reduced representation sequencing approach, your assembly and genotyping pipeline will generate data for thousands of SNPs across your individuals. These SNPs will always need to be filtered before doing downstream analyses.  
+
 #### Main reasons to filter your data:  
 
 * Remove potentially erroneous SNPs that remain after optimizing your assembly pipeline

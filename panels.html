@@ -13,7 +13,7 @@
 
 <title>Panel Seminars</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -60,6 +60,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="tutorial.css" type="text/css" />
 
 
@@ -84,6 +85,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -315,7 +319,7 @@ div.tocify {
 <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -328,7 +332,7 @@ div.tocify {
   <a href="panels.html">Panel Seminars</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Population Genomics
      
     <span class="caret"></span>
@@ -349,14 +353,14 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Functional Genomics
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="RNA_coming.html">RNAseq (coming soon!)</a>
+      <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
     </li>
   </ul>
 </li>
@@ -390,7 +394,12 @@ div.tocify {
 </div>
 
 
-<p>To facilitate discussions about practices and pitfalls in applying ’omics to non-model systems, we hosted Q &amp; A panel seminars with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics in May-June 2021. 3-5 expert panelists discussed each topic, with questions coming from the working group and the audience. Videos are available on YouTube!</p>
+<p>To facilitate discussions about practices and pitfalls in applying
+’omics to non-model systems, we hosted Q &amp; A panel seminars with
+experts on topics ranging from RADseq, population genomics with WGS, and
+transcriptomics in May-June 2021. 3-5 expert panelists discussed each
+topic, with questions coming from the working group and the audience.
+Videos are available on YouTube!</p>
 <div id="seminar-schedule" class="section level2 unlisted unnumbered">
 <h2 class="unlisted unnumbered">Seminar Schedule</h2>
 <table>
@@ -412,26 +421,48 @@ div.tocify {
 <tr class="odd">
 <td align="left">May 7</td>
 <td align="left">GBS/RADseq genotyping pipelines</td>
-<td align="left"><a href="https://melanielacava.weebly.com/">Melanie LaCava</a>, <a href="http://mastrettayanes-lab.org/">Alicia Mastretta-Yanes</a>, <a href="https://isaacovercast.github.io/">Isaac Overcast</a>, <a href="https://www.marineevoeco.com/">Jon Puritz</a></td>
-<td align="left"><a href="https://www.youtube.com/watch?v=C74GBESeIq4">View video</a></td>
+<td align="left"><a href="https://melanielacava.weebly.com/">Melanie
+LaCava</a>, <a href="http://mastrettayanes-lab.org/">Alicia
+Mastretta-Yanes</a>, <a href="https://isaacovercast.github.io/">Isaac
+Overcast</a>, <a href="https://www.marineevoeco.com/">Jon
+Puritz</a></td>
+<td align="left"><a
+href="https://www.youtube.com/watch?v=C74GBESeIq4">View video</a></td>
 </tr>
 <tr class="even">
 <td align="left">May 21</td>
 <td align="left">WGS genotyping (low and high coverage)</td>
-<td align="left"><a href="http://www.thegoodlab.org/">Jeffrey Good</a>, <a href="https://matzlab.weebly.com/">Mikhail “Misha” Matz</a>, <a href="http://nreid.github.io/">Noah Reid</a>, <a href="https://scholar.harvard.edu/tsackton">Tim Sackton</a>, <a href="https://www.therkildsenlab.com/">Nina Overgaard Therkildsen</a></td>
-<td align="left"><a href="https://www.youtube.com/watch?v=ObJ3OT3dwSw">View Video</a></td>
+<td align="left"><a href="http://www.thegoodlab.org/">Jeffrey Good</a>,
+<a href="https://matzlab.weebly.com/">Mikhail “Misha” Matz</a>, <a
+href="http://nreid.github.io/">Noah Reid</a>, <a
+href="https://scholar.harvard.edu/tsackton">Tim Sackton</a>, <a
+href="https://www.therkildsenlab.com/">Nina Overgaard
+Therkildsen</a></td>
+<td align="left"><a
+href="https://www.youtube.com/watch?v=ObJ3OT3dwSw">View Video</a></td>
 </tr>
 <tr class="odd">
 <td align="left">June 4</td>
 <td align="left">Population genomic analyses and filtering data</td>
-<td align="left"><a href="https://gompertlab.com/">Zach Gompert</a>, <a href="http://www.morgankelly.biology.lsu.edu/">Morgan Kelly</a>, <a href="https://sites.google.com/site/katielotterhos/home">Katie Lotterhos</a>, <a href="https://rilab.ucdavis.edu/">Jeff Ross-Ibarra</a></td>
-<td align="left"><a href="https://youtu.be/dZyuqVEGPMo">View Video</a></td>
+<td align="left"><a href="https://gompertlab.com/">Zach Gompert</a>, <a
+href="http://www.morgankelly.biology.lsu.edu/">Morgan Kelly</a>, <a
+href="https://sites.google.com/site/katielotterhos/home">Katie
+Lotterhos</a>, <a href="https://rilab.ucdavis.edu/">Jeff
+Ross-Ibarra</a></td>
+<td align="left"><a href="https://youtu.be/dZyuqVEGPMo">View
+Video</a></td>
 </tr>
 <tr class="even">
 <td align="left">June 18</td>
-<td align="left">RNAseq (experimental design through differential expression)</td>
-<td align="left"><a href="http://conesalab.org/">Ana Conesa</a>, <a href="http://sites.bu.edu/davieslab/">Sarah Davies</a>, <a href="https://hoelzer-lab.github.io/">Martin Hölzer</a>, <a href="https://labs.wsu.edu/genomes/">Joanna Kelley</a>, <a href="https://pimentellab.com/">Harold Pimentel</a></td>
-<td align="left"><a href="https://youtu.be/-gQ59m2cck0">View Video</a></td>
+<td align="left">RNAseq (experimental design through differential
+expression)</td>
+<td align="left"><a href="http://conesalab.org/">Ana Conesa</a>, <a
+href="http://sites.bu.edu/davieslab/">Sarah Davies</a>, <a
+href="https://hoelzer-lab.github.io/">Martin Hölzer</a>, <a
+href="https://labs.wsu.edu/genomes/">Joanna Kelley</a>, <a
+href="https://pimentellab.com/">Harold Pimentel</a></td>
+<td align="left"><a href="https://youtu.be/-gQ59m2cck0">View
+Video</a></td>
 </tr>
 </tbody>
 </table>

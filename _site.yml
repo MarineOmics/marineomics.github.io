@@ -20,7 +20,7 @@ navbar:
     - text: "Functional Genomics"
       menu:
         - text: "Mutifactorial RNAseq"
-          href: DGE_comparison.html
+          href: DGE_comparison_v2.html
     - text: "Discussion Forum"
       href: https://github.com/MarineOmics/marineomics.github.io/discussions
 
