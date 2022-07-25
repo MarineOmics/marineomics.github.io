@@ -138,11 +138,11 @@ rt_df <- rbind(rt_df,
                         sizes = 15))
 
 # Plot distributions with histogram
-ggplot(data = rt_df, aes(x = rt, fill = as.factor(t_size), group = as.factor(t_size))) +
+ggplot(data = rt_df, aes(x = rt, fill = as.factor(t_mu), group = as.factor(t_mu))) +
   geom_histogram(data = filter(rt_df, t_mu == 25), alpha = 0.75) +
   geom_histogram(data = filter(rt_df, t_mu == 75), alpha = 0.75) +
   theme_classic() +
-  labs(title = "Simulated negative binomial distribution", fill = "Mean", y = "Frequency", x = "Mean")
+  labs(title = "Simulated negative binomial distributions", fill = "Mean", y = "Frequency", x = "Value")
 
 ```
 

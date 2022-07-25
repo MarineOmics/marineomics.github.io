@@ -1,5 +1,5 @@
 ---
-title: "FASTQ -> VCF workflow for WGS data"
+title: 'snpArcher: FASTQ -> VCF workflow for WGS data'
 author: "Sara JS Wuitchik"
 ---
 
@@ -8,7 +8,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # fastq2bam
-This is a more fleshed out explanation of the pipeline developed and maintained by [Harvard Informatics](https://github.com/harvardinformatics) in the [shortRead_mapping_variantCalling repo](https://github.com/harvardinformatics/shortRead_mapping_variantCalling)
 
 ### Trimming adapters
 
@@ -22,7 +21,7 @@ Where <br>
 ```--in``` and ```--out``` are the flags for the input and output reads <br>
 ```--detect_adapter_for_pe``` enables auto-detection of adapters for paired end data (because auto-detection is only enabled for single end data by default). 
 
-FastP (and other trimming software) can be used for quality control before aligning your sequences to the reference genome, but there are arguments on both sides for whether or not trimming your reads at this stage is useful (add references in here). 
+FastP (and other trimming software) can be used for quality control before aligning your sequences to the reference genome, but there are arguments on both sides for whether or not trimming your reads at this stage is useful. 
 
 ### Mapping
 
@@ -35,7 +34,7 @@ bwa index {reference.fa}
 Where ```reference.fa``` is your reference genome. Once your reference has been indexed, you can do a local alignment of your FASTQs, and pipe directly into ```samtools``` to sort the alignment by coordinate and converted to the BAM (Binary ALignment/Map) format.<br>
 
 ```{bash, eval = F}
-bwa mem -M -R {string} {ref} {r1} {r2} | samtools sort -o {output.bam}
+bwa mem -M -R {string} {ref} {r1} {r2} | samtools sort -u - > {output.bam}
 ```
 
 Where <br>
@@ -43,29 +42,13 @@ Where <br>
 ```-R``` defines a read group header e.g., @RG\\tID:{sample}\\tSM:{sample}\\tPL:ILLUMINA <br>
 ```{ref}``` is the indexed reference genome <br>
 ```{r1}``` and ```{r2}``` are the first and second reads you are aligning <br>
-```-o``` is the output file name
+```-u``` is for uncompressed output
 
-Once you have a sorted and indexed alignment, you can locate and tag duplicate records, which are reads that have originated from a single fragment of DNA. This can happen during sample preparation (e.g., during PCR) or from sequencing artifacts (e.g., optical duplicates).If you have multiple runs for the same sample, you would want to merge and index the BAMs before the deduplication tagging, which you can do with ```samtools merge```. 
-
-```{bash, eval = F}
-picard MarkDuplicates I={input.bam} O={output.bam} METRICS_FILE={output} REMOVE_DUPLICATES=false TAGGING_POLICY=All
-```
-
-Where <br>
-```I``` is the input BAM that has been coordinate sorted (the output of ```samtools sort```) <br>
-```O``` is the output BAM file <br>
-```METRICS_FILE``` writes the deduplication metrics to the output file name (this is a required argument) <br>
-```REMOVE_DUPLICATES``` writes the apropriate flags to the record rather than removing the reads without telling you what they are (```false``` is the default setting) <br>
-```TAGGING_POLICY``` will set the duplicates to be recorded in the DT attribute when the parameter is set to ```All```
-
-Once you have tagged the duplicated records in your BAM, you will want to generate a .bai index file
+Once you have a sorted and indexed alignment, you can locate and tag duplicate records, which are reads that have originated from a single fragment of DNA. This can happen during sample preparation (e.g., during PCR) or from sequencing artifacts (e.g., optical duplicates).If you have multiple runs for the same sample, you would want to merge and index the BAMs before the deduplication tagging, which you can do with ```samtools merge``` (integrated in snpArcher under ```merge_bams``` rule). 
 
 ```{bash, eval = F}
-picard BuildBamIndex I={input.bam}
+sabamba markup {input} {output}
 ```
-
-Where <br>
-```I``` is the input dedup'd BAM (the output of ```picard MarkDuplicates```)
 
 ### Quality control and filtering
 
@@ -80,78 +63,62 @@ Where <br>
 ```--output``` is the file name you want to write the output to <br>
 ```input.bam``` is the input BAM file <br><br>
 
-To produce a summary of the alignment metrics, including the quality of read alignments and the quality filters, we use ```Picard```
+And to produce a summary of the alignment metrics:
 ```{bash, eval = F}
-picard ValidateSamFile I={input.bam} R={reference.fa} O={output}
+samtools flagstat -O tsv {input.bam} > {output}
 ```
 
 Where <br>
-```I``` is the input BAM file <br> 
-```R``` is the reference genome <br>
-```O``` is the file name you want to write the output to <br><br>
-
-To ensure the alignments meet file format specifications:
-```{bash, eval = F}
-picard ValidateSamFile I={input.bam} R={reference.fa} O={output} IGNORE=VALID_TAG_NM || true
-```
-
+```O``` sets the output format (in this case, as a TSV) <br> 
+```input.bam``` is the input BAM file <br>
+```output``` is the file name you want to write the output to <br><br>
 
 # bam2vcf
 ### Variant Calling 
 
-Two of the major variant callers you can use (at the time of writing) are Genome Analysis Toolkit (GATK) and freebayes. You can call variants with either of these software in our pipeline and the downstream steps are the same, so here we present parameters for variant calling with both GATK and freebayes. Regardless of the software used, variant calling is computationally intensive but can be parallelized for more efficient resource use by splitting the reference genome into intervals. The interval creation is automated in our pipeline but parameter guidelines will differ depending on your reference genome. <br><br>
+Two of the major variant callers you can use (at the time of writing) are Genome Analysis Toolkit (GATK) and freebayes. You can call variants with either of these software in our pipeline and the downstream steps are the same, so here we present parameters for variant calling with both GATK and freebayes. Regardless of the software used, variant calling is computationally intensive but can be parallelized for more efficient resource use by splitting the reference genome into intervals. The interval creation is automated in our pipeline using ```Picard``` but parameter guidelines will differ depending on your reference genome. <br><br>
 
 To call germline single nucleotide polymorphisms (SNPs) and insertion/deletions (indels) via local re-assembly of haplotypes using GATK: 
 ```{bash, eval = F}
-gatk HaplotypeCaller -R {reference.fa} -I {input.bam} -O {output.gvcf} -L {interval.list} --emit-ref-confidence GVCF --min-pruning 2 --min-dangling-branch-length 4
+gatk HaplotypeCaller -R {reference.fa} -I {input.bam} -O {output.gvcf} -L {interval.list} --emit-ref-confidence GVCF --min-pruning {params} --min-dangling-branch-length {params}
 ```
 
 Where <br>
 ```-R``` is the reference genome <br>
 ```-I``` is the input BAM <br>
 ```-O``` is the output gVCF <br>
-```-L``` is the interval file <br>
+```-L``` is the interval file list <br>
 ```--emit-ref-confidence``` yields the reference confidence scores as gVCF <br>
-```--min-pruning``` sets the minimum support to not prune paths in the graph <br>
-```--min-dangling-branch-length``` sets the minimum lenght of a dangling branch to attempt recovery <br><br>
+```--min-pruning``` sets the minimum support to not prune paths in the graph (low coverage option: 1 / high coverage option: 2) <br>
+```--min-dangling-branch-length``` sets the minimum length of a dangling branch to attempt recovery (low coverage option: 1 / high coverage option: 4) <br><br>
 
-A note about coverage: when calling variants where the coverage is less than 10x, we suggest setting ```--min-pruning``` and ```--min-dangling-branch-length``` each to 1. The parameters in the code above are more appropriate for data where the coverage exceeds 10x. <br>
 
 There are some constraints when using clusters and job scheduling managers, including command lengths. When you have many samples and are trying to run GATK on all of them, the command may get too long, causing SLURM (or another job scheduler) to throw an error. To get around this, you can create DB map files (which is done automatically in our pipeline). Then we can import many gVCFs into a GenomicsDB for a given scaffold:
 ```{bash, eval = F}
 export TILEDB_DISABLE_FILE_LOCKING=1
-gatk GenomicsDBImport --genomicsdb-workspace-path {output.db} -L --sample-name-map {input.db}
+gatk GenomicsDBImport --genomicsdb-shared-posixfs-optimizations true --batch-size 25 --genomicsdb-workspace-path {output.db} -L {input.l} --sample-name-map {input.db}
 ```
 
 Where <br>
 the ```export``` command can remedy sluggish performance <br> 
+```--genomicsdb-shared-posixfs-optimizations``` allows for optimization when using shared Posix Filesystems (like Lustre) <br>
+```--batch-size``` is used in conjunction with the above argument to control the memory consumption <br>
 ```--genomicsdb-workspace-path``` is the working directory to point to for GenomicsDB <br>
-```-L``` is the interval file <br>
+```-L``` is the interval file list <br>
 ```--sample-name-map``` is the path to a file that contains a sample to file map in a tab delimited format <br><br>
 
 Now you can use the genomic databases from ```gatk GenomicsDBImport``` to create VCF files (one per interval file)
 ```{bash, eval = F}
-gatk GenotypeGVCFs -R {reference.fa} -V {input.DB} -O {output.vcf}
+gatk GenotypeGVCFs -R {reference.fa} --heterozygosity {params} --genomicsdb-shared-posixfs-optimizations true -V {input.DB} -O {output.vcf}
 ```
 
 Where <br>
 ```-R``` is the reference genome <br>
+```--heterozygosity``` value used to compute prior likelihoods for any locus - we use 0.005 as a default, but this can be changed in the config <br>
 ```-V``` is the DB map file <br>
 ```-O``` is the output VCF <br><br>
 
-If you want to use freebayes the variant caller, rather than starting with ```gatk HaplotypeCaller```, you would instead use:
-```{bash, eval = F}
-freebayes -f {reference.fa} -r {interval} -g {maxDP} {inputs.bam} > {output.vcf}
-```
-
-Where <br>
-```-f``` is the reference genome (creates a .fai index if one doesn't already exist) <br>
-```-r``` limits the analysis to a specific interval (region) <br>
-```-g``` skips processing of alignments overlapping positions with coverage greater than the value; we use the maxDP for this parameter <br> 
-```{inputs.bam}``` are the input BAMs; you can input all BAMs at once but you need to set the output as one VCF per interval <br>
-```{output.vcf}``` the output VCF for each interval e.g., {i}.vcf per interval <br><br>
-
-Regardless of the variant caller you use, before combining all the VCFs for the intervals into one final VCF, it is computationally more efficient to filter each of the VCFs, then gather them. 
+Then, before combining all the VCFs for the intervals into one final VCF, it is computationally more efficient to filter each of the VCFs, then gather them together. 
 ```{bash, eval = F}
 gatk VariantFiltration -R {reference.fa} -V {input.vcf} --output {output.vcf} \
 --filter-name "RPRS_filter" \
@@ -181,24 +148,63 @@ The filter expressions more or less follow the GATK hard filtering recommendatio
 <br>
 
 #### Quality control and statistics <br>
-NB: this section will likely be better suited to be included in a QC section (and it's not fully fleshed out itself yet), but here are two of the pipeline outputs that can be used for downstream QC. <br>
+There are a number of statistics generated by snpArcher at various points of the workflow, as well as a QC workflow that is implemented after the final VCF is produced. This QC workflow produces an interactive dashboard for the user, but we have separated some of the QC out by the type/purpose, rather than separating each rule. <br><br>
 
+
+This ```bcftools query``` pulls the designated fields in a tab-separated format that can be easily read into R (or other software) for interrogation.  
+```{bash, eval =F}
+bcftools query -f '%CHROM\t%POS\t%ID\t%INFO/AF\t%QUAL\t%INFO/ReadPosRankSum\t%INFO/FS\t%INFO/SOR\t%INFO/MQ\t%INFO/MQRankSum\n' {input.vcf} > {output}
+```
+<br> 
+
+This set of commands will output statistics based on the VCF
 ```{bash, eval = F}
-vcftools --gzvcf {input.vcf} --remove-filtered-all --minDP 1 --missing-indv --stdout > {output}
+vcftools --gzvcf {input.vcf} --FILTER-summary --out {output.prefix}
+vcftools --gzvcf {input.vcf} --depth --out {output.prefix}
+vcftools --gzvcf {input.vcf} --missing-indv --out {output.prefix}
 ```
 Where <br>
 ```--gzvcf``` is the input VCF, gzipped (use ```--vcf``` if working with an uncompressed VCF) <br>
-```--remove-filtered-all``` removes all the sites with a FILTER flag other than PASS <br>
-```--minDP``` includes only the genotypes greater than or equal to the parameter value (this requires the DP FORMAT tag to be specified) <br>
+```--FILTER-summary```
+```--depth```
 ```--missing-indv``` generates a file reporting the missingness per indivdual <br>
-```--stdout``` redirects the output to stdout so it can be redirected to a file name of your choosing (in this code, the file name would be where ```{output}``` is)
+```--out`` assigns a prefix to each output e.g., the filter summary output would be titled "prefix.FILTER.summary"
+
 <br>
 <br>
+Create a PCA from PLINK, using biallelic variants only
 ```{bash, eval = F}
-bedtools intersect -a {input.intervals} -b {input.vcf} -c > {output}
+# First, remove filtered sites and keep only the biallelic SNPs
+bcftools view -v snps -m2 -M2 -f .,PASS -e 'AF==1 | AF==0 | ALT="*" | TYPE~"indel" | ref="N"' {input.vcf} -O z -o {output.filtered}
+bcftools index {output.filtered}
+
+# Then, if there are less than 150,000 SNPs, just take all of them
+ALLSITES=`bcftools query -f '%CHROM\t%POS\n' {output.filtered} | wc -l`
+SITES=`echo $(( ${{ALLSITES}} / 100000 ))`
+if [[ $SITES -gt 1 ]]
+then
+    bcftools +prune -w $SITES -n 1 -N rand -O z -o {output.pruned} {output.filtered}
+else
+    bcftools view -O z -o {output.pruned} {output.filtered}
+fi
+
+# Use PLINK 2 for the King relatedness matrix ... 
+plink2 --vcf {input.vcf} --pca 2 --out {params.prefix} --allow-extra-chr --autosome-num 95 --make-bed --make-king square --const-fid --bad-freqs
+
+# and PLINK 1.9 for the distance matrix 
+plink --vcf {input.vcf} --out {params.prefix} --allow-extra-chr --autosome-num 95 --distance square --const-fid
 ```
-Where <br>
-```-a``` is the intervals BED produced by the pipeline automatically for use in freebayes <br>
-```-b``` is the final VCF file output by ```gatk GatherVcfs``` <br>
-```-c``` reports the number of hits in ```-b``` for each entry in ```-a``` <br>
-```{output}``` is the file name of the output, which is a text file that reports the number of SNPs per interval
+<br>
+<br>
+
+snpArcher also runs ADMIXTURE at k=2 and k=3: 
+```{bash, eval = F}
+# First, make a BIM without any characters in the chromosome names
+mv {input.bim} {input.bim}.orig
+paste <(cut -f 1 {input.bim}.orig | sed 's/[^0-9]//g') <(cut -f 2,3,4,5,6 {input.bim}.orig) >  {input.bim}
+
+# Then run ADMIXTURE
+admixture {input.bed} 2
+admixture {input.bed} 3
+```
+
