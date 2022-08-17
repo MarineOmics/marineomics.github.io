@@ -430,9 +430,21 @@ if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
 BiocManager::install(&quot;SeqArray&quot;)
 BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
 <p>Now load those packages, if using:</p>
-<pre class="r"><code>library(SeqArray) # efficient storage and filtering of genomic data
-library(tidyverse) # plotting data formatting and manipulation
-library(SNPRelate) # PCA and other popgen analyses</code></pre>
+<pre class="r"><code>library(SeqArray) # efficient storage and filtering of genomic data</code></pre>
+<pre><code>## Loading required package: gdsfmt</code></pre>
+<pre class="r"><code>library(tidyverse) # plotting data formatting and manipulation</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
+## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
+## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter()     masks stats::filter()
+## ✖ stringr::fixed()    masks SeqArray::fixed()
+## ✖ dplyr::group_rows() masks kableExtra::group_rows()
+## ✖ dplyr::lag()        masks stats::lag()</code></pre>
+<pre class="r"><code>library(SNPRelate) # PCA and other popgen analyses</code></pre>
+<pre><code>## SNPRelate -- supported by Streaming SIMD Extensions 2 (SSE2)</code></pre>
 <p>We also provide optional alternative coding examples that are based
 only on the command line, requiring these software packages:</p>
 <ul>
@@ -450,12 +462,12 @@ restriction enzymes with next-gen, massively parallel, short-read
 sequencing. RADseq involves the use of restriction enzymes, which are
 used to shear DNA at restriction enzyme cutsites. RADseq comes in
 different flavors. Double-digest RADseq (ddRAD; <span
-class="citation">(Peterson et al. 2012)</span>) selects markers with two
+class="citation">Peterson et al. (2012)</span>) selects markers with two
 restriction enzymes with different cut frequencies.
-Genotype-by-Sequencing (GBS; <span class="citation">(Elshire et al.
-2011)</span>) uses a frequent-cutting restriction enzyme with PCR size
+Genotype-by-Sequencing (GBS; <span class="citation">Elshire et al.
+(2011)</span>) uses a frequent-cutting restriction enzyme with PCR size
 selection. There are a number of reviews comparing different RADseq and
-GBS methods (e.g., <span class="citation">(Andrews et al. 2016)</span>).
+GBS methods (e.g., <span class="citation">Andrews et al. (2016)</span>).
 In this guide we use the term “RADseq” to refer to any of these
 protocols, including those that don’t involve random shearing of data.
 When recommendations are specific to a certain type of RAD/GBS, we will
@@ -670,9 +682,10 @@ GBS.</td>
 <tr class="even">
 <td>Unique aspects</td>
 <td>Novel data reduction approach used to inform coverage cutoffs</td>
-<td>Python API for popgene and phylogenetic analyses written
-specifically for RAD data</td>
-<td></td>
+<td>Python API for popgen and phylogenetic analyses written specifically
+for RAD data</td>
+<td><code>populations</code> module calculates sliding window and
+site-specific popgen metrics</td>
 </tr>
 <tr class="odd">
 <td>Documentation</td>
@@ -680,10 +693,13 @@ specifically for RAD data</td>
 Groups</td>
 <td>Excellent (esp. installation, parameter explanations, and
 tutorials), active community support on Gitter</td>
-<td>Very good, active community support on Google Groups</td>
+<td>Very good, in depth tutorials as published manuscripts, active
+community support on Google Groups</td>
 </tr>
 <tr class="even">
-<td>Speed/Accuracy</td>
+<td>Speed/Accuracy (based on discussion in <a
+href="https://www.youtube.com/watch?v=C74GBESeIq4">panel
+seminar</a>)</td>
 <td>fastest and most accurate</td>
 <td>close to dDocent accuracy, more over-splitting is possible if
 parameters are not tuned</td>
@@ -692,15 +708,16 @@ indel polymorphism), but can be addressed with downstream filtering</td>
 </tr>
 <tr class="odd">
 <td>Open source/development</td>
-<td>Open source</td>
 <td>Open source, primarily combines existing software</td>
+<td>Open source</td>
 <td>No</td>
 </tr>
 <tr class="even">
 <td>Filtering options</td>
 <td>Minimal default filtering as implemented in VCFtools. Ideal for
 those who want full freedom in filtering their SNPs.</td>
-<td>Wide range of filtering options</td>
+<td>Wide range of filtering options, some hard-coded filtering to deal
+with paralogs</td>
 <td>Moderate range of filtering options</td>
 </tr>
 <tr class="odd">
@@ -735,22 +752,22 @@ assumptions for these are not very clear.</td>
 (e.g., <a
 href="https://github.com/z0on/2bRAD_denovo/blob/master/2bRAD_README.sh">Matz
 lab for 2b-RAD</a>) or proprietary software (eg, <a
-href="http://georges.biomatix.org/storage/app/media/uploaded-files/dartR_Workbook.pdf">DARTseq</a>),
-which we touch on below. <strong>In most cases, it is recommended that
-you use a pipeline developed and tested for RAD data, especially if you
-are making a de novo assembly.</strong> <span class="citation">(LaCava
-et al. 2020)</span> have an excellent study where they review various
-<em>de novo</em> assemblers that are used in these pipelines. Assemblers
-that were not explicitly developed for short reads (eg, Velvet, ABySS)
+href="http://georges.biomatix.org/storage/app/media/uploaded-files/dartR_Workbook.pdf">DARTseq</a>).
+<strong>In most cases, it is recommended that you use a pipeline
+developed and tested for RAD data, especially if you are making a de
+novo assembly.</strong> <span class="citation">(LaCava et al.
+2020)</span> have an excellent study where they review various <em>de
+novo</em> assemblers that are used in these pipelines. Assemblers that
+were not explicitly developed for short reads (eg, Velvet, ABySS)
 performed very poorly, while CD-HIT (the assembler in dDocent) performed
 the best. Stacks/Stacks2 and vsearch (the assembler in ipyrad) both
 performed worse when analyzing simulated data with indels. It should be
 noted that all of these RAD pipelines have optimized the specific
 parameters of these de novo assemblers to work with RAD data of various
-flavors, which may not be fully reflected in the LaCava study. Based on
-the MarineOmics RAD panel, the general consensus is that all the popular
-pipelines can produce adequately accurate datasets (with appropriate
-parameter optimization and data filtering).<br />
+flavors, which may not be fully reflected in the LaCava study.</p>
+<p>Based on the MarineOmics RAD panel, the general consensus is that all
+the popular pipelines can produce adequately accurate datasets (with
+appropriate parameter optimization and data filtering).<br />
 <img src="images/lacavaTable3.png"
 alt="Table 3 from LaCava et al 2019. CD-HIT is used in dDocent, VSEARCH is used in ipyrad." /></p>
 </div>
@@ -786,7 +803,7 @@ filename.gds = paste0(&quot;RAD_data/&quot;, paste0(filename, &quot;.gds&quot;))
 filename.vcf = paste0(&quot;RAD_data/&quot;, paste0(filename, &quot;.vcf&quot;))
   # 1 . Convert VCF to GDS
 SeqArray::seqVCF2GDS(vcf.fn = filename.vcf, out.fn = filename.gds, storage.option=&quot;ZIP_RA&quot;)</code></pre>
-<pre><code>## Fri Jun 24 08:00:32 2022
+<pre><code>## Wed Aug 17 12:01:15 2022
 ## Variant Call Format (VCF) Import:
 ##     file(s):
 ##         OL_subset.vcf (22.3M)
@@ -817,7 +834,7 @@ SeqArray::seqVCF2GDS(vcf.fn = filename.vcf, out.fn = filename.gds, storage.optio
 ##     annotation/format/DP  [md5: ae6991de5adbf082a733198faf0f11ca]
 ##     annotation/format/CATG  [md5: 71d62ffa848999a375e8bb5f329be275]
 ## Done.
-## Fri Jun 24 08:00:33 2022
+## Wed Aug 17 12:01:16 2022
 ## Optimize the access efficiency ...
 ## Clean up the fragments of GDS file:
 ##     open the file &#39;RAD_data/OL_subset.gds&#39; (2.8M)
@@ -825,7 +842,7 @@ SeqArray::seqVCF2GDS(vcf.fn = filename.vcf, out.fn = filename.gds, storage.optio
 ##     save to &#39;RAD_data/OL_subset.gds.tmp&#39;
 ##     rename &#39;RAD_data/OL_subset.gds.tmp&#39; (2.8M, reduced: 1.8K)
 ##     # of fragments: 64
-## Fri Jun 24 08:00:33 2022</code></pre>
+## Wed Aug 17 12:01:16 2022</code></pre>
 <pre class="r"><code>gdsin = SeqArray::seqOpen(filename.gds)
 print(paste0(&quot;The number of SAMPLES in data: &quot;, length(c(SeqArray::seqGetData(gdsin, &quot;sample.id&quot;)))))</code></pre>
 <pre><code>## [1] &quot;The number of SAMPLES in data: 18&quot;</code></pre>
@@ -906,7 +923,7 @@ cbind(samples,m2)[order(-m2),]</code></pre>
 ## [18,] &quot;BC2_16_C6&quot; &quot;0.121776279129578&quot;</code></pre>
 <pre class="r"><code>#plot histogram 
 hist(m2,breaks=50)</code></pre>
-<p><img src="RADseq_files/figure-html/unnamed-chunk-9-1.png" width="960" /></p>
+<p><img src="RADseq_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
 <p>Another common method of filtering and evaluating you data without
 ever using R is <a
 href="https://vcftools.github.io/man_latest.html">VCFtools</a>.</p>
@@ -994,17 +1011,18 @@ EOF</code></pre>
 ##         0.1         0.2         0.3         0.4         0.5        0.6         0.7         0.8         0.9          1   
 ##                                                       % of missing data                                                 
 ## </code></pre>
-<p>It looks like samples X,Y,Z have a lot of missing data relative to
-other samples. We can remove them from our dataset for now, and just
-keep exploring our data, but if you decide to exclude them permanently
-from the analysis you should eventually rerun your genotyping pipeline
-without those samples, esp. if doing a de novo assembly.</p>
+<p>It looks like samples OR3_13_C3,CA4_12_C1, OR3_3_C7, CA4_13_C1,
+BC2_6_C2, BC2_9_C4 have a lot of missing data relative to other samples.
+We can remove them from our dataset for now, and just keep exploring our
+data, but if you decide to exclude them permanently from the analysis
+you should eventually rerun your genotyping pipeline without those
+samples, esp. if doing a de novo assembly.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>Another great way to explore missingness with your data is to
 construct a heatmap of loci that are genoptyped between pairs of
 samples. Generally, samples that are more closely related will share
-more loci with each other due to cutsite dropout (cite). Deviations from
-that pattern can pinpoint bad samples as well as batch effects.</li>
+more loci with each other due to cutsite dropout. Deviations from that
+pattern can pinpoint bad samples as well as batch effects.</li>
 </ol>
 <ul>
 <li><a
@@ -1033,16 +1051,18 @@ plane, there are many (and even more) ways to project a
 figuring out the “best” way to do this project in order to visualise the
 major components of variance in the data.” See <a
 href="https://michaelaalcorn.medium.com/yet-another-pca-explanation-727dff6ce26a">here</a>
-for a linear algebra-based explanation of PCA).</p>
+for a linear algebra-based explanation of PCA.</p>
 <p>When you have a VCF file with SNPs, use PCA before extensive
 filtering or playing with parameters to look at the data. Check which
 SNPs are associated with axes showing the most variation.</p>
-<p>Here we use SeqArray and SNPRelate to run a PCA in R.</p>
+<p>Here we use <em>SeqArray</em> and <em>SNPRelate</em> to run a PCA in
+R.</p>
 <!--Other popular methods for PCA include pcangsd(link), ...., but note that ... requires some file conversions everytime you filter.-->
 <p><em>Reminder:</em> Missing data is a feature of RAD. Be aware of how
 different analysis tools deal with missingness, especially PCA which
 will fill in all missing data with some values. Here, the PCA from
-SNPRelate imputes missing genotypes as the dosage mean.</p>
+<em>SNPRelate</em> imputes missing genotypes as the mean genotype across
+samples.</p>
 <div id="doing-a-pca-with-seqarray-and-snprelate-in-r."
 class="section level5">
 <h5>Doing a PCA with SeqArray and SNPRelate in R.</h5>
@@ -1068,25 +1088,25 @@ pca.out = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, remove.mo
                                sample.id = keep) # filtering for pruned SNPs</code></pre>
 <pre><code>## Principal Component Analysis (PCA) on genotypes:
 ## Calculating allele counts/frequencies ...
-## # of selected variants: 22,732
-## Excluding 5,363 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
+## # of selected variants: 22,781
+## Excluding 5,291 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
 ##     # of samples: 12
-##     # of SNVs: 22,732
+##     # of SNVs: 22,781
 ##     using 2 threads
 ##     # of principal components: 32
 ## CPU capabilities: Double-Precision SSE2
-## Fri Jun 24 08:01:31 2022    (internal increment: 73384)
+## Wed Aug 17 12:02:13 2022    (internal increment: 73384)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Fri Jun 24 08:01:31 2022    Begin (eigenvalues and eigenvectors)
-## Fri Jun 24 08:01:31 2022    Done.</code></pre>
+## Wed Aug 17 12:02:13 2022    Begin (eigenvalues and eigenvectors)
+## Wed Aug 17 12:02:13 2022    Done.</code></pre>
 <pre class="r"><code>#close the gds file (saves memory)
 #seqClose(gdsin)
 
 eig = pca.out$eigenval[!is.na(pca.out$eigenval)]
 barplot(100*eig/sum(eig), main=&quot;PCA Eigenvalues&quot;)</code></pre>
-<p><img src="RADseq_files/figure-html/unnamed-chunk-14-1.png" width="960" /></p>
+<p><img src="RADseq_files/figure-html/unnamed-chunk-12-1.png" width="960" /></p>
 <!-- Data Info: Below we use RAD data from an Australian marine species complex. --->
 <p>First color/shape the individuals by the factor you expect to matter
 (eg, sampling site or region, family, ecotype).</p>
@@ -1107,7 +1127,7 @@ print(
       ylab(paste0(&quot;PC2 [&quot;,paste0(round(eig[2], 2)), &quot;%]&quot;)) +
       ggtitle(&quot;PCA Colored by Collection Location&quot;)
 )</code></pre>
-<p><img src="RADseq_files/figure-html/unnamed-chunk-16-1.png" width="960" /></p>
+<p><img src="RADseq_files/figure-html/unnamed-chunk-14-1.png" width="960" /></p>
 </div>
 <div id="questions-to-ask-about-your-pca"
 class="section level4 unlisted unnumbered">
@@ -1145,7 +1165,7 @@ print(
       ylab(paste0(&quot;PC2 [&quot;,paste0(round(eig[2], 2)), &quot;%]&quot;)) +
       ggtitle(&quot;PCA with Labels&quot;)
 )</code></pre>
-<p><img src="RADseq_files/figure-html/unnamed-chunk-17-1.png" width="960" /></p>
+<p><img src="RADseq_files/figure-html/unnamed-chunk-15-1.png" width="960" /></p>
 <pre class="r"><code># which samples have PC1 &gt; -0.7 and PC2 &lt; -0.3?
 as.data.frame(pca.out$eigenvect) %&gt;%
       tibble::add_column(., ID =  sample.strata.order$ID) %&gt;%
@@ -1207,10 +1227,10 @@ print(
 ## Too few points to calculate an ellipse
 ## Too few points to calculate an ellipse</code></pre>
 <pre><code>## Warning: Removed 7 row(s) containing missing values (geom_path).</code></pre>
-<p><img src="RADseq_files/figure-html/unnamed-chunk-20-1.png" width="960" /></p>
+<p><img src="RADseq_files/figure-html/unnamed-chunk-18-1.png" width="960" /></p>
 <ul>
 <li>Do any observed clusters match a source of batch effect? <a
-href="#batch">how to remove batch effects</a></li>
+href="#batch">How to remove batch effects</a></li>
 </ul>
 <!-- #### Visually inspect alignments {#align}  
 Another useful approach is to visually inspect alignments for SNPs or loci that are identified as "weird" in the subsequent analyses. In ipyrad this can be done by searching the .loci file, in dDocent... If the alignment looks wonky, you can feel better about removing the whole locus (?).  
@@ -1231,15 +1251,16 @@ esp. when using pre-existing data. Even if you randomize your samples,
 it is a good idea to check for batch effects with a PCA and then try to
 mitigate them.</p>
 <p>Nicolas Lou and Nina Therkildsen have a <a
-href="https://www.authorea.com/users/380682/articles/532568-batch-effects-in-population-genomic-studies-with-low-coverage-whole-genome-sequencing-data-causes-detection-and-mitigation">great
-preprint</a> and <a
+href="https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.13559">great
+article</a> and <a
 href="https://github.com/therkildsen-lab/batch-effect">Github repo</a>
 discussing causes, detection, and mitigation of batch effects in low
-coverage WGS, where batch effects can have particularly large effects.
-While some of their recommendations are specific to reference-based
-analyses, others are relevant to RAD methods too (eg, batch effects due
-to different sequencing platforms, DNA degradation levels, and
-sequencing depth).</p>
+coverage WGS, where batch effects can have particularly large effects
+<span class="citation">(@ Lou and Therkildsen 2021)</span>. While some
+of their recommendations are specific to reference-based analyses,
+others are relevant to RAD methods too (eg, batch effects due to
+different sequencing platforms, DNA degradation levels, and sequencing
+depth).</p>
 <!--<span style='color: red;'>PCA figure of batch effect</span>-->
 <p>You can identify which loci are driving the batch effect by 1)
 identifying the top SNPs contributing to PC variation (termed
@@ -1260,23 +1281,23 @@ see a batch effect on PC1.</p>
 SnpLoad &lt;- snpgdsPCASNPLoading(pca.out, gdsin)</code></pre>
 <pre><code>## SNP Loading:
 ##     # of samples: 12
-##     # of SNPs: 22,732
+##     # of SNPs: 22,781
 ##     using 1 thread
 ##     using the top 12 eigenvectors
-## Fri Jun 24 08:01:32 2022    (internal increment: 65536)
+## Wed Aug 17 12:02:14 2022    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Fri Jun 24 08:01:32 2022    Done.</code></pre>
+## Wed Aug 17 12:02:14 2022    Done.</code></pre>
 <pre class="r"><code>names(SnpLoad)</code></pre>
-<pre><code>## [1] &quot;sample.id&quot;  &quot;snp.id&quot;     &quot;eigenval&quot;   &quot;snploading&quot; &quot;TraceXTX&quot;   &quot;Bayesian&quot;   &quot;avgfreq&quot;   
-## [8] &quot;scale&quot;</code></pre>
+<pre><code>## [1] &quot;sample.id&quot;  &quot;snp.id&quot;     &quot;eigenval&quot;   &quot;snploading&quot; &quot;TraceXTX&quot;  
+## [6] &quot;Bayesian&quot;   &quot;avgfreq&quot;    &quot;scale&quot;</code></pre>
 <pre class="r"><code>dim(SnpLoad$snploading)</code></pre>
-<pre><code>## [1]    12 22732</code></pre>
+<pre><code>## [1]    12 22781</code></pre>
 <pre class="r"><code>#plot a histogram of absolute PC loading values for PC1, with larger loading meaning more effect on PC1
 pc&lt;-1
 hist(sort(abs(SnpLoad$snploading[pc,]),decreasing=T,index.return=T)[[1]],breaks = 30,main=&quot;PC loadings: PC1&quot;,)</code></pre>
-<p><img src="RADseq_files/figure-html/unnamed-chunk-21-1.png" width="960" />
+<p><img src="RADseq_files/figure-html/unnamed-chunk-19-1.png" width="960" />
 Let’s remove the largest effect loci over abs(0.010) and see if it
 changes our PCA.</p>
 <pre class="r"><code>#extract SNP.IDs for loadings on PC 1 &gt; abs(0.010) 
@@ -1289,19 +1310,19 @@ pca.out.pcfilt = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, re
                                sample.id = keep) # filtering for pruned SNPs</code></pre>
 <pre><code>## Principal Component Analysis (PCA) on genotypes:
 ## Calculating allele counts/frequencies ...
-## # of selected variants: 19,922
-## Excluding 5,363 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
+## # of selected variants: 19,931
+## Excluding 5,291 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
 ##     # of samples: 12
-##     # of SNVs: 19,922
+##     # of SNVs: 19,931
 ##     using 2 threads
 ##     # of principal components: 32
 ## CPU capabilities: Double-Precision SSE2
-## Fri Jun 24 08:01:32 2022    (internal increment: 73384)
+## Wed Aug 17 12:02:14 2022    (internal increment: 73384)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Fri Jun 24 08:01:32 2022    Begin (eigenvalues and eigenvectors)
-## Fri Jun 24 08:01:32 2022    Done.</code></pre>
+## Wed Aug 17 12:02:14 2022    Begin (eigenvalues and eigenvectors)
+## Wed Aug 17 12:02:14 2022    Done.</code></pre>
 <pre class="r"><code>print(
   as.data.frame(pca.out.pcfilt$eigenvect) %&gt;%
       tibble::add_column(., STRATA =  sample.strata.order$STRATA) %&gt;%
@@ -1315,7 +1336,7 @@ pca.out.pcfilt = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, re
       ylab(paste0(&quot;PC2 [&quot;,paste0(round(eig[2], 2)), &quot;%]&quot;)) +
       ggtitle(&quot;PCA Colored by Collection Location&quot;)
 )</code></pre>
-<p><img src="RADseq_files/figure-html/unnamed-chunk-22-1.png" width="960" /></p>
+<p><img src="RADseq_files/figure-html/unnamed-chunk-20-1.png" width="960" /></p>
 <p>Our PCA is now clustering better by population, so we will now export
 a new VCF that includes all the filtering we’ve done so far: 1) removed
 individuals with missing data, 2) thinned our SNPs for linkage, and 3)
@@ -1324,21 +1345,20 @@ removed SNPs driving a batch effect.</p>
 <pre class="r"><code># set a filter to exclude samples with missing data, and SNPs in linkage or with a batch effect
 seqSetFilter(gdsin, sample.id=keep,variant.id=snp.id.allfilt)</code></pre>
 <pre><code>## # of selected samples: 12
-## # of selected variants: 25,285</code></pre>
+## # of selected variants: 25,222</code></pre>
 <pre class="r"><code># convert to vcf
 seqGDS2VCF(gdsin, &quot;RAD_data/OL-miss-pc1-linkage-filt.vcf.gz&quot;)</code></pre>
 <pre><code>## Loading required namespace: Rsamtools</code></pre>
-<pre><code>## Hint: install Rsamtools to enable the BGZF-format output.</code></pre>
-<pre><code>## Fri Jun 24 08:01:33 2022
+<pre><code>## Wed Aug 17 12:02:15 2022
 ## VCF Export: OL-miss-pc1-linkage-filt.vcf.gz
-##     12 samples, 25,285 variants
+##     12 samples, 25,222 variants
 ##     INFO Field: NS, DP
 ##     FORMAT Field: DP, CATG
-##     output to a general gzip file
+##     output to a BGZF-format file
 ## 
 [..................................................]  0%, ETC: ---    
 [==================================================] 100%, completed, 0s
-## Fri Jun 24 08:01:33 2022    Done.</code></pre>
+## Wed Aug 17 12:02:15 2022    Done.</code></pre>
 <pre class="r"><code>#close the gds file to save memory
 closefn.gds(gdsin)</code></pre>
 </div>
@@ -1355,20 +1375,24 @@ batch).</p>
 <!--Note: Notice the huge variation explained along the first PC-axis.-->
 <p>You can also check heterozygosity. Large differences in
 heterozygosity between outliers can suggest different species or cryptic
-hybrids.</p>
-<!--Note: Two outliers are obvious.
-Large differences in heterozygosity between samples are clear, with one location showing two distinct clusters of samples. These samples were later determined using mtDNA and morphological analysis to be cryptic species.
-*Unpublished data from a marine species in Australian waters.*-->
+hybrids. Two outliers are obvious in the previous PCA. Large differences
+in heterozygosity between samples are clear, with one location showing
+two distinct clusters of samples. These samples were later determined
+using mtDNA and morphological analysis to be cryptic species.
+<em>Unpublished data from a marine species in Australian
+waters.</em></p>
+<!--Note: -->
 <p>You can then estimate genetic divergence between these clusters using
 pairwise Fst and/or phylogenetic inference to determine how diverged the
 groups are. If they are very diverged, it may be better to assemble each
 cryptic species separately, especially for denovo assemblies with
 dDocent and Stacks, especially since often times restriction cut-sites
-are not always conserved; see <span class="citation">Rubin, Ree, and
-Moreau (2012)</span>. These two pipelines used a set of given samples to
-create a “reference” or “catalog” to which all other samples are mapped.
-If highly diverged samples are included in creating this reference, it
-can lead to <a href="#cluster">oversplitting</a>.</p>
+are not always conserved; see <span class="citation">(Wagner et al.
+2013; Rubin, Ree, and Moreau 2012)</span>. These two pipelines used a
+set of given samples to create a “reference” or “catalog” to which all
+other samples are mapped. If highly diverged samples are included in
+creating this reference, it can lead to <a
+href="#cluster">oversplitting</a>.</p>
 <p>Cryptic clones can also dramatically throw off population genetic
 analyses. In a PCA, clones will often appear as their own very tight
 cluster, similar to sample replicates. A calculation of sample pairwise
@@ -1462,18 +1486,23 @@ addressed.</p>
 <p>For referenced-based assembly, both dDocent and ipyrad make use of
 bwa(link) to map reads, while Stacks allows the user to choose their
 aligner. dDocent also utilizes bwa for de novo assemblies.</p>
-<p>Mapping defaults for popular RADseq pipelines: L: clipping penalty
-for 5’ and 3’ A: matching score O gap open penalty T: mapping quality
-filter</p>
-<p>dDocent: bwa mem -L 20,5 -t 8 -a -M -T 10 -A1 -B 3 -O 5 -R</p>
+<p>Mapping defaults for popular RADseq pipelines:<br />
+<code>L</code>: clipping penalty for 5’ and 3’<br />
+<code>A</code>: matching score<br />
+<code>O</code>: gap open penalty<br />
+<code>T</code>: mapping quality filter</p>
+<p>dDocent:
+<code>bwa mem -L 20,5 -t 8 -a -M -T 10 -A1 -B 3 -O 5 -R</code></p>
 <ul>
-<li><p>can change -A and -O during the dDocent pipeline.<br />
-ipyrad: (defaults) -L 5,5 -B 4 -A1 -O 6 -T 30</p></li>
-<li><p>requires changing the ipyrad source code to change
-parameters</p></li>
+<li>can change -A and -O interactively during the dDocent pipeline.</li>
 </ul>
-<p>Our whole genome resequencing section has some good content on
-mapping(link). General considerations with RAD data:</p>
+<p>ipyrad: (defaults) <code>-L 5,5 -B 4 -A1 -O 6 -T 30</code></p>
+<ul>
+<li>requires changing the ipyrad source code to change parameters</li>
+</ul>
+<p>Our <a href="https://marineomics.github.io/WGS_intro.html">whole
+genome resequencing tutorials</a>] has some good content on mapping.
+General considerations with RAD data:</p>
 <ul>
 <li>how many reads aligned for each sample? If many reads didn’t
 aligned, this could be an issue with the reference, read
@@ -1557,11 +1586,10 @@ likely to be included and the SNP caller will have a harder time
 accurately identifying SNPs (<a
 href="https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md">in
 which case, you’d be better off with genotype likelihood methods</a>. If
-it’s too high, then real polymorphic loci will be excluded. All of the
-three major pipelines allow users to implement read depth thresholds</p>
-<p>Generating multiple sequencing reads per locus is helpful when
-calling SNPs in order to distinguishing between reads with sequencing
-errors and.</p>
+it’s too high, then real polymorphic loci will be excluded. The <em>too
+high</em> threshold for your dataset can usually best be determined by
+using a few different read depth thresholds and comparing how the
+results change downstream analyses.</p>
 </div>
 </div>
 </div>
@@ -1570,8 +1598,8 @@ errors and.</p>
 <div id="and-embrace-the-missingness"
 class="section level3 unlisted unnumbered">
 <h3 class="unlisted unnumbered">(and embrace the missingness!)</h3>
-<p><span style="color: red;">This section is still under development!
-Please contribute on Github or provide feedback in <a
+<p><span style="color: red;">Tutorials for this section are still under
+development! Please contribute on Github or provide feedback in <a
 href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussions</a></span></p>
 <p>Even with a reduced representation sequencing approach, your assembly
 and genotyping pipeline will generate data for thousands of SNPs across
@@ -1589,19 +1617,30 @@ Structure)</li>
 </ul>
 <p>Unique to RADseq approaches is the missingness of RAD data.</p>
 <ul>
-<li><p>Don’t over filter for missingness</p></li>
-<li><p>papers showing how too much filtering can skew results<br />
-</p></li>
-<li><p>Empirical: Diaz-Arce 2019, Tripp 2017, Silliman 2021, Eaton 2017,
-Martin-Hernanz (2019)</p></li>
-<li><p>Simulations: Huang &amp; Knowles 2016, Leaché et al., 2015,
-Gautier et al., 2012, Rivera-Colón et al., 2021</p></li>
-<li><p>some ways to account for missing data in downstream
-analyses</p></li>
-<li><p>impute (PCA), subsample (PCA, structure, pretty much anything
-with SNPs), try a few different missing filters and see what impact it
-has on results</p></li>
+<li>Don’t over filter for missingness
+<ul>
+<li>Papers showing how too much filtering can skew results:
+<ul>
+<li>Empirical: <span class="citation">(Eaton et al. 2017; Tripp et al.
+2017; Martı́n-Hernanz et al. 2019; Silliman et al. 2021; Dı́az-Arce and
+Rodrı́guez-Ezpeleta 2019)</span><br />
+</li>
+<li>Simulation investigating effects and sources of missing data: <span
+class="citation">(Huang and Knowles 2016; Leaché et al. 2015; Gautier et
+al. 2013; Rivera-Colón, Rochette, and Catchen 2021)</span></li>
+</ul></li>
+</ul></li>
+<li>Some ways to account for missing data in downstream analyses:
+<ul>
+<li>impute mising data (PCA), subsample (PCA, structure, pretty much
+anything with SNPs), try a few different missing filters and see what
+impact it has on results</li>
+</ul></li>
 </ul>
+<p>Jon Puritz has a <a href="http://www.ddocent.com/filtering/">great
+tutorial</a> on filtering SNPs from RADseq data assembled with dDocent.
+While it requires certain VCF fields to be present that aren’t generated
+by ipyrad or Stacks, it contains great concepts on how to filter.</p>
 <!-- use [pcANGSD](link)-->
 <!--## Special Cases  
 ### DARTseq  
@@ -1638,12 +1677,34 @@ and Paul A Hohenlohe. 2016. <span>“Harnessing the Power of
 <em>Nat. Rev. Genet.</em> 17 (2): 81–92. <a
 href="https://doi.org/10.1038/nrg.2015.28">https://doi.org/10.1038/nrg.2015.28</a>.
 </div>
+<div id="ref-Diaz-Arce2019-nh" class="csl-entry">
+Dı́az-Arce, Natalia, and Naiara Rodrı́guez-Ezpeleta. 2019.
+<span>“Selecting <span>RAD-Seq</span> Data Analysis Parameters for
+Population Genetics: The More the Better?”</span> <em>Front. Genet.</em>
+10 (May): 533. <a
+href="https://doi.org/10.3389/fgene.2019.00533">https://doi.org/10.3389/fgene.2019.00533</a>.
+</div>
+<div id="ref-Eaton2017-gx" class="csl-entry">
+Eaton, Deren A R, Elizabeth L Spriggs, Brian Park, and Michael J
+Donoghue. 2017. <span>“Misconceptions on Missing Data in <span
+class="nocase">RAD-seq</span> Phylogenetics with a Deep-Scale Example
+from Flowering Plants.”</span> <em>Syst. Biol.</em> 66 (3): 399–412. <a
+href="https://doi.org/10.1093/sysbio/syw092">https://doi.org/10.1093/sysbio/syw092</a>.
+</div>
 <div id="ref-Elshire2011-or" class="csl-entry">
 Elshire, Robert J, Jeffrey C Glaubitz, Qi Sun, Jesse A Poland, Ken
 Kawamoto, Edward S Buckler, and Sharon E Mitchell. 2011. <span>“A
 Robust, Simple Genotyping-by-Sequencing (<span>GBS</span>) Approach for
 High Diversity Species.”</span> <em>PLoS One</em> 6 (5): e19379. <a
 href="https://doi.org/10.1371/journal.pone.0019379">https://doi.org/10.1371/journal.pone.0019379</a>.
+</div>
+<div id="ref-Gautier2013-vj" class="csl-entry">
+Gautier, Mathieu, Karim Gharbi, Timothee Cezard, Julien Foucaud, Carole
+Kerdelhué, Pierre Pudlo, Jean-Marie Cornuet, and Arnaud Estoup. 2013.
+<span>“The Effect of <span>RAD</span> Allele Dropout on the Estimation
+of Genetic Variation Within and Between Populations.”</span> <em>Mol.
+Ecol.</em> 22 (11): 3165–78. <a
+href="https://doi.org/10.1111/mec.12089">https://doi.org/10.1111/mec.12089</a>.
 </div>
 <div id="ref-Harvey2015-vh" class="csl-entry">
 Harvey, Michael G, Caroline Duffie Judy, Glenn F Seeholzer, James M
@@ -1652,6 +1713,13 @@ Thresholds Used in <span>DNA</span> Sequence Assembly from Short Reads
 Can Reduce the Comparability of Population Histories Across
 Species.”</span> <em>PeerJ</em> 3 (April): e895. <a
 href="https://doi.org/10.7717/peerj.895">https://doi.org/10.7717/peerj.895</a>.
+</div>
+<div id="ref-Huang2016-na" class="csl-entry">
+Huang, Huateng, and L Lacey Knowles. 2016. <span>“Unforeseen
+Consequences of Excluding Missing Data from Next-Generation Sequences:
+Simulation Study of <span>RAD</span> Sequences.”</span> <em>Syst.
+Biol.</em> 65 (3): 357–65. <a
+href="https://doi.org/10.1093/sysbio/syu046">https://doi.org/10.1093/sysbio/syu046</a>.
 </div>
 <div id="ref-Ilut2014-ja" class="csl-entry">
 Ilut, Daniel C, Marie L Nydam, and Matthew P Hare. 2014. <span>“Defining
@@ -1667,6 +1735,31 @@ Assembly of <span>DNA</span> Sequences from Double-Digest Libraries
 Varies Substantially Among Software.”</span> <em>Mol. Ecol. Resour.</em>
 20 (2): 360–70. <a
 href="https://doi.org/10.1111/1755-0998.13108">https://doi.org/10.1111/1755-0998.13108</a>.
+</div>
+<div id="ref-Leache2015-eg" class="csl-entry">
+Leaché, Adam D, Andreas S Chavez, Leonard N Jones, Jared A Grummer,
+Andrew D Gottscho, and Charles W Linkem. 2015. <span>“Phylogenomics of
+Phrynosomatid Lizards: Conflicting Signals from Sequence Capture Versus
+Restriction Site Associated <span>DNA</span> Sequencing.”</span>
+<em>Genome Biol. Evol.</em> 7 (3): 706–19. <a
+href="https://doi.org/10.1093/gbe/evv026">https://doi.org/10.1093/gbe/evv026</a>.
+</div>
+<div id="ref-Lou2021-ew" class="csl-entry">
+Lou, Runyang Nicolas, and Nina Overgaard Therkildsen. 2021. <span>“Batch
+Effects in Population Genomic Studies with Low-Coverage Whole Genome
+Sequencing Data: Causes, Detection, and Mitigation.”</span> <em>Authorea
+Preprints</em>, August. <a
+href="https://doi.org/10.22541/au.162791857.78788821/v2">https://doi.org/10.22541/au.162791857.78788821/v2</a>.
+</div>
+<div id="ref-Martin-Hernanz2019-bu" class="csl-entry">
+Martı́n-Hernanz, Sara, Abelardo Aparicio, Mario Fernández-Mazuecos,
+Encarnación Rubio, J Alfredo Reyes-Betancort, Arnoldo Santos-Guerra,
+Marı́a Olangua-Corral, and Rafael G Albaladejo. 2019. <span>“Maximize
+Resolution or Minimize Error? Using
+<span>Genotyping-By-Sequencing</span> to Investigate the Recent
+Diversification of Helianthemum (Cistaceae).”</span> <em>Front. Plant
+Sci.</em> 10 (November): 1416. <a
+href="https://doi.org/10.3389/fpls.2019.01416">https://doi.org/10.3389/fpls.2019.01416</a>.
 </div>
 <div id="ref-Mastretta-Yanes2015-jb" class="csl-entry">
 Mastretta-Yanes, A, N Arrigo, N Alvarez, T H Jorgensen, D Piñero, and B
@@ -1698,11 +1791,32 @@ in Model and Non-Model Species.”</span> <em>PLoS One</em> 7 (5): e37135.
 <a
 href="https://doi.org/10.1371/journal.pone.0037135">https://doi.org/10.1371/journal.pone.0037135</a>.
 </div>
+<div id="ref-Rivera-Colon2021-en" class="csl-entry">
+Rivera-Colón, Angel G, Nicolas C Rochette, and Julian M Catchen. 2021.
+<span>“Simulation with <span>RADinitio</span> Improves
+<span>RADseq</span> Experimental Design and Sheds Light on Sources of
+Missing Data.”</span> <em>Mol. Ecol. Resour.</em> 21 (2): 363–78. <a
+href="https://doi.org/10.1111/1755-0998.13163">https://doi.org/10.1111/1755-0998.13163</a>.
+</div>
 <div id="ref-Rubin2012-hw" class="csl-entry">
 Rubin, Benjamin E R, Richard H Ree, and Corrie S Moreau. 2012.
 <span>“Inferring Phylogenies from <span>RAD</span> Sequence
 Data.”</span> <em>PLoS One</em> 7 (4): e33394. <a
 href="https://doi.org/10.1371/journal.pone.0033394">https://doi.org/10.1371/journal.pone.0033394</a>.
+</div>
+<div id="ref-Silliman2021-oo" class="csl-entry">
+Silliman, Katherine, Jane L Indorf, Nancy Knowlton, William E Browne,
+and Carla Hurt. 2021. <span>“Base-Substitution Mutation Rate Across the
+Nuclear Genome of Alpheus Snapping Shrimp and the Timing of Isolation by
+the Isthmus of Panama.”</span> <em>BMC Ecol Evol</em> 21 (1): 104. <a
+href="https://doi.org/10.1186/s12862-021-01836-3">https://doi.org/10.1186/s12862-021-01836-3</a>.
+</div>
+<div id="ref-Tripp2017-cp" class="csl-entry">
+Tripp, Erin A, Yi-Hsin Erica Tsai, Yongbin Zhuang, and Kyle G Dexter.
+2017. <span>“<span>RADseq</span> Dataset with 90% Missing Data Fully
+Resolves Recent Radiation of Petalidium (Acanthaceae) in the Ultra-Arid
+Deserts of Namibia.”</span> <em>Ecol. Evol.</em> 7 (19): 7920–36. <a
+href="https://doi.org/10.1002/ece3.3274">https://doi.org/10.1002/ece3.3274</a>.
 </div>
 <div id="ref-Wagner2013-ff" class="csl-entry">
 Wagner, Catherine E, Irene Keller, Samuel Wittwer, Oliver M Selz, Salome
