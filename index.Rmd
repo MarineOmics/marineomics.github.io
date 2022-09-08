@@ -54,6 +54,7 @@ MarineOmics is also interested in evaluating and improving reproducibility in st
 #### [Hanny Rivera, PhD](https://www2.whoi.edu/staff/hrivera/), Woods Hole Oceanographic Institute  {.unlisted .unnumbered}
 #### Jecy Klinkam, College of William and Mary (Intern) {.unlisted .unnumbered}
 #### [Joanna Griffiths, PhD](https://joannasgriffiths.wordpress.com/), UC-Davis {.unlisted .unnumbered}
+#### Jason Johns, UC-Santa Barbara (Website Manager) {.unlisted .unnumbered}
 #### [Joe McGirr, PhD](https://joemcgirr.github.io/), UC-Davis {.unlisted .unnumbered}
 #### Kaitlin Macaranas, CSU-Bakersfield (Intern) {.unlisted .unnumbered}
 #### Megan Guidry, University of Rhode Island {.unlisted .unnumbered}
