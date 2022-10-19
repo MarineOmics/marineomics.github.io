@@ -26,6 +26,10 @@ Based on the expertise of the MarineOmics working group, the first topics includ
 * Align and count RNAseq reads (coming soon!)
     * De novo, reference-based, and Tag-seq methods
 
+#### Genome-Phenome
+
+* coming soon!
+
 ### {-}
 
 ### The guidelines portion of the website should be considered a "preprint". If you are interested in contributing to the peer review process, check out the [Discussion Forum](discussion.html). {.unlisted .unnumbered}
