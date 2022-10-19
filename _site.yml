@@ -21,6 +21,9 @@ navbar:
       menu:
         - text: "Mutifactorial RNAseq"
           href: DGE_comparison_v2.html
+    - text: "Genome-Phenome"
+      menu:
+        - text: "coming soon!"
     - text: "Discussion Forum"
       href: https://github.com/MarineOmics/marineomics.github.io/discussions
 
