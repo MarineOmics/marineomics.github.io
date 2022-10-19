@@ -24,7 +24,6 @@ navbar:
     - text: "Genome-Phenome"
       menu:
         - text: "coming soon!"
-          href:
     - text: "Discussion Forum"
       href: https://github.com/MarineOmics/marineomics.github.io/discussions
 
