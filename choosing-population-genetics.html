@@ -464,10 +464,10 @@ class="section level3 unlisted unnumbered">
 <p><strong>Low coverage whole genome sequencing (lcWGS)</strong> is
 where whole genomes of many individuals are sequenced, but depth of
 coverage is so low (&lt;5× per site per individual, on average <span
-class="citation">(Nielsen et al. 2011)</span>) that individual genotypes
-cannot be confidently assigned. Instead of assigning specific (“hard
-called”) genotypes, lcWGS data requires probabilistic analyses that
-account for uncertainty about the true genotype and can incorporate
+class="citation">(R. Nielsen et al. 2011)</span>) that individual
+genotypes cannot be confidently assigned. Instead of assigning specific
+(“hard called”) genotypes, lcWGS data requires probabilistic analyses
+that account for uncertainty about the true genotype and can incorporate
 uncertainty across all sequenced samples <span
 class="citation">(Korneliussen, Albrechtsen, and Nielsen 2014)</span>.
 This approach is useful in cases where the research questions of
@@ -559,17 +559,17 @@ Target.Capture
 <tbody>
 <tr>
 <td style="text-align:left;font-weight: bold;border-right:1px solid;">
-Pros
+pros
 </td>
 <td style="text-align:left;">
 provides high quality, high density genotypes; can be used to improve
 development of a reference genome
 </td>
 <td style="text-align:left;">
-Provides high density genotypes at a reduced cost
+provides high density genotypes at a reduced cost
 </td>
 <td style="text-align:left;">
-Generally cheaper per sample, density of genotypes can be tuned to fit
+generally cheaper per sample, density of genotypes can be tuned to fit
 question, does not require a reference
 </td>
 <td style="text-align:left;">
@@ -583,19 +583,19 @@ targeted regions across many samples
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;border-right:1px solid;">
-Cons
+cons
 </td>
 <td style="text-align:left;">
-Most expensive per sample, requires a reference genome assembly, large
+most expensive per sample, requires a reference genome assembly, large
 computational resources
 </td>
 <td style="text-align:left;">
-Requires a reference, can produce false (+) heterozygotes, sensitive to
+requires a reference, can produce false (+) heterozygotes, sensitive to
 batch effects, may be inappropriate to use individual SNP calls for some
 analyses
 </td>
 <td style="text-align:left;">
-Only 1-5% of genome covered which limits studies on adaptive variation,
+only 1-5% of genome covered which limits studies on adaptive variation,
 de novo assembly can result in paralogs without quality control, can be
 hard to capture the same loci between batches
 </td>
@@ -613,16 +613,16 @@ targeted region so can result in ascertainment bias for some analyses
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;border-right:1px solid;">
-Population structure, genetic diversity
+population structure, genetic diversity
 </td>
 <td style="text-align:left;">
-Great, but cheaper methods work almost as well
+great, but cheaper methods work almost as well
 </td>
 <td style="text-align:left;">
-Good, but limited to popgen analyses based on genotype likelihoods
+good, but limited to popgen analyses based on genotype likelihoods
 </td>
 <td style="text-align:left;">
-Great, esp. for many samples
+great, esp. for many samples
 </td>
 <td style="text-align:left;">
 good for methods that only use allele frequencies, won’t work for
@@ -635,21 +635,22 @@ genetic diversity
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;border-right:1px solid;">
-Demography (mig. rates, pop. size through time)
+demography (mig. rates, pop. size through time)
 </td>
 <td style="text-align:left;">
-Great if incorporating haplotype-based methods
+great if incorporating haplotype-based methods
 </td>
 <td style="text-align:left;">
-Good, esp. with some high coverage samples to help with imputation
+good, esp. with some high coverage samples to help with imputation
 </td>
 <td style="text-align:left;">
-Good for methods based on site frequency spectrum (eg moments), but not
+good for methods based on site frequency spectrum (eg moments), but not
 ideal for methods using extended haplotype or phasing info
 </td>
 <td style="text-align:left;">
 active area of method development, but still not common except in cases
-of multiple temporal samples (cite)
+of multiple temporal samples <span class="citation">(Nielsen et al.
+2020)</span>
 </td>
 <td style="text-align:left;">
 likely not appropriate due to ascertainment bias
@@ -657,16 +658,16 @@ likely not appropriate due to ascertainment bias
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;border-right:1px solid;">
-Signatures of selection, GWAS
+signatures of selection, GWAS
 </td>
 <td style="text-align:left;">
-Great
+great
 </td>
 <td style="text-align:left;">
-Good
+good
 </td>
 <td style="text-align:left;">
-Hotly debated, but unless your genome is way too big, WGS is the way to
+hotly debated, but unless your genome is way too big, WGS is the way to
 go
 </td>
 <td style="text-align:left;">
@@ -678,13 +679,13 @@ only works for targeted regions
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;border-right:1px solid;">
-Phylogenetic inference
+phylogenetic inference
 </td>
 <td style="text-align:left;">
-Computationally challenging, but good at all divergence levels
+computationally challenging, but good at all divergence levels
 </td>
 <td style="text-align:left;">
-Good for tree shapes but not branch lengths, good for extracting
+good for tree shapes but not branch lengths, good for extracting
 organelle sequences and cost-effective primers for species and hybrid ID
 studies
 </td>
@@ -701,13 +702,13 @@ an improvement over RAD as there will be less missing data among samples
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;border-right:1px solid;">
-Genetic crosses/mapping panels
+genetic crosses/mapping panels
 </td>
 <td style="text-align:left;">
-Expensive
+expensive
 </td>
 <td style="text-align:left;">
-Great
+great
 </td>
 <td style="text-align:left;">
 great as it allows for many invididuals
@@ -724,10 +725,10 @@ poor
 molecular evolution (accurate low-freq alleles required)
 </td>
 <td style="text-align:left;">
-Best
+best
 </td>
 <td style="text-align:left;">
-Poor
+poor
 </td>
 <td style="text-align:left;">
 poor
@@ -762,12 +763,12 @@ population genomics data, with non-model species in mind. Some of the
 content about relative cost and available software is a little dated,
 but otherwise a very valuable reference.<br />
 </li>
-<li><span class="citation">(Lou et al. 2021)</span>: Great recent primer
+<li><span class="citation">(Lou et al. 2021)</span>: great recent primer
 on low coverage WGS and how it compares to RADseq and Poolseq.</li>
 </ul>
 <p>Empirical comparisons:</p>
 <ul>
-<li><span class="citation">(Benjelloun et al. 2019)</span>:an empirical
+<li><span class="citation">(Benjelloun et al. 2019)</span>: an empirical
 comparison of high coverage WGS, low coverage WGS, random variants (eg.
 from RADseq), exome capture, and commercial SNP chip for mammals (genome
 size=2.6Gb). For neutral genomic diversity, found 5k-10k random variants
@@ -778,7 +779,7 @@ coverage was just as accurate as 12x coverage. Low coverage WGS (&lt;
 5x) should use genotype likelihood methods, however, the rate of false
 positives for heterozygotes is higher than classic genotyping methods at
 higher coverage.</li>
-<li><span class="citation">(Dorant et al. 2019)</span>: A case study
+<li><span class="citation">(Dorant et al. 2019)</span>: a case study
 comparing Poolseq vs. reduced representation seq (GBS) vs Rapture
 (targeted capture of RAD loci) for inferring population structure with
 weak genetic differentiation. All three detected the same weak pop
@@ -862,6 +863,12 @@ href="https://doi.org/10.1016/j.tig.2017.11.002">https://doi.org/10.1016/j.tig.2
 Nielsen, Rasmus, Joshua S Paul, Anders Albrechtsen, and Yun S Song.
 2011. <span>“Genotype and SNP Calling from Next-Generation Sequencing
 Data.”</span> <em>Nature Reviews Genetics</em> 12 (6): 443–51.
+</div>
+<div id="ref-nielsen2020bc" class="csl-entry">
+Nielsen, Beger, Henriques, and Heyden. 2020. <span>“A Comparison of
+Genetic and Genomic Approaches to Represent Evolutionary Potential in
+Conservation Planning.”</span> <em>Biological Conservation</em> 251 (1):
+108770.
 </div>
 <div id="ref-puritz2018expressed" class="csl-entry">
 Puritz, Jonathan B, and Katie E Lotterhos. 2018. <span>“Expressed Exome
