@@ -11,10 +11,10 @@ navbar:
       menu:
         - text: "Choosing a Population Genomics Approach"
           href: choosing-population-genetics.html
-        - text: "RADseq"
-          href: RADseq.html
         - text: "Whole Genome Resequencing"
           href: WGS_intro.html
+        - text: "Reduced Representation Sequencing"
+          href: RADseq.html
         - text: "Poolseq"
           href: poolseq.html
     - text: "Functional Genomics"
