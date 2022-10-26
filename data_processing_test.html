@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Tutorial 1: Data processing - from .fastq to .bam</title>
+
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="tutorial.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MarineOmics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="panels.html">Panel Seminars</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Population Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="choosing-population-genetics.html">Choosing a Population Genomics Approach</a>
+    </li>
+    <li>
+      <a href="WGS_intro.html">Whole Genome Resequencing</a>
+    </li>
+    <li>
+      <a href="RADseq.html">Reduced Representation Sequencing</a>
+    </li>
+    <li>
+      <a href="poolseq.html">Poolseq</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Functional Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Genome-Phenome
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">coming soon!</li>
+  </ul>
+</li>
+<li>
+  <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'G-53GH9PV49T', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Tutorial 1: Data processing - from .fastq
+to .bam</h1>
+
+</div>
+
+
+<p><br> <br></p>
+<p>In this tutorial, you will learn how to go from raw sequencing files
+in <code>fastq</code> format through alignment files in <code>bam</code>
+format that we can use for downstream analysis. Along the way, you will
+perform multiple quality control (QC) procedures, and will map the short
+sequences to a snippet of a reference genome.</p>
+<p><br></p>
+<div id="case-study-for-practicals" class="section level1">
+<h1>Case study for practicals</h1>
+<p>Throughout this course, you will be working with data from the
+Atlantic silverside, <em>Menidia menidia</em>, a small estuarine
+fish.</p>
+<p><img src="images_test/IMG_8658_SnyderCredit.jpg" width="100%" height="40%" style="display: block; margin: auto;" /></p>
+<p>The Atlantic silverside is distributed along the east coast of North
+America and shows a remarkable degree of local adaptation in growth
+rates and a suite of other traits (Conover et al. 2005). You will be
+exploring patterns of genomic variation across the species range, which
+spans one of the steepest thermal gradient in the world.</p>
+<div id="todays-data" class="section level3">
+<h3>Today’s data</h3>
+<p>Today, we will work with subsets of two different fastq files from
+each of three Atlantic silversides used in recent studies of
+fisheries-induced evolution (Therkildsen et al. 2019) and local
+adaptation (Wilder et al. 2020). The samples we’ll use today originate
+from the MAQU and PANY populations shown in this map:</p>
+<p><br></p>
+<p><img src="images_test/Silverside_Sample_Map.png" width="49%" height="20%" /></p>
+<p><br></p>
+<p>The libraries were prepared as described in Therkildsen and Palumbi
+(2017) and sequenced with 125bp paired-end reads on an Illumina HiSeq
+instrument. There are two different fastq files for each individual
+because our libraries were sequenced in two different sequencing runs,
+to even out sequence coverage among individuals (as discussed in
+lecture).</p>
+<p>We will map these raw sequence files to a snippet of the sparkling
+new Atlantic silverside genome (Tigano et al. nearly submitted!). To
+minimize computational time, we are just working with a small 2 Mb
+section of chromosome 24 for all the exercises in this course.</p>
+<p><br></p>
+<p><span style='font-size:75%'> <strong>References:</strong></p>
+<p><span style='font-size:75%'> Conover, D. O., Arnott, S. A., Walsh, M.
+R., &amp; Munch, S. B. (2005). Darwinian fishery science: lessons from
+the Atlantic silverside (Menidia menidia). Canadian Journal of Fisheries
+and Aquatic Sciences, 62(4), 730–737. <a
+href="http://doi.org/10.1139/f05-069"
+class="uri">http://doi.org/10.1139/f05-069</a></p>
+<p><span style='font-size:75%'> Therkildsen, N. O., &amp; Palumbi, S. R.
+(2017). Practical low-coverage genomewide sequencing of hundreds of
+individually barcoded samples for population and evolutionary genomics
+in nonmodel species. Molecular Ecology Resources, 17(2), 194–208. <a
+href="http://doi.org/10.1111/1755-0998.12593"
+class="uri">http://doi.org/10.1111/1755-0998.12593</a></p>
+<p><span style='font-size:75%'> Therkildsen, N. O., Wilder, A. P.,
+Conover, D. O., Munch, S. B., Baumann, H., &amp; Palumbi, S. R. (2019).
+Contrasting genomic shifts underlie parallel phenotypic evolution in
+response to fishing. Science, 365(6452), 487–490. <a
+href="http://doi.org/10.1126/science.aaw7271"
+class="uri">http://doi.org/10.1126/science.aaw7271</a></p>
+<p><span style='font-size:75%'> Wilder, A. P., Palumbi, S. R., Conover,
+D. O., and Therkildsen, N. O. 2020. Footprints of local adaptation span
+hundreds of linked genes in the Atlantic silverside genome. Evolution
+Letters 9:177. <a href="https://doi.org/10.1002/evl3.189"
+class="uri">https://doi.org/10.1002/evl3.189</a></p>
+<p></span></p>
+<p><br> <br></p>
+</div>
+</div>
+<div id="initial-preparation" class="section level1">
+<h1>Initial preparation</h1>
+<div id="make-sure-youre-up-to-speed-on-basic-shell-scripting"
+class="section level2">
+<h2>1. Make sure you’re up to speed on basic shell scripting</h2>
+<p>We’ll be working almost exclusively through the command line, so if
+you have not used shell scripting before or are getting rusty on it, it
+may be helpful to have a look at a tutorial like <a
+href="https://linuxconfig.org/bash-scripting-tutorial-for-beginners">this
+one</a> or a cheat sheet like <a
+href="https://bioinformaticsworkbook.org/Appendix/Unix/UnixCheatSheet.html#gsc.tab=0">this
+one</a> before proceeding to the next step.</p>
+<p><br></p>
+</div>
+<div id="clone-this-github-repository-to-your-linux-server"
+class="section level2">
+<h2>2. Clone this GitHub repository to your Linux server</h2>
+<p>Let’s first get set up and retrieve a copy the data we will be
+working on, which is contained in this GitHub repository.</p>
+<pre class="bash"><code>
+cd ~ ## Change this to the directory where you would like to store this GitHub repo
+
+git clone https://github.com/nt246/lcwgs-guide-tutorial.git
+
+# Go into your new tutorial1_data_processing directory and examine its contents
+cd lcwgs-guide-tutorial/tutorial1_data_processing
+</code></pre>
+<p><br></p>
+<p>Your own copy of the <code>tutorial1_data_processing</code> directory
+will be referred to as <code>BASEDIR</code> in many of the scripts
+below. Have a look inside; <code>tutorial1_data_processing</code>
+contains the following subdirectories:</p>
+<ul>
+<li><p><code>raw_fastq</code> has the raw fastq files we’ll be working
+on today</p></li>
+<li><p><code>sample_lists</code> is for storing sample tables, sample
+lists, and other small text files</p></li>
+<li><p><code>reference</code> currently contains the reference genome
+file and a list of adapter sequences</p></li>
+<li><p><code>scripts</code> is for storing scripts</p></li>
+</ul>
+<blockquote>
+<p>Hint: We move between directories using the <code>cd</code> command
+and can view the content of directories with the <code>ls</code> command
+in the Unix shell.</p>
+</blockquote>
+<p><br></p>
+<p>In addition, you will create the following directories within
+<code>tutorial1_data_processing</code></p>
+<pre class="bash"><code>
+BASEDIR=~/lcwgs-guide-tutorial/tutorial1_data_processing ## Change this to where tutorial1_data_processing is located on your server
+
+mkdir ${BASEDIR}/adapter_clipped ## For storing your adapter clipped fastq files
+  
+mkdir ${BASEDIR}/bam ## For storing your bam (alignment) files
+  
+mkdir ${BASEDIR}/fastqc ## For storing your FastQC output
+</code></pre>
+<p><br></p>
+</div>
+<div
+id="orient-yourself-to-the-formatting-of-our-fastq-table-and-fastq-list"
+class="section level2">
+<h2>3. Orient yourself to the formatting of our fastq table and fastq
+list</h2>
+<p>When we get data files back from the sequencing center, the files
+often have obscure names, so we need a data table that let’s us link
+those file names to our sample IDs and other information. Often, part of
+the fastq file name will be identical among all samples in a run and
+part of it will reflect some kind of unique sample identifier (either a
+name you supplied or a name given by the sequencing center). As an
+example, look in the <code>raw_fastq</code> folder and notice how all
+the files end in either <code>_1.fastq.gz</code> or
+<code>_2.fastq.gz</code> (these are the forward and reverse sequences)
+while the first part of the file names differs (the unique sample
+identifier). We call the sample identifier the <code>prefix</code>.</p>
+<p>Our pipeline is set up to link up these <code>prefix</code> names
+with sample details based on a fastq table set up as the example you can
+find in <code>sample_lists/fastq_table.tsv</code>.</p>
+<p>For our scripts below to work, the sample table has to be a
+<strong>tab deliminated</strong> table with the following six columns,
+strictly in this order:</p>
+<ul>
+<li><p><code>prefix</code> the prefix of raw fastq file names</p></li>
+<li><p><code>lane_number</code> lane number; each sequencing lane or
+batch should be assigned a unique identifier. This is important so that
+if you sequence a library across multiple different sequencing lanes,
+you can keep track of which lane/batch a particular set of reads came
+from (important for accounting for sequencing error patterns or batch
+effects).</p></li>
+<li><p><code>seq_id</code> sequence ID; this variable is only relevant
+when different libraries were prepared out of the same sample and were
+run in the same lane (e.g. if you wanted to include a replicate). In
+this case, seq_id should be used to distinguish these separate
+libraries. If you only have a single library prepared from each of your
+samples (even if you sequence that same library across multiple lanes),
+you can just put 1 for all samples in this column.</p></li>
+<li><p><code>sample_id</code> sample ID; a unique identifier for each
+individual sequenced</p></li>
+<li><p><code>population</code> population name; the population or other
+relevant grouping variable that the individual belongs to</p></li>
+<li><p><code>data_type</code> data type; there are only two allowed
+entries here: <code>pe</code> (for paired-end data) or <code>se</code>
+(for single end data). We need this in the table because for some of our
+processing steps, the commands are slightly different for paired-end and
+single-end data.</p></li>
+</ul>
+<p>It is important to make sure that the combination of sample_id,
+seq_id, and lane_number is unique for each fastq file.</p>
+<p><br></p>
+<p>We’ll also use a second file that we call a fastq list. This is
+simply a list of prefixes for the samples we want to analyze. Our sample
+table can contain data for all individuals in our study, but at any
+given time, we may only want to perform an operation on a subset of
+them. Like today, in the interest of time, we only want to run 6 sets of
+fastq files through each processing step.</p>
+<p>Have a look at the list we’ll be using in
+<code>sample_lists/fastq_list.txt</code> and note that it’s just a list
+of fastq name prefixes, each on a separate line and there should be no
+header in this file.</p>
+<p><br></p>
+<div id="activity" class="section level3">
+<h3>Activity</h3>
+<p>Compare the <code>fastq_list.txt</code> to the
+<code>fastq_table.txt</code>. Which populations do the samples we’ll be
+analyzing today originate from?</p>
+<p><br></p>
+<p>With our small fastq table and fastq list here, we can easily look
+this up manually. But if we have hundreds of samples, that becomes more
+cumbersome. Let’s automate the sample lookup with our first
+<code>for loop</code>.</p>
+<p><br></p>
+</div>
+</div>
+<div
+id="make-sure-youre-familiar-with-for-loops-and-how-to-assign-and-call-variables-in-bash"
+class="section level2">
+<h2>4. Make sure you’re familiar with <code>for loops</code> and how to
+assign and call variables in bash</h2>
+<p>In low-coverage whole genome sequencing datasets, we’ll typically
+have data from hundreds of individuals, so we need an efficient way to
+process all of these files without having to write a separate line of
+code for each file. <code>for loops</code> are a powerful way to achieve
+this, and we will be using them in every step of our pipeline, so let’s
+first take a moment to make sure we understand the syntax.</p>
+<p>A ‘for loop’ is a bash programming language statement which allows
+code to be repeatedly executed. If you’ve never worked with
+<code>for loops</code> in bash before, it might be helpful to look over
+a tutorial, e.g. <a
+href="https://swcarpentry.github.io/shell-novice/05-loop/index.html">this
+one from Software Carpentry</a>.</p>
+<p>Here is a key extract inspired from that tutorial:</p>
+<p>The basic syntax of a <code>for loop</code> is as follows</p>
+<pre class="bash"><code>
+for thing in list_of_things; do    # ; is equivalent to an end-of-line. We can alternatively put &quot;do&quot; on its own line
+
+    operation_using $thing    # Indentation within the loop is not required, but aids legibility
+
+done
+</code></pre>
+<p>When the shell sees the keyword <code>for</code>, it knows to repeat
+a command (or group of commands) once for each item in a list. Each time
+the loop runs (called an iteration), an item in the list is assigned in
+sequence to the variable, and the commands inside the loop are executed,
+before moving on to the next item in the list. Inside the loop, we call
+the variable’s value by putting <code>$</code> in front of it. The
+<code>$</code> tells the shell interpreter to treat the variable as a
+variable name and substitute its value in its place, rather than treat
+it as text or an external command.</p>
+<p><br></p>
+</div>
+<div id="practice-using-bash-for-loops-to-iterate-over-target-samples"
+class="section level2">
+<h2>5. Practice using bash <code>for loops</code> to iterate over target
+samples</h2>
+<p>First, let’s just look up the sample IDs. For each prefix in our
+<code>fastq_list.txt</code>, we will use <code>grep</code> to extract
+the relevant line from the fastq table, use <code>cut</code> to extract
+the column with sample ID, and then <code>echo</code> to print the
+sample ID</p>
+<pre class="bash"><code>
+BASEDIR=~/lcwgs-guide-tutorial/tutorial1_data_processing ## Change this to where tutorial1_data_processing is located on your server
+
+SAMPLELIST=$BASEDIR/sample_lists/fastq_list.txt # Path to a list of prefixes of the raw fastq files. It should be a subset of the the 1st column of the fastq table.
+
+SAMPLETABLE=$BASEDIR/sample_lists/fastq_table.tsv # Path to a fastq table where the 1st column is the prefix of the raw fastq files. The 4th column is the sample ID. 
+
+
+for SAMPLEFILE in `cat $SAMPLELIST`; do   # Loop through each of the prefixes listed in our fastq list
+    
+    # For each prefix, extract the associated sample ID (column 4) from the table
+    SAMPLE_ID=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 4` 
+
+    echo $SAMPLEFILE refers to sample $SAMPLE_ID
+    
+done
+</code></pre>
+<p><br></p>
+<div id="exercise" class="section level3">
+<h3>Exercise</h3>
+<p>Now change the <code>for loop</code> so it also outputs which
+population each fastq file has data for.</p>
+<p><br></p>
+<div id="see-a-solution" class="section level4">
+<h4>See a solution</h4>
+<details>
+<summary>
+Click here to expand
+</summary>
+<pre class="bash"><code>
+for SAMPLEFILE in `cat $SAMPLELIST`; do   # Loop through each of the prefixes listed in our sample list
+    
+    # For each prefix, extract the associated sample ID (column 4) and population ID (column 5) from the table
+    SAMPLE_ID=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 4` 
+    POPULATION=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 5` 
+
+    echo $SAMPLEFILE refers to sample $SAMPLE_ID from $POPULATION
+    
+done
+</code></pre>
+</details>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="define-paths-to-the-project-directory-and-programs"
+class="section level2">
+<h2>6. Define paths to the project directory and programs</h2>
+<p>We need to make sure the server knows where to find the programs
+we’ll be running and our input and output directories. This will always
+need to be specified every time we run our scripts in a new login
+session.</p>
+<p><br></p>
+<div id="set-the-project-directory-as-a-variable-named-basedir"
+class="section level3">
+<h3>Set the project directory as a variable named
+<code>BASEDIR</code></h3>
+<pre class="bash"><code>
+BASEDIR=~/lcwgs-guide-tutorial/tutorial1_data_processing ## Change this to where tutorial1_data_processing is located on your server
+</code></pre>
+<p><br></p>
+</div>
+<div id="specify-the-paths-to-required-programs-as-variables"
+class="section level3">
+<h3>Specify the paths to required programs as variables</h3>
+<p>You will need to install the programs below on your server if they
+are not already installed, and define their paths as follows. The paths
+to these program on Cornell’s BioHPC servers are provided below.</p>
+<pre class="bash"><code>
+FASTQC=/programs/bin/fastqc/fastqc
+TRIMMOMATIC=/programs/trimmomatic/trimmomatic-0.39.jar
+PICARD=/programs/picard-tools-2.19.2/picard.jar
+SAMTOOLS=/programs/bin/samtools/samtools
+BOWTIEBUILD=/programs/bin/bowtie2/bowtie2-build
+BOWTIE=/programs/bin/bowtie2/bowtie2
+BAMUTIL=/programs/bamUtil/bam
+</code></pre>
+<p>The following programs are used for indel realignment and are
+optional.</p>
+<pre class="bash"><code>
+GATK=/programs/GenomeAnalysisTK-3.7/GenomeAnalysisTK.jar ## Note that GATK-3.7 is needed for indel-realignment, which is no longer suppported in new versions
+JAVA=/usr/local/jdk1.8.0_121/bin/java ## An older version of java is required for GATK-3.7 to run on Cornell&#39;s BioHPC server
+</code></pre>
+<p><br> If you will be running these programs on a different system, you
+will have to specify the paths to the different programs on that system
+(or add them to your $PATH).</p>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div id="data-processing-pipeline" class="section level1">
+<h1>Data processing pipeline</h1>
+<p>Now let’s get started processing the data!</p>
+<p><br></p>
+<div id="examine-the-raw-fastq-files" class="section level2">
+<h2>Examine the raw fastq files</h2>
+<div id="fastq-file-structure" class="section level3">
+<h3>fastq file structure</h3>
+<p>A FASTQ file normally contains four lines per sequence.</p>
+<ul>
+<li>Line 1 contains the sequence identifier, with information on the
+sequencing run and the cluster. The exact content of this line varies
+depending on how fastq files are generated from the sequencer.</li>
+<li>Line 2 is the raw sequence.</li>
+<li>Line 3 often consists of a single <code>+</code> symbol.</li>
+<li>Line 4 encodes the quality of each base in the sequence in Line 2
+(i.e. the probability of sequencing error in log scale). For most
+current sequencers, these base qualities are encoded in the <a
+href="https://drive5.com/usearch/manual/quality_score.html">Phred33
+format</a>, but always check to make sure how your quality scores are
+encoded.</li>
+</ul>
+<p>Now read the code below, guess what it does, and run it on your own.
+Does it do what you expect it to do? Inspect the output and try to
+identify the group of four lines for each read.</p>
+<p><br></p>
+<pre class="bash"><code>
+SAMPLELIST=$BASEDIR/sample_lists/fastq_list.txt # Path to the sample list.
+RAWFASTQSUFFIX1=_1.fastq.gz # Suffix to raw fastq files. Use forward reads with paired-end data.
+
+for SAMPLE in `cat $SAMPLELIST`; do
+
+  echo $SAMPLE
+  zcat $BASEDIR&#39;/raw_fastq/&#39;$SAMPLE$RAWFASTQSUFFIX1 | head -n 8
+  echo &#39; &#39;
+
+done
+</code></pre>
+<p><br></p>
+</div>
+<div id="evaluate-the-overall-data-quality" class="section level3">
+<h3>Evaluate the overall data quality</h3>
+<p>With a new batch of data, it is always to good idea to start out by
+getting an overview of the data quality and look for any signs of
+quality issues. The <a
+href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a>
+program provides a useful set of diagnostics, so we’ll run it on each on
+our fastq files to check their quality. In the interest of time, we will
+only look at three of our fastqs. We’ll loop over each of these and call
+FastQC on the forward file only (the program only takes the path to the
+input and the path to where you want the output as parameters). When
+working with your own data, always make sure to look both at the forward
+and reverse files because sometimes issues can arise in only one of the
+read directions.</p>
+<p><br></p>
+<pre class="bash"><code>
+SAMPLELIST=$BASEDIR/sample_lists/fastq_list.txt # Path to the sample list.
+RAWFASTQSUFFIX1=_1.fastq.gz # Suffix to raw fastq files. We&#39;ll only look at the forward reads here
+
+for SAMPLE in `cat $SAMPLELIST | head -n 3`; do  # The head -n 3 is taking just the first three elements of our fastq list to loop over
+
+  $FASTQC $BASEDIR&#39;/raw_fastq/&#39;$SAMPLE$RAWFASTQSUFFIX1 -o $BASEDIR&#39;/fastqc/&#39;
+  
+done
+</code></pre>
+<p><br></p>
+<p>If the program ran, you should now see the output (in html format and
+a zip file with various files) in your <code>fastqc</code> directory. To
+view the .html, use <code>scp</code> or FileZilla to transfer the html
+output files to your local machine and open them in a web browser, or
+use something like R-Studio server to directory view it.</p>
+<p><br></p>
+<div id="question" class="section level4">
+<h4>Question:</h4>
+<p>Do you notice anything different about the fastQC reports from the
+three different fastq files?</p>
+<p><br></p>
+<p>The libraries for these samples were prepared in different batches.
+Below are representative Bioanalyzer traces for each of the batches.
+Which sample do you think came from which batch?</p>
+<p><br></p>
+<p><img src="images_test/Bioanalyzer_Batch2.png" width="49%" height="20%" style="display: block; margin: auto;" /></p>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div id="adapter-clipping" class="section level2">
+<h2>Adapter clipping</h2>
+<p>When the insert length of a library fragment is shorter than the read
+length, the sequencer will read into the adapter sequence (as shown
+below). This means that the end of the read will not be from our actual
+sample, but will be adapter sequence, which may lead to lower alignment
+performance and even biases in the result if not removed.</p>
+<p><img
+src="https://www.ecseq.com/support/ngs/img/fragmentsize.png" /></p>
+<p><br></p>
+<p>We saw in our FastQC report that we have substantial adapter content
+in some of our libraries, so will will need to clip that off. Here, we
+use <a
+href="http://www.usadellab.org/cms/?page=trimmomatic">Trimmomatic</a> to
+clip the adapter sequence off the ends of reads where they appear. This
+step requires us to input the known adapter sequences that we used when
+preparing the libraries. In this exercise, the libraries were prepared
+using Illumina’s Nextera adapters (sequences listed in
+<code>reference/NexteraPE_NT.fa</code>), and we will read those into the
+<code>ADAPTERS</code> variable.</p>
+<p>Look over the code below. The first block of text specifies which
+files we are using as input. Then we start looping over our samples.
+Within the loop, the first step is to extract the relevant sample data
+from our sample table and assign those as temporary variables. Then we
+have two <code>if statements</code> to call Trimmomatic with slightly
+different parameters for paired-end and single-end data. Trimmomatic has
+lots of different filtering modules that can be useful in different
+contexts. Here we only clip sequence that match to our adapter sequence
+and remove reads that end up being &lt;40bp after clipping.</p>
+<p><br></p>
+<pre class="bash"><code>
+SAMPLELIST=$BASEDIR/sample_lists/fastq_list.txt # Path to a list of prefixes of the raw fastq files. It should be a subset of the the 1st column of the sample table.
+SAMPLETABLE=$BASEDIR/sample_lists/fastq_table.tsv # Path to a sample table where the 1st column is the prefix of the raw fastq files. The 4th column is the sample ID, the 2nd column is the lane number, and the 3rd column is sequence ID. The combination of these three columns have to be unique. The 6th column should be data type, which is either pe or se. 
+RAWFASTQDIR=$BASEDIR/raw_fastq/ # Path to raw fastq files. 
+RAWFASTQSUFFIX1=_1.fastq.gz # Suffix to raw fastq files. Use forward reads with paired-end data.
+RAWFASTQSUFFIX2=_2.fastq.gz # Suffix to raw fastq files. Use reverse reads with paired-end data. 
+ADAPTERS=$BASEDIR/reference/NexteraPE_NT.fa # Path to a list of adapter/index sequences.
+
+## Loop over each sample
+for SAMPLEFILE in `cat $SAMPLELIST`; do
+    
+    ## Extract relevant values from a table of sample, sequencing, and lane ID (here in columns 4, 3, 2, respectively) for each sequenced library
+    SAMPLE_ID=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 4`
+    POP_ID=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 5`
+    SEQ_ID=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 3`
+    LANE_ID=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 2`
+    SAMPLE_UNIQ_ID=$SAMPLE_ID&#39;_&#39;$POP_ID&#39;_&#39;$SEQ_ID&#39;_&#39;$LANE_ID  # When a sample has been sequenced in multiple lanes, we need to be able to identify the files from each run uniquely
+    
+    ## Extract data type from the sample table
+    DATATYPE=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 6`
+    
+    ## The input and output path and file prefix
+    RAWFASTQ_ID=$RAWFASTQDIR$SAMPLEFILE
+    SAMPLEADAPT=$BASEDIR&#39;/adapter_clipped/&#39;$SAMPLE_UNIQ_ID
+    
+    ## Adapter clip the reads with Trimmomatic
+    # The options for ILLUMINACLIP are: ILLUMINACLIP:&lt;fastaWithAdaptersEtc&gt;:&lt;seed mismatches&gt;:&lt;palindrome clip threshold&gt;:&lt;simple clip threshold&gt;:&lt;minAdapterLength&gt;:&lt;keepBothReads&gt;
+    # The MINLENGTH drops the read if it is below the specified length in bp
+    # For definitions of these options, see http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf
+    
+    if [ $DATATYPE = pe ]; then
+        java -jar $TRIMMOMATIC PE -threads 1 -phred33 $RAWFASTQ_ID$RAWFASTQSUFFIX1 $RAWFASTQ_ID$RAWFASTQSUFFIX2 $SAMPLEADAPT&#39;_adapter_clipped_f_paired.fastq.gz&#39; $SAMPLEADAPT&#39;_adapter_clipped_f_unpaired.fastq.gz&#39; $SAMPLEADAPT&#39;_adapter_clipped_r_paired.fastq.gz&#39; $SAMPLEADAPT&#39;_adapter_clipped_r_unpaired.fastq.gz&#39; &#39;ILLUMINACLIP:&#39;$ADAPTERS&#39;:2:30:10:1:true MINLENGTH:40&#39; 
+    
+    elif [ $DATATYPE = se ]; then
+        java -jar $TRIMMOMATIC SE -threads 1 -phred33 $RAWFASTQ_ID$RAWFASTQSUFFIX1 $SAMPLEADAPT&#39;_adapter_clipped_se.fastq.gz&#39; &#39;ILLUMINACLIP:&#39;$ADAPTERS&#39;:2:30:10 MINLENGTH:40&#39;
+    fi
+    
+done
+</code></pre>
+<p><br></p>
+<p>Have a look at the output printed to the screen as we’re iterating
+over the samples. Note the first time it says</p>
+<p><code>TrimmomaticPE: Started with arguments:</code></p>
+<p>Following this, you will see that actual variable names that were
+added to the command in each iteration of our loop (e.g. what
+<code>$RAWFASTQ_ID$RAWFASTQSUFFIX1</code> expanded to (what value was
+assigned to this variable)).</p>
+<p>Also examine the section that says
+<code>ILLUMINACLIP: Using 2 prefix pairs, 8 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences Input Read Pairs:</code></p>
+<p>This will show how many reads were removed from our filtering.</p>
+<p><br></p>
+<div id="question-1" class="section level4">
+<h4>Question</h4>
+<p>The first three samples are the samples for which we examined the
+FastQC outputs. Do you expect different amount of sequence getting
+removed from each of these? Is that what you see? Why/Why not?</p>
+<p><br></p>
+<details>
+<summary>
+Discuss first, then you can click here for a hint
+</summary>
+<p><br></p>
+<p>The output from Trimmomatic only shows how many full reads get
+removed, not how much the reads within the file get truncated. In the
+library with lots of adapter, many of the reads will now be shorter, but
+as long as they’re still longer than our threshold of 40bp, they will
+not get removed. If we wanted to know how much sequence we lost from
+each fastq, counting the number of bases lost is more informative than
+the number of sequences. It is also always a good idea to check the
+adapter clipped fastq files with FastQC to make sure that you did in
+fact get rid of the adapter sequence. We don’t have time to do this in
+class, but if you’re interested, you can use the fastqc loop above and
+just change it to run on the files in your <code>adapter_clipped</code>
+folder.</p>
+</details>
+<p><br> <br></p>
+</div>
+</div>
+<div id="optional-quality-trimming" class="section level2">
+<h2>OPTIONAL: Quality trimming</h2>
+<p>As we saw in our FastQC output, the base call quality score tends to
+drop off towards the ends of the reads. As we’ll learn more about
+tomorrow, probabilistic analysis frameworks, like <code>ANGSD</code> and
+others based on genotype likelihoods, can take the base call quality
+into account and that way give less weight to a base call that is less
+certain.</p>
+<p>However, as a conservative measure, we may want to just trim off the
+rest of the read if the quality score drops too low over multiple bases.
+We can do this with the <code>SLIDINGWINDOW</code> module in <a
+href="http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf">Trimmomatic</a>.
+We won’t have time to do that in this practical, but if you’re
+interested, you can modify the Trimmomatic code above to also trim off
+low-quality bases.</p>
+<p><br> <br></p>
+</div>
+<div id="build-reference-index-files" class="section level2">
+<h2>Build reference index files</h2>
+<p>There are lots of different programs developed for mapping short
+reads to a reference sequence. We will use the program <a
+href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">bowtie2</a>.
+This program requires a set of reference index files to be able to
+perform the sequence alignment. So we will start by indexing our
+reference.</p>
+<p><br></p>
+<pre class="bash"><code>
+REFERENCE=$BASEDIR/reference/mme_physalia_testdata_chr24.fa   # This is a fasta file with the reference genome sequence we will map to 
+REFBASENAME=&quot;${REFERENCE%.*}&quot;
+$SAMTOOLS faidx $REFERENCE
+
+java -jar $PICARD CreateSequenceDictionary R=$REFERENCE O=$REFBASENAME&#39;.dict&#39;
+
+$BOWTIEBUILD $REFERENCE $REFBASENAME
+</code></pre>
+<p><br> <br></p>
+</div>
+<div id="map-to-the-reference-sort-and-quality-filter"
+class="section level2">
+<h2>Map to the reference, sort, and quality filter</h2>
+<p>In this step, we align the short reads within each fastq file to the
+reference genome using <code>bowtie2</code>. The resulting alignment
+file, in <code>sam</code> format, will be converted to a binary format
+<code>bam</code> for more efficient storage. Each mapped read will have
+a mapping quality, which indicates how confident that mapper is that a
+read is mapped in the correct position. The <a
+href="http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml">bowtie2
+manual</a> defines it as “a non-negative integer Q = -10 log10 p, where
+p is an estimate of the probability that the alignment does not
+correspond to the read’s true point of origin.” Accordingly, a mapping
+quality (or MAPQ) of 10 or less indicates that there is at least a 1 in
+10 chance that the read truly originated elsewhere, and a MAPQ of 20
+indicates at least a 1 in 100 chance.</p>
+<p>Here, to only retain reads for which we are reasonably certain have
+been mapped in the correct place, we will filter out reads with a
+mapping quality lower than 20, and after that sort the filtered
+alignment file for easier computation in the next step.</p>
+<p>Look over the code and make sure you understand what it’s doing, then
+copy and run it.</p>
+<p><br></p>
+<pre class="bash"><code>
+SAMPLELIST=$BASEDIR/sample_lists/fastq_list.txt # Path to a list of prefixes of the raw fastq files. It should be a subset of the the 1st column of the sample table.
+SAMPLETABLE=$BASEDIR/sample_lists/fastq_table.tsv # Path to a sample table where the 1st column is the prefix of the raw fastq files. The 4th column is the sample ID, the 2nd column is the lane number, and the 3rd column is sequence ID. The combination of these three columns have to be unique. The 6th column should be data type, which is either pe or se. 
+FASTQDIR=$BASEDIR/adapter_clipped/ # Path to the directory where fastq file are stored. 
+FASTQSUFFIX1=_adapter_clipped_f_paired.fastq.gz # Suffix to fastq files. Use forward reads with paired-end data. 
+FASTQSUFFIX2=_adapter_clipped_r_paired.fastq.gz # Suffix to fastq files. Use reverse reads with paired-end data. 
+MAPPINGPRESET=very-sensitive # The pre-set option to use for mapping in bowtie2 (very-sensitive for end-to-end (global) mapping [typically used when we have a full genome reference], very-sensitive-local for partial read mapping that allows soft-clipping [typically used when mapping genomic reads to a transcriptome]
+REFERENCE=$BASEDIR/reference/mme_physalia_testdata_chr24.fa # Path to reference fasta file and file name
+REFNAME=mme_physalia_testdata_chr24 # Reference name to add to output files, e.g. gadMor2
+
+## Loop over each sample
+for SAMPLEFILE in `cat $SAMPLELIST`; do
+    
+    ## Extract relevant values from a table of sample, sequencing, and lane ID (here in columns 4, 3, 2, respectively) for each sequenced library
+    SAMPLE_ID=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 4`
+    POP_ID=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 5`
+    SEQ_ID=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 3`
+    LANE_ID=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 2`
+    SAMPLE_UNIQ_ID=$SAMPLE_ID&#39;_&#39;$POP_ID&#39;_&#39;$SEQ_ID&#39;_&#39;$LANE_ID  # When a sample has been sequenced in multiple lanes, we need to be able to identify the files from each run uniquely
+    
+    ## Extract data type from the sample table
+    DATATYPE=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 6`
+    
+    ## The input and output path and file prefix
+    SAMPLETOMAP=$FASTQDIR$SAMPLE_UNIQ_ID
+    SAMPLEBAM=$BASEDIR&#39;/bam/&#39;$SAMPLE_UNIQ_ID
+    
+    ## Define platform unit (PU), which is the lane number
+    PU=`grep -P &quot;${SAMPLEFILE}\t&quot; $SAMPLETABLE | cut -f 2`
+    
+    ## Define reference base name
+    REFBASENAME=&quot;${REFERENCE%.*}&quot;
+    
+    ## Map reads to the reference 
+    echo $SAMPLE_UNIQ_ID
+    
+    # Map the paired-end reads
+    if [ $DATATYPE = pe ]; then 
+    # We ignore the reads that get orphaned during adapter clipping because that is typically a very small proportion of reads. If a large proportion of reads get orphaned (loose their mate so they become single-end), these can be mapped in a separate step and the resulting bam files merged with the paired-end mapped reads.
+    $BOWTIE -q --phred33 --$MAPPINGPRESET -p 1 -I 0 -X 1500 --fr --rg-id $SAMPLE_UNIQ_ID --rg SM:$SAMPLE_ID --rg LB:$SAMPLE_ID --rg PU:$PU --rg PL:ILLUMINA -x $REFBASENAME -1 $SAMPLETOMAP$FASTQSUFFIX1 -2 $SAMPLETOMAP$FASTQSUFFIX2 -S $SAMPLEBAM&#39;_&#39;$DATATYPE&#39;_bt2_&#39;$REFNAME&#39;.sam&#39;
+    
+    # Map the single-end reads
+    elif [ $DATATYPE = se ]; then
+    $BOWTIE -q --phred33 --$MAPPINGPRESET -p 1 --rg-id $SAMPLE_UNIQ_ID --rg SM:$SAMPLE_ID --rg LB:$SAMPLE_ID --rg PU:$PU --rg PL:ILLUMINA -x $REFBASENAME -U $SAMPLETOMAP$FASTQSUFFIX1 -S $SAMPLEBAM&#39;_&#39;$DATATYPE&#39;_bt2_&#39;$REFNAME&#39;.sam&#39;
+    
+    fi
+    
+    ## Convert to bam file for storage (including all the mapped reads)
+    $SAMTOOLS view -bS -F 4 $SAMPLEBAM&#39;_&#39;$DATATYPE&#39;_bt2_&#39;$REFNAME&#39;.sam&#39; &gt; $SAMPLEBAM&#39;_&#39;$DATATYPE&#39;_bt2_&#39;$REFNAME&#39;.bam&#39;
+    rm -f $SAMPLEBAM&#39;_&#39;$DATATYPE&#39;_bt2_&#39;$REFNAME&#39;.sam&#39;
+    
+    ## Filter the mapped reads (to onky retain reads with high mapping quality)
+    # Filter bam files to remove poorly mapped reads (non-unique mappings and mappings with a quality score &lt; 20) -- do we want the quality score filter??
+    $SAMTOOLS view -h -q 20 $SAMPLEBAM&#39;_&#39;$DATATYPE&#39;_bt2_&#39;$REFNAME&#39;.bam&#39; | $SAMTOOLS view -buS - | $SAMTOOLS sort -o $SAMPLEBAM&#39;_&#39;$DATATYPE&#39;_bt2_&#39;$REFNAME&#39;_minq20_sorted.bam&#39;
+    
+done
+</code></pre>
+<p><br> <br></p>
+<p>Have a look at the output printed to the screen. How many of our
+reads are mapping to the reference? Does it vary between samples? Is
+there anything that seems weird to you about the stats reported?</p>
+<p><br> <br></p>
+</div>
+<div id="examine-the-bam-files" class="section level2">
+<h2>Examine the bam files</h2>
+<p>SAM stands for Sequence Alignment/Map format. BAM is the binary
+format for sam files (which takes up much less space). It is a
+TAB-delimited text format consisting of a header section, which is
+optional, and an alignment section. If present, the header must be prior
+to the alignments. Header lines start with ‘@’, while alignment lines do
+not. Each alignment line has 11 mandatory fields for essential alignment
+information such as mapping position, and variable number of optional
+fields for flexible or aligner specific information. BAM is the binary
+version of the SAM format.</p>
+<p>See the full documentation of the sam file format <a
+href="https://samtools.github.io/hts-specs/SAMv1.pdf">here</a> or a
+quick overview of the column descriptors <a
+href="https://en.wikipedia.org/wiki/SAM_(file_format)">here</a></p>
+<p>Note that we have converted our sam files to bam files. That’s useful
+for saving disk space, but because bam files are binary, they are not
+human readable. However, we can use the <code>view</code> utility in the
+program <a href="http://www.htslib.org/doc/samtools.html">samtools</a>
+to convert the content back to human readable output to we can examine
+our alignments.</p>
+<p>As an example, let’s look at the output for <code>985_PANY</code>.
+The following command can be used to inspect the first eight lines the
+sorted bam file for this sample.</p>
+<pre class="bash"><code>
+$SAMTOOLS view $BASEDIR/bam/985_PANY_1_lane1_pe_bt2_mme_physalia_testdata_chr24_minq20_sorted.bam | head -n 8
+</code></pre>
+<p><br></p>
+<p>Take a few minutes to look at the output and look at the <a
+href="https://en.wikipedia.org/wiki/SAM_(file_format)">column
+descriptors</a> to understand its content.</p>
+<p><br></p>
+<p><strong>OPTIONAL exercise:</strong> Write a loop to print the first
+three alignments of all the sorted bam files that you generated in the
+last step. You can use the general template code below as a starting
+point.</p>
+<pre class="bash"><code>
+$SAMTOOLS view $SAMPLEBAM&#39;_&#39;$DATATYPE&#39;_bt2_&#39;$REFNAME&#39;_minq20_sorted.bam&#39; | head -n 3
+</code></pre>
+<p><br> <br></p>
+</div>
+<div id="merge-samples-that-were-sequenced-in-multiple-batches"
+class="section level2">
+<h2>Merge samples that were sequenced in multiple batches</h2>
+<p>We have now mapped the two separate sets of fastq files for each
+sample (the separate sets generated in independent sequencing runs), so
+we also have two bam files for each sample. If the two sequencing runs
+were performed with aliquots of the same library, we will need to merge
+the bam files before we remove duplicate sequences because the two
+sequencing lanes would have been sequencing the same set of molecules
+(so each may contain duplicate fragments also sequenced in the other).
+For most downstream analysis, it’s also a lot more convenient to only
+have a single bam file per individual.</p>
+<p><br></p>
+<p>We will merge the two bam files for each individual with <a
+href="http://www.htslib.org/doc/samtools-merge.html">samtools merge</a>
+with the following parameters</p>
+<pre class="bash"><code>
+$SAMTOOLS merge output.bam input1.bam input2.bam   # We replace the output.bam with the name we want to give the output merged bam and the two input names with the names of the bam files we want to merge.
+</code></pre>
+<p>We could write a for loop to get the separate fastq files for each
+individual merged. But in this case, we will instead run a shell script
+that has a line that calls <code>samtools merge</code> for each
+individual. You can find the script <code>merge_bams.sh</code> in the
+<code>scripts</code> folder. Have a look at it.</p>
+<p>With just three samples, we could quickly copy and edit these three
+lines to construct this shell script manually. But if we had hundreds of
+samples, that approach would become error-prone so we want to use a
+script to automate it. In the interest of time, let’s move forward with
+the merging script we have already generated, but we provide R-code
+below that generates this script from the your fastq-level sample table
+and list, so you don’t need to do this manually if you’re working with
+your own samples.</p>
+<p>Since we’ll be working on bam files rather than fastq files
+downstream from this point, we need to list bam IDs rather than fastq
+IDs in the sample lists that specify which samples we want to loop over
+in a particular pipeline step. The R-code below generates that as well,
+but for today, we’ll just use the list that we’ve already added to
+<code>$BASEDIR/sample_lists</code>.</p>
+<p><br></p>
+<div
+id="the-following-r-code-is-just-provided-for-your-reference.-you-dont-need-to-run-it---the-output-is-already-generated-in-your-scripts-and-sample_lists-folders"
+class="section level4">
+<h4>The following R code is just provided for your reference. You DON’T
+need to run it - the output is already generated in your
+<code>scripts</code> and <code>sample_lists</code> folders</h4>
+<details>
+<summary>
+Click here to view the R code
+</summary>
+<p><br></p>
+<pre class="r"><code>library(tidyverse)
+
+basedir &lt;- &quot;~/tutorial1_data_processing/&quot;
+refname &lt;- &quot;mme_physalia_testdata_chr24&quot;
+
+fastq_list &lt;- read_lines(paste0(basedir, &quot;sample_lists/fastq_list.txt&quot;))
+fastq_table &lt;- read_tsv(paste0(basedir, &quot;sample_lists/fastq_table.tsv&quot;))
+
+#Subset the table to the samples we&#39;re currently interested in analyzing
+target_samples &lt;- filter(fastq_table, prefix %in% fastq_list)
+
+## Find all duplicated samples
+duplicated_samples &lt;- (target_samples$sample_id)[duplicated(target_samples$sample_id)] %&gt;% unique()
+
+# Write cd
+write_lines(c(&quot;BASEDIR=$1&quot;, &quot;cd $BASEDIR&#39;/bam&#39;\n&quot;), paste0(basedir, &quot;scripts/merge_bam.sh&quot;))
+
+
+## Loop through all duplicated samples 
+for (i in 1:length(duplicated_samples)){
+  dup_sample_dat &lt;- filter(fastq_table, sample_id==duplicated_samples[i])
+  
+  ## Extract the bam file names from the unmerged sample table
+  input &lt;- dup_sample_dat %&gt;%
+    mutate(unmerged_bam = paste(sample_id, population, seq_id, lane_number, data_type, &quot;bt2&quot;, refname, &quot;minq20_sorted.bam&quot;, sep = &quot;_&quot;)) %&gt;% 
+    # We are reconstructing the $SAMPLE_SEQ_ID that is the first part of the separate bam file names
+    .$unmerged_bam
+  
+  output &lt;- paste(dup_sample_dat[1,&quot;sample_id&quot;], dup_sample_dat[1, &quot;population&quot;], &quot;merged_bt2&quot;, refname, &quot;minq20_sorted.bam&quot;, sep = &quot;_&quot;)
+    
+  ## Paste together the command line
+  #merging_script[i+1] &lt;- paste(&quot;samtools merge&quot;, as.character(output), input[1], input[2], sep = &quot; &quot;)
+  write_lines(paste(&quot;samtools merge&quot;, as.character(output), input[1], input[2], sep = &quot; &quot;), paste0(basedir, &quot;scripts/merge_bam.sh&quot;), append = TRUE)
+  
+  # Also write a target bam list that we&#39;ll use for downstream looping over merged bam files
+  if (i == 1){
+  write_lines(paste(dup_sample_dat[1,&quot;sample_id&quot;], dup_sample_dat[1, &quot;population&quot;], &quot;merged&quot;, sep = &quot;_&quot;), paste0(basedir, &quot;sample_lists/merged_bam_list.txt&quot;))
+  }
+  
+  if (i &gt; 1){
+  write_lines(paste(dup_sample_dat[1,&quot;sample_id&quot;], dup_sample_dat[1, &quot;population&quot;], &quot;merged&quot;, sep = &quot;_&quot;), paste0(basedir, &quot;sample_lists/merged_bam_list.txt&quot;), append = TRUE)
+  }
+  
+}</code></pre>
+</details>
+<p><br> <br></p>
+</div>
+<div id="run-the-merging-script" class="section level3">
+<h3>Run the merging script</h3>
+<p>To execute the merging, run the bash script with the following
+command:</p>
+<pre class="bash"><code>
+bash $BASEDIR/scripts/merge_bam.sh $BASEDIR
+</code></pre>
+<p><br></p>
+<p>Check that your merged bam files get generated. As a sanity check, we
+can compare the number of lines in our merged and set of unmerged bam
+files for each sample with <a
+href="http://www.htslib.org/doc/samtools-view.html">samtools view</a>
+and the command <code>samtools view in.bam | wc -l</code></p>
+<p>Run on our server, for the merged file for sample 985, the command
+would like like</p>
+<pre class="bash"><code>
+$SAMTOOLS view $BASEDIR/bam/985_PANY_merged_bt2_mme_physalia_testdata_chr24_minq20_sorted.bam | wc -l
+</code></pre>
+<p>Check the line count in the bam files for the two individual fastqs
+and see if the numbers add up.</p>
+<pre class="bash"><code>
+$SAMTOOLS view $BASEDIR/bam/985_PANY_1_lane2_pe_bt2_mme_physalia_testdata_chr24_minq20_sorted.bam | wc -l
+$SAMTOOLS view $BASEDIR/bam/985_PANY_1_lane1_pe_bt2_mme_physalia_testdata_chr24_minq20_sorted.bam | wc -l
+</code></pre>
+<p><br></p>
+<p><strong>OPTIONAL exercise</strong>: You could write a for loop that
+will extract the line count for each file.</p>
+<p><br></p>
+</div>
+<div id="discussion-question" class="section level3">
+<h3>Discussion question</h3>
+<p>This merging procedure required some extra effort. Why didn’t we just
+merge the fastq files for each individual before mapping?</p>
+<p><br></p>
+<div id="answer" class="section level5">
+<h5>Answer</h5>
+<details>
+<summary>
+Click here
+</summary>
+<p><br></p>
+<p>Because there may be particular issues associated each sequencing
+lane (in particular the base call quality score calibration may vary),
+so for some downstream analyses, we need to keep track of what data were
+sequenced in what lane. By mapping the fastq files separately, we were
+able to add read platform unit <code>PU</code> information to the read
+group tag in the bam file while mapping with <code>bowtie2</code> (see
+the script). This way we can continue to keep track of which read came
+from which lane, and could even filter our bam file based on this later
+on, if we ended up wanting to compare data from different lanes for
+troubleshooting or other reasons.</p>
+</details>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div id="deduplicate-and-clip-overlapping-read-pairs"
+class="section level2">
+<h2>Deduplicate and clip overlapping read pairs</h2>
+<p>Here, we remove the PCR duplicates and trim the overlapping part of
+each read pair in pair-end data. It is important to wait to deduplicate
+until after merging, because PCR duplicates for the same sample may
+exist in different lanes. We use the <a
+href="https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-">Picard
+Tools MarkDuplicates</a>.</p>
+<p>We also want to clip overlapping reads. We will use the <a
+href="https://genome.sph.umich.edu/wiki/BamUtil:_clipOverlap">BamUtil
+clipOverlap</a></p>
+<p><img src="images_test/clip_overlap.png" width="49%" height="20%" /></p>
+<p><br></p>
+<pre class="bash"><code>
+BAMLIST=$BASEDIR/sample_lists/merged_bam_list.txt # Path to a list of merged bam files.
+REFNAME=mme_physalia_testdata_chr24 # Reference name to add to output files
+
+## Loop over each sample
+for SAMPLEBAM in `cat $BAMLIST`; do
+    
+    ## Remove duplicates and print dupstat file
+    # We used to be able to just specify picard.jar on the CBSU server, but now we need to specify the path and version
+    java -Xmx60g -jar $PICARD MarkDuplicates I=$BASEDIR&#39;/bam/&#39;$SAMPLEBAM&#39;_bt2_&#39;$REFNAME&#39;_minq20_sorted.bam&#39; O=$BASEDIR&#39;/bam/&#39;$SAMPLEBAM&#39;_bt2_&#39;$REFNAME&#39;_minq20_sorted_dedup.bam&#39; M=$BASEDIR&#39;/bam/&#39;$SAMPLEBAM&#39;_bt2_&#39;$REFNAME&#39;_minq20_sorted_dupstat.txt&#39; VALIDATION_STRINGENCY=SILENT REMOVE_DUPLICATES=true
+    
+    ## Clip overlapping paired end reads (only necessary for paired-end data, so if you&#39;re only running se samples, you can comment this step out)
+    $BAMUTIL clipOverlap --in $BASEDIR&#39;/bam/&#39;$SAMPLEBAM&#39;_bt2_&#39;$REFNAME&#39;_minq20_sorted_dedup.bam&#39; --out $BASEDIR&#39;/bam/&#39;$SAMPLEBAM&#39;_bt2_&#39;$REFNAME&#39;_minq20_sorted_dedup_overlapclipped.bam&#39; --stats
+
+done</code></pre>
+<p><br></p>
+<p>MarkDuplicates has very verbose output - take a look at it to make
+sure the programs ran and didn’t throw an error.</p>
+<p>Next, look at the output from the clipOverlap. Was there a
+substantial difference in how much sequence got clipped in the three
+samples, and does that make sense in light of their FastQC reports?</p>
+<p>Use <code>head</code> to look at the top lines of the dupstat report
+for each sample (in
+<code>$BASEDIR/bam/XXX_merged_bt2_mme_physalia_testdata_chr24_minq20_sorted_dupstat.txt</code>
+[replace the XXX with the sample [prefix]]). Can you spot where the
+duplication rate is reported. Does it vary between our samples?</p>
+<p><br> <br></p>
+</div>
+<div id="indel-realignment-optional" class="section level2">
+<h2>Indel realignment (optional)</h2>
+<p>Unlike other variant detector programs (like the <a
+href="https://gatk.broadinstitute.org/hc/en-us/articles/360037225632-HaplotypeCaller">GATK
+Haplotype Caller</a> or <a
+href="https://github.com/ekg/freebayes">Freebayes</a>), <a
+href="http://www.popgen.dk/angsd/index.php/ANGSD">ANGSD</a> does not
+realign reads during its analysis. Because it can be difficult to
+distinguish indels from SNPs at the end of reads if each alignment is
+considered separately, indels may interfere with genotype likelihood
+estimation. We therefore recommend running your bam files through a
+program that realigns reads around indels prior to running
+<code>ANGSD</code>. The <a
+href="https://github.com/broadinstitute/gatk-docs/blob/master/gatk3-tutorials/(howto)_Perform_local_realignment_around_indels.md">GATK
+IndelRealigner</a> takes all the aligned sequences from all samples in
+to account to validate the indels discovered from the mapping process
+and then realigns each read locally. This is not a mandatory step and
+tends to be very time-consuming if you have a large dataset, but the
+code is provided here if you want to give it a try (it takes ~3
+minutes). We will not use these output for the rest of this course
+though.</p>
+<details>
+<summary>
+Click here to see the GATK IndelRealigner code
+</summary>
+<pre class="bash"><code>BAMLIST=$BASEDIR/sample_lists/bam_list_dedup_overlapclipped.list # Path to a list of merged, deduplicated, and overlap clipped bam files. Full paths should be included. This file has to have a suffix of &quot;.list&quot;
+REFERENCE=$BASEDIR/reference/mme_physalia_testdata_chr24.fa # Path to reference fasta file and file name
+REFNAME=mme_physalia_testdata_chr24 # Reference name to add to output files
+
+for SAMPLEBAM in `cat $BASEDIR/sample_lists/merged_bam_list.txt`; do
+echo $BASEDIR&#39;/bam/&#39;$SAMPLEBAM&#39;_bt2_mme_physalia_testdata_chr24_minq20_sorted_dedup_overlapclipped.bam&#39; &gt;&gt; $BAMLIST
+done
+
+## Loop over each sample
+cd $BASEDIR/bam/
+for SAMPLEBAM in `cat $BAMLIST`; do
+    $SAMTOOLS index $SAMPLEBAM
+done
+
+## Realign around in-dels
+# This is done across all samples at once
+
+## Create list of potential in-dels
+$JAVA -Xmx40g -jar $GATK \
+-T RealignerTargetCreator \
+-R $REFERENCE \
+-I $BAMLIST \
+-o $BASEDIR&#39;/bam/all_samples_for_indel_realigner.intervals&#39; \
+-drf BadMate
+
+## Run the indel realigner tool
+$JAVA -Xmx40g -jar $GATK \
+-T IndelRealigner \
+-R $REFERENCE \
+-I $BAMLIST \
+-targetIntervals $BASEDIR&#39;/bam/all_samples_for_indel_realigner.intervals&#39; \
+--consensusDeterminationModel USE_READS  \
+--nWayOut _realigned.bam</code></pre>
+</details>
+<p><br> <br></p>
+</div>
+<div id="estimate-read-depth-in-your-bam-files" class="section level2">
+<h2>Estimate read depth in your bam files</h2>
+<p>After all the filtering steps, we want to know what final depth of
+coverage we have for each sample for downstream analysis. Here, we will
+use <a href="http://www.htslib.org/doc/samtools-depth.html">samtools
+depth</a> to first compute the read depth at each bp position in the
+genome. Then we will pull the output file to our local machines and
+compute depth summary stats in R. This is just one way to summarize the
+depth. There are other programs available to provide summaries of the
+depth in a bam file, including <a
+href="http://www.htslib.org/doc/samtools-coverage.html">samtools
+coverage</a>, <a
+href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6030888/">Mosdepth</a>
+and <a
+href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5737511/">Indexcov</a>.</p>
+<p><br></p>
+<p>First, run <code>samtools depth</code> to get depth per sample per
+position.</p>
+<pre class="bash"><code>
+BAMLIST=$BASEDIR/sample_lists/merged_bam_list.txt # Path to a list of unique sample prefixes for merged bam files.  
+REFNAME=mme_physalia_testdata_chr24 # Reference name to add to output files 
+
+for SAMPLEBAM in `cat $BAMLIST`; do 
+    ## Count per position depth per sample
+    $SAMTOOLS depth -aa $BASEDIR&#39;/bam/&#39;$SAMPLEBAM&#39;_bt2_&#39;$REFNAME&#39;_minq20_sorted_dedup_overlapclipped.bam&#39; | cut -f 3 | gzip &gt; $BASEDIR&#39;/bam/&#39;$SAMPLEBAM&#39;_bt2_&#39;$REFNAME&#39;_minq20_sorted_dedup_overlapclipped.bam.depth.gz&#39;
+
+done
+</code></pre>
+<p><br></p>
+<p>Then, we’ll process and visualize the data in R. We recommend that
+you use R-Studio server for this, but running R on command line also
+works.</p>
+<pre class="r"><code>## install.packages(&quot;tidyverse&quot;) ## Install tidyverse if you don&#39;t have it installed yet
+library(tidyverse)
+
+basedir &lt;- &quot;~/lcwgs-guide-tutorial/tutorial1_data_processing&quot; # Make sure to edit this to match your $BASEDIR
+bam_list &lt;- read_lines(paste0(basedir, &quot;/sample_lists/merged_bam_list.txt&quot;))
+
+for (i in 1:length(bam_list)){
+  bamfile = bam_list[i]
+  # Compute depth stats
+  depth &lt;- read_tsv(paste0(basedir, &quot;/bam/&quot;, bamfile, &quot;_bt2_mme_physalia_testdata_chr24_minq20_sorted_dedup_overlapclipped.bam.depth.gz&quot;), col_names = F)$X1
+  mean_depth &lt;- mean(depth)
+  sd_depth &lt;- sd(depth)
+  mean_depth_nonzero &lt;- mean(depth[depth &gt; 0])
+  mean_depth_within2sd &lt;- mean(depth[depth &lt; mean_depth + 2 * sd_depth])
+  median &lt;- median(depth)
+  presence &lt;- as.logical(depth)
+  proportion_of_reference_covered &lt;- mean(presence)
+  output_temp &lt;- tibble(bamfile, mean_depth, sd_depth, mean_depth_nonzero, mean_depth_within2sd, median, proportion_of_reference_covered)
+
+  # Bind stats into dataframe and store sample-specific per base depth and presence data
+  if (i==1){
+    output &lt;- output_temp
+    total_depth &lt;- depth
+    total_presence &lt;- presence
+  } else {
+    output &lt;- bind_rows(output, output_temp)
+    total_depth &lt;- total_depth + depth
+    total_presence &lt;- total_presence + presence
+  }
+}
+
+output %&gt;%
+  mutate(across(where(is.numeric), round, 3))
+
+# Plot the depth distribution (this may take a few minutes to run)
+tibble(total_depth = total_depth, position = 1:length(total_depth))  %&gt;%
+  ggplot(aes(x = position, y = total_depth)) +
+  geom_point(size = 0.1)
+
+# Total depth per site across all individuals 
+total_depth_summary &lt;- count(tibble(total_depth = total_depth), total_depth)
+total_presence_summary &lt;- count(tibble(total_presence = total_presence), total_presence)
+total_depth_summary %&gt;%
+  ggplot(aes(x = total_depth, y = n)) +
+  geom_point()
+total_depth_summary %&gt;%
+  ggplot(aes(x = total_depth, y = n)) +
+  geom_point() +
+  coord_cartesian(xlim=c(NA, 20))
+total_presence_summary %&gt;%
+  ggplot(aes(x = total_presence, y = n)) +
+  geom_col()</code></pre>
+<p><br> You can see that there is a lot of variation among the different
+depth statistics. Which of them do you think are most relevant to
+report? Why?</p>
+<p><br></p>
+<p>If you’re interested, you can go back and compare the depth
+distribution to in the raw mapped files.</p>
+<p><br> <br></p>
+</div>
+<div id="end-of-tutorial-1" class="section level2">
+<h2>END OF TUTORIAL 1</h2>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
