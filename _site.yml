@@ -5,6 +5,8 @@ navbar:
   title: "MarineOmics"
   href: index.html
   left:
+    - text: "Contributors"
+      href: contributors.html  
     - text: "Panel Seminars"
       href: panels.html 
     - text: "Population Genomics"
