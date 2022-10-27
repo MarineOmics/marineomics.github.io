@@ -5,6 +5,7 @@ author: "Sara JS Wuitchik"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(knitcitations)
 ```
 
 # fastq2bam
