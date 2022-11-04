@@ -827,23 +827,9 @@ if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
 BiocManager::install(&quot;SeqArray&quot;)
 BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
 <p>Now load those packages, if using:</p>
-<pre class="r"><code>library(SeqArray) # efficient storage and filtering of genomic data</code></pre>
-<pre><code>## Loading required package: gdsfmt</code></pre>
-<pre class="r"><code>library(tidyverse) # plotting data formatting and manipulation</code></pre>
-<pre><code>## ── Attaching packages
-## ───────────────────────────────────────
-## tidyverse 1.3.2 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
-## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-## ✔ readr   2.1.3      ✔ forcats 0.5.2 
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter()     masks stats::filter()
-## ✖ stringr::fixed()    masks SeqArray::fixed()
-## ✖ dplyr::group_rows() masks kableExtra::group_rows()
-## ✖ dplyr::lag()        masks stats::lag()</code></pre>
-<pre class="r"><code>library(SNPRelate) # PCA and other popgen analyses</code></pre>
-<pre><code>## SNPRelate -- supported by Streaming SIMD Extensions 2 (SSE2)</code></pre>
+<pre class="r"><code>library(SeqArray) # efficient storage and filtering of genomic data
+library(tidyverse) # plotting data formatting and manipulation
+library(SNPRelate) # PCA and other popgen analyses</code></pre>
 <p>We also provide optional alternative coding examples that are based
 only on the command line, requiring these software packages:</p>
 <ul>
@@ -1202,7 +1188,7 @@ filename.gds = paste0(&quot;RAD_data/&quot;, paste0(filename, &quot;.gds&quot;))
 filename.vcf = paste0(&quot;RAD_data/&quot;, paste0(filename, &quot;.vcf&quot;))
   # 1 . Convert VCF to GDS
 SeqArray::seqVCF2GDS(vcf.fn = filename.vcf, out.fn = filename.gds, storage.option=&quot;ZIP_RA&quot;)</code></pre>
-<pre><code>## Tue Nov  1 13:56:19 2022
+<pre><code>## Fri Nov  4 15:53:20 2022
 ## Variant Call Format (VCF) Import:
 ##     file(s):
 ##         OL_subset.vcf (22.3M)
@@ -1233,7 +1219,7 @@ SeqArray::seqVCF2GDS(vcf.fn = filename.vcf, out.fn = filename.gds, storage.optio
 ##     annotation/format/DP  [md5: ae6991de5adbf082a733198faf0f11ca]
 ##     annotation/format/CATG  [md5: 71d62ffa848999a375e8bb5f329be275]
 ## Done.
-## Tue Nov  1 13:56:21 2022
+## Fri Nov  4 15:53:22 2022
 ## Optimize the access efficiency ...
 ## Clean up the fragments of GDS file:
 ##     open the file &#39;RAD_data/OL_subset.gds&#39; (2.8M)
@@ -1241,7 +1227,7 @@ SeqArray::seqVCF2GDS(vcf.fn = filename.vcf, out.fn = filename.gds, storage.optio
 ##     save to &#39;RAD_data/OL_subset.gds.tmp&#39;
 ##     rename &#39;RAD_data/OL_subset.gds.tmp&#39; (2.8M, reduced: 1.8K)
 ##     # of fragments: 64
-## Tue Nov  1 13:56:21 2022</code></pre>
+## Fri Nov  4 15:53:22 2022</code></pre>
 <pre class="r"><code>gdsin = SeqArray::seqOpen(filename.gds)
 print(paste0(&quot;The number of SAMPLES in data: &quot;, length(c(SeqArray::seqGetData(gdsin, &quot;sample.id&quot;)))))</code></pre>
 <pre><code>## [1] &quot;The number of SAMPLES in data: 18&quot;</code></pre>
@@ -1330,7 +1316,19 @@ href="https://vcftools.github.io/man_latest.html">VCFtools</a>.</p>
 <pre class="bash"><code>vcftools --vcf RAD_data/OL_subset.vcf --missing-indv --out RAD_data/OL_subset
 # sort the file by most missing data and print the top 10 samples  
 cat RAD_data/OL_subset.imiss | (read h; echo &quot;$h&quot;; sort -k5 -r) </code></pre>
-<pre><code>## bash: vcftools: command not found
+<pre><code>## 
+## VCFtools - 0.1.16
+## (C) Adam Auton and Anthony Marcketta 2009
+## 
+## Parameters as interpreted:
+##  --vcf RAD_data/OL_subset.vcf
+##  --missing-indv
+##  --out RAD_data/OL_subset
+## 
+## After filtering, kept 18 out of 18 Individuals
+## Outputting Individual Missingness
+## After filtering, kept 69989 out of a possible 69989 Sites
+## Run Time = 1.00 seconds
 ## INDV N_DATA  N_GENOTYPES_FILTERED    N_MISS  F_MISS
 ## OR3_13_C3    69989   0   64227   0.917673
 ## CA4_12_C1    69989   0   62048   0.886539
@@ -1441,19 +1439,19 @@ pca.out = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, remove.mo
                                sample.id = keep) # filtering for pruned SNPs</code></pre>
 <pre><code>## Principal Component Analysis (PCA) on genotypes:
 ## Calculating allele counts/frequencies ...
-## # of selected variants: 22,639
-## Excluding 5,321 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
+## # of selected variants: 22,664
+## Excluding 5,340 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
 ##     # of samples: 12
-##     # of SNVs: 22,639
+##     # of SNVs: 22,664
 ##     using 2 threads
 ##     # of principal components: 32
 ## CPU capabilities: Double-Precision SSE2
-## Tue Nov  1 13:59:21 2022    (internal increment: 29696)
+## Fri Nov  4 15:55:53 2022    (internal increment: 29696)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Tue Nov  1 13:59:21 2022    Begin (eigenvalues and eigenvectors)
-## Tue Nov  1 13:59:21 2022    Done.</code></pre>
+## Fri Nov  4 15:55:53 2022    Begin (eigenvalues and eigenvectors)
+## Fri Nov  4 15:55:53 2022    Done.</code></pre>
 <pre class="r"><code>#close the gds file (saves memory)
 #seqClose(gdsin)
 
@@ -1634,19 +1632,19 @@ see a batch effect on PC1.</p>
 SnpLoad &lt;- snpgdsPCASNPLoading(pca.out, gdsin)</code></pre>
 <pre><code>## SNP Loading:
 ##     # of samples: 12
-##     # of SNPs: 22,639
+##     # of SNPs: 22,664
 ##     using 1 thread
 ##     using the top 12 eigenvectors
-## Tue Nov  1 13:59:25 2022    (internal increment: 65536)
+## Fri Nov  4 15:55:58 2022    (internal increment: 65536)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Tue Nov  1 13:59:25 2022    Done.</code></pre>
+## Fri Nov  4 15:55:58 2022    Done.</code></pre>
 <pre class="r"><code>names(SnpLoad)</code></pre>
 <pre><code>## [1] &quot;sample.id&quot;  &quot;snp.id&quot;     &quot;eigenval&quot;   &quot;snploading&quot; &quot;TraceXTX&quot;  
 ## [6] &quot;Bayesian&quot;   &quot;avgfreq&quot;    &quot;scale&quot;</code></pre>
 <pre class="r"><code>dim(SnpLoad$snploading)</code></pre>
-<pre><code>## [1]    12 22639</code></pre>
+<pre><code>## [1]    12 22664</code></pre>
 <pre class="r"><code>#plot a histogram of absolute PC loading values for PC1, with larger loading meaning more effect on PC1
 pc&lt;-1
 hist(sort(abs(SnpLoad$snploading[pc,]),decreasing=T,index.return=T)[[1]],breaks = 30,main=&quot;PC loadings: PC1&quot;,)</code></pre>
@@ -1663,19 +1661,19 @@ pca.out.pcfilt = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, re
                                sample.id = keep) # filtering for pruned SNPs</code></pre>
 <pre><code>## Principal Component Analysis (PCA) on genotypes:
 ## Calculating allele counts/frequencies ...
-## # of selected variants: 19,821
-## Excluding 5,321 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
+## # of selected variants: 19,852
+## Excluding 5,340 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
 ##     # of samples: 12
-##     # of SNVs: 19,821
+##     # of SNVs: 19,852
 ##     using 2 threads
 ##     # of principal components: 32
 ## CPU capabilities: Double-Precision SSE2
-## Tue Nov  1 13:59:25 2022    (internal increment: 29696)
+## Fri Nov  4 15:55:59 2022    (internal increment: 29696)
 ## 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-## Tue Nov  1 13:59:25 2022    Begin (eigenvalues and eigenvectors)
-## Tue Nov  1 13:59:25 2022    Done.</code></pre>
+## Fri Nov  4 15:55:59 2022    Begin (eigenvalues and eigenvectors)
+## Fri Nov  4 15:55:59 2022    Done.</code></pre>
 <pre class="r"><code>print(
   as.data.frame(pca.out.pcfilt$eigenvect) %&gt;%
       tibble::add_column(., STRATA =  sample.strata.order$STRATA) %&gt;%
@@ -1698,21 +1696,21 @@ removed SNPs driving a batch effect.</p>
 <pre class="r"><code># set a filter to exclude samples with missing data, and SNPs in linkage or with a batch effect
 seqSetFilter(gdsin, sample.id=keep,variant.id=snp.id.allfilt)</code></pre>
 <pre><code>## # of selected samples: 12
-## # of selected variants: 25,142</code></pre>
+## # of selected variants: 25,192</code></pre>
 <pre class="r"><code># convert to vcf
 seqGDS2VCF(gdsin, &quot;RAD_data/OL-miss-pc1-linkage-filt.vcf.gz&quot;)</code></pre>
 <pre><code>## Loading required namespace: Rsamtools</code></pre>
 <pre><code>## Hint: install Rsamtools to enable the outfmt output.</code></pre>
-<pre><code>## Tue Nov  1 13:59:26 2022
+<pre><code>## Fri Nov  4 15:56:00 2022
 ## VCF Export: OL-miss-pc1-linkage-filt.vcf.gz
-##     12 samples, 25,142 variants
+##     12 samples, 25,192 variants
 ##     INFO Field: NS, DP
 ##     FORMAT Field: DP, CATG
 ##     output to a general gzip file
 ## 
 [..................................................]  0%, ETC: ---    
 [==================================================] 100%, completed, 2s
-## Tue Nov  1 13:59:28 2022    Done.</code></pre>
+## Fri Nov  4 15:56:02 2022    Done.</code></pre>
 <pre class="r"><code>#close the gds file to save memory
 closefn.gds(gdsin)</code></pre>
 </div>

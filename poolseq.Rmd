@@ -6,7 +6,7 @@ bibliography: RCN_site-Nov05.bib
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ```
 
 I mostly followed the PoPoolation and PoPoolation2 pipelines by Robert Kofler and Christian Schlötterer (https://sourceforge.net/p/popoolation2/wiki/Main/). The website has an easy-to-follow tutorial for using PoPoolation2 and how to use their scripts. This pipeline extends the use of the scripts for running on a Linux cluster. I highly recommend following the PoPoolation2 tutorial and manual and using these scripts if you have any modifications from default flags.

@@ -16,7 +16,7 @@ bibliography: RCN_site-Nov05.bib
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 colorize <- function(x, color) {
   if (knitr::is_latex_output()) {

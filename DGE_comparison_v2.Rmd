@@ -63,6 +63,7 @@ Let's start by loading our required packages...
 # should remove from Rmd
 # Set root directory
 #knitr::opts_knit$set(root.dir = '~/Documents/GitHub/DGE_comparison/')
+knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
