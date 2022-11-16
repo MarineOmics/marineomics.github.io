@@ -1,12 +1,12 @@
 ---
-title: 'Instructions for developing new pages to the MarineOmics webpage'
+title: 'Instructions for developing new pages for the MarineOmics webpage'
 bibliography: RCN_site-Nov05.bib
 ---
 
 
-```{r setup, message = FALSE, echo = FALSE}
+```{r setup, echo = FALSE, message = FALSE}
 library(knitr)
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+knitr::opts_chunk$set(cache = TRUE)
 library(knitcitations)
 library(kableExtra)
 opts_chunk$set(fig.width = 10,
@@ -19,41 +19,116 @@ cite_options(citation_format = "pandoc", max.names = 3, style = "html",
 
 ## Overview
 
-This is a guide for creating a new page for the website. Of course, the website managers will work with anyone who develops new content to answer questions and publish the site, but this can be used as a resource as you develop your page. In this guide are general instructions as well as examples of how to build specific features. If there is anything else you would like to see on this guide please contact Jason Johns (jasonjohns[at]ucsb.edu). Of course, do not hesitate to reach out with any other questions or comments as well.
+This is a guide for creating a new page for the website. Of course, the website managers will work with anyone who develops new content to help develop and publish your page, but this can be used as a resource as you develop your content. In this guide are general instructions as well as examples of how to build specific features. If there is anything else you would like to see on this guide please contact Jason Johns (jasonjohns[at]ucsb.edu). Of course, do not hesitate to reach out with any other questions or comments as well.
 
-\*\* Before publishing any content, please contact Jason Johns (jasonjohns[at]ucsb.edu) so we can have working group contributors review the page.
+\* Even if you comfortable with publishing websites in Github/RMarkdown, please contact Jason Johns (jasonjohns[at]ucsb.edu) before publishing any new pages so we can ensure smooth incorporation into the website.
 
-This website is published through Github Pages directly from the [MarineOmics github repository](https://github.com/MarineOmics/marineomics.github.io). In short, each page of the website is rendered as an .html from an RMarkdown (.Rmd) document. The two most important files for publishing the website are the .site_yml ("the yaml file") and the index.Rmd/index.html. 
+This website is published through Github Pages directly from the [MarineOmics github repository](https://github.com/MarineOmics/marineomics.github.io). In short, each page of the website is rendered as an .html from an RMarkdown (.Rmd) document. The two most important files for publishing the general website are the .site_yml ("the yaml file") and the index.Rmd/index.html. 
 
-**.site_yml**: the 'under the hood' backbone of the website, where things like the visual appearance of the website the navigation bar are built
+**.site_yml**: the 'under the hood' backbone of the website, where things like the visual appearance of the website and the navigation bar are built
 
 **index.html**: rendered from index.Rmd - the home page from which all other pages branch
 
 \* The website manager will help modify the index.html and .site_yml files for your page when the time comes, so you don't need to know exactly how they work, but it's good to know what they are at a basic level.
 
+<hr />
 
 # R Markdown basics
-The rendered .Rmd and .html files for each page on this site can be seen in the [MarineOmics github repository](https://github.com/MarineOmics/marineomics.github.io). If you don't have much experience with RStudio, it's quite intuitive with a shallow learning curve and many existing online resources for using it.
+The rendered .Rmd and .html files for each page on this site can be seen in the [MarineOmics github repository](https://github.com/MarineOmics/marineomics.github.io). If you don't have much experience with RStudio, it's quite intuitive with a shallow learning curve and many existing online resources for using it. It is possible to use .Rmd files in base R, but we recommend using RStudio.
 
-*Note: it's a good idea to look at existing .Rmd scripts to see examples of how a particular feature can be accomplished, such as citing references, linking a website, building a table, incorporating figures, etc. We will explicitly go over some of those feautures below, but there are many other bells and whistles that can be explored through other resources online.*
+*Note: it's a good idea to look at existing .Rmd scripts (including the one that codes for this page) to see examples of how a particular feature can be accomplished, such as citing references, linking a website, building a table, incorporating figures, etc. We will explicitly go over some of those features below, but there are many other bells and whistles that can be explored through online resources.*
 
-## Initial Page Setup
-- caching
-- installing & loading packages
-- etc.
+Here are some general RMarkdown tutorials that we like to reference:
+<br>
+- [Chapter 10 from RMarkdown the Definitive Guide: Xi, Allaire, & Grolemund 2022](https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html)
+<br>
+- [R Markdown Websites: Garrett Grolemund](https://garrettgman.github.io/rmarkdown/rmarkdown_websites.html)
+  
+<br/>
 
-## Formatting
-- text vs. code chunks, how to include code on the page or not, include output or not, etc.
-- navigation bar on the left, font size, bold, italics, etc
-- in-text citations, hyperlinks
+## RMarkdown formatting
+One of the strengths of .Rmd documents is their versatility. They can hold everything from code (not only in R but in other languages), formatted text, figure outputs, and more. Basically, code must be enclosed within 'code chunks' and anything outside of code chunks will be read as text. So to include non-code text, we don't need any #, unless of course we're in a code chunk.
 
-## Making a table - Katherine/Sam
 
-## Including a figure - Katherine/Sam
+### **code chunks**
+Below is a basic code chunk which can be inserted by clicking the green +C button on the RStudio toolbar or typing the keyboard shortcut:<br>
+- macOS: command + option + I <br>
+- Windows: control + alt + I
 
-## Including an image - Katherine/Sam
+````
+```{r, echo = TRUE, include = TRUE} `r ''`
 
-## Running code in another language such as bash - Katherine/Sam
+```
+````
+Whether code chunks and/or their output are included in the knitted .html can be modified with the logical commands "echo" and "include".<br>
+- echo: include the code chunk itself or not<br>
+- include: include the output of the code chunk or not
 
-## References
+\* Other options exist for code chunk output which can be explored online and in other .Rmd scripts in this repository.
+
+<br>
+
+#### *global code chunk options*
+This is the chunk where we establish global settings for the entire document. This is done with the command from the knitr package "opts_chunk$set" as shown in the example below. This command is typically included in the first chunk, where we also load our packages and adjust the settings for citations. When a new .Rmd is made, this command is automatically included in the first chunk, which is named "setup" by default. The name of a code chunk can be specified after the r in ```{r ____}.
+
+````
+```{r setup} `r ''`
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
+
+library(knitr)
+library(knitcitations)
+library(kableExtra)
+
+knitr::opts_chunk$set(fig.width = 10, fig.height = 5) #setting the dimensions for figure outputs in a different line of code for cleanliness
+
+cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
+             hyperlink = "to.doc") #setting format for in-text citations for the references section at the bottom of the page
+```
+````
+\* Note the "cache = " option. When set to "true" R will cache all of the output created from knitting the RMarkdown document. This is especially useful for pages with heavy computation that take a long time to knit.
+<br>
+
+### **formatting text**
+Options abound for formatting text in .Rmd documents using [Pandoc Markdown](https://pandoc.org/MANUAL.html), and many of these can be found with a quick search, but we will go over a few basics here.
+
+As with writing code, any text symbol that codes for something, such as a \# or a \* must be escaped with a backslash (\\) if you just want to use the symbol itself.
+
+**\#**: *Outside of a code chunk*, pound signs dictate the size and organizational level of the text. A single \# will make large text and a main section in the navigation window. Two \#\# will make slightly smaller text and a sub-section in the navigation window. <br>
+
+For example, the "RMarkdown formatting" text and category was created with "\# RMarkdown formatting" while the "code chunks" subcategory was created with "\#\# code chunks."
+
+**\***: Asterisks are used to bold and italicize when surrounding texts. Use \*\***two asterisks to bold**\*\* and \**one asterisk*\* to italicize.
+
+**\<br>**: adds a line break
+
+**\<hr />**: adds a horizontal line across the page
+
+
+### **installing & loading packages**
+If you will be using any R packages for your information page or tutorial, it's a good idea to highlight them toward the beginning of your page, including code for installing them. Here's an example from the RADseq tutorial:
+
+If you would like to run the R code examples that are scattered throughout the guide (recommended but not required!), you will need to install some R packages. Only need to run this code once:  
+```{r, eval=F}
+install.packages("tidyverse")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+#the BiocManager package facilitates the installation of packages from the Bioconductor project
+BiocManager::install("SeqArray")
+BiocManager::install("SNPRelate")
+```
+
+### **caching**
+If your page includes any code that takes a long time to run, please set "cache = TRUE" in the knitr::opts_chunk$set command in your global code chunk.
+
+### **making a table - Katherine/Sam**
+
+### **including a figure - Katherine/Sam**
+
+### **including an image - Katherine/Sam**
+
+### **running code in another language such as bash - Katherine/Sam**
+
+<hr />
+
+### **References**
 

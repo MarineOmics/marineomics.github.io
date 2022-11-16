@@ -11,7 +11,7 @@
 
 
 
-<title>Instructions for developing new pages to the MarineOmics webpage</title>
+<title>Instructions for developing new pages for the MarineOmics webpage</title>
 
 <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -399,7 +399,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Instructions for developing new pages to
+<h1 class="title toc-ignore">Instructions for developing new pages for
 the MarineOmics webpage</h1>
 
 </div>
@@ -409,23 +409,24 @@ the MarineOmics webpage</h1>
 <h2>Overview</h2>
 <p>This is a guide for creating a new page for the website. Of course,
 the website managers will work with anyone who develops new content to
-answer questions and publish the site, but this can be used as a
-resource as you develop your page. In this guide are general
-instructions as well as examples of how to build specific features. If
-there is anything else you would like to see on this guide please
-contact Jason Johns (jasonjohns[at]ucsb.edu). Of course, do not hesitate
-to reach out with any other questions or comments as well.</p>
-<p>** Before publishing any content, please contact Jason Johns
-(jasonjohns[at]ucsb.edu) so we can have working group contributors
-review the page.</p>
+help develop and publish your page, but this can be used as a resource
+as you develop your content. In this guide are general instructions as
+well as examples of how to build specific features. If there is anything
+else you would like to see on this guide please contact Jason Johns
+(jasonjohns[at]ucsb.edu). Of course, do not hesitate to reach out with
+any other questions or comments as well.</p>
+<p>* Even if you comfortable with publishing websites in
+Github/RMarkdown, please contact Jason Johns (jasonjohns[at]ucsb.edu)
+before publishing any new pages so we can ensure smooth incorporation
+into the website.</p>
 <p>This website is published through Github Pages directly from the <a
 href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics
 github repository</a>. In short, each page of the website is rendered as
 an .html from an RMarkdown (.Rmd) document. The two most important files
-for publishing the website are the .site_yml (“the yaml file”) and the
-index.Rmd/index.html.</p>
+for publishing the general website are the .site_yml (“the yaml file”)
+and the index.Rmd/index.html.</p>
 <p><strong>.site_yml</strong>: the ‘under the hood’ backbone of the
-website, where things like the visual appearance of the website the
+website, where things like the visual appearance of the website and the
 navigation bar are built</p>
 <p><strong>index.html</strong>: rendered from index.Rmd - the home page
 from which all other pages branch</p>
@@ -433,6 +434,7 @@ from which all other pages branch</p>
 files for your page when the time comes, so you don’t need to know
 exactly how they work, but it’s good to know what they are at a basic
 level.</p>
+<hr />
 </div>
 <div id="r-markdown-basics" class="section level1">
 <h1>R Markdown basics</h1>
@@ -441,45 +443,139 @@ seen in the <a
 href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics
 github repository</a>. If you don’t have much experience with RStudio,
 it’s quite intuitive with a shallow learning curve and many existing
-online resources for using it.</p>
-<p><em>Note: it’s a good idea to look at existing .Rmd scripts to see
-examples of how a particular feature can be accomplished, such as citing
-references, linking a website, building a table, incorporating figures,
-etc. We will explicitly go over some of those feautures below, but there
-are many other bells and whistles that can be explored through other
-resources online.</em></p>
-<div id="initial-page-setup" class="section level2">
-<h2>Initial Page Setup</h2>
-<ul>
-<li>caching</li>
-<li>installing &amp; loading packages</li>
-<li>etc.</li>
-</ul>
+online resources for using it. It is possible to use .Rmd files in base
+R, but we recommend using RStudio.</p>
+<p><em>Note: it’s a good idea to look at existing .Rmd scripts
+(including the one that codes for this page) to see examples of how a
+particular feature can be accomplished, such as citing references,
+linking a website, building a table, incorporating figures, etc. We will
+explicitly go over some of those features below, but there are many
+other bells and whistles that can be explored through online
+resources.</em></p>
+<p>Here are some general RMarkdown tutorials that we like to reference:
+<br> - <a
+href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">Chapter
+10 from RMarkdown the Definitive Guide: Xi, Allaire, &amp; Grolemund
+2022</a> <br> - <a
+href="https://garrettgman.github.io/rmarkdown/rmarkdown_websites.html">R
+Markdown Websites: Garrett Grolemund</a></p>
+<p><br/></p>
+<div id="rmarkdown-formatting" class="section level2">
+<h2>RMarkdown formatting</h2>
+<p>One of the strengths of .Rmd documents is their versatility. They can
+hold everything from code (not only in R but in other languages),
+formatted text, figure outputs, and more. Basically, code must be
+enclosed within ‘code chunks’ and anything outside of code chunks will
+be read as text. So to include non-code text, we don’t need any #,
+unless of course we’re in a code chunk.</p>
+<div id="code-chunks" class="section level3">
+<h3><strong>code chunks</strong></h3>
+<p>Below is a basic code chunk which can be inserted by clicking the
+green +C button on the RStudio toolbar or typing the keyboard
+shortcut:<br> - macOS: command + option + I <br> - Windows: control +
+alt + I</p>
+<pre><code>```{r, echo = TRUE, include = TRUE} 
+
+```</code></pre>
+<p>Whether code chunks and/or their output are included in the knitted
+.html can be modified with the logical commands “echo” and
+“include”.<br> - echo: include the code chunk itself or not<br> -
+include: include the output of the code chunk or not</p>
+<p>* Other options exist for code chunk output which can be explored
+online and in other .Rmd scripts in this repository.</p>
+<p><br></p>
+<div id="global-code-chunk-options" class="section level4">
+<h4><em>global code chunk options</em></h4>
+<p>This is the chunk where we establish global settings for the entire
+document. This is done with the command from the knitr package
+“opts_chunk$set” as shown in the example below. This command is
+typically included in the first chunk, where we also load our packages
+and adjust the settings for citations. When a new .Rmd is made, this
+command is automatically included in the first chunk, which is named
+“setup” by default. The name of a code chunk can be specified after the
+r in ```{r ____}.</p>
+<pre><code>```{r setup} 
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
+
+library(knitr)
+library(knitcitations)
+library(kableExtra)
+
+knitr::opts_chunk$set(fig.width = 10, fig.height = 5) #setting the dimensions for figure outputs in a different line of code for cleanliness
+
+cite_options(citation_format = &quot;pandoc&quot;, max.names = 3, style = &quot;html&quot;, 
+             hyperlink = &quot;to.doc&quot;) #setting format for in-text citations for the references section at the bottom of the page
+```</code></pre>
+<p>* Note the “cache =” option. When set to “true” R will cache all of
+the output created from knitting the RMarkdown document. This is
+especially useful for pages with heavy computation that take a long time
+to knit. <br></p>
 </div>
-<div id="formatting" class="section level2">
-<h2>Formatting</h2>
-<ul>
-<li>text vs. code chunks, how to include code on the page or not,
-include output or not, etc.</li>
-<li>navigation bar on the left, font size, bold, italics, etc</li>
-<li>in-text citations, hyperlinks</li>
-</ul>
 </div>
-<div id="making-a-table---katherinesam" class="section level2">
-<h2>Making a table - Katherine/Sam</h2>
+<div id="formatting-text" class="section level3">
+<h3><strong>formatting text</strong></h3>
+<p>Options abound for formatting text in .Rmd documents using <a
+href="https://pandoc.org/MANUAL.html">Pandoc Markdown</a>, and many of
+these can be found with a quick search, but we will go over a few basics
+here.</p>
+<p>As with writing code, any text symbol that codes for something, such
+as a # or a * must be escaped with a backslash (\) if you just want to
+use the symbol itself.</p>
+<p><strong>#</strong>: <em>Outside of a code chunk</em>, pound signs
+dictate the size and organizational level of the text. A single # will
+make large text and a main section in the navigation window. Two ## will
+make slightly smaller text and a sub-section in the navigation window.
+<br></p>
+<p>For example, the “RMarkdown formatting” text and category was created
+with “# RMarkdown formatting” while the “code chunks” subcategory was
+created with “## code chunks.”</p>
+<p><strong>*</strong>: Asterisks are used to bold and italicize when
+surrounding texts. Use **<strong>two asterisks to bold</strong>** and
+*<em>one asterisk</em>* to italicize.</p>
+<p><strong>&lt;br&gt;</strong>: adds a line break</p>
+<p><strong>&lt;hr /&gt;</strong>: adds a horizontal line across the
+page</p>
 </div>
-<div id="including-a-figure---katherinesam" class="section level2">
-<h2>Including a figure - Katherine/Sam</h2>
+<div id="installing-loading-packages" class="section level3">
+<h3><strong>installing &amp; loading packages</strong></h3>
+<p>If you will be using any R packages for your information page or
+tutorial, it’s a good idea to highlight them toward the beginning of
+your page, including code for installing them. Here’s an example from
+the RADseq tutorial:</p>
+<p>If you would like to run the R code examples that are scattered
+throughout the guide (recommended but not required!), you will need to
+install some R packages. Only need to run this code once:</p>
+<pre class="r"><code>install.packages(&quot;tidyverse&quot;)
+if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
+    install.packages(&quot;BiocManager&quot;)
+#the BiocManager package facilitates the installation of packages from the Bioconductor project
+BiocManager::install(&quot;SeqArray&quot;)
+BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
 </div>
-<div id="including-an-image---katherinesam" class="section level2">
-<h2>Including an image - Katherine/Sam</h2>
+<div id="caching" class="section level3">
+<h3><strong>caching</strong></h3>
+<p>If your page includes any code that takes a long time to run, please
+set “cache = TRUE” in the knitr::opts_chunk$set command in your global
+code chunk.</p>
+</div>
+<div id="making-a-table---katherinesam" class="section level3">
+<h3><strong>making a table - Katherine/Sam</strong></h3>
+</div>
+<div id="including-a-figure---katherinesam" class="section level3">
+<h3><strong>including a figure - Katherine/Sam</strong></h3>
+</div>
+<div id="including-an-image---katherinesam" class="section level3">
+<h3><strong>including an image - Katherine/Sam</strong></h3>
 </div>
 <div id="running-code-in-another-language-such-as-bash---katherinesam"
-class="section level2">
-<h2>Running code in another language such as bash - Katherine/Sam</h2>
+class="section level3">
+<h3><strong>running code in another language such as bash -
+Katherine/Sam</strong></h3>
+<hr />
 </div>
-<div id="references" class="section level2">
-<h2>References</h2>
+<div id="references" class="section level3">
+<h3><strong>References</strong></h3>
+</div>
 </div>
 </div>
 
