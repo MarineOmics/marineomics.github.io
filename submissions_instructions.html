@@ -13,6 +13,7 @@
 
 <title>Instructions for developing new pages for the MarineOmics webpage</title>
 
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -59,6 +60,28 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="tutorial.css" type="text/css" />
 
@@ -144,11 +167,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -177,8 +204,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -186,16 +213,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -401,32 +421,75 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Instructions for developing new pages for the MarineOmics webpage</h1>
+<h1 class="title toc-ignore">Instructions for developing new pages for
+the MarineOmics webpage</h1>
 
 </div>
 
 
-<pre><code>## Warning: package &#39;knitcitations&#39; was built under R version 3.6.2</code></pre>
-<pre><code>## Warning: package &#39;kableExtra&#39; was built under R version 3.6.2</code></pre>
-<div id="overview" class="section level2">
-<h2>Overview</h2>
-<p>This is a guide for creating a new page for the website. Of course, the website managers will work with anyone who develops new content to help develop and publish your page, but this can be used as a resource as you develop your content. In this guide are general instructions as well as examples of how to build specific features. If there is anything else you would like to see on this guide please contact Jason Johns (jasonjohns[at]ucsb.edu). Of course, do not hesitate to reach out with any other questions or comments as well.</p>
-<p>* Even if you comfortable with publishing websites in Github/RMarkdown, please contact Jason Johns (jasonjohns[at]ucsb.edu) before publishing any new pages so we can ensure smooth incorporation into the website.</p>
-<p>This website is published through Github Pages directly from the <a href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics github repository</a>. In short, each page of the website is rendered as an .html from an RMarkdown (.Rmd) document. The two most important files for publishing the general website are the .site_yml (&quot;the yaml file&quot;) and the index.Rmd/index.html.</p>
-<p><strong>.site_yml</strong>: the 'under the hood' backbone of the website, where things like the visual appearance of the website and the navigation bar are built</p>
-<p><strong>index.html</strong>: rendered from index.Rmd - the home page from which all other pages branch</p>
-<p>* The website manager will help modify the index.html and .site_yml files for your page when the time comes, so you don't need to know exactly how they work, but it's good to know what they are at a basic level.</p>
+<div id="overview" class="section level4">
+<h4>Overview</h4>
+<p>This is a guide for creating a new page for the website. Of course,
+the website managers will work with anyone who develops new content to
+help develop and publish your page, but this can be used as a resource
+as you develop your content. In this guide are general instructions as
+well as examples of how to build specific features. If there is anything
+else you would like to see on this guide please contact Jason Johns
+(jasonjohns[at]ucsb.edu). Of course, do not hesitate to reach out with
+any other questions or comments as well.</p>
+<p>* Even if you comfortable with publishing websites in
+Github/RMarkdown, please contact Jason Johns (jasonjohns[at]ucsb.edu)
+before publishing any new pages so we can ensure smooth incorporation
+into the website.</p>
+<p>This website is published through Github Pages directly from the <a
+href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics
+github repository</a>. In short, each page of the website is rendered as
+an .html from an RMarkdown (.Rmd) document. The two most important files
+for publishing the general website are the .site_yml (“the yaml file”)
+and the index.Rmd/index.html.</p>
+<p><strong>.site_yml</strong>: the ‘under the hood’ backbone of the
+website, where things like the visual appearance of the website and the
+navigation bar are built</p>
+<p><strong>index.html</strong>: rendered from index.Rmd - the home page
+from which all other pages branch</p>
+<p>* The website manager will help modify the index.html and .site_yml
+files for your page when the time comes, so you don’t need to know
+exactly how they work, but it’s good to know what they are at a basic
+level.</p>
 <hr />
 </div>
 <div id="r-markdown-basics" class="section level1">
 <h1>R Markdown basics</h1>
-<p>The rendered .Rmd and .html files for each page on this site can be seen in the <a href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics github repository</a>. If you don't have much experience with RStudio, it's quite intuitive with a shallow learning curve and many existing online resources for using it. It is possible to use .Rmd files in base R, but we recommend using RStudio.</p>
-<p><em>Note: it's a good idea to look at existing .Rmd scripts (including the one that codes for this page) to see examples of how a particular feature can be accomplished, such as citing references, linking a website, building a table, incorporating figures, etc. We will explicitly go over some of those features below, but there are many other bells and whistles that can be explored through online resources.</em></p>
-<p>Here are some general RMarkdown tutorials that we like to reference: <br> - <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">Chapter 10 from RMarkdown the Definitive Guide: Xi, Allaire, &amp; Grolemund 2022</a> <br> - <a href="https://garrettgman.github.io/rmarkdown/rmarkdown_websites.html">R Markdown Websites: Garrett Grolemund</a></p>
+<p>The rendered .Rmd and .html files for each page on this site can be
+seen in the <a
+href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics
+github repository</a>. If you don’t have much experience with RStudio,
+it’s quite intuitive with a shallow learning curve and many existing
+online resources for using it. It is possible to use .Rmd files in base
+R, but we recommend using RStudio.</p>
+<p><em>Note: it’s a good idea to look at existing .Rmd scripts
+(including the one that codes for this page) to see examples of how a
+particular feature can be accomplished, such as citing references,
+linking a website, building a table, incorporating figures, etc. We will
+explicitly go over some of those features below, but there are many
+other bells and whistles that can be explored through online
+resources.</em></p>
+<p>Here are some general RMarkdown tutorials that we like to reference:
+<br> - <a
+href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">Chapter
+10 from RMarkdown the Definitive Guide: Xi, Allaire, &amp; Grolemund
+2022</a> <br> - <a
+href="https://garrettgman.github.io/rmarkdown/rmarkdown_websites.html">R
+Markdown Websites: Garrett Grolemund</a></p>
 <p><br/></p>
 <div id="rmarkdown-formatting" class="section level2">
 <h2>RMarkdown formatting</h2>
-<p>One of the strengths of .Rmd documents is their versatility. They can hold everything from code (not only in R but in other languages), formatted text, figure outputs, and more. Basically, code must be enclosed within 'code chunks' and anything outside of code chunks will be read as text. So to include non-code text, we don't need any #, unless of course we're in a code chunk.</p>
+<p>One of the strengths of .Rmd documents is their versatility. They can
+hold everything from code (not only in R but in other languages),
+formatted text, figure outputs, and more. Basically, code must be
+enclosed within ‘code chunks’ and anything outside of code chunks will
+be read as text. So to include non-code text, we don’t need any #,
+unless of course we’re in a code chunk.</p>
 <div id="example-of-table-syntax" class="section level3">
 <h3>Example of table syntax</h3>
 <table>
@@ -477,14 +540,16 @@ div.tocify {
 <h3>Example of how to insert an image</h3>
 <p><img src="images/Rivera_etal_fig.png" width="1137" height="40%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="example-of-how-to-write-and-print-an-equation" class="section level3">
+<div id="example-of-how-to-write-and-print-an-equation"
+class="section level3">
 <h3>Example of how to write and print an equation</h3>
 <p>For illustrative purposes, here is a simple and famous equation</p>
 <p><span class="math display">\[
 E = mc^2
 \]</span></p>
 <p><br></p>
-<p>As an example of a more complex equation, here is an equation for the t-statistic</p>
+<p>As an example of a more complex equation, here is an equation for the
+t-statistic</p>
 <p><span class="math display">\[
 t = \frac{\overline{x_{1}}-\overline{x_{2}}}
 {\sqrt{(s^2(
@@ -492,23 +557,40 @@ t = \frac{\overline{x_{1}}-\overline{x_{2}}}
 ))}}
 \]</span></p>
 </div>
-<div id="example-of-how-to-cite-a-reference-from-your-.bib-in-text" class="section level3">
+<div id="example-of-how-to-cite-a-reference-from-your-.bib-in-text"
+class="section level3">
 <h3>Example of how to cite a reference from your .bib in-text</h3>
-<p>RADseq can produce insightful analyses even in the absencee of data, if missing values are handled properly <span class="citation">(Tripp et al. 2017)</span>.</p>
+<p>RADseq can produce insightful analyses even in the absencee of data,
+if missing values are handled properly <span class="citation">(Tripp et
+al. 2017)</span>.</p>
 <p><br></p>
 </div>
 <div id="code-chunks" class="section level3">
 <h3><strong>code chunks</strong></h3>
-<p>Below is a basic code chunk which can be inserted by clicking the green +C button on the RStudio toolbar or typing the keyboard shortcut:<br> - macOS: command + option + I <br> - Windows: control + alt + I</p>
+<p>Below is a basic code chunk which can be inserted by clicking the
+green +C button on the RStudio toolbar or typing the keyboard
+shortcut:<br> - macOS: command + option + I <br> - Windows: control +
+alt + I</p>
 <pre><code>```{r, echo = TRUE, include = TRUE} 
 
 ```</code></pre>
-<p>Whether code chunks and/or their output are included in the knitted .html can be modified with the logical commands &quot;echo&quot; and &quot;include&quot;.<br> - echo: include the code chunk itself or not<br> - include: include the output of the code chunk or not</p>
-<p>* Other options exist for code chunk output which can be explored online and in other .Rmd scripts in this repository.</p>
+<p>Whether code chunks and/or their output are included in the knitted
+.html can be modified with the logical commands “echo” and
+“include”.<br> - echo: include the code chunk itself or not<br> -
+include: include the output of the code chunk or not</p>
+<p>* Other options exist for code chunk output which can be explored
+online and in other .Rmd scripts in this repository.</p>
 <p><br></p>
 <div id="global-code-chunk-options" class="section level4">
 <h4><em>global code chunk options</em></h4>
-<p>This is the chunk where we establish global settings for the entire document. This is done with the command from the knitr package &quot;opts_chunk$set&quot; as shown in the example below. This command is typically included in the first chunk, where we also load our packages and adjust the settings for citations. When a new .Rmd is made, this command is automatically included in the first chunk, which is named &quot;setup&quot; by default. The name of a code chunk can be specified after the r in ```{r ____}.</p>
+<p>This is the chunk where we establish global settings for the entire
+document. This is done with the command from the knitr package
+“opts_chunk$set” as shown in the example below. This command is
+typically included in the first chunk, where we also load our packages
+and adjust the settings for citations. When a new .Rmd is made, this
+command is automatically included in the first chunk, which is named
+“setup” by default. The name of a code chunk can be specified after the
+r in ```{r ____}.</p>
 <pre><code>```{r setup} 
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
 library(knitr)
@@ -518,7 +600,34 @@ knitr::opts_chunk$set(fig.width = 10, fig.height = 5) #setting the dimensions fo
 cite_options(citation_format = &quot;pandoc&quot;, max.names = 3, style = &quot;html&quot;, 
              hyperlink = &quot;to.doc&quot;) #setting format for in-text citations for the references section at the bottom of the page
 ```</code></pre>
-<p>* Note the &quot;cache = &quot; option. When set to &quot;true&quot; R will cache all of the output created from knitting the RMarkdown document. This is especially useful for pages with heavy computation that take a long time to knit. <br> ### <strong>formatting text</strong> Options abound for formatting text in .Rmd documents using <a href="https://pandoc.org/MANUAL.html">Pandoc Markdown</a>, and many of these can be found with a quick search, but we will go over a few basics here. As with writing code, any text symbol that codes for something, such as a # or a * must be escaped with a backslash (\) if you just want to use the symbol itself. <strong>#</strong>: <em>Outside of a code chunk</em>, pound signs dictate the size and organizational level of the text. A single # will make large text and a main section in the navigation window. Two ## will make slightly smaller text and a sub-section in the navigation window. <br> For example, the &quot;RMarkdown formatting&quot; text and category was created with &quot;# RMarkdown formatting&quot; while the &quot;code chunks&quot; subcategory was created with &quot;## code chunks.&quot; <strong>*</strong>: Asterisks are used to bold and italicize when surrounding texts. Use **<strong>two asterisks to bold</strong>** and *<em>one asterisk</em>* to italicize. <strong>&lt;br&gt;</strong>: adds a line break <strong>&lt;hr /&gt;</strong>: adds a horizontal line across the page ### <strong>installing &amp; loading packages</strong> If you will be using any R packages for your information page or tutorial, it's a good idea to highlight them toward the beginning of your page, including code for installing them. Here's an example from the RADseq tutorial: If you would like to run the R code examples that are scattered throughout the guide (recommended but not required!), you will need to install some R packages. Only need to run this code once:</p>
+<p>* Note the “cache =” option. When set to “true” R will cache all of
+the output created from knitting the RMarkdown document. This is
+especially useful for pages with heavy computation that take a long time
+to knit. <br> ### <strong>formatting text</strong> Options abound for
+formatting text in .Rmd documents using <a
+href="https://pandoc.org/MANUAL.html">Pandoc Markdown</a>, and many of
+these can be found with a quick search, but we will go over a few basics
+here. As with writing code, any text symbol that codes for something,
+such as a # or a * must be escaped with a backslash (\) if you just want
+to use the symbol itself. <strong>#</strong>: <em>Outside of a code
+chunk</em>, pound signs dictate the size and organizational level of the
+text. A single # will make large text and a main section in the
+navigation window. Two ## will make slightly smaller text and a
+sub-section in the navigation window. <br> For example, the “RMarkdown
+formatting” text and category was created with “# RMarkdown formatting”
+while the “code chunks” subcategory was created with “## code chunks.”
+<strong>*</strong>: Asterisks are used to bold and italicize when
+surrounding texts. Use **<strong>two asterisks to bold</strong>** and
+*<em>one asterisk</em>* to italicize. <strong>&lt;br&gt;</strong>: adds
+a line break <strong>&lt;hr /&gt;</strong>: adds a horizontal line
+across the page ### <strong>installing &amp; loading packages</strong>
+If you will be using any R packages for your information page or
+tutorial, it’s a good idea to highlight them toward the beginning of
+your page, including code for installing them. Here’s an example from
+the RADseq tutorial: If you would like to run the R code examples that
+are scattered throughout the guide (recommended but not required!), you
+will need to install some R packages. Only need to run this code
+once:</p>
 <pre class="r"><code>install.packages(&quot;tidyverse&quot;)
 if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
     install.packages(&quot;BiocManager&quot;)
@@ -529,7 +638,9 @@ BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
 </div>
 <div id="caching" class="section level3">
 <h3><strong>caching</strong></h3>
-<p>If your page includes any code that takes a long time to run, please set &quot;cache = TRUE&quot; in the knitr::opts_chunk$set command in your global code chunk.</p>
+<p>If your page includes any code that takes a long time to run, please
+set “cache = TRUE” in the knitr::opts_chunk$set command in your global
+code chunk.</p>
 </div>
 <div id="making-a-table---katherinesam" class="section level3">
 <h3><strong>making a table - Katherine/Sam</strong></h3>
@@ -540,15 +651,21 @@ BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
 <div id="including-an-image---katherinesam" class="section level3">
 <h3><strong>including an image - Katherine/Sam</strong></h3>
 </div>
-<div id="running-code-in-another-language-such-as-bash---katherinesam" class="section level3">
-<h3><strong>running code in another language such as bash - Katherine/Sam</strong></h3>
+<div id="running-code-in-another-language-such-as-bash---katherinesam"
+class="section level3">
+<h3><strong>running code in another language such as bash -
+Katherine/Sam</strong></h3>
 <hr />
 </div>
 <div id="references" class="section level3 unnumbered">
-<h3><strong>References</strong></h3>
-<div id="refs" class="references">
-<div id="ref-Tripp2017-cp">
-<p>Tripp, Erin A, Yi-Hsin Erica Tsai, Yongbin Zhuang, and Kyle G Dexter. 2017. “RADseq Dataset with 90% Missing Data Fully Resolves Recent Radiation of Petalidium (Acanthaceae) in the Ultra-Arid Deserts of Namibia.” <em>Ecol. Evol.</em> 7 (19): 7920–36. doi:<a href="https://doi.org/10.1002/ece3.3274">10.1002/ece3.3274</a>.</p>
+<h3 class="unnumbered"><strong>References</strong></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Tripp2017-cp" class="csl-entry">
+Tripp, Erin A, Yi-Hsin Erica Tsai, Yongbin Zhuang, and Kyle G Dexter.
+2017. <span>“<span>RADseq</span> Dataset with 90% Missing Data Fully
+Resolves Recent Radiation of Petalidium (Acanthaceae) in the Ultra-Arid
+Deserts of Namibia.”</span> <em>Ecol. Evol.</em> 7 (19): 7920–36. <a
+href="https://doi.org/10.1002/ece3.3274">https://doi.org/10.1002/ece3.3274</a>.
 </div>
 </div>
 </div>
