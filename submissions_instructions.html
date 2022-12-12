@@ -13,7 +13,7 @@
 
 <title>Instructions for developing new pages for the MarineOmics webpage</title>
 
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -204,8 +204,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -213,9 +213,16 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
+  content: "&#xe258;";
   border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -427,8 +434,8 @@ the MarineOmics webpage</h1>
 </div>
 
 
-<div id="overview" class="section level4">
-<h4>Overview</h4>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
 <p>This is a guide for creating a new page for the website. Of course,
 the website managers will work with anyone who develops new content to
 help develop and publish your page, but this can be used as a resource
@@ -538,7 +545,7 @@ unless of course we’re in a code chunk.</p>
 </div>
 <div id="example-of-how-to-insert-an-image" class="section level3">
 <h3>Example of how to insert an image</h3>
-<p><img src="images/Rivera_etal_fig.png" width="1137" height="40%" style="display: block; margin: auto;" /></p>
+<p><img src="images/Rivera_etal_fig.png" height="40%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="example-of-how-to-write-and-print-an-equation"
 class="section level3">
