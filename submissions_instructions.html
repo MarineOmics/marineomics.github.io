@@ -13,7 +13,7 @@
 
 <title>Instructions for developing new pages for the MarineOmics webpage</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -204,8 +204,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -213,16 +213,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -488,17 +481,119 @@ href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">Chapter
 2022</a> <br> - <a
 href="https://garrettgman.github.io/rmarkdown/rmarkdown_websites.html">R
 Markdown Websites: Garrett Grolemund</a></p>
-<p><br/></p>
-<div id="rmarkdown-formatting" class="section level2">
-<h2>RMarkdown formatting</h2>
+<p><br></p>
+<div id="rmarkdown-formatting-basics" class="section level2">
+<h2>RMarkdown formatting basics</h2>
 <p>One of the strengths of .Rmd documents is their versatility. They can
 hold everything from code (not only in R but in other languages),
 formatted text, figure outputs, and more. Basically, code must be
 enclosed within ‘code chunks’ and anything outside of code chunks will
-be read as text. So to include non-code text, we don’t need any #,
-unless of course we’re in a code chunk.</p>
-<div id="example-of-table-syntax" class="section level3">
-<h3>Example of table syntax</h3>
+be read as text, similar to a basic text file.</p>
+<div id="code-chunks" class="section level3">
+<h3><strong>code chunks</strong></h3>
+<p>Below is a basic code chunk which can be inserted by clicking the
+green +C button on the RStudio toolbar or typing the keyboard shortcut:
+<br></p>
+<ul>
+<li>macOS: command + option + I <br></li>
+<li>Windows: control + alt + I</li>
+</ul>
+<pre><code>```{r, echo = TRUE, include = TRUE} 
+
+```</code></pre>
+<p>Whether code chunks and/or their output are included in the knitted
+.html can be modified with the logical commands “echo” and “include”.
+<br></p>
+<ul>
+<li>echo: include the code chunk itself or not <br></li>
+<li>include: include the output of the code chunk or not</li>
+</ul>
+<p>* Other options exist for code chunk output which can be explored
+online and in other .Rmd scripts in this repository. <br></p>
+<div id="global-code-chunk-options" class="section level4">
+<h4><em>global code chunk options</em></h4>
+<p>This is the chunk where we establish global settings for the entire
+document. This is done with the command from the knitr package
+“opts_chunk$set” as shown in the example below. This command is
+typically included in the first chunk, where we also load our packages
+and adjust the settings for citations. When a new .Rmd is made, this
+command is automatically included in the first chunk, which is named
+“setup” by default. The name of a code chunk can be specified after the
+r in ```{r ____}.</p>
+<pre><code>```{r setup} 
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
+library(knitr)
+library(knitcitations)
+library(kableExtra)
+knitr::opts_chunk$set(fig.width = 10, fig.height = 5) #setting the dimensions for figure outputs in a different line of code for cleanliness
+cite_options(citation_format = &quot;pandoc&quot;, max.names = 3, style = &quot;html&quot;, 
+             hyperlink = &quot;to.doc&quot;) #setting format for in-text citations for the references section at the bottom of the page
+```</code></pre>
+<p>* Note the “cache =” option. When set to “true” R will cache all of
+the output created from knitting the RMarkdown document. This is
+especially useful for pages with heavy computation that take a long time
+to knit. <br></p>
+</div>
+</div>
+<div id="formatting-text" class="section level3">
+<h3><strong>formatting text</strong></h3>
+<p>Options abound for formatting text in .Rmd documents using <a
+href="https://pandoc.org/MANUAL.html">Pandoc Markdown</a>, and many of
+these can be found with a quick search, but we will go over a few basics
+here.<br></p>
+<ul>
+<li>As with writing code, any text symbol that codes for something, such
+as a # or a * must be escaped with a backslash (\) if you just want to
+use the symbol itself. <br></li>
+<li><strong>#</strong>: <em>Outside of a code chunk</em>, pound signs
+dictate the size and organizational level of the text. A single # will
+make large text and a main section in the navigation window. Two ## will
+make slightly smaller text and a sub-section in the navigation window.
+<br>
+<ul>
+<li>For example, the “RMarkdown formatting” text and category was
+created with “# RMarkdown formatting” while the “code chunks”
+subcategory was created with “## code chunks.”<br></li>
+</ul></li>
+<li><strong>*</strong>: Asterisks are used to bold and italicize when
+surrounding texts. Use **<strong>two asterisks to bold</strong>** and
+*<em>one asterisk</em>* to italicize.<br></li>
+<li><strong>&lt;br&gt;</strong>: adds a line break <br></li>
+<li><strong>&lt;hr /&gt;</strong>: adds a horizontal line across the
+page <br></li>
+</ul>
+</div>
+<div id="installing-loading-packages" class="section level3">
+<h3><strong>installing &amp; loading packages</strong></h3>
+<p>If you will be using any R packages for your information page or
+tutorial, it’s a good idea to highlight them toward the beginning of
+your page, including code for installing them. Here’s an example from
+the RADseq tutorial:<br> <br> <em>If you would like to run the R code
+examples that are scattered throughout the guide (recommended but not
+required!), you will need to install some R packages. Only need to run
+this code once:</em></p>
+<pre class="r"><code>install.packages(&quot;tidyverse&quot;)
+if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
+    install.packages(&quot;BiocManager&quot;)
+#the BiocManager package facilitates the installation of packages from the Bioconductor project
+BiocManager::install(&quot;SeqArray&quot;)
+BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
+</div>
+<div id="caching" class="section level3">
+<h3><strong>caching</strong></h3>
+<p>If your page includes any code that takes a long time to run, please
+set “cache = TRUE” in the knitr::opts_chunk$set command in your global
+code chunk.</p>
+<hr />
+</div>
+</div>
+<div
+id="examples-of-how-to-include-visual-feautures-such-as-tables-images-equations-etc."
+class="section level2">
+<h2>Examples of how to include visual feautures such as tables, images,
+equations, etc.</h2>
+<div id="insert-a-table" class="section level3">
+<h3><strong>insert a table</strong></h3>
 <table>
 <thead>
 <tr class="header">
@@ -543,13 +638,12 @@ unless of course we’re in a code chunk.</p>
 </table>
 <p><br></p>
 </div>
-<div id="example-of-how-to-insert-an-image" class="section level3">
-<h3>Example of how to insert an image</h3>
-<p><img src="images/Rivera_etal_fig.png" height="40%" style="display: block; margin: auto;" /></p>
+<div id="insert-an-image" class="section level3">
+<h3><strong>insert an image</strong></h3>
+<p><img src="images/Rivera_etal_fig.png" width="1137" height="40%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="example-of-how-to-write-and-print-an-equation"
-class="section level3">
-<h3>Example of how to write and print an equation</h3>
+<div id="write-and-print-an-equation" class="section level3">
+<h3><strong>write and print an equation</strong></h3>
 <p>For illustrative purposes, here is a simple and famous equation</p>
 <p><span class="math display">\[
 E = mc^2
@@ -564,99 +658,12 @@ t = \frac{\overline{x_{1}}-\overline{x_{2}}}
 ))}}
 \]</span></p>
 </div>
-<div id="example-of-how-to-cite-a-reference-from-your-.bib-in-text"
-class="section level3">
-<h3>Example of how to cite a reference from your .bib in-text</h3>
+<div id="in-text-citations-from-your-.bib" class="section level3">
+<h3><strong>in-text citations from your .bib</strong></h3>
 <p>RADseq can produce insightful analyses even in the absencee of data,
 if missing values are handled properly <span class="citation">(Tripp et
 al. 2017)</span>.</p>
 <p><br></p>
-</div>
-<div id="code-chunks" class="section level3">
-<h3><strong>code chunks</strong></h3>
-<p>Below is a basic code chunk which can be inserted by clicking the
-green +C button on the RStudio toolbar or typing the keyboard
-shortcut:<br> - macOS: command + option + I <br> - Windows: control +
-alt + I</p>
-<pre><code>```{r, echo = TRUE, include = TRUE} 
-
-```</code></pre>
-<p>Whether code chunks and/or their output are included in the knitted
-.html can be modified with the logical commands “echo” and
-“include”.<br> - echo: include the code chunk itself or not<br> -
-include: include the output of the code chunk or not</p>
-<p>* Other options exist for code chunk output which can be explored
-online and in other .Rmd scripts in this repository.</p>
-<p><br></p>
-<div id="global-code-chunk-options" class="section level4">
-<h4><em>global code chunk options</em></h4>
-<p>This is the chunk where we establish global settings for the entire
-document. This is done with the command from the knitr package
-“opts_chunk$set” as shown in the example below. This command is
-typically included in the first chunk, where we also load our packages
-and adjust the settings for citations. When a new .Rmd is made, this
-command is automatically included in the first chunk, which is named
-“setup” by default. The name of a code chunk can be specified after the
-r in ```{r ____}.</p>
-<pre><code>```{r setup} 
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
-library(knitr)
-library(knitcitations)
-library(kableExtra)
-knitr::opts_chunk$set(fig.width = 10, fig.height = 5) #setting the dimensions for figure outputs in a different line of code for cleanliness
-cite_options(citation_format = &quot;pandoc&quot;, max.names = 3, style = &quot;html&quot;, 
-             hyperlink = &quot;to.doc&quot;) #setting format for in-text citations for the references section at the bottom of the page
-```</code></pre>
-<p>* Note the “cache =” option. When set to “true” R will cache all of
-the output created from knitting the RMarkdown document. This is
-especially useful for pages with heavy computation that take a long time
-to knit. <br> ### <strong>formatting text</strong> Options abound for
-formatting text in .Rmd documents using <a
-href="https://pandoc.org/MANUAL.html">Pandoc Markdown</a>, and many of
-these can be found with a quick search, but we will go over a few basics
-here. As with writing code, any text symbol that codes for something,
-such as a # or a * must be escaped with a backslash (\) if you just want
-to use the symbol itself. <strong>#</strong>: <em>Outside of a code
-chunk</em>, pound signs dictate the size and organizational level of the
-text. A single # will make large text and a main section in the
-navigation window. Two ## will make slightly smaller text and a
-sub-section in the navigation window. <br> For example, the “RMarkdown
-formatting” text and category was created with “# RMarkdown formatting”
-while the “code chunks” subcategory was created with “## code chunks.”
-<strong>*</strong>: Asterisks are used to bold and italicize when
-surrounding texts. Use **<strong>two asterisks to bold</strong>** and
-*<em>one asterisk</em>* to italicize. <strong>&lt;br&gt;</strong>: adds
-a line break <strong>&lt;hr /&gt;</strong>: adds a horizontal line
-across the page ### <strong>installing &amp; loading packages</strong>
-If you will be using any R packages for your information page or
-tutorial, it’s a good idea to highlight them toward the beginning of
-your page, including code for installing them. Here’s an example from
-the RADseq tutorial: If you would like to run the R code examples that
-are scattered throughout the guide (recommended but not required!), you
-will need to install some R packages. Only need to run this code
-once:</p>
-<pre class="r"><code>install.packages(&quot;tidyverse&quot;)
-if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
-    install.packages(&quot;BiocManager&quot;)
-#the BiocManager package facilitates the installation of packages from the Bioconductor project
-BiocManager::install(&quot;SeqArray&quot;)
-BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
-</div>
-</div>
-<div id="caching" class="section level3">
-<h3><strong>caching</strong></h3>
-<p>If your page includes any code that takes a long time to run, please
-set “cache = TRUE” in the knitr::opts_chunk$set command in your global
-code chunk.</p>
-</div>
-<div id="making-a-table---katherinesam" class="section level3">
-<h3><strong>making a table - Katherine/Sam</strong></h3>
-</div>
-<div id="including-a-figure---katherinesam" class="section level3">
-<h3><strong>including a figure - Katherine/Sam</strong></h3>
-</div>
-<div id="including-an-image---katherinesam" class="section level3">
-<h3><strong>including an image - Katherine/Sam</strong></h3>
 </div>
 <div id="running-code-in-another-language-such-as-bash---katherinesam"
 class="section level3">
@@ -664,8 +671,9 @@ class="section level3">
 Katherine/Sam</strong></h3>
 <hr />
 </div>
-<div id="references" class="section level3 unnumbered">
-<h3 class="unnumbered"><strong>References</strong></h3>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered"><strong>References</strong></h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Tripp2017-cp" class="csl-entry">
 Tripp, Erin A, Yi-Hsin Erica Tsai, Yongbin Zhuang, and Kyle G Dexter.
@@ -673,7 +681,6 @@ Tripp, Erin A, Yi-Hsin Erica Tsai, Yongbin Zhuang, and Kyle G Dexter.
 Resolves Recent Radiation of Petalidium (Acanthaceae) in the Ultra-Arid
 Deserts of Namibia.”</span> <em>Ecol. Evol.</em> 7 (19): 7920–36. <a
 href="https://doi.org/10.1002/ece3.3274">https://doi.org/10.1002/ece3.3274</a>.
-</div>
 </div>
 </div>
 </div>
