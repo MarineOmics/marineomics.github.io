@@ -44,56 +44,14 @@ Here are some general RMarkdown tutorials that we like to reference:
 <br>
 - [R Markdown Websites: Garrett Grolemund](https://garrettgman.github.io/rmarkdown/rmarkdown_websites.html)
   
-<br/>
-
-## RMarkdown formatting
-One of the strengths of .Rmd documents is their versatility. They can hold everything from code (not only in R but in other languages), formatted text, figure outputs, and more. Basically, code must be enclosed within 'code chunks' and anything outside of code chunks will be read as text. So to include non-code text, we don't need any #, unless of course we're in a code chunk.
-
-### Example of table syntax
-
-| Term A | Term B | Term C | Term D | Term E | Term F | Term G |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| xxx | xxx | xxx | xxx | xxx | xxx | xxx |  
-| yyy | yyy | yyy | yyy | yyy | yyy | yyy | 
-| zzz | zzz | zzz | zzz | zzz | zzz | zzz | 
-
 <br>
 
-### Example of how to insert an image
-
-```{r, echo = FALSE, out.height = "40%", fig.align = "center", }
-
-knitr::include_graphics("images/Rivera_etal_fig.png")
-
-```
-
-### Example of how to write and print an equation
-
-For illustrative purposes, here is a simple and famous equation
-
-$$
-E = mc^2
-$$
-
-<br>
-
-As an example of a more complex equation, here is an equation for the t-statistic
-
-$$
-t = \frac{\overline{x_{1}}-\overline{x_{2}}}
-{\sqrt{(s^2(
-\frac{1}{n_{1}} + \frac{1}{n_{2}}
-))}}
-$$ 
-
-### Example of how to cite a reference from your .bib in-text
-
-RADseq can produce insightful analyses even in the absencee of data, if missing values are handled properly [@Tripp2017-cp].
-
-<br>
+## RMarkdown formatting basics
+One of the strengths of .Rmd documents is their versatility. They can hold everything from code (not only in R but in other languages), formatted text, figure outputs, and more. Basically, code must be enclosed within 'code chunks' and anything outside of code chunks will be read as text, similar to a basic text file. 
 
 ### **code chunks**
-Below is a basic code chunk which can be inserted by clicking the green +C button on the RStudio toolbar or typing the keyboard shortcut:<br>
+Below is a basic code chunk which can be inserted by clicking the green +C button on the RStudio toolbar or typing the keyboard shortcut: <br>
+
 - macOS: command + option + I <br>
 - Windows: control + alt + I
 
@@ -102,12 +60,12 @@ Below is a basic code chunk which can be inserted by clicking the green +C butto
 
 ```
 ````
-Whether code chunks and/or their output are included in the knitted .html can be modified with the logical commands "echo" and "include".<br>
-- echo: include the code chunk itself or not<br>
+Whether code chunks and/or their output are included in the knitted .html can be modified with the logical commands "echo" and "include". <br>
+
+- echo: include the code chunk itself or not <br>
 - include: include the output of the code chunk or not
 
 \* Other options exist for code chunk output which can be explored online and in other .Rmd scripts in this repository.
-
 <br>
 
 #### *global code chunk options*
@@ -127,17 +85,21 @@ cite_options(citation_format = "pandoc", max.names = 3, style = "html",
 ````
 \* Note the "cache = " option. When set to "true" R will cache all of the output created from knitting the RMarkdown document. This is especially useful for pages with heavy computation that take a long time to knit.
 <br>
+
 ### **formatting text**
-Options abound for formatting text in .Rmd documents using [Pandoc Markdown](https://pandoc.org/MANUAL.html), and many of these can be found with a quick search, but we will go over a few basics here.
-As with writing code, any text symbol that codes for something, such as a \# or a \* must be escaped with a backslash (\\) if you just want to use the symbol itself.
-**\#**: *Outside of a code chunk*, pound signs dictate the size and organizational level of the text. A single \# will make large text and a main section in the navigation window. Two \#\# will make slightly smaller text and a sub-section in the navigation window. <br>
-For example, the "RMarkdown formatting" text and category was created with "\# RMarkdown formatting" while the "code chunks" subcategory was created with "\#\# code chunks."
-**\***: Asterisks are used to bold and italicize when surrounding texts. Use \*\***two asterisks to bold**\*\* and \**one asterisk*\* to italicize.
-**\<br>**: adds a line break
-**\<hr />**: adds a horizontal line across the page
+Options abound for formatting text in .Rmd documents using [Pandoc Markdown](https://pandoc.org/MANUAL.html), and many of these can be found with a quick search, but we will go over a few basics here.<br>
+
+- As with writing code, any text symbol that codes for something, such as a \# or a \* must be escaped with a backslash (\\) if you just want to use the symbol itself. <br>
+- **\#**: *Outside of a code chunk*, pound signs dictate the size and organizational level of the text. A single \# will make large text and a main section in the navigation window. Two \#\# will make slightly smaller text and a sub-section in the navigation window. <br>
+  + For example, the "RMarkdown formatting" text and category was created with "\# RMarkdown formatting" while the "code chunks" subcategory was created with "\#\# code chunks."<br>
+- **\***: Asterisks are used to bold and italicize when surrounding texts. Use \*\***two asterisks to bold**\*\* and \**one asterisk*\* to italicize.<br>
+- **\<br>**: adds a line break <br>
+- **\<hr />**: adds a horizontal line across the page <br>
+
 ### **installing & loading packages**
-If you will be using any R packages for your information page or tutorial, it's a good idea to highlight them toward the beginning of your page, including code for installing them. Here's an example from the RADseq tutorial:
-If you would like to run the R code examples that are scattered throughout the guide (recommended but not required!), you will need to install some R packages. Only need to run this code once:  
+If you will be using any R packages for your information page or tutorial, it's a good idea to highlight them toward the beginning of your page, including code for installing them. Here's an example from the RADseq tutorial:<br>
+<br>
+*If you would like to run the R code examples that are scattered throughout the guide (recommended but not required!), you will need to install some R packages. Only need to run this code once:*  
 ```{r, eval=F}
 install.packages("tidyverse")
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -149,15 +111,56 @@ BiocManager::install("SNPRelate")
 ### **caching**
 If your page includes any code that takes a long time to run, please set "cache = TRUE" in the knitr::opts_chunk$set command in your global code chunk.
 
-### **making a table - Katherine/Sam**
+<hr />
 
-### **including a figure - Katherine/Sam**
+## Examples of how to include visual feautures such as tables, images, equations, etc.
 
-### **including an image - Katherine/Sam**
+### **insert a table**
+
+| Term A | Term B | Term C | Term D | Term E | Term F | Term G |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| xxx | xxx | xxx | xxx | xxx | xxx | xxx |  
+| yyy | yyy | yyy | yyy | yyy | yyy | yyy | 
+| zzz | zzz | zzz | zzz | zzz | zzz | zzz | 
+
+<br>
+
+### **insert an image**
+
+```{r, echo = FALSE, out.height = "40%", fig.align = "center", }
+
+knitr::include_graphics("images/Rivera_etal_fig.png")
+
+```
+
+### **write and print an equation**
+
+For illustrative purposes, here is a simple and famous equation
+
+$$
+E = mc^2
+$$
+
+<br>
+
+As an example of a more complex equation, here is an equation for the t-statistic
+
+$$
+t = \frac{\overline{x_{1}}-\overline{x_{2}}}
+{\sqrt{(s^2(
+\frac{1}{n_{1}} + \frac{1}{n_{2}}
+))}}
+$$ 
+
+### **in-text citations from your .bib**
+
+RADseq can produce insightful analyses even in the absencee of data, if missing values are handled properly [@Tripp2017-cp].
+
+<br>
 
 ### **running code in another language such as bash - Katherine/Sam**
 
 <hr />
 
-### **References**
+## **References**
 
