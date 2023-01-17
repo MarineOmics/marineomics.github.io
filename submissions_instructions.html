@@ -482,8 +482,8 @@ href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">Chapter
 href="https://garrettgman.github.io/rmarkdown/rmarkdown_websites.html">R
 Markdown Websites: Garrett Grolemund</a></p>
 <p><br></p>
-<div id="rmarkdown-formatting-basics" class="section level2">
-<h2>RMarkdown formatting basics</h2>
+<div id="formatting-basics" class="section level2">
+<h2>Formatting basics</h2>
 <p>One of the strengths of .Rmd documents is their versatility. They can
 hold everything from code (not only in R but in other languages),
 formatted text, figure outputs, and more. Basically, code must be
@@ -509,7 +509,8 @@ green +C button on the RStudio toolbar or typing the keyboard shortcut:
 <li>include: include the output of the code chunk or not</li>
 </ul>
 <p>* Other options exist for code chunk output which can be explored
-online and in other .Rmd scripts in this repository. <br></p>
+online and in other .Rmd scripts in this repository.</p>
+<p><br></p>
 <div id="global-code-chunk-options" class="section level4">
 <h4><em>global code chunk options</em></h4>
 <p>This is the chunk where we establish global settings for the entire
@@ -520,6 +521,7 @@ and adjust the settings for citations. When a new .Rmd is made, this
 command is automatically included in the first chunk, which is named
 “setup” by default. The name of a code chunk can be specified after the
 r in ```{r ____}.</p>
+<p><a id="cite_options"></a></p>
 <pre><code>```{r setup} 
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
 library(knitr)
@@ -532,7 +534,17 @@ cite_options(citation_format = &quot;pandoc&quot;, max.names = 3, style = &quot;
 <p>* Note the “cache =” option. When set to “true” R will cache all of
 the output created from knitting the RMarkdown document. This is
 especially useful for pages with heavy computation that take a long time
-to knit. <br></p>
+to knit.</p>
+<p><br></p>
+</div>
+<div id="including-code-from-another-language" class="section level4">
+<h4><em>including code from another language</em></h4>
+<p>We can also run code such as bash in an R script by modifying the
+code chunk header as below: <br></p>
+<pre><code>```{bash, eval = FALSE} 
+
+```</code></pre>
+<p><br></p>
 </div>
 </div>
 <div id="formatting-text" class="section level3">
@@ -560,8 +572,38 @@ surrounding texts. Use **<strong>two asterisks to bold</strong>** and
 *<em>one asterisk</em>* to italicize.<br></li>
 <li><strong>&lt;br&gt;</strong>: adds a line break <br></li>
 <li><strong>&lt;hr /&gt;</strong>: adds a horizontal line across the
-page <br></li>
+page</li>
 </ul>
+<p><br></p>
+</div>
+<div id="in-text-citations-from-your-.bib" class="section level3">
+<h3><strong>in-text citations from your .bib</strong></h3>
+<p>In-text citations can be made throughout the document that will
+automatically add a reference to your reference section via the
+following steps: <br></p>
+<ul>
+<li>add your citations to the RCN_site-Nov05.bib document via your
+reference manager</li>
+<li>add the line ‘bibliography: RCN_site-Nov05.bib’ to your header at
+the top of the .Rmd document, which looks like this:</li>
+</ul>
+<pre><code>---
+title: &quot;Instructions for developing new pages for the MarineOmics webpage&quot;
+bibliography: RCN_site-Nov05.bib
+---</code></pre>
+<ul>
+<li>include the ‘cite-options’ chunk in your ‘setup’ code chunk. See the
+initial <a href="#cite_options">‘r setup’ chunk</a> above for the syntax
+of the ‘cite_options’ command.</li>
+</ul>
+<p>You can add Bibtex references to the file RCN_site-Nov05.bib, and
+then refer to them in your RMarkdown by adding bibliography:
+RCN_site-Nov05.bib to the header and citing them in the RMarkdown
+document. Check out existing pages for examples.</p>
+<p>RADseq can produce insightful analyses even in the absence of data,
+if missing values are handled properly <span class="citation">(Tripp et
+al. 2017)</span>.</p>
+<p><br></p>
 </div>
 <div id="installing-loading-packages" class="section level3">
 <h3><strong>installing &amp; loading packages</strong></h3>
@@ -578,6 +620,7 @@ if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
 #the BiocManager package facilitates the installation of packages from the Bioconductor project
 BiocManager::install(&quot;SeqArray&quot;)
 BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
+<p><br></p>
 </div>
 <div id="caching" class="section level3">
 <h3><strong>caching</strong></h3>
@@ -594,6 +637,14 @@ class="section level2">
 equations, etc.</h2>
 <div id="insert-a-table" class="section level3">
 <h3><strong>insert a table</strong></h3>
+<p><em>text in .Rmd <strong>(not in a code chunk)</strong></em>:</p>
+<pre><code>| Term A | Term B | Term C | Term D | Term E | Term F | Term G |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| xxx | xxx | xxx | xxx | xxx | xxx | xxx |  
+| yyy | yyy | yyy | yyy | yyy | yyy | yyy | 
+| zzz | zzz | zzz | zzz | zzz | zzz | zzz | </code></pre>
+<p><br></p>
+<p><em>knitted output</em>:</p>
 <table>
 <thead>
 <tr class="header">
@@ -640,40 +691,49 @@ equations, etc.</h2>
 </div>
 <div id="insert-an-image" class="section level3">
 <h3><strong>insert an image</strong></h3>
+<p><em>code chunk in .Rmd</em>:</p>
+<pre><code>```{r, echo = TRUE, include = TRUE, out.height = &quot;40%&quot;, fig.align = &quot;center&quot;} 
+
+knitr::include_graphics(&quot;images/Rivera_etal_fig.png&quot;)
+
+```</code></pre>
+<p><br></p>
+<p><em>knitted output</em>:</p>
+<pre class="r"><code>knitr::include_graphics(&quot;images/Rivera_etal_fig.png&quot;)</code></pre>
 <p><img src="images/Rivera_etal_fig.png" width="1137" height="40%" style="display: block; margin: auto;" /></p>
+<p><br></p>
 </div>
 <div id="write-and-print-an-equation" class="section level3">
 <h3><strong>write and print an equation</strong></h3>
-<p>For illustrative purposes, here is a simple and famous equation</p>
-<p><span class="math display">\[
+<p>For illustrative purposes, here is a simple and famous equation. <br>
+<em>syntax in .Rmd</em>:</p>
+<pre><code>$$
 E = mc^2
-\]</span></p>
+$$</code></pre>
 <p><br></p>
+<p><em>knitted output</em>: <span class="math display">\[
+E = mc^2
+\]</span> <br></p>
 <p>As an example of a more complex equation, here is an equation for the
-t-statistic</p>
-<p><span class="math display">\[
+t-statistic: <br> <em>syntax in .Rmd</em>:</p>
+<pre><code>$$
+t = \frac{\overline{x_{1}}-\overline{x_{2}}}
+{\sqrt{(s^2(
+\frac{1}{n_{1}} + \frac{1}{n_{2}}
+))}}
+$$ </code></pre>
+<p><em>knitted output</em>: <span class="math display">\[
 t = \frac{\overline{x_{1}}-\overline{x_{2}}}
 {\sqrt{(s^2(
 \frac{1}{n_{1}} + \frac{1}{n_{2}}
 ))}}
 \]</span></p>
-</div>
-<div id="in-text-citations-from-your-.bib" class="section level3">
-<h3><strong>in-text citations from your .bib</strong></h3>
-<p>RADseq can produce insightful analyses even in the absencee of data,
-if missing values are handled properly <span class="citation">(Tripp et
-al. 2017)</span>.</p>
 <p><br></p>
-</div>
-<div id="running-code-in-another-language-such-as-bash---katherinesam"
-class="section level3">
-<h3><strong>running code in another language such as bash -
-Katherine/Sam</strong></h3>
 <hr />
 </div>
 </div>
 <div id="references" class="section level2 unnumbered">
-<h2 class="unnumbered"><strong>References</strong></h2>
+<h2 class="unnumbered">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Tripp2017-cp" class="csl-entry">
 Tripp, Erin A, Yi-Hsin Erica Tsai, Yongbin Zhuang, and Kyle G Dexter.
