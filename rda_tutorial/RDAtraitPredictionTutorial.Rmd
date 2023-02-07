@@ -2,9 +2,6 @@
 title: "RDA trait prediction tutorial"
 author: "KE Lotterhos"
 date: "2023-01-20"
-output:
-  pdf_document: default
-  html_document: default
 ---
 
 This tutorial accompanies the paper "The paradox of adaptive trait clines with non-clinal patterns in the underlying genes"
@@ -31,8 +28,10 @@ for (i in 1:length(libraries_needed)){
   library(libraries_needed[i],character.only = TRUE) #laptop
 }
 
-knitr::opts_knit$set(root.dir = "~/Documents/GitHub/MVP-NonClinalAF/tutorial") 
 #change code to your working directory
+#knitr::opts_knit$set(root.dir = "~/Documents/GitHub/MVP-NonClinalAF/tutorial") 
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
+
 
 ```
 
@@ -74,14 +73,14 @@ colnames(G) <- as.character(muts$mutname)
 head(G[,1:10])
 ```
 
-## RDA trait prediction funciton
+## RDA trait prediction function
 
 This function predicts an environmental trait through the back-transformation of the RDA "site score" of an individual to a chosen environmental variable (Equation 1 in the manuscript). It makes the prediction for all the individuals that were used to run the RDA.
 
 ```{r function}
 rda_trait_pred <- function(rdaobj, env_row, K){
   #rdaobj is RDA object
-  #envi row is the row of the environment in the biplot output
+  #env_row is the row of the environment in the biplot output
   #K is the number of RDA axes
   scores <- scores(rdaobj, choices=1:K)
   ind.sc <- scores$sites
@@ -98,7 +97,7 @@ rda_trait_pred <- function(rdaobj, env_row, K){
 
 1. First, run the RDA:
 
-Scale the environmental variables to have a mean of 0 and standard deviation of 1
+Scale the environmental variables to have a mean of 0 and standard deviation of 1.
 ```{r example}
 
 ind$env1_mat <- scale(ind$env1_mat)
@@ -139,7 +138,7 @@ rdaout$CCA$biplot
 3. In this case, the first 3 RDA axes explain 80% of the variance. Note that choosing too many axes may result in overfitting. Here is an example of a trait prediction for MAT using the first 3 RDA axes:
 ```{r}
 # Make the trait prediction for MAT (1st row in biplot output)
-K = 3 # use 3 RDA axes to make the trait prediciton
+K = 3 # use 3 RDA axes to make the trait prediction
 
 MATtraitPredict <- rda_trait_pred(rdaout, 1, K)
 
@@ -157,7 +156,7 @@ cor(ind$phenotype1_mat, MATtraitPredict)
 
 ### Compare to other functions in RDA
 
-Note that the `predict` function and it's variations in the R package `vegan` do not make the same kind of predictions as `rda_trait_pred`. Here are the types of outputs produced by the function `predict` and it's variations:
+Note that the `predict` function and it's variations in the R package `vegan` do not make the same kind of predictions as `rda_trait_pred`. Here are the types of outputs produced by the function `predict` and its variations:
 
 ```{r}
 
@@ -170,7 +169,7 @@ str(loci_scores_predict)
 fitted_values_predict <- predict(rdaout, newdata=G, type="response")
 str(fitted_values_predict)
   
-  # As a side note, it outputs the same thing as the `fitted` funciton
+  # As a side note, it outputs the same thing as the `fitted` function
   fitted_values_predict2 <- fitted(rdaout)
   str(fitted_values_predict2)
 
@@ -186,7 +185,7 @@ ind_scores_predict <- predict(rdaout, type="lc", new=X, scal=2)
 str(ind_scores_predict)
 ```
 
-The `predict` function and it's variations make predictions in RDA space, and therefore do not output the same kind of predictions as `RDA_trait_predict` and Equation 1 in the paper.
+The `predict` function and its variations make predictions in RDA space, and therefore do not output the same kind of predictions as `rda_trait_predict` and Equation 1 in the paper.
 
 
 
@@ -267,6 +266,7 @@ summary(as.numeric(Qr.coeff[,which(muts$causal)]))
 
 brks <- seq(-0.7, 0.7, by=0.05) #set the color scale
 
+dev.new()
 heatmap(t(Qr.coeff[,which(muts$causal)]),
         scale="none", col = cm.colors(length(brks)-1), breaks=brks)
  

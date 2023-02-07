@@ -5,12 +5,12 @@ title: Choosing a Population Genomics Approach
 
 ```{r setup, include=FALSE}
 #library(knitr)
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 library(knitcitations)
 library(kableExtra)
 knitr::opts_chunk$set(fig.width = 10,
                fig.height = 5,
-               cache = FALSE)
+               cache = TRUE)
 cite_options(citation_format = "pandoc", max.names = 3, style = "html",
              hyperlink = "to.doc")
 ```
