@@ -20,7 +20,7 @@ navbar:
         - text: "Poolseq"
           href: poolseq.html
         - text: "Redundancy Analysis (RDA) Trait Prediction"
-          href: rda_tutorial/RDAtraitPredictionTutorial.html
+          href: RDAtraitPredictionTutorial.html
     - text: "Functional Genomics"
       menu:
         - text: "Mutifactorial RNAseq"
