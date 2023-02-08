@@ -13,7 +13,7 @@
 
 <title>Instructions for developing new pages for the MarineOmics webpage</title>
 
-<script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -372,6 +372,9 @@ div.tocify {
     <li>
       <a href="poolseq.html">Poolseq</a>
     </li>
+    <li>
+      <a href="RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -429,27 +432,24 @@ the MarineOmics webpage</h1>
 
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p>This is a guide for creating a new page for the website. Of course,
-the website managers will work with anyone who develops new content to
-help develop and publish your page, but this can be used as a resource
-as you develop your content. In this guide are general instructions as
-well as examples of how to build specific features. If there is anything
-else you would like to see on this guide please contact Jason Johns
-(jasonjohns[at]ucsb.edu). Of course, do not hesitate to reach out with
-any other questions or comments as well.</p>
-<p>* Even if you comfortable with publishing websites in
-Github/RMarkdown, please contact Jason Johns (jasonjohns[at]ucsb.edu)
-before publishing any new pages so we can ensure smooth incorporation
-into the website.</p>
+<p>This is a guide for creating a new page for MarineOmics.github.io. Of
+course, the website managers will work with anyone who develops new
+content to help develop and publish your page, but this can be used as a
+resource as you develop your content. In this guide are general
+instructions as well as examples of how to build specific features. If
+there is anything else you would like to see on this guide please
+contact Jason Johns (jasonjohns[at]ucsb.edu). Of course, do not hesitate
+to reach out with any other questions or comments as well. Please also
+reach out to him before publishing any new pages.</p>
 <p>This website is published through Github Pages directly from the <a
 href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics
 github repository</a>. In short, each page of the website is rendered as
 an .html from an RMarkdown (.Rmd) document. The two most important files
-for publishing the general website are the .site_yml (“the yaml file”)
-and the index.Rmd/index.html.</p>
-<p><strong>.site_yml</strong>: the ‘under the hood’ backbone of the
-website, where things like the visual appearance of the website and the
-navigation bar are built</p>
+for publishing the general website are the _site.yml and the
+index.Rmd/index.html.</p>
+<p>**_site.yml**: the ‘under the hood’ backbone of the website, where
+things like the visual appearance of the website and the navigation bar
+are built</p>
 <p><strong>index.html</strong>: rendered from index.Rmd - the home page
 from which all other pages branch</p>
 <p>* The website manager will help modify the index.html and .site_yml
@@ -491,7 +491,7 @@ enclosed within ‘code chunks’ and anything outside of code chunks will
 be read as text, similar to a basic text file.</p>
 <div id="code-chunks" class="section level3">
 <h3><strong>code chunks</strong></h3>
-<p>Below is a basic code chunk which can be inserted by clicking the
+<p>Below is a basic R code chunk which can be inserted by clicking the
 green +C button on the RStudio toolbar or typing the keyboard shortcut:
 <br></p>
 <ul>
@@ -499,6 +499,9 @@ green +C button on the RStudio toolbar or typing the keyboard shortcut:
 <li>Windows: control + alt + I</li>
 </ul>
 <pre><code>```{r, echo = TRUE, include = TRUE} 
+
+#Here&#39;s a simple linear model in R as an example
+my_lm &lt;- lm(y ~ x, data = df)
 
 ```</code></pre>
 <p>Whether code chunks and/or their output are included in the knitted
@@ -542,6 +545,9 @@ to knit.</p>
 <p>We can also run code such as bash in an R script by modifying the
 code chunk header as below: <br></p>
 <pre><code>```{bash, eval = FALSE} 
+
+# Here&#39;s a simple line of bash as an example
+mkdir ~/Path/To/My/NewDir
 
 ```</code></pre>
 <p><br></p>
@@ -599,10 +605,16 @@ of the ‘cite_options’ command.</li>
 <p>You can add Bibtex references to the file RCN_site-Nov05.bib, and
 then refer to them in your RMarkdown by adding bibliography:
 RCN_site-Nov05.bib to the header and citing them in the RMarkdown
-document. Check out existing pages for examples.</p>
-<p>RADseq can produce insightful analyses even in the absence of data,
-if missing values are handled properly <span class="citation">(Tripp et
-al. 2017)</span>.</p>
+document. Let’s say you have a paper you want to cite by LastName et
+al. 2023 and the paper’s ID in your .bib file is ‘LastName2023-xy’. We
+can reference this paper in-text by adding [@LastName2023-xy] to the end
+of a sentence. This will produce a reference such as the one below for
+Tripp et al. 2017.</p>
+<p><em>syntax in .Rmd <strong>(not in a code chunk)</strong></em>:</p>
+<pre><code>RADseq can produce insightful analyses even in the absence of data, if missing values are handled properly [@Tripp2017-cp].</code></pre>
+<p><em>knitted output</em>: <br> RADseq can produce insightful analyses
+even in the absence of data, if missing values are handled properly
+<span class="citation">(Tripp et al. 2017)</span>.</p>
 <p><br></p>
 </div>
 <div id="installing-loading-packages" class="section level3">

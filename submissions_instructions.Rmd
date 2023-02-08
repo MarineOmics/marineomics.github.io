@@ -130,12 +130,14 @@ bibliography: RCN_site-Nov05.bib
 ````
 - include the 'cite-options' chunk in your 'setup' code chunk. See the initial ['r setup' chunk](#cite_options) above for the syntax of the 'cite_options' command.
 
-You can add Bibtex references to the file RCN_site-Nov05.bib, and then refer to them in your RMarkdown by adding bibliography: RCN_site-Nov05.bib to the header and citing them in the RMarkdown document. Let's say you have a paper you want to cite by LastName et al. 2023 and the paper's ID in your .bib file is 'LastName2023-xy'.
+You can add Bibtex references to the file RCN_site-Nov05.bib, and then refer to them in your RMarkdown by adding bibliography: RCN_site-Nov05.bib to the header and citing them in the RMarkdown document. Let's say you have a paper you want to cite by LastName et al. 2023 and the paper's ID in your .bib file is 'LastName2023-xy'. We can reference this paper in-text by adding [\@LastName2023-xy] to the end of a sentence. This will produce a reference such as the one below for Tripp et al. 2017.
 
+*syntax in .Rmd **(not in a code chunk)***:
 ````
-We can reference this paper in-text by adding [@LastName2023-xy] to the end of a sentence. This will produce a reference such as the one below for Tripp et al. 2017.
+RADseq can produce insightful analyses even in the absence of data, if missing values are handled properly [@Tripp2017-cp].
 ````
 
+*knitted output*: <br>
 RADseq can produce insightful analyses even in the absence of data, if missing values are handled properly [@Tripp2017-cp].
 
 <br>
