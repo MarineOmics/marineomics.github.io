@@ -1,10 +1,19 @@
 ---
 title: "RDA trait prediction tutorial"
 author: "KE Lotterhos"
-date: "2023-01-20"
+date: "2023-02-08"
+output: pdf_document
 ---
 
-This tutorial accompanies the paper "The paradox of adaptive trait clines with non-clinal patterns in the underlying genes"
+This tutorial accompanies the paper "The paradox of adaptive trait clines with non-clinal patterns in the underlying genes" published in PNAS [add link].
+
+# Abstract
+
+Multivariate climate change presents an urgent need to understand how species adapt to complex environments. Population genetic theory predicts that loci under selection will form monotonic allele frequency clines with their selective environment, which has led to the wide use of genotype-environment associations (GEAs). However, the accuracy of GEA methods to identify adapted loci is limited, as shown in the main paper.
+
+This tutorial shows how to apply a novel extension of multivariate ordination, which accurately predicted individual multivariate traits from genotype and environmental data on simulated data regardless of whether inference from GEAs was accurate. 
+
+# Install packages
 
 If the following packages are not installed, be sure to install them first:
 ```
@@ -17,33 +26,38 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("LEA")
 ```
 
-Load the libraries and set your working directory:
+## Load the libraries:
 
-```{r setup}
+```{r setup, eval=TRUE, echo=FALSE}
 
 
-libraries_needed <- c("vegan", "LEA", "lfmm")
+libraries_needed <- c("vegan", "LEA", "lfmm", "gplots")
 
 for (i in 1:length(libraries_needed)){
   library(libraries_needed[i],character.only = TRUE) #laptop
 }
 
-#change code to your working directory
-#knitr::opts_knit$set(root.dir = "~/Documents/GitHub/MVP-NonClinalAF/tutorial") 
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
-
-
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE) 
 ```
 
-## Load the data
+Don't forget to set your working directory!
+
+# Background on the simulation
+
+This data was simulated in SLiM and is associated with the complex multivariate simulation presented in Figure 6 in the paper. Briefly, a non-Wright-Fisher model was simulated on a landscape with 6 environmental variables that reflect different aspects of thermal stress and precipitation in British Columbia. The simulation included 6 environmental traits, each of which adapted to a different environmental variable.
+
+The six environmental variables are based on real data from western Canada and are shown below, clockwise from upper right: Clockwise from upper left: precipitation of driest month, precipitation of warmest quarter, mean annual temperature, precipitation of wettest month, mean temperature of wettest quarter, mean temperature of driest quarter. Each small square is a simulated individual, with its color representing its trait value in that environment.
+
+![](multivar.png)
+
+
+# Load the data
 
 * A matrix of genotypes in 012 format (counts of reference allele)
   * number of rows = number of individuals
   * number of columns = number of SNPs
 * A table with information about sampled individuals (each individual in a row)
 * A table with information about SNPs (each SNP in a row)
-
-This data was simulated in SLiM and is associated with the complex multivariate simulation presented in Figure 6 in the paper. Briefly, a non-Wright-Fisher model was simulated on a landscape with 6 environmental variables that reflect different aspects of thermal stress and precipitation in British Columbia. The simulation included 6 environmental traits, each of which adapted to a different environmental variable.
 
 The `ind` table includes the xy location for each individual, the 6 exact trait values (note that these won't exactly equal the trait value calculated from the genotype matrix because of MAF filtering), and the 6 environmental values at their xy location.
 
@@ -73,7 +87,7 @@ colnames(G) <- as.character(muts$mutname)
 head(G[,1:10])
 ```
 
-## RDA trait prediction function
+# RDA trait prediction function
 
 This function predicts an environmental trait through the back-transformation of the RDA "site score" of an individual to a chosen environmental variable (Equation 1 in the manuscript). It makes the prediction for all the individuals that were used to run the RDA.
 
@@ -189,7 +203,7 @@ The `predict` function and its variations make predictions in RDA space, and the
 
 
 
-### Understanding how the RDA is built on multiple regressions
+# Understanding how the RDA is built on multiple regressions
 
 Prior to ordination in the RDA, each locus is used in a multiple regression model with the environmental variables to produce fitted values for that locus across individuals.
 
@@ -260,16 +274,45 @@ X <- data.frame(ind$env1_mat ,
 We can visualize the regression coefficients with a heatmap. In this case, we know the causal loci in the simulations, so we will just visualize those loci.
 
 This visualization illustrates how there are unique ways in which environments are combined in the model to predict the pattern at each SNP.
-```{r}
-# look at the range of slopes
+
+```{r, fig.height=7, fig.width=8}
+dim(Qr.coeff)
+colnames(Qr.coeff) <- muts$mutname
+  
+# look at the range of coefficients in the multiple regression model
 summary(as.numeric(Qr.coeff[,which(muts$causal)]))
 
 brks <- seq(-0.7, 0.7, by=0.05) #set the color scale
 
-dev.new()
-heatmap(t(Qr.coeff[,which(muts$causal)]),
-        scale="none", col = cm.colors(length(brks)-1), breaks=brks)
- 
+heatmap.2(t(Qr.coeff[,which(muts$causal)]),
+        scale="none", 
+        col = cm.colors(length(brks)-1), 
+        breaks=brks,
+        dendrogram = "column",
+        Rowv=FALSE, #set this to "TRUE" if you would like to see which groups
+        trace="none",
+        key.title = "Coefficient in multiple\nregression model",
+        ylab="SNPs",
+        cexCol=1)
+```
+
+In the above heatmap, each row is a SNP. The SNPs are named according to their linkage group (1 through 10) and cumulative position in the genome (e.g. 9-448632 is on the 9th linkage group). Each linkage group was 50,000 bases long, so the cumulative position ranges from 1 to 500,000 over the 10 linkage groups. Each column in the heatmap is an environment, which is an explanatory variable in the model. 
+
+The color of the heatmap cells for a SNP shows the coefficients in the multiple regression model for each corresponding environment. In other words, the colors show how environments are combined in a multiple regression model to predict the patterns at that SNP on the landscape. 
+
+If we want to visualize clusters of SNPs that have similar coefficients in the multiple regression model, we can allow for clustering in the heatmap:
+
+```{r, fig.height=7, fig.width=8}
+heatmap.2(t(Qr.coeff[,which(muts$causal)]),
+        scale="none", 
+        col = cm.colors(length(brks)-1), 
+        breaks=brks,
+        dendrogram = "both",
+        Rowv=TRUE, 
+        trace="none",
+        key.title = "Coefficient in multiple\nregression model",
+        ylab="SNPs",
+        cexCol=1)
 ```
 
  
