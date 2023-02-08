@@ -19,7 +19,7 @@ Based on the expertise of the MarineOmics working group, the first topics includ
   * [Low coverage WGS](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md)
 * [Reduced Representation Sequencing](RADseq.html) 
 * [Poolseq](poolseq.html)
-* [Redundancy Analysis (RDA) Trait Prediction](RDAtraitPredictionTutorial.html)
+* Redundancy Analysis (RDA) Trait Prediction (coming soon!)
 
 #### Functional Genomics  
 
