@@ -444,19 +444,13 @@ if (!require(&quot;BiocManager&quot;, quietly = TRUE))
 BiocManager::install(&quot;LEA&quot;)</code></pre>
 <div id="load-the-libraries" class="section level2">
 <h2>Load the libraries:</h2>
-<pre><code>## Loading required package: permute</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## This is vegan 2.6-4</code></pre>
-<pre><code>## 
-## Attaching package: &#39;LEA&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:lattice&#39;:
-## 
-##     barchart</code></pre>
-<pre><code>## 
-## Attaching package: &#39;gplots&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:stats&#39;:
-## 
-##     lowess</code></pre>
+<pre class="r"><code>libraries_needed &lt;- c(&quot;vegan&quot;, &quot;LEA&quot;, &quot;lfmm&quot;, &quot;gplots&quot;)
+
+for (i in 1:length(libraries_needed)){
+  library(libraries_needed[i],character.only = TRUE) #laptop
+}
+
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE) </code></pre>
 <p>Don’t forget to set your working directory!</p>
 </div>
 </div>

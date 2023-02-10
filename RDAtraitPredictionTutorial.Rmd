@@ -31,7 +31,8 @@ BiocManager::install("LEA")
 
 ## Load the libraries:
 
-```{r setup, eval=TRUE, echo=FALSE}
+
+```{r setup, eval=TRUE, echo=TRUE, message = FALSE, include = TRUE}
 
 
 libraries_needed <- c("vegan", "LEA", "lfmm", "gplots")
@@ -42,6 +43,7 @@ for (i in 1:length(libraries_needed)){
 
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE) 
 ```
+
 
 Don't forget to set your working directory!
 
