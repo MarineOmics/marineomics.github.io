@@ -13,7 +13,7 @@
 
 <title>Fitting Multifactorial Models of Differential Expression</title>
 
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -372,6 +372,9 @@ div.tocify {
     <li>
       <a href="poolseq.html">Poolseq</a>
     </li>
+    <li>
+      <a href="RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -583,13 +586,13 @@ used in multifactorial RNAseq analyses.</p>
 <pre class="r"><code>## Unhash and run the code below if you believe you may need to install the packages loaded below
 
 #invisible(lapply(c( &quot;tidyverse&quot;, &quot;ape&quot;, &quot;vegan&quot;, &quot;GGally&quot;,
-                   #, &quot;rgl&quot;, &quot;adegenet&quot;, &quot;MASS&quot;,
+                   #&quot;rgl&quot;, &quot;adegenet&quot;, &quot;MASS&quot;,
                    #&quot;data.table&quot;, &quot;plyr&quot;, &quot;lmtest&quot;, &quot;reshape2&quot;, &quot;Rmisc&quot;, &quot;lmerTest&quot;,&quot;statmod&quot;),
                  #function(p){
                    #if(! p %in% rownames(installed.packages())) {
                      #install.packages(p)
-                  # }
-                  # library(p, character.only=TRUE)
+                   #}
+                   #library(p, character.only=TRUE)
                  #}))
 
 #if (!require(&quot;BiocManager&quot;, quietly = TRUE))

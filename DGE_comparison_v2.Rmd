@@ -63,7 +63,7 @@ Let's start by loading our required packages...
 # should remove from Rmd
 # Set root directory
 #knitr::opts_knit$set(root.dir = '~/Documents/GitHub/DGE_comparison/')
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 
 ```
 
@@ -72,13 +72,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Unhash and run the code below if you believe you may need to install the packages loaded below
 
 #invisible(lapply(c( "tidyverse", "ape", "vegan", "GGally",
-                   #, "rgl", "adegenet", "MASS",
+                   #"rgl", "adegenet", "MASS",
                    #"data.table", "plyr", "lmtest", "reshape2", "Rmisc", "lmerTest","statmod"),
                  #function(p){
                    #if(! p %in% rownames(installed.packages())) {
                      #install.packages(p)
-                  # }
-                  # library(p, character.only=TRUE)
+                   #}
+                   #library(p, character.only=TRUE)
                  #}))
 
 #if (!require("BiocManager", quietly = TRUE))
