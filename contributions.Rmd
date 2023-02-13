@@ -5,7 +5,7 @@ title: "Contributions"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-# How to contribute new material to the website
+# How to contribute new material to the MarineOmics.github.io website
 If you are interested in submitting new content to the
 MarineOmics.github.io website, we have a [guide](submissions_instructions.html) for you!
 While the website managers will work with you to help prepare and publish your new
