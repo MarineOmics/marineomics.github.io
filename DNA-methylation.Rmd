@@ -1,5 +1,5 @@
 ---
-title: 'DNA Methylation Analysis'
+title: 'DNA Methylation Analyses'
 subtitle: '*Steven Roberts* and *Sam White* '
 bibliography: DNA-Methylation.bib
 ---
@@ -102,7 +102,7 @@ ${bismark_dir}/bismark_methylation_extractor \
 *deduplicated.bam
 ```
 
-This will create deduplicated.bismark.cov.gz, uncompressed is in this format.
+This will create deduplicated.bismark.cov.gz, uncompressed is in this format. And while a bedGraph file is generated, in this workflow a bedGraph will be generated later that uses information from merged strands (as opposed to this output).
 
 ```
 NC_035784.1 141 141 37.5    3   5
@@ -117,6 +117,7 @@ NC_035784.1 470 470 66.6666666666667    4   2
 NC_035784.1 611 611 0   0   4
 ```
 
+Column organization
 ```
 <chromosome> <start position> <end position> <methylation percentage> <count methylated> <count unmethylated>
 ```
