@@ -117,7 +117,8 @@ NC_035784.1 470 470 66.6666666666667    4   2
 NC_035784.1 611 611 0   0   4
 ```
 
-Column organization
+Column organization 
+
 ```
 <chromosome> <start position> <end position> <methylation percentage> <count methylated> <count unmethylated>
 ```
@@ -157,17 +158,13 @@ NC_035785.1 2054    2056    93.333333   14  1
 From here it could be useful to do some simple file reorganizaion to obtain bedgraph or tab files for down stream analysis. 
 
 ```
-
 #creating bedgraphs post merge
-
 for f in *merged_CpG_evidence.cov
 do
   STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
   cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4}}' \
   > "${STEM}"_10x.bedgraph
 done
-
-
 
 for f in *merged_CpG_evidence.cov
 do
@@ -176,16 +173,13 @@ do
   > "${STEM}"_5x.bedgraph
 done
 
-
 #creating tab files with raw count for glms
-
 for f in *merged_CpG_evidence.cov
 do
   STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
   cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4, $5, $6}}' \
   > "${STEM}"_10x.tab
 done
-
 
 for f in *merged_CpG_evidence.cov
 do
@@ -200,7 +194,6 @@ It is often useful to sort files for downstream analysis (eg methylkit, IGV)
 
 ```
 # Sort files for methylkit and IGV
-
 find *.bam | \
 xargs basename -s .bam | \
 xargs -I{} ${samtools} \
@@ -208,7 +201,6 @@ sort --threads 28 {}.bam \
 -o {}.sorted.bam
 
 # Index sorted files for IGV
-
 find *.sorted.bam | \
 xargs basename -s .sorted.bam | \
 xargs -I{} ${samtools} \
