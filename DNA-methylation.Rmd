@@ -88,6 +88,7 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 {}.bam
 ```
 
+# Methylation Quantification
 Methylation levels are then extracted using the `bismark_methylation_extractor`. For example:
 
 ```
@@ -150,6 +151,8 @@ NC_035785.1 2054    2056    93.333333   14  1
 ```
 
 
+#Generating files for downstream analysis
+
 From here it could be useful to do some simple file reorganizaion to obtain bedgraph or tab files for down stream analysis. 
 
 ```
@@ -210,3 +213,6 @@ xargs basename -s .sorted.bam | \
 xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam
 ```
+
+
+

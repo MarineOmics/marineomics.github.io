@@ -500,6 +500,9 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 --bam \
 --paired \
 {}.bam</code></pre>
+</div>
+<div id="methylation-quantification" class="section level1">
+<h1>Methylation Quantification</h1>
 <p>Methylation levels are then extracted using the
 <code>bismark_methylation_extractor</code>. For example:</p>
 <pre><code>${bismark_dir}/bismark_methylation_extractor \
@@ -545,6 +548,7 @@ NC_035785.1 1494    1496    66.666667   2   1
 NC_035785.1 1747    1749    100.000000  8   0
 NC_035785.1 2024    2026    100.000000  24  0
 NC_035785.1 2054    2056    93.333333   14  1</code></pre>
+<p>#Generating files for downstream analysis</p>
 <p>From here it could be useful to do some simple file reorganizaion to
 obtain bedgraph or tab files for down stream analysis.</p>
 <pre><code>
