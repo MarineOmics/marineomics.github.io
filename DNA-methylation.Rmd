@@ -1,0 +1,11 @@
+---
+title: 'DNA Methylation Analysis'
+subtitle: '*Steven Roberts*, and *Sam White* '
+bibliography: xxxxx.bib
+---
+
+# Introduction
+The purpose of this tutorial is to provide an example of taking Bisulfite treated DNA sequence data through identification of methylation at the loci and gene level. The principle behind creating bisulfite treated DNA libraries is that when cytosines are not methylated they will be converted to uracil, which ultimately result in thymine. When aligning to a reference genome the percent methylation at a given CpG loci is determined by examine the ratio to thymines and cytosines. For example if there 
+
+# Sequence Quality
+
