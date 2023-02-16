@@ -191,3 +191,22 @@ do
 done
 ```
 
+
+It is often useful to sort files for downstream analysis (eg methylkit, IGV)
+
+```
+# Sort files for methylkit and IGV
+
+find *.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${samtools} \
+sort --threads 28 {}.bam \
+-o {}.sorted.bam
+
+# Index sorted files for IGV
+
+find *.sorted.bam | \
+xargs basename -s .sorted.bam | \
+xargs -I{} ${samtools} \
+index -@ 28 {}.sorted.bam
+```

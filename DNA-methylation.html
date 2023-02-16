@@ -545,7 +545,7 @@ NC_035785.1 1494    1496    66.666667   2   1
 NC_035785.1 1747    1749    100.000000  8   0
 NC_035785.1 2024    2026    100.000000  24  0
 NC_035785.1 2054    2056    93.333333   14  1</code></pre>
-<p>From hear it could be useful to do some simple file reorganizaion to
+<p>From here it could be useful to do some simple file reorganizaion to
 obtain bedgraph or tab files for down stream analysis.</p>
 <pre><code>
 #creating bedgraphs post merge
@@ -583,6 +583,22 @@ do
   cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 5) {print $1, $2, $3, $4, $5, $6}}&#39; \
   &gt; &quot;${STEM}&quot;_5x.tab
 done</code></pre>
+<p>It is often useful to sort files for downstream analysis (eg
+methylkit, IGV)</p>
+<pre><code># Sort files for methylkit and IGV
+
+find *.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${samtools} \
+sort --threads 28 {}.bam \
+-o {}.sorted.bam
+
+# Index sorted files for IGV
+
+find *.sorted.bam | \
+xargs basename -s .sorted.bam | \
+xargs -I{} ${samtools} \
+index -@ 28 {}.sorted.bam</code></pre>
 </div>
 
 
