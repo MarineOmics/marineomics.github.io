@@ -11,7 +11,7 @@
 
 
 
-<title>DNA Methylation Analysis</title>
+<title>DNA Methylation Analyses</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -401,7 +401,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">DNA Methylation Analysis</h1>
+<h1 class="title toc-ignore">DNA Methylation Analyses</h1>
 <h3 class="subtitle"><em>Steven Roberts</em> and <em>Sam White</em></h3>
 
 </div>
@@ -514,7 +514,9 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 --buffer_size 75% \
 *deduplicated.bam</code></pre>
 <p>This will create deduplicated.bismark.cov.gz, uncompressed is in this
-format.</p>
+format. And while a bedGraph file is generated, in this workflow a
+bedGraph will be generated later that uses information from merged
+strands (as opposed to this output).</p>
 <pre><code>NC_035784.1 141 141 37.5    3   5
 NC_035784.1 142 142 100 2   0
 NC_035784.1 155 155 70  7   3
@@ -525,6 +527,7 @@ NC_035784.1 313 313 0   0   1
 NC_035784.1 314 314 66.6666666666667    2   1
 NC_035784.1 470 470 66.6666666666667    4   2
 NC_035784.1 611 611 0   0   4</code></pre>
+<p>Column organization</p>
 <pre><code>&lt;chromosome&gt; &lt;start position&gt; &lt;end position&gt; &lt;methylation percentage&gt; &lt;count methylated&gt; &lt;count unmethylated&gt;</code></pre>
 <p>A genome-wide cytosine report ins generated, with this code as an
 example:</p>
@@ -548,20 +551,19 @@ NC_035785.1 1494    1496    66.666667   2   1
 NC_035785.1 1747    1749    100.000000  8   0
 NC_035785.1 2024    2026    100.000000  24  0
 NC_035785.1 2054    2056    93.333333   14  1</code></pre>
-<p>#Generating files for downstream analysis</p>
+</div>
+<div id="generating-files-for-downstream-analysis"
+class="section level1">
+<h1>Generating files for downstream analysis</h1>
 <p>From here it could be useful to do some simple file reorganizaion to
 obtain bedgraph or tab files for down stream analysis.</p>
-<pre><code>
-#creating bedgraphs post merge
-
+<pre><code>#creating bedgraphs post merge
 for f in *merged_CpG_evidence.cov
 do
   STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
   cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 10) {print $1, $2, $3, $4}}&#39; \
   &gt; &quot;${STEM}&quot;_10x.bedgraph
 done
-
-
 
 for f in *merged_CpG_evidence.cov
 do
@@ -570,16 +572,13 @@ do
   &gt; &quot;${STEM}&quot;_5x.bedgraph
 done
 
-
 #creating tab files with raw count for glms
-
 for f in *merged_CpG_evidence.cov
 do
   STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
   cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 10) {print $1, $2, $3, $4, $5, $6}}&#39; \
   &gt; &quot;${STEM}&quot;_10x.tab
 done
-
 
 for f in *merged_CpG_evidence.cov
 do
@@ -590,7 +589,6 @@ done</code></pre>
 <p>It is often useful to sort files for downstream analysis (eg
 methylkit, IGV)</p>
 <pre><code># Sort files for methylkit and IGV
-
 find *.bam | \
 xargs basename -s .bam | \
 xargs -I{} ${samtools} \
@@ -598,7 +596,6 @@ sort --threads 28 {}.bam \
 -o {}.sorted.bam
 
 # Index sorted files for IGV
-
 find *.sorted.bam | \
 xargs basename -s .sorted.bam | \
 xargs -I{} ${samtools} \

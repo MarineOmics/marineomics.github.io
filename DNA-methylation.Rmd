@@ -102,7 +102,7 @@ ${bismark_dir}/bismark_methylation_extractor \
 *deduplicated.bam
 ```
 
-This will create deduplicated.bismark.cov.gz, uncompressed is in this format. And while a bedGraph file is generated, in this workflow a bedGraph will be generated later that uses information from merged strands (as opposed to this output).
+This will create a file with the suffix `deduplicated.bismark.cov.gz` (example shown below in uncompressed format). And while a bedGraph file is generated, in this workflow a bedGraph will be generated later that uses information from merged strands (as opposed to this output).
 
 ```
 NC_035784.1 141 141 37.5    3   5
@@ -117,14 +117,14 @@ NC_035784.1 470 470 66.6666666666667    4   2
 NC_035784.1 611 611 0   0   4
 ```
 
-Column organization 
+column organization of the file 
 
 ```
 <chromosome> <start position> <end position> <methylation percentage> <count methylated> <count unmethylated>
 ```
 
 
-A genome-wide cytosine report ins generated, with this code as an example:
+A genome-wide cytosine report is generated, with this code as an example:
 
 ```
 find *deduplicated.bismark.cov.gz \
@@ -153,9 +153,9 @@ NC_035785.1 2054    2056    93.333333   14  1
 ```
 
 
-#Generating files for downstream analysis
+# Generating files for downstream analysis
 
-From here it could be useful to do some simple file reorganizaion to obtain bedgraph or tab files for down stream analysis. 
+From here it could be useful to do some simple file reorganizaion to obtain bedgraph or tab files for downstream analysis (eg bedtools, GLMs). 
 
 ```
 #creating bedgraphs post merge
@@ -190,7 +190,7 @@ done
 ```
 
 
-It is often useful to sort files for downstream analysis (eg methylkit, IGV)
+It is sometimes useful to sort BAM files for downstream analysis (eg methylkit, IGV)
 
 ```
 # Sort files for methylkit and IGV
