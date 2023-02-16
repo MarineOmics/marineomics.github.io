@@ -1,6 +1,6 @@
 ---
 title: 'DNA Methylation Analyses'
-subtitle: '*Steven Roberts* and *Sam White* '
+subtitle: '*Steven Roberts*, *Sam White*, and ............ '
 bibliography: DNA-Methylation.bib
 ---
 
