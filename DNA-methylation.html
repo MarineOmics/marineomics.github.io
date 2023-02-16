@@ -447,8 +447,142 @@ This particular data set was trimmed with the following parameters:</p>
 <p class="caption">bp-chart</p>
 </div>
 </div>
-<div id="read-aligment" class="section level1">
-<h1>Read Aligment</h1>
+<div id="read-alignment" class="section level1">
+<h1>Read Alignment</h1>
+<p>The software used as part of this tutorial is <strong>Bismark
+Bisulfite Mapper</strong>. As with any software it is best to be
+famililar with the <a
+href="https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html">User
+Manual</a>. Thus content below will provided with the assumption that
+the reader has read the manual and is meant to serve as guidance based
+on experience working with marine invertebrates.</p>
+<p>The first step in the process in preparing the genome. Example
+code:</p>
+<pre><code># Directories and programs
+bismark_dir=&quot;/programs/Bismark-0.21.0&quot;
+bowtie2_dir=&quot;/programs/bowtie2-2.3.4.1-linux-x86_64/&quot;
+genome_folder=&quot;/where/the/fastafile/lives/&quot;
+
+${bismark_dir}/bismark_genome_preparation \
+--verbose \
+--parallel 28 \
+--path_to_aligner ${bowtie2_dir} \
+${genome_folder}
+</code></pre>
+<p>You should expect to prepared genome with new directories
+indluding</p>
+<pre><code>./Bisulfite_Genome
+./Bisulfite_Genome/GA_conversion
+./Bisulfite_Genome/CT_conversion</code></pre>
+<p>For doing the alignment of the trim reads to the genome the following
+code structured is used</p>
+<pre><code>find ${reads_dir}*_R1_001_val_1.fq.gz \
+| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
+--path_to_bowtie ${bowtie2_dir} \
+-genome ${genome_folder} \
+-p 4 \
+-score_min L,0,-0.6 \
+--non_directional \
+-1 ${reads_dir}{}_R1_001_val_1.fq.gz \
+-2 ${reads_dir}{}_R2_001_val_2.fq.gz \
+-o Mcap_tg</code></pre>
+<p>This will create bam files (sequence alignment files)</p>
+<p>Files are then deduplicated if they are whole genome bisulfite
+treated samples. This command will deduplicate the Bismark alignment BAM
+file and remove all reads but one which align to the the very same
+position and in the same orientation. This step is recommended for
+whole-genome bisulfite samples, but should not be used for reduced
+representation libraries such as RRBS, amplicon or target enrichment
+libraries.</p>
+<pre><code>find *.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${bismark_dir}/deduplicate_bismark \
+--bam \
+--paired \
+{}.bam</code></pre>
+<p>Methylation levels are then extracted using the
+<code>bismark_methylation_extractor</code>. For example:</p>
+<pre><code>${bismark_dir}/bismark_methylation_extractor \
+--bedGraph \
+--counts \
+--comprehensive \
+--merge_non_CpG \
+--multicore 28 \
+--buffer_size 75% \
+*deduplicated.bam</code></pre>
+<p>This will create deduplicated.bismark.cov.gz, uncompressed is in this
+format.</p>
+<pre><code>NC_035784.1 141 141 37.5    3   5
+NC_035784.1 142 142 100 2   0
+NC_035784.1 155 155 70  7   3
+NC_035784.1 156 156 100 2   0
+NC_035784.1 291 291 0   0   2
+NC_035784.1 292 292 0   0   3
+NC_035784.1 313 313 0   0   1
+NC_035784.1 314 314 66.6666666666667    2   1
+NC_035784.1 470 470 66.6666666666667    4   2
+NC_035784.1 611 611 0   0   4</code></pre>
+<pre><code>&lt;chromosome&gt; &lt;start position&gt; &lt;end position&gt; &lt;methylation percentage&gt; &lt;count methylated&gt; &lt;count unmethylated&gt;</code></pre>
+<p>A genome-wide cytosine report ins generated, with this code as an
+example:</p>
+<pre><code>find *deduplicated.bismark.cov.gz \
+| xargs basename -s _trimmed_bismark_bt2.deduplicated.bismark.cov.gz \
+| xargs -I{} ${bismark_dir}/coverage2cytosine \
+--genome_folder ${genome_folder} \
+-o {} \
+--merge_CpG \
+--zero_based \
+{}_trimmed_bismark_bt2.deduplicated.bismark.cov.gz</code></pre>
+<p>Generating a file
+<code>.CpG_report.merged_CpG_evidence.cov</code></p>
+<pre><code>NC_035785.1 217 219 100.000000  17  0
+NC_035785.1 523 525 87.500000   7   1
+NC_035785.1 556 558 50.000000   5   5
+NC_035785.1 727 729 100.000000  16  0
+NC_035785.1 1330    1332    0.000000    0   2
+NC_035785.1 1403    1405    0.000000    0   2
+NC_035785.1 1494    1496    66.666667   2   1
+NC_035785.1 1747    1749    100.000000  8   0
+NC_035785.1 2024    2026    100.000000  24  0
+NC_035785.1 2054    2056    93.333333   14  1</code></pre>
+<p>From hear it could be useful to do some simple file reorganizaion to
+obtain bedgraph or tab files for down stream analysis.</p>
+<pre><code>
+#creating bedgraphs post merge
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
+  cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 10) {print $1, $2, $3, $4}}&#39; \
+  &gt; &quot;${STEM}&quot;_10x.bedgraph
+done
+
+
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
+  cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 5) {print $1, $2, $3, $4}}&#39; \
+  &gt; &quot;${STEM}&quot;_5x.bedgraph
+done
+
+
+#creating tab files with raw count for glms
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
+  cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 10) {print $1, $2, $3, $4, $5, $6}}&#39; \
+  &gt; &quot;${STEM}&quot;_10x.tab
+done
+
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
+  cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 5) {print $1, $2, $3, $4, $5, $6}}&#39; \
+  &gt; &quot;${STEM}&quot;_5x.tab
+done</code></pre>
 </div>
 
 
