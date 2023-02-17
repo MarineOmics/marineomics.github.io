@@ -451,6 +451,9 @@ base-pair resolution using whole genome bisulfite sequencing (WGBS),
 reduced representation bisulfite sequencing (RRBS), and methyl-CpG
 binding domain bisulfite sequencing (MBDBS). The tutorial below is based
 on WGBS, though the general workflow would be consistent.</p>
+<div id="quarto" class="section level2 callout-note">
+<h2>Quarto</h2>
+</div>
 </div>
 <div id="sequence-quality" class="section level1">
 <h1>Sequence Quality</h1>
@@ -499,8 +502,7 @@ ${bismark_dir}/bismark_genome_preparation \
 --verbose \
 --parallel 28 \
 --path_to_aligner ${bowtie2_dir} \
-${genome_folder}
-</code></pre>
+${genome_folder}</code></pre>
 <p>You should expect to prepared genome with new directories
 indluding</p>
 <pre><code>./Bisulfite_Genome
