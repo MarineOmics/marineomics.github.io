@@ -13,7 +13,7 @@
 
 <title>DNA Methylation Analyses</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -60,6 +60,29 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="tutorial.css" type="text/css" />
 
 
@@ -84,6 +107,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -141,11 +167,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -174,8 +204,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -183,16 +213,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -315,7 +338,7 @@ div.tocify {
 <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -331,7 +354,7 @@ div.tocify {
   <a href="panels.html">Panel Seminars</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Population Genomics
      
     <span class="caret"></span>
@@ -355,7 +378,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Functional Genomics
      
     <span class="caret"></span>
@@ -367,7 +390,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Genome-Phenome
      
     <span class="caret"></span>
@@ -420,6 +443,14 @@ a given CpG loci is determined by examine the ratio to thymines and
 cytosines. For example if there is a given CpG loci with 30% of the
 alignment with the cytosine on the reference being and thymine, one
 would consider this cytosine loci (CpG) to be 70% methylated.</p>
+<p>For a good review of epigenetic mechanisms including DNA methylation
+in marine organisms see <span class="citation">Eirin-Lopez and Putnam
+(2019)</span>. <span class="citation">Trigg et al. (2022)</span> offers
+a comparison of three methods for quantifying DNA methylation at single
+base-pair resolution using whole genome bisulfite sequencing (WGBS),
+reduced representation bisulfite sequencing (RRBS), and methyl-CpG
+binding domain bisulfite sequencing (MBDBS). The tutorial below is based
+on WGBS, though the general workflow would be consistent.</p>
 </div>
 <div id="sequence-quality" class="section level1">
 <h1>Sequence Quality</h1>
@@ -554,9 +585,8 @@ NC_035785.1 1747    1749    100.000000  8   0
 NC_035785.1 2024    2026    100.000000  24  0
 NC_035785.1 2054    2056    93.333333   14  1</code></pre>
 </div>
-<div id="generating-files-for-downstream-analysis"
-class="section level1">
-<h1>Generating files for downstream analysis</h1>
+<div id="file-conversions" class="section level1">
+<h1>File Conversions</h1>
 <p>From here it could be useful to do some simple file reorganizaion to
 obtain bedgraph or tab files for downstream analysis (eg bedtools,
 GLMs).</p>
@@ -603,6 +633,26 @@ find *.sorted.bam | \
 xargs basename -s .sorted.bam | \
 xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam</code></pre>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-doi:10.1146/annurev-marine-010318-095114"
+class="csl-entry">
+Eirin-Lopez, Jose M., and Hollie M. Putnam. 2019. <span>“Marine
+Environmental Epigenetics.”</span> <em>Annual Review of Marine
+Science</em> 11 (1): 335–68. <a
+href="https://doi.org/10.1146/annurev-marine-010318-095114">https://doi.org/10.1146/annurev-marine-010318-095114</a>.
+</div>
+<div id="ref-https://doi.org/10.1111/1755-0998.13542" class="csl-entry">
+Trigg, Shelly A., Yaamini R. Venkataraman, Mackenzie R. Gavery, Steven
+B. Roberts, Debashish Bhattacharya, Alan Downey-Wall, Jose M.
+Eirin-Lopez, et al. 2022. <span>“Invertebrate Methylomes Provide Insight
+into Mechanisms of Environmental Tolerance and Reveal Methodological
+Biases.”</span> <em>Molecular Ecology Resources</em> 22 (4): 1247–61. <a
+href="https://doi.org/10.1111/1755-0998.13542">https://doi.org/10.1111/1755-0998.13542</a>.
+</div>
+</div>
 </div>
 
 

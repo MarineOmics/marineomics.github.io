@@ -1,3 +1,15 @@
+```{r,message = FALSE,echo = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+library(knitcitations)
+library(kableExtra)
+opts_chunk$set(fig.width = 10,
+               fig.height = 5,
+               cache = FALSE)
+cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
+             hyperlink = "to.doc")
+```
+
 ---
 title: 'DNA Methylation Analyses'
 subtitle: '*Steven Roberts*, *Sam White*, and ............ '
@@ -6,6 +18,9 @@ bibliography: DNA-Methylation.bib
 
 # Introduction
 The purpose of this tutorial is to provide an example of taking Bisulfite treated DNA sequence data through identification of methylation at the loci and gene level. The principle behind creating bisulfite treated DNA libraries is that when cytosines are not methylated they will be converted to uracil, which ultimately result in thymine. When aligning to a reference genome the percent methylation at a given CpG loci is determined by examine the ratio to thymines and cytosines. For example if there is a given CpG loci with 30% of the alignment with the cytosine on the reference being and thymine, one would consider this cytosine loci (CpG) to be 70% methylated.
+
+For a good review of epigenetic mechanisms including DNA methylation in marine organisms see @doi:10.1146/annurev-marine-010318-095114. @https://doi.org/10.1111/1755-0998.13542 offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). The tutorial below is based on WGBS, though the general workflow would be consistent. 
+
 
 # Sequence Quality
 An example of what raw data might look like from a marine invertebrate is shown. _Note that DNA methylation patters are diverse across taxa with most marine invertebrates demonstrating a mosiac pattern and global methylation at CpG loci is approximately 15%._  
@@ -153,7 +168,7 @@ NC_035785.1 2054    2056    93.333333   14  1
 ```
 
 
-# Generating files for downstream analysis
+# File Conversions
 
 From here it could be useful to do some simple file reorganizaion to obtain bedgraph or tab files for downstream analysis (eg bedtools, GLMs). 
 
@@ -208,4 +223,6 @@ index -@ 28 {}.sorted.bam
 ```
 
 
+
+# References
 
