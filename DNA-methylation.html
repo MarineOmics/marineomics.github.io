@@ -13,7 +13,7 @@
 
 <title>DNA Methylation Analyses</title>
 
-<script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -451,9 +451,6 @@ base-pair resolution using whole genome bisulfite sequencing (WGBS),
 reduced representation bisulfite sequencing (RRBS), and methyl-CpG
 binding domain bisulfite sequencing (MBDBS). The tutorial below is based
 on WGBS, though the general workflow would be consistent.</p>
-<div id="quarto" class="section level2 callout-note">
-<h2>Quarto</h2>
-</div>
 </div>
 <div id="sequence-quality" class="section level1">
 <h1>Sequence Quality</h1>
@@ -477,10 +474,7 @@ This particular data set was trimmed with the following parameters:</p>
 --three_prime_clip_R2 10 \
 --path_to_cutadapt /gscratch/srlab/programs/miniconda3/bin/cutadapt \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R1_001.fastq.gz \</code></pre>
-<div class="figure">
-<img src="images/meth-bp-chart.png" alt="" />
-<p class="caption">bp-chart</p>
-</div>
+<p><img src="images/meth-bp-chart.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="read-alignment" class="section level1">
 <h1>Read Alignment</h1>

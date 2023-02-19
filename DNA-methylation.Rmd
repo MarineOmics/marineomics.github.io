@@ -42,7 +42,11 @@ Following trimming one would expect to see something similar to this. This parti
     --path_to_cutadapt /gscratch/srlab/programs/miniconda3/bin/cutadapt \
     /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R1_001.fastq.gz \
 
-![bp-chart](images/meth-bp-chart.png)
+```{r meth-bp, echo = FALSE, out.width = "70%", fig.align = "center"}
+knitr::include_graphics("images/meth-bp-chart.png")
+```
+
+
 
 # Read Alignment
 
