@@ -11,13 +11,13 @@ library(knitr)
 knitr::opts_chunk$set(
 	fig.height = 5,
 	fig.width = 10,
-	cache = FALSE
+	cache = TRUE
 )
 library(knitcitations)
 library(kableExtra)
 opts_chunk$set(fig.width = 10,
                fig.height = 5,
-               cache = FALSE)
+               cache = TRUE)
 cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
              hyperlink = "to.doc")
 ```
@@ -305,7 +305,7 @@ share the image and that it is appropriately cited.
 
     ```{r, echo = TRUE, include = TRUE, out.height = "40%", fig.align = "center", fig.cap="Figure from Rivera et al. 2021"} `r ''`
 
-    knitr::include_graphics("images/Rivera_etal_fig.png")
+    knitr::include_graphics("submissions_instructions/Rivera_etal_fig.png")
 
     ```
 
@@ -315,7 +315,7 @@ share the image and that it is appropriately cited.
 
 ```{r, echo = TRUE, include = TRUE, out.height = "40%", fig.align = "center",fig.cap="Figure from Rivera et al. 2021" }
 
-knitr::include_graphics("images/Rivera_etal_fig.png")
+knitr::include_graphics("submissions_instructions/Rivera_etal_fig.png")
 
 ```
 
