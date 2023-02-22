@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Instructions for developing new pages for the MarineOmics webpage</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="tutorial.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MarineOmics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="contributions.html">Contributions</a>
+</li>
+<li>
+  <a href="panels.html">Panel Seminars</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Population Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="choosing-population-genetics.html">Choosing a Population Genomics Approach</a>
+    </li>
+    <li>
+      <a href="WGS_intro.html">Whole Genome Resequencing</a>
+    </li>
+    <li>
+      <a href="RADseq.html">Reduced Representation Sequencing</a>
+    </li>
+    <li>
+      <a href="poolseq.html">Poolseq</a>
+    </li>
+    <li>
+      <a href="RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Functional Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Genome-Phenome
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">coming soon!</li>
+  </ul>
+</li>
+<li>
+  <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'G-53GH9PV49T', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Instructions for developing new pages for
+the MarineOmics webpage</h1>
+
+</div>
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>If you are interested in submitting new content to the
+MarineOmics.github.io website, this is the guide for you! While the
+website managers will work with you to help prepare and publish your new
+page, this guide can be a useful resource as you develop your content.
+Below we provide general instructions as well as examples of how to
+build specific features (eg., tables, code chunks). Prior to developing
+new pages, please contact the current Website Manager Jason Johns
+(jasonjohns[at]ucsb.edu). Do not hesitate to reach out with any other
+questions, comments, or features you’d like added to this guide.</p>
+<p>The MarineOmics website is published through Github Pages directly
+from the <a
+href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics
+github repository</a>. In short, each page of the website is rendered as
+an .html from an RMarkdown (.Rmd) document. The two most important files
+for publishing the general website are the _site.yml and the
+index.Rmd/index.html.</p>
+<p>**_site.yml**: the ‘under the hood’ backbone of the website, where
+things like the visual appearance of the website and the navigation bar
+are specified</p>
+<p><strong>index.html</strong>: rendered from index.Rmd - the home page
+from which all other pages branch</p>
+<p>* The website manager will modify the index.html and .site_yml files
+for your page when you are ready to publish it, so you don’t need to
+know exactly how they work, but it’s good to know what they are at a
+basic level.</p>
+<hr />
+</div>
+<div id="r-markdown-basics" class="section level1">
+<h1>R Markdown basics</h1>
+<p>The rendered .Rmd and .html files for each page on this site can be
+seen in the <a
+href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics
+github repository</a>. It is possible to use .Rmd files in base R, but
+we recommend using RStudio. If you don’t have much experience with
+RStudio, it’s quite intuitive with a shallow learning curve and many
+existing online resources for using it. It is possible to use .Rmd files
+in base R, but we recommend using RStudio.</p>
+<p><em>Note: it’s a good idea to look at existing .Rmd scripts
+(including <a
+href="https://github.com/MarineOmics/marineomics.github.io/blob/main/submissions_instructions.Rmd">the
+one that codes for this page</a>) to see examples of how a particular
+feature can be accomplished, such as citing references, linking a
+website, building a table, incorporating figures, etc. We will
+explicitly go over some of those features below, but there are many
+other bells and whistles that can be explored through online
+resources.</em></p>
+<p>Here are some general RMarkdown tutorials that we like to reference:
+<br> - <a
+href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">Chapter
+10 from RMarkdown the Definitive Guide: Xi, Allaire, &amp; Grolemund
+2022</a> <br> - <a
+href="https://garrettgman.github.io/rmarkdown/rmarkdown_websites.html">R
+Markdown Websites: Garrett Grolemund</a></p>
+<p><br></p>
+<div id="formatting-basics" class="section level2">
+<h2>Formatting basics</h2>
+<p>One of the strengths of .Rmd documents is their versatility. They can
+hold everything from code (not only in R but in other languages),
+formatted text, figure outputs, and more. Basically, code must be
+enclosed within ‘code chunks’ and anything outside of code chunks will
+be read as text, similar to a basic text file.</p>
+<div id="code-chunks" class="section level3">
+<h3><strong>code chunks</strong></h3>
+<p>Below is a basic R code chunk which can be inserted by clicking the
+green +C button on the RStudio toolbar or typing the keyboard shortcut:
+<br></p>
+<ul>
+<li>macOS: command + option + I <br></li>
+<li>Windows/Linux: control + alt + I</li>
+</ul>
+<!-- -->
+<pre><code>```{r, echo = TRUE, include = TRUE} 
+
+#Here&#39;s a simple linear model in R as an example
+my_lm &lt;- lm(y ~ x, data = df)
+
+```</code></pre>
+<p>Whether code chunks and/or their output are included in the knitted
+.html can be modified with the logical commands “echo” and “include”.
+<br></p>
+<ul>
+<li>echo: include the code chunk itself or not <br></li>
+<li>include: include the output of the code chunk or not</li>
+</ul>
+<p>* Other options exist for code chunk output which can be explored
+online and in other .Rmd scripts in this repository.</p>
+<p><br></p>
+<div id="global-code-chunk-options" class="section level4">
+<h4><em>global code chunk options</em></h4>
+<p>This is the chunk where we establish global settings for the entire
+document. This is done with the command from the knitr package
+“opts_chunk$set” as shown in the example below. This command is
+typically included in the first code chunk, where we also load our page
+formatting packages and adjust the settings for citations. When a new
+.Rmd is made, this command is automatically included in the first chunk,
+which is named “setup” by default. The name of a code chunk can be
+specified after the r in ```{r ____}.</p>
+<p><a id="cite_options"></a></p>
+<pre><code>```{r setup} 
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
+# load page formatting packages
+library(knitr)
+library(knitcitations)
+library(kableExtra)
+knitr::opts_chunk$set(fig.width = 10, fig.height = 5) #setting the dimensions for figure outputs in a different line of code for cleanliness
+cite_options(citation_format = &quot;pandoc&quot;, max.names = 3, style = &quot;html&quot;, 
+             hyperlink = &quot;to.doc&quot;) #setting format for in-text citations for the references section at the bottom of the page
+```</code></pre>
+<p>* Note the “cache =” option. When set to “true” R will cache all of
+the output created from knitting the RMarkdown document. This is
+especially useful for pages with heavy computation that take a long time
+to knit.</p>
+<p><br></p>
+</div>
+<div id="including-code-from-another-language" class="section level4">
+<h4><em>including code from another language</em></h4>
+<p>In addition to R code, we can also run code such as bash shell script
+in the R markdown file by modifying the code chunk header as below:
+<br></p>
+<pre><code>```{bash, eval = T} 
+
+# Here&#39;s a simple line of bash as an example
+echo &quot;Hi world&quot;
+
+```</code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="formatting-text" class="section level3">
+<h3><strong>formatting text</strong></h3>
+<p>Options abound for formatting text in .Rmd documents using <a
+href="https://pandoc.org/MANUAL.html">Pandoc Markdown</a>, and many of
+these can be found with a quick search, but we will go over a few basics
+here.<br></p>
+<ul>
+<li>As with writing code, any text symbol that codes for something, such
+as a # or a * must be escaped with a backslash (\) if you just want to
+use the symbol itself. <br></li>
+<li><strong>#</strong>: <em>Outside of a code chunk</em>, pound signs
+dictate the size and organizational level of the text. A single # will
+make large text and a main section in the navigation window. Two ## will
+make slightly smaller text and a sub-section in the navigation window.
+<br>
+<ul>
+<li>For example, the “RMarkdown formatting” text and category was
+created with “# RMarkdown formatting” while the “code chunks”
+subcategory was created with “## code chunks.”<br></li>
+</ul></li>
+<li><strong>*</strong>: Asterisks are used to bold and italicize when
+surrounding texts. Use **<strong>two asterisks to bold</strong>** and
+*<em>one asterisk</em>* to italicize.<br></li>
+<li><strong>&lt;br&gt;</strong>: adds a line break <br></li>
+<li><strong>&lt;hr /&gt;</strong>: adds a horizontal line across the
+page</li>
+</ul>
+<p><br></p>
+</div>
+<div id="in-text-citations-from-your-.bib" class="section level3">
+<h3><strong>in-text citations from your .bib</strong></h3>
+<p>In-text citations can be made throughout the document that will
+automatically add a reference to your reference section via the
+following steps: <br></p>
+<ul>
+<li>add your citations to the RCN_site-Nov05.bib document by exporting
+BibTeX-formatted citations from your reference manager</li>
+<li>add the line ‘bibliography: RCN_site-Nov05.bib’ to your header at
+the top of the .Rmd document, which looks like this:</li>
+</ul>
+<!-- -->
+<pre><code>---
+title: &quot;Instructions for developing new pages for the MarineOmics webpage&quot;
+bibliography: RCN_site-Nov05.bib
+---</code></pre>
+<ul>
+<li>include the ‘cite-options’ chunk in your ‘setup’ code chunk. See the
+initial <a href="#cite_options">‘r setup’ chunk</a> above for the syntax
+of the ‘cite_options’ command.</li>
+</ul>
+<p>After following these step, you can cite them in the RMarkdown
+document. Let’s say you have a paper you want to cite by LastName et
+al. 2023 and the paper’s ID in your .bib file is ‘LastName2023-xy’. We
+can reference this paper in-text by adding [@LastName2023-xy] to the end
+of a sentence. This will produce a reference such as the one below for
+Tripp et al. 2017.</p>
+<p><em>syntax in .Rmd text <strong>(not in a code
+chunk)</strong></em>:</p>
+<pre><code>RADseq can produce insightful analyses even in the absence of data, if missing values are handled properly [@Tripp2017-cp].</code></pre>
+<p><em>knitted output</em>: <br> RADseq can produce insightful analyses
+even in the absence of data, if missing values are handled properly
+<span class="citation">(Tripp et al. 2017)</span>.</p>
+<p><br></p>
+</div>
+<div id="installing-loading-packages" class="section level3">
+<h3><strong>installing &amp; loading packages</strong></h3>
+<p>If you will be using any R packages or external software for your
+content, it’s a good idea to highlight them toward the beginning of your
+page, including code for installing them. Here’s an example from the
+RADseq tutorial: <br> <br> <em>If you would like to run the R code
+examples that are scattered throughout the guide (recommended but not
+required!), you will need to install some R packages. Only need to run
+this code once:</em></p>
+<pre class="r"><code>install.packages(&quot;tidyverse&quot;)
+if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
+    install.packages(&quot;BiocManager&quot;)
+#the BiocManager package facilitates the installation of packages from the Bioconductor project
+BiocManager::install(&quot;SeqArray&quot;)
+BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
+<p><br> <em>These external software are referenced in the tutorial:</em>
+<br></p>
+<ul>
+<li><a
+href="https://vcftools.github.io/man_latest.html">vcftools</a></li>
+<li><a
+href="https://riptutorial.com/gnuplot/example/11275/installation-or-setup">gnuplot</a></li>
+</ul>
+</div>
+<div id="caching" class="section level3">
+<h3><strong>caching</strong></h3>
+<p>If your page includes any code that takes a long time to run, please
+set “cache = TRUE” in the knitr::opts_chunk$set command in your global
+code chunk.</p>
+<hr />
+</div>
+</div>
+<div
+id="examples-of-how-to-include-visual-feautures-such-as-tables-images-equations-etc."
+class="section level2">
+<h2>Examples of how to include visual feautures such as tables, images,
+equations, etc.</h2>
+<div id="insert-a-table" class="section level3">
+<h3><strong>insert a table</strong></h3>
+<p><em>text in .Rmd <strong>(not in a code chunk)</strong></em>:</p>
+<pre><code>| Term A | Term B | Term C | Term D | Term E | Term F | Term G |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| xxx | xxx | xxx | xxx | xxx | xxx | xxx |  
+| yyy | yyy | yyy | yyy | yyy | yyy | yyy | 
+| zzz | zzz | zzz | zzz | zzz | zzz | zzz | </code></pre>
+<p><br></p>
+<p><em>knitted output</em>:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Term A</th>
+<th align="left">Term B</th>
+<th align="left">Term C</th>
+<th align="left">Term D</th>
+<th align="left">Term E</th>
+<th align="left">Term F</th>
+<th align="left">Term G</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">xxx</td>
+<td align="left">xxx</td>
+<td align="left">xxx</td>
+<td align="left">xxx</td>
+<td align="left">xxx</td>
+<td align="left">xxx</td>
+<td align="left">xxx</td>
+</tr>
+<tr class="even">
+<td align="left">yyy</td>
+<td align="left">yyy</td>
+<td align="left">yyy</td>
+<td align="left">yyy</td>
+<td align="left">yyy</td>
+<td align="left">yyy</td>
+<td align="left">yyy</td>
+</tr>
+<tr class="odd">
+<td align="left">zzz</td>
+<td align="left">zzz</td>
+<td align="left">zzz</td>
+<td align="left">zzz</td>
+<td align="left">zzz</td>
+<td align="left">zzz</td>
+<td align="left">zzz</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>You can generate a Markdown-formatted table using a free online
+editor, such as <a
+href="https://tabletomarkdown.com/generate-markdown-table/">this
+one</a>. The <a
+href="https://bookdown.org/yihui/rmarkdown-cookbook/kableextra.html"><strong>kableExtra</strong></a>
+package has a lot of functionality for fancier tables.</p>
+<p><br></p>
+</div>
+<div id="insert-an-image" class="section level3">
+<h3><strong>insert an image</strong></h3>
+<p>To insert an image, you need the image file to also be uploaded to
+the Github repositority. We store the images hosted on the website in
+the <code>images/</code> folder. For any image, please make sure you
+have permission to share the image and that it is appropriately
+cited.</p>
+<p><em>code chunk in .Rmd</em>:</p>
+<pre><code>```{r, echo = TRUE, include = TRUE, out.height = &quot;40%&quot;, fig.align = &quot;center&quot;, fig.cap=&quot;Figure from Rivera et al. 2021&quot;} 
+
+knitr::include_graphics(&quot;images/Rivera_etal_fig.png&quot;)
+
+```</code></pre>
+<p><br></p>
+<p><em>knitted output</em>:</p>
+<pre class="r"><code>knitr::include_graphics(&quot;images/Rivera_etal_fig.png&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="images/Rivera_etal_fig.png" alt="Figure from Rivera et al. 2021" width="1137" height="40%" />
+<p class="caption">
+Figure from Rivera et al. 2021
+</p>
+</div>
+<p><br></p>
+</div>
+<div id="write-and-print-an-equation" class="section level3">
+<h3><strong>write and print an equation</strong></h3>
+<p>Equations follow LaTeX style formatting.</p>
+<p>For illustrative purposes, here is a simple and famous equation. <br>
+<em>syntax in .Rmd</em>:</p>
+<pre><code>$$
+E = mc^2
+$$</code></pre>
+<p><br></p>
+<p><em>knitted output</em>: <span class="math display">\[
+E = mc^2
+\]</span> <br></p>
+<p>As an example of a more complex equation, here is an equation for the
+t-statistic: <br> <em>syntax in .Rmd</em>:</p>
+<pre><code>$$
+t = \frac{\overline{x_{1}}-\overline{x_{2}}}
+{\sqrt{(s^2(
+\frac{1}{n_{1}} + \frac{1}{n_{2}}
+))}}
+$$ </code></pre>
+<p><em>knitted output</em>: <span class="math display">\[
+t = \frac{\overline{x_{1}}-\overline{x_{2}}}
+{\sqrt{(s^2(
+\frac{1}{n_{1}} + \frac{1}{n_{2}}
+))}}
+\]</span></p>
+<p><br></p>
+<p>After you have finished editing your R markdown file, you can “knit”
+it to an HTML file by selecting the Knit button at the top of RStudio.
+You can review this HTML file to get an idea of what the page will look
+like on the website (minus the navigation bar and other site-specific
+formatting). You will need to upload both the R markdown file and the
+HTML file to Github prior to you page being added to the website.</p>
+<hr />
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Tripp2017-cp" class="csl-entry">
+Tripp, Erin A, Yi-Hsin Erica Tsai, Yongbin Zhuang, and Kyle G Dexter.
+2017. <span>“<span>RADseq</span> Dataset with 90% Missing Data Fully
+Resolves Recent Radiation of Petalidium (Acanthaceae) in the Ultra-Arid
+Deserts of Namibia.”</span> <em>Ecol. Evol.</em> 7 (19): 7920–36. <a
+href="https://doi.org/10.1002/ece3.3274">https://doi.org/10.1002/ece3.3274</a>.
+</div>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
