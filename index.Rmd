@@ -33,7 +33,7 @@ Based on the expertise of the MarineOmics working group, the first topics includ
 
 ### {-}
 
-### The guidelines portion of the website should be considered a "preprint". If you are interested in contributing to the peer review process, check out the [Discussion Forum](discussion.html). {.unlisted .unnumbered}
+### The guidelines portion of the website should be considered a "preprint". If you are interested in contributing to the peer review process, check out the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions). {.unlisted .unnumbered}
 
 # Panel Seminars 
 To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we hosted [Q & A panel seminars](ADMIN_03_panels.html) with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on [YouTube](https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ)!
