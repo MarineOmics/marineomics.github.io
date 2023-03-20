@@ -24,4 +24,4 @@ If your code requires an input file, you should create a new folder in the GitHu
 When you Knit an RMarkdown file and it generates figures, the plots for these figures should be output into a new folder with `_files` in the name. Make sure to add this folder to your Github commit.  
 
 ### Including references  
-You can add Bibtex references to the file `RCN_site-Nov05.bib`, and then refer to them in your RMarkdown by adding `bibliography: RCN_site-Nov05.bib` to the header and citing them in the RMarkdown document. Check out existing pages for examples.  
+You can add Bibtex references to the file `common-bib_01.bib`, and then refer to them in your RMarkdown by adding `bibliography: common-bib_01` to the header and citing them in the RMarkdown document. Check out existing pages for examples.  

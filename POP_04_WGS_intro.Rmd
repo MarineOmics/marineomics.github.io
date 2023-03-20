@@ -1,0 +1,59 @@
+---
+bibliography: POP_04_WGS_intro_files/common-bib_01.bib
+title:  Whole Genome Resequencing for Population Genomics 
+subtitle: '*Katherine Silliman, Nicolas Lou*'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+library(knitcitations)
+knitr::opts_chunk$set(fig.width = 10,
+               fig.height = 5,
+               cache = FALSE)
+cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
+             hyperlink = "to.doc")
+```
+
+<br>
+
+# Introduction
+
+For the purpose of this guide, we use "whole genome (re)sequencing (WGS)) to refer to methods where a reference genome already exists (whether for the focal species or a related species), and uniquely barcoded samples are sequenced and then mapped to most or all of the reference genome. This method can provide high density genetic variants (e.g., SNPs) and structural information for population genomic analyses, while also facilitating functional insights if the reference genome is functionally annotated. This is separate from whole-genome *de novo* sequencing, which aims to produce a reference genome by sequencing and assembling a complete genome for a species for the first time.   
+
+An excellent and thorough review of the methodology and consideration for WGS approaches, especially as they apply to non-model organisms, is [[@Fuentes-Pardo2017-nu]](https://doi.org/10.1111/mec.14264). But briefly, current WGS approaches can be broadly categorized into two types: high-to-moderate-coverage WGS, and low-coverage WGS. Their major distinction is that with high-to-moderate-coverage WGS, each individual is sequenced at a depth with which genotype can be confidently called at most sites, whereas with low-coverage WGS, each individual is sequenced at a depth too low to call genotype with, and downstream analyses should take such genotype uncertainties into acount.
+
+However, the line between high-to-moderate-coverage WGS and low-coverage WGS is not always as clear-cut as presented above. For example, with moderate-coverage WGS (e.g. 5-20x), many sites within an individual can still have low coverage due to random sampling, resulting in unreliable genotype calls and/or missing data that can become problematic in downstream analysis. Therefore, it could be preferrable to avoid hard-calling genotypes with moderate-coverage WGS in certain applications. On the other hand, in populations with high levels of linkage disequilibrium (LD), it could be possible to leverage LD to carry out genotype imputation, making genotype calling a lot more accurate with low-coverage WGS data. Imputation is more likely to be successful when a high-quality reference panel exists in the system ([@Fuller2020](https://www.science.org/doi/10.1126/science.aba4674), [@Rubinacci2021-dm](https://www.nature.com/articles/s41588-020-00756-0)), but methods for imputation without such reference panels have also been developed (in which case a very large sample size would be required, [@Davies2016-rq](https://www.nature.com/articles/ng.3594)). 
+
+This said, here are the main differences between these two approaches in practice: with same sample size, high-to-moderate-coverage WGS tends to provide higher resolution data that are more versatile and less susceptible to technical artefacts (especially those caused by sequencing errors) when compared with low-coverage WGS, but it could be a lot more costly. Low-coverage WGS, in contrast, can be used to achieve higher sample size with a fixed budget, which can then contribute to higher-resolution population-level inferences, but it does require a different computational toolbox that takes genotype uncertainties into account, and is thus constrained by limitations of the current toolbox (see Section 6 in [[@Lou2021-me]](https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077) for a more detailed discussion on this). 
+
+<br>
+
+# Tutorials  
+
+Here we provide a couple different tutorials by our working group members, as well as links to other detailed tutorials on the web. The goal of these MarineOmics tutorials are to provide extensive details on "why" certain parameters are chosen, and some guidance on how to evaluate different parameter options to fit your data.  
+
+<br>
+
+## High to moderate coverage WGS  
+
+* [Fastq-to-VCF SnakeMake pipeline](POP_06_fastq2vcf_june2022_update/POP_06_fastq2vcf_june2022_update.html): in-depth explanation of an automated short-read mapping and variant calling pipeline maintained by [Harvard Informatics](https://github.com/harvardinformatics/shortRead_mapping_variantCalling). Useful if you plan to adopt this pre-packaged automated and parallelizable pipeline, and would like to understand its different components, but not necessarily change it substantially.
+
+* [Fastq-to-VCF workflow](POP_07_WGS_Full_Walkthrough/POP_07_WGS_Full_Walkthrough.html): detailed walkthrough of processing 15x sequencing depth WGS data for cod, from raw reads to a VCF. Useful if you would like to run each component of the pipeline yourself and potentially tweak some of them for your own purpose. In other words, you can more easily add, skip, or change parts of this pipeline, but will lose the convenience offered by an automated pipeline. 
+
+<br>
+
+## Low coverage WGS  
+
+The quality control and read alignment part of the pipeline for high-to-moderate-coverage WGS also applies for low-coverage WGS. Therefore, the two tutorials for high-to-moderate-coverage WGS are also useful for low-coverage WGS until the point where variants and genotypes are called. In addition to these, here are some resources specifically designed for low-coverage WGS.
+
+* [Low-coverage WGS tutorial](https://github.com/nt246/lcwgs-guide-tutorial): a tutorial for the processing and analysis of low-coverage WGS data (i.e. from raw fastq files to population genomic inference), with example datasets and hands-on exercises. It is associated with the paper [[@Lou2021-me]](https://onlinelibrary.wiley.com/doi/abs/10.1111/mec.16077).
+
+* [Detection and mitigation of batch effects](https://github.com/therkildsen-lab/batch-effect/blob/main/tutorial/tutorial.md): a tutorial for the detection and mitigation of batch effects with low-coverage WGS data, with example datasets and hands-on exercises. It is associated with the paper [@Lou2021-ew](https://onlinelibrary.wiley.com/doi/abs/10.1111/1755-0998.13559).
+
+* [Low-coverage WGS data analysis pipeline](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md): a collection of scripts for the efficient and reproducible analysis of low-coverage WGS data (i.e. from bam to population genomic inference).
+
+* [Low-coverage WGS data processing pipeline](https://github.com/therkildsen-lab/data-processing/blob/master/lcwgs_data_processing.md): a collection of script for the efficient and reproducible processing of low-coverage WGS data (i.e. from raw fastq to bam). This pipeline should also be compatible with high-to-moderate-coverage WGS data.
+
+<br>
+
+# References

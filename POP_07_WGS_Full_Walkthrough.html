@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>WGS fastq2vcf walkthrough</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="tutorial.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MarineOmics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="ADMIN_02_contributions.html">Contributions</a>
+</li>
+<li>
+  <a href="ADMIN_03_panels.html">Panel Seminars</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Population Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="POP_01_choosing_population_genetics.html">Choosing a Population Genomics Approach</a>
+    </li>
+    <li>
+      <a href="POP_04_WGS_intro.html">Whole Genome Resequencing</a>
+    </li>
+    <li>
+      <a href="POP_02_RADseq.html">Reduced Representation Sequencing</a>
+    </li>
+    <li>
+      <a href="POP_03_poolseq.html">Poolseq</a>
+    </li>
+    <li>
+      <a href="POP_05_RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Functional Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="FUN_01_DGE_comparison_v2.html">Mutifactorial RNAseq</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Genome-Phenome
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">coming soon!</li>
+  </ul>
+</li>
+<li>
+  <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'G-53GH9PV49T', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">WGS fastq2vcf walkthrough</h1>
+
+</div>
+
+
+<div id="stacks" class="section level1">
+<h1><strong>Stacks</strong></h1>
+<p>If your samples need to be demultiplexed, running the program Stacks
+is a necessary first step. Stack’s process_radtags function searches
+sequence reads for barcodes that you provide and demultiplexes the reads
+using your barcode file. This file specifies which barcode belongs to
+which sample and will trim off those barcodes once it demultiplexes.</p>
+<div id="example-scenario" class="section level3">
+<h3>Example scenario</h3>
+<p>Samples used as examples throughout this walkthrough were multiplexed
+using 3 different unique sequences. Every sample had a unique
+combination of an i5 primer, i7 primer and adapter barcode. Data from
+the sequencing facility will demultiplex to the level of unique
+combinations of i5 and i7 primers. Therefore for these samples, there
+were 32 unique i5 and i7 primer combinations and so the sequencing
+facility sent 64 fastq.gz files: one for the forward sequence and one
+for the reverse for all 32 combinations. We will take one file as an
+example in the following code.</p>
+</div>
+<div id="helpful-links" class="section level3">
+<h3>Helpful Links</h3>
+<p><code>process_radtags</code> manual and specific walkthrough for
+<code>process_radtags</code><br />
+<a
+href="https://catchenlab.life.illinois.edu/stacks/manual/">Manual</a><br />
+<a
+href="https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php">Walkthrough</a></p>
+<div id="example-fastq-file-from-sequencing-facility"
+class="section level4">
+<h4>Example Fastq File from Sequencing Facility</h4>
+<div id="read-1" class="section level5">
+<h5>Read 1</h5>
+<pre><code>[schaal.s@login-00 workingGroupFiles]$ head i5-4-i7-11_R1_exampleData.fastq.gz 
+@GWNJ-1012:218:GW191226406th:1:1101:1181:1000 1:N:0:GGCTAC+GGCTCTGA
+CGATGTTTGGAAAGACAAAAAATACATTTAGATCCAAATGACTTCTATAATGGATTTTGAAATTATATATACGAGATGCTTTAGTTCAAAACATTTGACACAAATGAGGTTCAACATAAAGAACATCGAGATCGGAAGAGCACACGTCTG
++
+FFF:FF,FFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF:FFFFFFFFFF:F,FFF:FFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,FFFFFFFFFFFFF:FFFF,F:FFFFFFF:FFF
+@GWNJ-1012:218:GW191226406th:1:1101:1651:1000 1:N:0:GGCTAC+GGCTCTGA
+CTTGCATTGAGATTTCTGAAAGAAGAGCTCCATCCAGTGGCAGAAAGGGGACGTTTCAAAAGCACGAATGCAAGCCTTTTAATTTTTCCAAAATAAAAATATGCAAGAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGGCTACATC
++
+FFFFFF,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+@GWNJ-1012:218:GW191226406th:1:1101:2193:1000 1:N:0:GGCTAC+GGCTCTGA
+CGATGTTGCATGGAGTGGCTGGTGTCTGTGCCGACCACTCTGGTTCCAGAGGTAATGAAGACCAGCTTCCCCCCTGGCCACACAGTGGACTCAATCTTCCCTGAGATAAAGGTGAAGAGTTCCTCCTTGTTCTTAGGGTAACATCGAGAT</code></pre>
+</div>
+<div id="read-2" class="section level5">
+<h5>Read 2</h5>
+<pre><code>[schaal.s@login-00 workingGroupFiles]$ head i5-4-i7-11_R2_exampleData.fastq.gz 
+@GWNJ-1012:218:GW191226406th:1:1101:1181:1000 2:N:0:GGCTAC+GGCTCTGA
+CGATGTGCTTTATGTTGAACCTCATTTGTGTCAAATGTTTTGAACTAAAGCATCTCGTATATATAATTTCAAAATCCATTATAGAAGTCATTTGGATCTAAATGTATTTTTTGTCTTTCCAAACATCGAGATCGGAAGAGCGTCGGGTAG
++
+FFFFFF,FF,FFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFF:FFFF:F,F:FFF,:FFFFFFFFFF,,:,:FFFFFFFF,FFFFFFFFF:F:FFF:F,F,FFFFF:FFF:FFF,,F::FFFFF,,F:FFFFFFF,F,,F
+@GWNJ-1012:218:GW191226406th:1:1101:1651:1000 2:N:0:GGCTAC+GGCTCTGA
+CTTGCATATTTTTATTTTGGAAAAATTAAAAGGCTTGCATTCGTGCTTTTGAAACGTCCCCTTTCTGCCACTGGATGGAGCTCTTCTTTCAGAAATCTCAATGCAAGAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTTCAGAGCCGT
++
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFF,
+@GWNJ-1012:218:GW191226406th:1:1101:2193:1000 2:N:0:GGCTAC+GGCTCTGA
+CGATGTTACCCTAAGAACAAGGAGGAACTCTTCACCTTTATCTCAGGGAAGATTGAGTCCACTGTGTGGCCAGGGGGGAAGCTGGTCTTCATTACCTCTGGAACCAGAGTGGTCGGCACAGACACCAGCCACTCCATGCAACATCGAGAT</code></pre>
+</div>
+</div>
+</div>
+<div id="stacks-walkthrough" class="section level3">
+<h3>Stacks Walkthrough</h3>
+<div id="process_radtags-walkthrough" class="section level4">
+<h4>process_radtags walkthrough</h4>
+<p>Barcode File: For each set of paired end files that need to be
+demultiplexed, a barcode file needs to be created. For example, for
+files i5-4-i7-11_R1_001.fastq.gz and i5-4-i7-11_R2_001.fastq.gz its
+barcode file is as follows:</p>
+<pre><code>ATCACG  ATCACG  Pop6_18001
+CGATGT  CGATGT  Pop7_18173
+TTAGGC  TTAGGC  Pop8_18148
+TGGCCA  TGGCCA  Pop9_18064
+ACAGTG  ACAGTG  Pop3_16228
+GCCAAT  GCCAAT  Pop4_17210
+CAGATC  CAGATC  Pop6_18035
+ACTTGA  ACTTGA  Pop6_18038
+GATCAG  GATCAG  Pop8_18130
+TAGCTT  TAGCTT  Pop8_18113
+GGCTAC  GGCTAC  Pop7_18190
+CTTGCA  CTTGCA  Pop1_17327</code></pre>
+<p>This file contains the 12 barcodes that have the i5_4 and i7_11 index
+and which sample that combination belongs to. This file is tab delimited
+and because I had inline barcodes, meaning they were the same on both
+ends of the read, I have the same barcode sequence in the first and
+second column. Then the sample ID is on the right.</p>
+<p>Sample naming convention is important for downstream steps. The way
+the example samples are named are first a “Pop” identifier for what a
+priori population they belonged to (see Sample Notes file for example
+population IDs). Then a 5-digit identifier for the specific sample from
+that population where the first two digits represent the year the sample
+was collected and the last 3 digits represent the individual sample ID
+from that sampling year.</p>
+<p>We provide a simple R script to create the barcode files for each
+primer index combination. See file: Stacks_FileCreate_OmicsWG.R. You can
+use the practice files provide to see how the code works or just input
+your own to make the files you need. This file may be modified to fit
+your needs and there are annotations where that would be the case.</p>
+</div>
+<div id="additional-flags" class="section level4">
+<h4>Additional Flags</h4>
+<p><code>-p</code> path to your genome files. If you have paired data
+(forward and reverse reads), put your two fastq files in the same folder
+and only have those two files in it. I created folders for each index
+combination to keep everything organized and easy to run stacks on.</p>
+<p><code>-o</code> path to where you want your output files to go. For
+subsequent steps, you’ll want all of these demultiplexed files in the
+same folder. Create a folder like “Stacks_Out” where you write all your
+files to.</p>
+<p><code>-b</code> path to your barcode file</p>
+<p><code>--inline_inline</code> The barcode option flag has 6 different
+options and you have to use the proper flag for your barcodes or indexes
+that need to be demultiplexed. Because the example samples have inline
+barcodes on either end of the sequence if using the practice data you
+need to use the –inline_inline flag.</p>
+<p><code>-P</code> If paired end sequencing was used, you need to add
+the -P flag to indicate this.</p>
+<p><code>--disable_rad_check</code> this flag is needed if you are doing
+anything other than RAD-seq. Stacks defaults to requiring cutsite
+sequences that are used in RAD-seq, but for WGS you won’t have cut sites
+and need to disable the rad check.</p>
+<p><code>-r</code> this flag allows Stacks to rescue any barcodes that
+are off by one bp. For example, the barcode ACTTGA might appear as CTTGA
+or TACTTGA. This should only be a small percentage of reads and will
+probably recover about 1% of reads.</p>
+</div>
+<div id="code-for-running-stacks" class="section level4">
+<h4>Code for running Stacks</h4>
+<pre><code>process_radtags -P -p {Path to genome files} -o {Path for output} -b {barcode file} --inline_inline --disable_rad_check -r
+</code></pre>
+</div>
+<div id="example-code-for-running-on-a-cluster" class="section level4">
+<h4>Example code for running on a Cluster</h4>
+<p>You can run the practice data files using the format below while
+changing the path on your computer to fit your needs.</p>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=stacks_i54_i711                # sets the job name
+#SBATCH --mem=1Gb                                 # reserves 1 GB memory
+#SBATCH --mail-user=schaal.s@northeastern.edu     # set your email to get notifications about your run
+#SBATCH --mail-type=FAIL                          # if the job fails for any reason email the provided email
+#SBATCH --time=24:00:00                           # reserves machines/cores for 24 hours.
+#SBATCH --output=stacksi54_i711.%j.out            # sets the standard output to be stored in file, where %j is the job id
+#SBATCH --error=stacksi54_i711.%j.err             # sets the standard error to be stored in file
+
+process_radtags -P -p ./genomeFilesi54_i711/ -o ./Stacks_Out/ -b barcodeFilei54_i711.txt --inline_inline --disable_rad_check -r</code></pre>
+<p>This will create four new fastq files for each sample provided in the
+barcodeFile. Because the practice data is a subset of the full dataset,
+this will only fill files with reads that are included in the subset
+file. The process_radtags program wants to keep the reads in phase, so
+that the first read in the sample_XXX.1.fq file is the mate of the first
+read in the sample_XXX.2.fq file. Likewise for the second pair of reads
+being the second record in each of the two files and so on. When one
+read in a pair is discarded due to low quality or a missing restriction
+enzyme cut site, the remaining read can’t simply be output to the
+sample_XXX.1.fq or sample_XXX.2.fq files as it would cause the remaining
+reads to fall out of phase. Instead, this read is considered a remainder
+read and is output into the sample_XXX.rem.1.fq file if the paired-end
+was discarded, or the sample_XXX.rem.2.fq file if the single-end was
+discarded.</p>
+<p>There will also be a log file that summarizes the number of reads per
+sample that were retained, were low quality, or that had noRADtag (only
+relevant for rad data).</p>
+</div>
+<div
+id="results-for-a-run-with-one-primer-combination-on-the-full-paired-end-data-files-that-for-each-30gb-in-size"
+class="section level4">
+<h4>Results for a run with one primer combination on the full paired end
+data files that for each ~30GB in size</h4>
+<p>Time: each file took approx. 7 hrs<br />
+Memory: approx. 80 MB RAM Run description: run on separate cluster nodes
+for 32 different primer combinations</p>
+</div>
+<div id="read-1-post-stacks-for-example-sample-pop3_17304"
+class="section level4">
+<h4>Read 1 Post Stacks for example sample Pop3_17304</h4>
+<pre><code>[schaal.s@login-00 Stacks_Out]$ zcat Pop3_17304.1.fq.gz | head -n 10
+
+@218_1_1101_1090_1000/1
+CTGTGCGTTGGCCTGCGGGCTGACTCGGTCCTGAGATGGACTGCTGTGTAGTTTGAACCATAGATTCATTATATAGAACACGGTCTCCTCTGCGCTGCTGGCCAATGGAGCCGAACGTCCGCACTGGCGGGCGGCCATCTTGCC
++
+,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFF,:FFFFFFFFF:FFFFFFF:FFFFFFFFFFFFF:FFFFFFF
+@218_1_1101_1687_1000/1 TCCCTCTCACTCTCCTCTCCGTCTCCTCTTTTGTCCTCGTCTCTCTCCTCTCTCCCTCTCTCCCATCTCCCTCTCTATCAAGTAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGATCAGATCTCGTATGCCGTCTTCTGC
++
+,FFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFF:FFFFFFFFFFFFFFFFFFFFFFFF:FFFF:::F,F::FFFFF
+@218_1_1101_6840_1000/1
+AAAAAATACATAGCGGCCATGGACAGGATGACCTCTATGACAATGATAGAAACAGAAAGGACGCGGAGACTCTTGAGTCATCAAGTAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGATCAGATCTCGTATGCCGTCTTC</code></pre>
+</div>
+<div id="read-2-post-stacks-for-example-sample-pop3_17304"
+class="section level4">
+<h4>Read 2 Post Stacks for example sample Pop3_17304</h4>
+<pre><code>[schaal.s@login-00 Stacks_Out]$ zcat Pop3_17304.2.fq.gz | head -n 10
+
+@218_1_1101_1090_1000/2
+AGGCAAGATGGCCGCCCGCCAGTGCGGACGTTCGGCTCCATTGGCCAGCAGCGCAGAGGAGACCGTGTTCTATATAATGAATCTATGGTTCAAACTACACAGCAGTCCATCTCAGGACCGAGTCAGCCCGCAGGCCAACGCACA
++
+,FFFF:FFFFFF:FFFFFFFFFFFFFFFFFF:FFFFFFF:,FFFFF:FF,FFFFFFFFFFFFFFF,F,:FFFF:F,FFFFF:FF,FFFF,FFFFFF,FFF,FF:FFFFF:F:FFFF,FFF:F:F:FFFFFFFFFFF,:FFFFFF
+@218_1_1101_1687_1000/2
+AAGAGAGGGAGATGGGAGAGAGGGAGAGAGGAGAGAGACGAGGACAAAAGAGGAGACGGAGAGGAGAGTGAGAGGGATCAAGTAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTGCCTCTATGTGTAGATCTCGGTGGTCGC
++
+,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,FFFF:FFFFFFFFFFFFFFFFFFFFFFFFFFFF:FF,FF:
+@218_1_1101_6840_1000/2
+AGACTCAAGAGTCTCCGCGTCCTTTCTGTTTCTATCATTGTCATAGAGGTCATCCTGTCCATGGCCGCTATGTATTTTTATCAAGTAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTGCCTCTATGTGTAGATCTCGGTGGT</code></pre>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div id="quality-trimming" class="section level1">
+<h1><strong>Quality Trimming</strong></h1>
+<p>Before sequence alignment to a reference genome, you need to trim
+your sequence data of bases that you have low confidence in being
+correct. This is to ensure that you have high confidence in both your
+alignment and the downstream variant calls. There are a few programs
+that do this including Trimmomatic and Fast P, but this walkthrough will
+describe Fast P and settings used for this program.</p>
+<div id="helpful-links-1" class="section level3">
+<h3>Helpful Links</h3>
+<p><a
+href="https://github.com/OpenGene/fastp#:~:text=fastp%20supports%20global%20trimming%2C%20which,or%20%2D%2Dtrim_tail1%3D1%20option.">Fast
+P Manual</a></p>
+<div id="parameters" class="section level4">
+<h4>Parameters</h4>
+<p><code>--in1</code> This is read 1 for a given sample that uses paired
+end sequencing. For paired end sequencing, you will have two input files
+that need to be identified by <code>--in1</code> and <code>--in2</code>.
+If doing single end sequencing, you only need the <code>--in</code>
+flag.</p>
+<p><code>--in2</code> This is read 2 for a given sample that uses paired
+end sequencing.</p>
+<p><code>--out1</code> This is the location and name of the out file for
+the read 1.</p>
+<p><code>--out2</code> This is the location and name of the out file for
+the read 2.</p>
+<p><code>-q</code> this is used as a filter on the PHRED quality score
+that each base is given from the sequencing facility. PHRED quality
+scores range from 0-40 with 40 being the highest quality. Here I removed
+any base that had a quality score of less than or equal to 15.</p>
+<p><code>-u</code> this is used as a filter on the unqualified percent
+limit by specifying how many bases are allowed to be unqualified
+(0-100).</p>
+<p><code>--trim_front1</code> This flag will trim the front base of read
+1 by 1. This is necessary if you have an A-overhang on your reads that
+needs trimming.</p>
+<p><code>--trim_front2</code> This flag will trim the front base of read
+2 by 1.</p>
+<p><code>--cut_front</code> this moves a sliding window, based on the
+size you set with the <code>--cut_window_size</code>, flag from the
+front 5’ to tail and drops bases in the window if its mean quality is
+below what you set as <code>--cut_front_mean_quality</code></p>
+<p><code>--cut_tail</code> this moves a sliding window, based on the
+size you set with the <code>--cut_window_size</code>, flag from the tail
+3’ end to front and drops bases in the window if its mean quality is
+below what you set as <code>--cut_front_mean_quality</code></p>
+<p><code>--cut_window_size</code> the window size option for
+<code>--cut_front</code>, Range: 1-1000. The window can slide from
+either 5′ to 3′ or from 3′ to 5′, and the average quality score within
+the window is evaluated. If the average quality is lower than the
+threshold set in <code>--cut_mean_quality</code> then the bases in the
+window will be discarded</p>
+<p><code>--cut_mean_quality</code> This is the mean quality requirement
+option shared by <code>--cut_front</code>, <code>--cut_tail</code> or
+<code>--cut_sliding</code>. Range: 1-36</p>
+<p><code>-j</code> outputs a json format report to the file you
+specify</p>
+<p><code>-h</code> outputs an html format report to the file you
+specify</p>
+</div>
+<div id="code-for-running-fastp-with-paired-end-data"
+class="section level4">
+<h4>Code for running fastp with paired end data</h4>
+<pre><code>fastp --in1 {Path to fastq file for forward reads} --in2 {Path to fastq file for reverse reads} --out1 {Path to output quality trimmed forward reads} --out2 {Path to output quality trimmed forward reads} -q {min quality score to keep} -u {percent of unqualified bases allowed} --trim_front1 {number of bases to trim from front of forward read} --trim_front2 {number of bases to trim from front of reverse read} --cut_front --cut_tail --cut_window_size {window size to assess quality} --cut_mean_quality {mean min quality to cut} -j {path to output json file} -h {path to output html file} &amp;&gt; {path to output .log file}
+</code></pre>
+</div>
+<div id="example-for-running-on-a-cluster" class="section level4">
+<h4>Example for running on a Cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=Pop9_18101_submitFastP.txt
+#SBATCH --mem=2Gb
+#SBATCH --mail-user=schaal.s@northeastern.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --time=1:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --output=FastP_Out/jobSum/clustOut/Pop9_18101.%j.out
+#SBATCH --error=FastP_Out/jobSum/clustOut/Pop9_18101.%j.err
+
+fastp --in1 Stacks_Out/Pop9_18101.1.fq.gz --in2 Stacks_Out/Pop9_18101.2.fq.gz --out1 FastP_Out/Pop9_18101.R1.fq.gz --out2 FastP_Out/Pop9_18101.R2.fq.gz -q 15 -u 50 --trim_front1 1 --trim_front2 1 --cut_front --cut_tail --cut_window_size 5 --cut_mean_quality 15 -j FastP_Out/jobSum/Pop9_18101.fp.json -h FastP_Out/jobSum/Pop9_18101.fp.html &amp;&gt; FastP_Out/jobSum/Pop9_18101.fp.trim.log</code></pre>
+</div>
+<div id="results" class="section level4">
+<h4>Results</h4>
+<p>Time: 20-30 min per sample Memory: 1.5 - 2GB of RAM</p>
+</div>
+<div id="other-programs" class="section level4">
+<h4>Other programs</h4>
+<p>Trimmomatic Stacks</p>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div id="alignment" class="section level1">
+<h1><strong>Alignment</strong></h1>
+<p>There are multiple programs used for aligning short reads to a
+reference: Bowtie, Bowtie2, BWA, STAR, etc. Here I will describe the
+steps I took using BWA.</p>
+<div id="helpful-links-2" class="section level3">
+<h3>Helpful Links</h3>
+<p><a href="https://github.com/lh3/bwa">bwa Github</a> <a
+href="http://bio-bwa.sourceforge.net/bwa.shtml">bwa Manual</a></p>
+</div>
+<div id="first-step-index-your-genome" class="section level3">
+<h3>First step: index your genome</h3>
+<p>Download your genome from the <a
+href="https://www.ncbi.nlm.nih.gov/">NCBI database</a> or <a
+href="http://hgdownload.cse.ucsc.edu/downloads.html">UCSC database</a>
+and run bwa index to index the genome. This allows BWA to essentially
+make a catalog (i.e., index) of the locations in the genome to make
+alignment faster.</p>
+<div id="code-for-running-bwa-index" class="section level4">
+<h4>Code for running BWA index</h4>
+<pre><code>bwa index {Path to .fna genome file}</code></pre>
+</div>
+<div id="example-code-for-running-on-a-cluster-1"
+class="section level4">
+<h4>Example code for running on a cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=subGenomesBWA                              
+#SBATCH --mem=2Gb
+#SBATCH --mail-user=schaal.s@northeastern.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --partition=lotterhos
+#SBATCH --time=6:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1                        
+#SBATCH --output=indexGenomeBWA.%j.out                
+#SBATCH --error=indexGenomeBWA.%j.err         
+
+bwa index Cod_genome/GCF_902167405.1_gadMor3.0_genomic.fna</code></pre>
+</div>
+<div id="results-1" class="section level4">
+<h4>Results</h4>
+<p>Time: 9 minutes Memory: 1 GB of RAM</p>
+</div>
+</div>
+<div id="second-step-alignment-with-bwa-mem" class="section level3">
+<h3>Second step: alignment with BWA-MEM</h3>
+<p>There are a number of parameters to change in the bwa alignment. It
+is worth playing with parameters and outputting summary information to
+evaluate how well the alignment worked.</p>
+<p>Dr. Jon Puritz provides an open sourced <a
+href="https://github.com/jpuritz/Winter.School2018/blob/master/Exercises/Day1/Mapping%20Exercise.md">guide</a>
+for testing parameters to ensure you get the best alignment results
+(DOUBLE CHECK WITH HIM THAT IT IS OKAY FOR US TO PUT THIS IN HERE).
+General advice is that a gap penalty of 5 and a mismatch penalty of 3
+consistently gives better results with a lot of marine species. However,
+it’s worth doing a couple of test runs with 3–5 samples comparing that
+to the default.</p>
+<div id="arguments" class="section level4">
+<h4>Arguments</h4>
+<p><code>-B</code> mismatch penalty used to adjust alignment scores
+based on the number of mismatches in the aligned sequence</p>
+<p><code>-O</code> gap penalty used to adjust alignment scores based on
+the number and length of gaps and mismatches are when there are bases
+that deviate from the reference that the read is aligning to. This helps
+alleviate sequencing errors influencing the alignment.</p>
+<p><code>-a</code> output all found alignments for SE or unpaired paired
+end; flagged as secondary alignments</p>
+<p><code>-M</code> mark shorter split hits as secondary</p>
+<p><code>-R</code> RGline (reference) because you will eventually be
+merging files this flag is important to add in the sample ID associated
+with these reads in the actual alignment file. This will remain in the
+file then for downstream analyses.</p>
+</div>
+<div id="code-for-running-bwa-index-1" class="section level4">
+<h4>Code for running BWA index</h4>
+<pre><code>bwa mem -O {num} -B {num} -a -M -R {Path to .fna genome file} {Path to sample .fg.gz forward read} {Path to sample .fg.gz reverse read}  &gt; {Path to outfile location for .sam file}
+</code></pre>
+</div>
+<div id="example-for-running-on-a-cluster-1" class="section level4">
+<h4>Example for running on a Cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=Pop3_17304_submitBWA
+#SBATCH --mem=3Gb
+#SBATCH --mail-user=schaal.s@northeastern.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --partition=lotterhos
+#SBATCH --time=15:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --output=BWA_Out/clustOut/Pop3_17304.%j.out
+#SBATCH --error=BWA_Out/clustOut/Pop3_17304.%j.err
+
+bwa mem -O 5 -B 3 -a -M -R BWA_genome/GCF_902167405.1_gadMor3.0_genomic.fna FastP_Out/Pop3_17304.R1.fq.gz FastP_Out/Pop3_17304.R2.fq.gz  &gt; BWA_Out/Pop3_17304aln.sam
+</code></pre>
+</div>
+<div id="results-per-sample" class="section level4">
+<h4>Results (per sample):</h4>
+<p>Time: 7-10 hours Memory: about 1.5 GB</p>
+</div>
+</div>
+<div
+id="third-step-check-alignment-stats-using-samtools-view-and-flagstat"
+class="section level3">
+<h3>Third Step: check alignment stats using samtools view and
+flagstat</h3>
+<div id="code-for-running-samtools" class="section level4">
+<h4>Code for running samtools</h4>
+<pre><code>samtools view -Sbt {Path to .fna genome file} {Path to .sam aligned sample file} | samtools flagstat -</code></pre>
+</div>
+<div id="example-for-running-on-a-cluster-2" class="section level4">
+<h4>Example for running on a Cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=Pop7_18156_alnCheckDef
+#SBATCH --mem=2Gb
+#SBATCH --mail-user=schaal.s@northeastern.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --partition=lotterhos
+#SBATCH --time=4:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --output=clustOut/Pop7_18156_def.%j.out
+#SBATCH --error=clustOut/Pop7_18156_def.%j.err
+
+samtools view -Sbt ../BWA_genome/GCF_902167405.1_gadMor3.0_genomic.fna ../BWA_Out/Pop7_18156alnDef.sam | samtools flagstat -</code></pre>
+</div>
+<div id="example-output-from-flagstat-sample-pop1_16216"
+class="section level4">
+<h4>example output from flagstat (sample: Pop1_16216):</h4>
+<pre><code>75779849 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 secondary
+1183259 + 0 supplementary
+0 + 0 duplicates
+74456805 + 0 mapped (98.25% : N/A)
+74596590 + 0 paired in sequencing
+37298295 + 0 read1
+37298295 + 0 read2
+70915282 + 0 properly paired (95.07% : N/A)
+73157116 + 0 with itself and mate mapped
+116430 + 0 singletons (0.16% : N/A)
+2026064 + 0 with mate mapped to a different chr
+739870 + 0 with mate mapped to a different chr (mapQ&gt;=5)
+</code></pre>
+<p>Here you want to maximize your properly paired reads and percent
+mapped to the genome. Try a few parameters and see how you can maximize
+this.</p>
+<p>Line 1 - total: the total number of alignments that pass the quality
+filter, this isn’t the total number of reads. To get the total number of
+reads, subtract the secondary, supplementary, and duplicate values from
+this number which will be R1 + R2.<br />
+Line 2 - secondary: (0x100 bit set) Line 3 - supplementary:
+Supplementary alignments are those alignments that are part of a
+chimeric alignment (0x800 bit set) Line 4 - duplicates: these mark
+potential PCR duplicates. This value should be zero if you filtered out
+all the pcr duplicates using picard tools (0x400 bit set) Line 5 -
+mapped: (0x4 bit not set) Line 6 - paired in sequencing: (0x1 bit set)
+Line 7 - read1: (both 0x1 and 0x40 bits set) Line 8 - read2: (both 0x1
+and 0x80 bits set) Line 9 - properly paired: (both 0x1 and 0x2 bits set
+and 0x4 bit not set) Line 10 - with itself and mate mapped: (0x1 bit set
+and neither 0x4 nor 0x8 bits set) Line 11 - singletons: Singleton is a
+mapped read whose mate is unmapped (both 0x1 and 0x8 bits set and bit
+0x4 not set) Line 12 - with mate mapped to different chr: low quality
+reads mapping to different chromosomes Line 13 - with mate mapped to
+different chr (mapQ&gt;=5): higher quality reads mapping to different
+chromosome</p>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div id="sort-and-index-your-alignment" class="section level1">
+<h1><strong>Sort and index your alignment</strong></h1>
+<p>Once you have aligned your reads to the reference you need to sort
+and index them for downstream use. This can be done using samtools.</p>
+<div id="helpful-links-3" class="section level3">
+<h3>Helpful links</h3>
+<p><a href="http://www.htslib.org/doc/samtools.html">Samtools
+Manual</a></p>
+</div>
+<div id="step-1-convert-your-sam-files-to-bam" class="section level3">
+<h3>Step 1: convert your sam files to bam</h3>
+<p>Bam files are much smaller than sam files. By converting your files
+to Bam, you willincrease downstream efficiency.</p>
+<div id="code-for-running-samtools-for-sam-to-bam-conversion"
+class="section level4">
+<h4>Code for running samtools for Sam to Bam conversion</h4>
+<pre><code>samtools view -S -b {Path to .sam file} &gt; {Path for output .bam file}</code></pre>
+</div>
+<div id="example-for-running-on-a-cluster-3" class="section level4">
+<h4>Example for running on a Cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=Pop4_17226_alnSamToBam
+#SBATCH --mem=2Gb
+#SBATCH --mail-user=schaal.s@northeastern.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --partition=lotterhos
+#SBATCH --time=4:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --output=samtools_samToBam_Out/clustOut/Pop4_17226.%j.out
+#SBATCH --error=samtools_samToBam_Out/clustOut/Pop4_17226.%j.err
+
+samtools view -S -b BWA_Out/Pop4_17226aln.sam &gt; samtools_samToBam_Out/Pop4_17226aln.bam</code></pre>
+</div>
+<div id="results-per-sample-1" class="section level4">
+<h4>Results (per sample):</h4>
+<p>Time: 35-40 minutes Memory: about 20MB</p>
+<p><br></p>
+</div>
+</div>
+<div id="step-2-sort-your-bam-files" class="section level3">
+<h3>Step 2: Sort your bam files</h3>
+<p>Sorting files takes a lot of memory, but not a lot of time. There is
+one trick about the memory part to keep in mind. You need to set memory
+for the cluster, but you also need to set the memory allotment allowed
+for samtools sort to store data in. If you make the memory in samtools
+too low it will create 100s to 1000s of temporary files that it will
+later need to knit back together. For the example shown here, the memory
+was increased so that samtools didn’t have to create temporary files.
+HOWEVER, you need to set the memory to a value that is lower than what
+you give to the cluster. If it is exactly the same or near the amount
+you gave to the cluster, it will fail and say you will get an error
+saying the program went over the memory limits. Therefore, for this
+example 40GB of memory was set in the samtools code and 50 GB of memory
+was set for each sample on the cluster.</p>
+<div id="code-for-running-samtools-for-sorting-bam-file"
+class="section level4">
+<h4>Code for running samtools for sorting bam file</h4>
+<pre><code>samtools sort -m {memory allocation to samtools} {Path to .bam file} &gt; {Path for output sorted .bam file}</code></pre>
+</div>
+<div id="example-for-running-on-a-cluster-4" class="section level4">
+<h4>Example for running on a Cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=Pop4_17226_alnSortedBam
+#SBATCH --mem=50Gb
+#SBATCH --mail-user=schaal.s@northeastern.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --partition=lotterhos
+#SBATCH --time=24:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --output=samtools_sortedBam_Out/clustOut/Pop4_17226.%j.out
+#SBATCH --error=samtools_sortedBam_Out/clustOut/Pop4_17226.%j.err
+
+samtools sort -m 40G samtools_samToBam_Out/Pop4_17226aln.bam &gt; samtools_sortedBam_Out/Pop4_17226aln.sorted.bam</code></pre>
+</div>
+<div id="results-per-sample-2" class="section level4">
+<h4>Results (per sample):</h4>
+<p>Time: about 10 min<br />
+Memory: 40GB</p>
+<p><br></p>
+</div>
+</div>
+<div id="step-3-index-your-sorted-bam-file" class="section level3">
+<h3>Step 3: Index your sorted bam file</h3>
+<div id="code-for-running-samtools-for-indexing-sorted-bam-file"
+class="section level4">
+<h4>Code for running samtools for indexing sorted bam file</h4>
+<pre><code>samtools index {Path to sorted .bam file} &gt; {Path for output sorted and indexed .bam file}</code></pre>
+</div>
+<div id="example-for-running-on-a-cluster-5" class="section level4">
+<h4>Example for running on a Cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=Pop4_17226_alnIndexBam
+#SBATCH --mem=50Mb
+#SBATCH --mail-user=schaal.s@northeastern.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --partition=lotterhos
+#SBATCH --time=2:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --output=samtools_indexedBam_Out/clustOut/Pop4_17226.%j.out
+#SBATCH --error=samtools_indexedBam_Out/clustOut/Pop4_17226.%j.err
+
+samtools index samtools_sortedBam_Out/Pop4_17226aln.sorted.bam &gt; samtools_indexedBam_Out/Pop4_17226aln_sorted_indexed</code></pre>
+</div>
+<div id="results-per-sample-3" class="section level4">
+<h4>Results (per sample):</h4>
+<p>Time: about 3-5 min<br />
+Memory: about 15 MB</p>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div id="checking-alignment" class="section level1">
+<h1><strong>Checking alignment</strong></h1>
+<div id="first-step-identifying-regions-to-calculate-coverage"
+class="section level3">
+<h3>First step: identifying regions to calculate coverage</h3>
+<p>It is important to check your coverage along each chromosome to
+determine whether you have regions of low or no coverage that could bias
+downstream analyses. One way to evaluate this is to first download the
+GFF file from NCBI for the genome of your species. As an example here is
+a link to the Atlantic cod genome used for the analysis examples in this
+walkthrough: <a
+href="https://www.ncbi.nlm.nih.gov/genome/?term=txid8049%5Borgn%5D">Atlantic
+cod genome</a></p>
+<p>Then subset the genome file for the chromosomes or genomic regions
+you want to evaluate coverage. Below is an example of subsetting the
+Atlantic cod genome for all 23 chromosomes in the R programming
+language:</p>
+<pre><code>cod.gff &lt;- read.table(&quot;src/alignment/GCF_902167405.1_gadMor3.0_genomic.gff&quot;, sep = &quot;\t&quot;, quote = &quot;&quot;)
+scaffolds.gff &lt;- cod.gff[cod.gff$V3 == &quot;region&quot;,]
+chrom.gff &lt;- scaffolds.gff[1:23,]
+write.table(chrom.gff, &quot;src/alignment/GCF_902167405.1_gadMor3.0_genomic_chroms.gff&quot;, row.names = FALSE, 
+            sep = &quot;\t&quot;, col.names = FALSE, quote = FALSE)</code></pre>
+</div>
+<div id="second-step-calculating-coverage" class="section level3">
+<h3>Second step: calculating coverage</h3>
+<div id="code-for-running-bedtools-coverage" class="section level4">
+<h4>Code for running bedtools coverage</h4>
+<pre><code>bedtools coverage -a {Path to GFF file created in previous step} -b {Path to aligned, sorted and indexed .bam file} -sorted -d &gt; {Path for output .txt file}
+</code></pre>
+</div>
+<div id="example-for-running-on-a-cluster-6" class="section level4">
+<h4>Example for running on a Cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=Pop1_16216_bedCov
+#SBATCH --mem=50Gb
+#SBATCH --mail-user=schaal.s@northeastern.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --partition=lotterhos
+#SBATCH --time=4:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --output=bedtools_coverage/clustOut/Pop1_16216bedCov.%j.out
+#SBATCH --error=bedtools_coverage/clustOut/Pop1_16216bedCov.%j.err
+bedtools coverage -a Cod_genome_data/GCF_902167405.1_gadMor3.0_genomic_chroms.gff -b samtools_sortedBam_Out/Pop1_16216aln.sorted.bam -sorted -d &gt; bedtools_coverage/Pop1_16216.coverageCalcDflag.txt </code></pre>
+<p><code>-a</code> reference genome</p>
+<p><code>-b</code> sorted bam file</p>
+<p><code>-d</code> give per base coverage</p>
+<p><code>-sorted</code> tells bedtools that this file is already
+sorted</p>
+</div>
+</div>
+<div id="third-step-subsetting" class="section level3">
+<h3>Third step: subsetting</h3>
+<p>Subset for just the chromosome data and the columns of interest in
+the output file (reduces file sizes from 111GB to 17GB this part can
+easily be piped so you aren’t creating that large intermediate file)</p>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=Pop1_16216_alnCheck
+#SBATCH --mem=2Gb
+#SBATCH --mail-user=schaal.s@northeastern.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --partition=lotterhos
+#SBATCH --time=4:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --output=bedtools_coverage/clustOut/Pop1_16216awk.%j.out
+#SBATCH --error=bedtools_coverage/clustOut/Pop1_16216awk.%j.err
+awk -F&quot;\t&quot; &#39;$1~/NC*/&#39; bedtools_coverage/Pop1_16216.coverageCalcDflag.txt | awk &#39;{print $1,$11,$12}&#39; &gt; bedtools_coverage/Pop1_16216.coverageCalcChr.txt</code></pre>
+</div>
+<div id="fourth-step-calculate-coverage-average" class="section level3">
+<h3>Fourth step: calculate coverage average</h3>
+<p>run the output file through the R script for calculating averages for
+different window sizes and plot results in ggplot</p>
+<pre><code>
+### PROCESS COVERAGE DATA TO VISUALIZE ACROSS THE GENOME ###
+## Sara M. Schaal
+
+## LOAD LIBRARIES
+library(ggplot2)
+library(data.table)
+
+## USER INPUTS
+setwd(&quot;/scratch/schaal.s/CodGenomes&quot;) # SET YOUR WORKING DIRECTORY
+samps &lt;- c(&quot;Pop1_16216&quot;, &quot;Pop1_17291&quot;, &quot;Pop4_17236&quot;, &quot;Pop5_17278&quot;, &quot;Pop6_18017&quot;) # INPUT SAMPLES OF INTEREST
+colors &lt;- c(&quot;steelblue2&quot;, &quot;chartreuse3&quot;, &quot;orchid2&quot;, &quot;firebrick1&quot;, &quot;goldenrod2&quot;) # INPUT COLORS 
+n &lt;- 10000 # INPUT SIZE OF WINDOWS TO CALCULATE AVERAGE COVERAGE
+
+## PROCESS DATA 
+# first step through each sample
+for(i in 1:length(samps)){
+  df &lt;- fread(paste0(&quot;bedtools_coverage/&quot;, samps[i], &quot;.coverageCalcChr.txt&quot;), 
+                                                      sep =&quot; &quot;, quote = &quot;&quot;, data.table = FALSE)
+  colnames(df) &lt;- c(&quot;chrom&quot;, &quot;base&quot;, &quot;coverage&quot;)
+  chroms &lt;- unique(df[,1])
+  df.sample.data &lt;- NULL
+  # step through each chromosome and break into the increment chunks you set with n
+  for(j in 1:length(chroms)){
+    df.chrom &lt;- df[df$chrom == chroms[j], ]
+    extra &lt;- nrow(df.chrom) %% n
+    # this next part is taking our windows set by n and giving each window a number id
+    # this grouped dataframe is made by binding the original df.chrom with grouping values for the window size you want 
+    # then finding what the last grouping value would be using because it will most like not be an even increment of your n
+    # for example if you divide a chromosome by your n and get 3000.3 then you can easily input the first 3000
+    # grouping values in with rep (middle part of the following cbind function) then the last grouping value will be 3001 which
+    # you get by rounding using ceiling in the last part of this cbind
+    grouped &lt;- cbind(df.chrom, c(rep(1:(nrow(df.chrom)/n), each = n), rep(ceiling(nrow(df.chrom)/n), extra)))
+    colnames(grouped)[4] &lt;- &quot;grouping&quot;
+    # now bind this chromosomes data in the full dataframe
+    df.sample.data &lt;- rbind(df.sample.data, grouped)
+  }
+  # finally take your new dataframe and calculate the average coverage for your increments using
+  # this new grouping variable and the chromosome
+  df.covAve &lt;- aggregate(coverage~grouping + chrom, data = df.sample.data, FUN = mean)
+ 
+
+  #### PLOTTING ####
+  pdf(paste0(&quot;figures/&quot;, samps[i], &quot;MaxcoveragePlot&quot;, n, &quot;.pdf&quot;), height= 15, width=15)
+
+  ## I make two plots because there will undoubtedly be some loci that have really high coverage which makes
+  # it hard to see all the spread of the majority of the data. This first graph is set to the max coverage
+  # found in the data frame and the second plot is setting your y limit to a more reasonable value for your
+  # data. For me 100 x was good but feel free to change to what is appropriate for your data.
+
+  print(ggplot(data = df.covAve, aes(x = grouping, y = coverage)) +
+    geom_point(col = colors[i], alpha = 0.5) +
+    facet_wrap(~chrom) +
+    labs(y = &quot;Coverage&quot;, x = paste0(&quot;location every &quot;, n, &quot; bases&quot;), 
+         title = paste0(samps[i], &quot;Genome Coverage up to Max Coverage&quot;)) +
+    ylim(0, max(df.covAve$coverage)) +
+    xlim(0, max(df.covAve$grouping)) +
+    theme_bw() + 
+    theme(panel.border = element_blank(), panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank(),
+          axis.line = element_line(colour = &quot;black&quot;), 
+          legend.position = &quot;none&quot;))
+  dev.off()
+  
+  pdf(paste0(&quot;figures/&quot;, samps[i], &quot;100XcoveragePlot&quot;, n, &quot;.pdf&quot;), height= 15, width=15)
+  
+  print(ggplot(data = df.covAve, aes(x = grouping, y = coverage)) +
+          geom_point(col = colors[i], alpha = 0.5) +
+          facet_wrap(~chrom) +
+          labs(y = &quot;Coverage&quot;, x = paste0(&quot;location every &quot;, n, &quot; bases&quot;),
+               title = paste0(samps[i], &quot;Genome Coverage up to 100X&quot;)) +
+          ylim(0, 100) +
+          xlim(0, max(df.covAve$grouping)) +
+          theme_bw() + 
+          theme(panel.border = element_blank(), panel.grid.major = element_blank(), 
+                panel.grid.minor = element_blank(),
+                axis.line = element_line(colour = &quot;black&quot;), 
+                legend.position = &quot;none&quot;))
+  dev.off()
+  
+}</code></pre>
+<p><img src="./Pop1_17291100XcoveragePlot10000.png" width="500"></p>
+<div id="results-r-script-for-5-samples" class="section level4">
+<h4>Results (R script for 5 samples):</h4>
+<p>Time: about 4.5 hours<br />
+Memory: about 85 GB</p>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div id="picard-markduplicates" class="section level1">
+<h1><strong>Picard MarkDuplicates</strong></h1>
+<p>The tool’s main output is a new SAM or BAM file, in which duplicates
+have been identified in the SAM flags field for each read. Duplicates
+are marked with the hexadecimal value of 0x400, which corresponds to a
+decimal value of 1024. For the example data shown in this walkthrough,
+OPTICAL_DUPLICATE_PIXEL_DISTANCE=2500 needs to be set which is for data
+coming from a patterned flow cell. The example whole genome data comes
+from a NovaSeq run which uses the patterned flow cell. The default for
+that flag is only 100 which is appropriate for unpatterned flow cells.
+Make sure you know which technology your data come from and set this
+parameter as needed.</p>
+<div id="helpful-links-4" class="section level3">
+<h3>Helpful Links</h3>
+<p><a
+href="https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-">Picard
+MarkDuplicates Manual</a> <a
+href="http://core-genomics.blogspot.com/2016/05/increased-read-duplication-on-patterned.html">Breakdown
+and explanation of different duplicates from Illumina sequencing</a></p>
+<div id="code-for-running-picardtools" class="section level4">
+<h4>Code for running PicardTools</h4>
+<pre><code>picard MarkDuplicates I={Path to aligned, sorted and indexed .bam file} O={Path for output of duplicated marked .bam file} M={Path for metrics output file} OPTICAL_DUPLICATE_PIXEL_DISTANCE={Value specific to sequencing technology} TAGGING_POLICY={Type of duplicates to mark} &amp;&gt; {Path to .log file}
+</code></pre>
+</div>
+<div id="example-for-running-on-a-cluster-7" class="section level4">
+<h4>Example for running on a Cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --time=8:00:00
+#SBATCH --job-name=picard_benchmark
+#SBATCH --partition=short
+#SBATCH --cpus-per-task=8
+#SBATCH --output=picard_log.o
+#SBATCH --error=picard_log.e
+
+picard MarkDuplicates I=../samtools_sortedBam_Out/Pop9_18093aln.sorted.bam O=../picard_Out/Pop9_18093aln.sorted.md.bam M=md_metrics.txt OPTICAL_DUPLICATE_PIXEL_DISTANCE=2500 TAGGING_POLICY=OpticalOnly &amp;&gt; pop9_18093aln.sorted.md.log</code></pre>
+</div>
+<div id="results-per-sample-4" class="section level4">
+<h4>Results (per sample):</h4>
+<p>Time: about 30 min<br />
+Memory: about 2-3GB</p>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div id="samtools-filtering" class="section level1">
+<h1><strong>Samtools filtering</strong></h1>
+<p>Before running the SNP caller, you need to filter the samples to
+ensure you are only using good quality aligned data. To do this, the bam
+file is filtered using samtools view.</p>
+<div id="code-from-ddocent-for-quality-filtering"
+class="section level4">
+<h4>Code from dDocent for quality filtering:</h4>
+<pre><code>samtools view -@32 -h -q 10 -F 0x100 -F 0x400 $1-RGmd.bam | mawk &#39;$6 !~/[8-9].[SH]/ &amp;&amp; $6 !~ /[1-9][0-9].[SH]/&#39; | samtools view -@ 32 -b</code></pre>
+<p>In dDocent, all reads are filtered if mapping quality is less than
+10, removes PCR duplicates (marked in previous Picard step this quality
+filter then removes them) with the -F 0x400 flag and removes non primary
+alignments with the 0x100. The mawk line of code then removes hard and
+soft clipped reads. Finally, the last samtools view code exports the
+results as a bam file.</p>
+<p><code>-@</code> option allocates threads for the job</p>
+<p><code>-h</code> include the header in the output</p>
+<p><code>-q</code> skip alignments with MAPQ smaller than INT[0]</p>
+<p><code>-F</code> Do not output alignments with any bits set in INT
+present in the FLAG field. INT can be specified in hex by beginning with
+0x’ (i.e. /^0x[0-9A-F]+/) or in octal by beginning with 0’
+(i.e. /^0[0-7]+/) [0]</p>
+<p><code>-b</code> output in the bam format</p>
+</div>
+<div id="example-for-an-altered-ddocent-code" class="section level4">
+<h4>Example for an altered dDocent code</h4>
+<p>Changed the mawk code to not remove the hard clipped reads because I
+am interested in inversion breakpoints. This would most likely filter
+those out.</p>
+</div>
+<div id="example-for-running-on-a-cluster-8" class="section level4">
+<h4>Example for running on a cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH --job-name=samtoolsFilter
+#SBATCH --mem=750Mb
+#SBATCH --mail-user=schaal.s@northeastern.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --partition=lotterhos
+#SBATCH --time=0:30:00
+#SBATCH --cpus-per-task=2
+#SBATCH --output=../samtools_filter_Out/clustOut/samtoolsFilter.%j.out
+#SBATCH --error=../samtools_filter_Out/clustOut/samtoolsFilter.%j.err
+
+samtools view -@2 -h -q 10 -F 0x100 -F 0x400 ../picard_Out/Pop1_16216aln.sorted.md.bam | mawk &#39;$6 !~ /[1-9][0-9].[SH]/&#39;| samtools view -@2 -b &gt; ../samtools_filter_Out/Pop1_16216.f.bam
+</code></pre>
+</div>
+<div id="results-per-sample-5" class="section level4">
+<h4>Results (per sample):</h4>
+<p>Time: 15-20 min<br />
+Memory: about 500MB</p>
+<p><br> <br></p>
+</div>
+</div>
+<div id="merge-reads" class="section level1">
+<h1><strong>Merge Reads</strong></h1>
+<p>Before calling SNPs you need to merge all your per sample Bam files.
+This is why we had to add the RG ids during the mapping step. This
+ensures all reads have a unique identifier for which sample they belong
+to once merged. By merging all the reads, the SNP caller doesn’t need to
+keep opening and closing individual sample files, which will increase
+the runtime. You need to make a text file that includes all the bamfile
+names that you want to merge and then run the line of code below.
+Because this is computationally intensive, I used 32 cpus on a single
+compute node.</p>
+<div id="helpful-links-5" class="section level3">
+<h3>Helpful Links</h3>
+<p><a href="http://www.htslib.org/doc/samtools-merge.html">Samtools
+Merge Manual</a></p>
+<div id="code-for-running-samtools-merge" class="section level4">
+<h4>Code for running samtools merge</h4>
+<pre><code>BAMLIST={Path to .txt Bamfile list}
+samtools merge {Path for output of merged .bam file} -b ${BAMLIST} -@{number of threads to use}
+</code></pre>
+</div>
+<div id="example-for-running-on-a-cluster-9" class="section level4">
+<h4>Example for running on a Cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH -p short
+#SBATCH --nodes 1
+#SBATCH --cpus-per-task=32
+#SBATCH -t 120:00:00
+#SBATCH --constraint=zen2
+#SBATCH --mem=5G
+#SBATCH -o clustOut/slurm.%N.%j.out
+#SBATCH -e clustOut/slurm.%N.%j.err
+#SBATCH --job-name=&quot;Samtools-merge_test&quot;
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=schaal.s@northeastern.edu
+
+BAMLIST=./bamlist.txt
+samtools merge mergedBam_n32_all.bam -b ${BAMLIST} -@32
+</code></pre>
+</div>
+<div id="results-merging-296-samples" class="section level4">
+<h4>Results (merging 296 samples):</h4>
+<p>Time: about 36 hours<br />
+Memory: about 150MB</p>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+<div id="snp-calling" class="section level1">
+<h1><strong>SNP calling</strong></h1>
+<p>There are two major variant callers that are widely used: GATK and
+Freebayes. Here we walk through using freebayes-parallel to optimize
+runtime on our cluster. SNP calling is computationally intensive so this
+step will take some work to optimize both the size of genome chunks you
+want to analyze at a time and how many cpus to run your samples on.</p>
+<p>There are a few files that you need for this step: 1) your population
+list file which has a line per sample where the sample name is the first
+item in the line and the population ID is the second item in the line
+(see example header of a population list file below) 2) your .fna genome
+reference that you are calling snps from and 3) regions file where you
+tell freebayes what size chunks of the genome you want to analyze at a
+time. Depending on your coverage, this last file is very important to
+troubleshoot to maximize memory use vs. run times. In the example data,
+we found we were reaching about 90% efficiency on our cluster with 9-13
+hour runs using 64 cores and allotting 90 GB of memory when we split the
+genome up into 100kb chunks. So this is how we proceeded and ran each
+chromosome individually by splitting them each up into 100kb chunks.</p>
+<div id="helpful-links-6" class="section level3">
+<h3>Helpful links</h3>
+<p><a href="https://github.com/freebayes/freebayes">Freebayes Github
+Page</a> <a
+href="https://ngseasy.readthedocs.io/en/latest/containerized/ngseasy_dockerfiles/ngseasy_freebayes/README/">Freebayes
+README</a></p>
+<div id="example-header-of-a-population-list-file"
+class="section level4">
+<h4>example header of a population list file</h4>
+<pre><code>Pop4_17219  Pop4
+Pop2_17008  Pop2
+Pop9_18076  Pop9
+Pop1_16232  Pop1
+Pop7_18161  Pop7
+Pop8_18147  Pop8</code></pre>
+</div>
+<div id="example-header-of-a-regions-list-file" class="section level4">
+<h4>example header of a regions list file</h4>
+<pre><code>NC_044048.1:1-100000
+NC_044048.1:100001-200000
+NC_044048.1:200001-300000
+NC_044048.1:300001-400000
+NC_044048.1:400001-500000
+</code></pre>
+</div>
+<div id="code-for-running-freebayes-parallel" class="section level4">
+<h4>Code for running freebayes parallel</h4>
+<pre><code>POPFILE={Path to population .txt file}
+REF={Path to .fna reference genome file}
+freebayes-parallel {path to regions .txt file} {num threads} -f ${REF} -b {Path to merged bam file} --populations ${POPFILE} -m {num} -q {num} -E {num} --min-repeat-entropy {num} -n {num} -F {fraction} &gt;&gt; {Path for .vcf out file}
+</code></pre>
+</div>
+<div id="arguments-1" class="section level4">
+<h4>Arguments</h4>
+<p><code>-m</code>–min-mapping-quality Q. Exclude alignments from
+analysis if they have a mapping quality less than Q</p>
+<p><code>-q</code> –min-base-quality Q. Exclude alleles from analysis if
+their supporting base quality is less than Q</p>
+<p><code>-E</code> Allow complex alleles with contiguous embedded
+matches of up to this length</p>
+<p><code>-n</code> –use-best-n-alleles N. Evaluate only the best N SNP
+alleles, ranked by sum of supporting quality scores.</p>
+<p><code>-F</code> –min-alternate-fraction N. Require at least this
+fraction of observations supporting an alternate allele within a single
+individual in order to evaluate the position</p>
+</div>
+<div id="example-for-running-on-a-cluster-10" class="section level4">
+<h4>Example for running on a Cluster</h4>
+<pre><code>#!/bin/bash
+#SBATCH -p long
+#SBATCH --nodes 1
+#SBATCH --cpus-per-task=64
+#SBATCH -t 120:00:00
+#SBATCH --constraint=zen2
+#SBATCH --mem=90GB
+#SBATCH -o noRegion.%N.%j.out
+#SBATCH -e noRegion.%N.%j.err
+#SBATCH --job-name=&quot;Freebayes_parallel_test&quot;
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=schaal.s@northeastern.edu
+
+POPFILE=/scratch/schaal.s/CodGenomes/10_freebayes/poplist.txt
+REF=/scratch/schaal.s/CodGenomes/Cod_genome_data/GCF_902167405.1_gadMor3.0_genomic.fna
+freebayes-parallel regionsFiles/NC_044048.1_100kbRegions.txt 128 -f ${REF} -b ../labeled_bam_Out/mergedBam_n128_all_lot.bam --populations ${POPFILE} -m 5 -q 5 -E 3 --min-repeat-entropy 1 -n 10 -F 0.1 &gt;&gt; outFiles/VarCall_freebayes-par.chrom_NC_044048.1.vcf
+</code></pre>
+</div>
+<div
+id="results-running-the-23-chromosomes-across-nodes-with-64-cores-each"
+class="section level4">
+<h4>Results (running the 23 chromosomes across nodes with 64 cores
+each):</h4>
+<p>Time: 6-12 hours each (total about 36 hours)<br />
+Memory: 60-65GB</p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

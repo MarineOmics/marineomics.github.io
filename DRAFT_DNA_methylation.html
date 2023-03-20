@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>DNA Methylation Analyses</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="tutorial.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MarineOmics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="ADMIN_02_contributions.html">Contributions</a>
+</li>
+<li>
+  <a href="ADMIN_03_panels.html">Panel Seminars</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Population Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="POP_01_choosing_population_genetics.html">Choosing a Population Genomics Approach</a>
+    </li>
+    <li>
+      <a href="POP_04_WGS_intro.html">Whole Genome Resequencing</a>
+    </li>
+    <li>
+      <a href="POP_02_RADseq.html">Reduced Representation Sequencing</a>
+    </li>
+    <li>
+      <a href="POP_03_poolseq.html">Poolseq</a>
+    </li>
+    <li>
+      <a href="POP_05_RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Functional Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="FUN_01_DGE_comparison_v2.html">Mutifactorial RNAseq</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Genome-Phenome
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">coming soon!</li>
+  </ul>
+</li>
+<li>
+  <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'G-53GH9PV49T', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">DNA Methylation Analyses</h1>
+<h3 class="subtitle"><em>Steven Roberts</em>, <em>Sam White</em>, and
+…………</h3>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The purpose of this tutorial is to provide an example of taking
+Bisulfite treated DNA sequence data through identification of
+methylation at the loci and gene level. The principle behind creating
+bisulfite treated DNA libraries is that when cytosines are not
+methylated they will be converted to uracil, which ultimately result in
+thymine. When aligning to a reference genome the percent methylation at
+a given CpG loci is determined by examine the ratio to thymines and
+cytosines. For example if there is a given CpG loci with 30% of the
+alignment with the cytosine on the reference being and thymine, one
+would consider this cytosine loci (CpG) to be 70% methylated.</p>
+<p>For a good review of epigenetic mechanisms including DNA methylation
+in marine organisms see <span class="citation">Eirin-Lopez and Putnam
+(2019)</span>. <span class="citation">Trigg et al. (2022)</span> offers
+a comparison of three methods for quantifying DNA methylation at single
+base-pair resolution using whole genome bisulfite sequencing (WGBS),
+reduced representation bisulfite sequencing (RRBS), and methyl-CpG
+binding domain bisulfite sequencing (MBDBS). The tutorial below is based
+on WGBS, though the general workflow would be consistent.</p>
+</div>
+<div id="sequence-quality" class="section level1">
+<h1>Sequence Quality</h1>
+<p>An example of what raw data might look like from a marine
+invertebrate is shown. <em>Note that DNA methylation patters are diverse
+across taxa with most marine invertebrates demonstrating a mosiac
+pattern and global methylation at CpG loci is approximately
+15%.</em></p>
+<p>Following trimming one would expect to see something similar to this.
+This particular data set was trimmed with the following parameters:</p>
+<pre><code>/gscratch/srlab/programs/TrimGalore-0.4.5/trim_galore \
+--output_dir /gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD \
+--paired \
+--fastqc_args \
+--outdir /gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD/FASTQC \
+--threads 28 \
+--illumina \
+--clip_R1 10 \
+--clip_R2 10 \
+--three_prime_clip_R1 10 \
+--three_prime_clip_R2 10 \
+--path_to_cutadapt /gscratch/srlab/programs/miniconda3/bin/cutadapt \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R1_001.fastq.gz \</code></pre>
+<p><img src="DRAFT_DNA_methylation/meth-bp-chart.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="read-alignment" class="section level1">
+<h1>Read Alignment</h1>
+<p>The software used as part of this tutorial is <strong>Bismark
+Bisulfite Mapper</strong>. As with any software it is best to be
+famililar with the <a
+href="https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html">User
+Manual</a>. Thus content below will provided with the assumption that
+the reader has read the manual and is meant to serve as guidance based
+on experience working with marine invertebrates.</p>
+<p>The first step in the process in preparing the genome. Example
+code:</p>
+<pre><code># Directories and programs
+bismark_dir=&quot;/programs/Bismark-0.21.0&quot;
+bowtie2_dir=&quot;/programs/bowtie2-2.3.4.1-linux-x86_64/&quot;
+genome_folder=&quot;/where/the/fastafile/lives/&quot;
+
+${bismark_dir}/bismark_genome_preparation \
+--verbose \
+--parallel 28 \
+--path_to_aligner ${bowtie2_dir} \
+${genome_folder}</code></pre>
+<p>You should expect to prepared genome with new directories
+indluding</p>
+<pre><code>./Bisulfite_Genome
+./Bisulfite_Genome/GA_conversion
+./Bisulfite_Genome/CT_conversion</code></pre>
+<p>For doing the alignment of the trim reads to the genome the following
+code structured is used</p>
+<pre><code>find ${reads_dir}*_R1_001_val_1.fq.gz \
+| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
+--path_to_bowtie ${bowtie2_dir} \
+-genome ${genome_folder} \
+-p 4 \
+-score_min L,0,-0.6 \
+--non_directional \
+-1 ${reads_dir}{}_R1_001_val_1.fq.gz \
+-2 ${reads_dir}{}_R2_001_val_2.fq.gz \
+-o Mcap_tg</code></pre>
+<p>This will create bam files (sequence alignment files)</p>
+<p>Files are then deduplicated if they are whole genome bisulfite
+treated samples. This command will deduplicate the Bismark alignment BAM
+file and remove all reads but one which align to the the very same
+position and in the same orientation. This step is recommended for
+whole-genome bisulfite samples, but should not be used for reduced
+representation libraries such as RRBS, amplicon or target enrichment
+libraries.</p>
+<pre><code>find *.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${bismark_dir}/deduplicate_bismark \
+--bam \
+--paired \
+{}.bam</code></pre>
+</div>
+<div id="methylation-quantification" class="section level1">
+<h1>Methylation Quantification</h1>
+<p>Methylation levels are then extracted using the
+<code>bismark_methylation_extractor</code>. For example:</p>
+<pre><code>${bismark_dir}/bismark_methylation_extractor \
+--bedGraph \
+--counts \
+--comprehensive \
+--merge_non_CpG \
+--multicore 28 \
+--buffer_size 75% \
+*deduplicated.bam</code></pre>
+<p>This will create a file with the suffix
+<code>deduplicated.bismark.cov.gz</code> (example shown below in
+uncompressed format). And while a bedGraph file is generated, in this
+workflow a bedGraph will be generated later that uses information from
+merged strands (as opposed to this output).</p>
+<pre><code>NC_035784.1 141 141 37.5    3   5
+NC_035784.1 142 142 100 2   0
+NC_035784.1 155 155 70  7   3
+NC_035784.1 156 156 100 2   0
+NC_035784.1 291 291 0   0   2
+NC_035784.1 292 292 0   0   3
+NC_035784.1 313 313 0   0   1
+NC_035784.1 314 314 66.6666666666667    2   1
+NC_035784.1 470 470 66.6666666666667    4   2
+NC_035784.1 611 611 0   0   4</code></pre>
+<p>column organization of the file</p>
+<pre><code>&lt;chromosome&gt; &lt;start position&gt; &lt;end position&gt; &lt;methylation percentage&gt; &lt;count methylated&gt; &lt;count unmethylated&gt;</code></pre>
+<p>A genome-wide cytosine report is generated, with this code as an
+example:</p>
+<pre><code>find *deduplicated.bismark.cov.gz \
+| xargs basename -s _trimmed_bismark_bt2.deduplicated.bismark.cov.gz \
+| xargs -I{} ${bismark_dir}/coverage2cytosine \
+--genome_folder ${genome_folder} \
+-o {} \
+--merge_CpG \
+--zero_based \
+{}_trimmed_bismark_bt2.deduplicated.bismark.cov.gz</code></pre>
+<p>Generating a file
+<code>.CpG_report.merged_CpG_evidence.cov</code></p>
+<pre><code>NC_035785.1 217 219 100.000000  17  0
+NC_035785.1 523 525 87.500000   7   1
+NC_035785.1 556 558 50.000000   5   5
+NC_035785.1 727 729 100.000000  16  0
+NC_035785.1 1330    1332    0.000000    0   2
+NC_035785.1 1403    1405    0.000000    0   2
+NC_035785.1 1494    1496    66.666667   2   1
+NC_035785.1 1747    1749    100.000000  8   0
+NC_035785.1 2024    2026    100.000000  24  0
+NC_035785.1 2054    2056    93.333333   14  1</code></pre>
+</div>
+<div id="file-conversions" class="section level1">
+<h1>File Conversions</h1>
+<p>From here it could be useful to do some simple file reorganizaion to
+obtain bedgraph or tab files for downstream analysis (eg bedtools,
+GLMs).</p>
+<pre><code>#creating bedgraphs post merge
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
+  cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 10) {print $1, $2, $3, $4}}&#39; \
+  &gt; &quot;${STEM}&quot;_10x.bedgraph
+done
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
+  cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 5) {print $1, $2, $3, $4}}&#39; \
+  &gt; &quot;${STEM}&quot;_5x.bedgraph
+done
+
+#creating tab files with raw count for glms
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
+  cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 10) {print $1, $2, $3, $4, $5, $6}}&#39; \
+  &gt; &quot;${STEM}&quot;_10x.tab
+done
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
+  cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 5) {print $1, $2, $3, $4, $5, $6}}&#39; \
+  &gt; &quot;${STEM}&quot;_5x.tab
+done</code></pre>
+<p>It is sometimes useful to sort BAM files for downstream analysis (eg
+methylkit, IGV)</p>
+<pre><code># Sort files for methylkit and IGV
+find *.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${samtools} \
+sort --threads 28 {}.bam \
+-o {}.sorted.bam
+
+# Index sorted files for IGV
+find *.sorted.bam | \
+xargs basename -s .sorted.bam | \
+xargs -I{} ${samtools} \
+index -@ 28 {}.sorted.bam</code></pre>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-doi:10.1146/annurev-marine-010318-095114"
+class="csl-entry">
+Eirin-Lopez, Jose M., and Hollie M. Putnam. 2019. <span>“Marine
+Environmental Epigenetics.”</span> <em>Annual Review of Marine
+Science</em> 11 (1): 335–68. <a
+href="https://doi.org/10.1146/annurev-marine-010318-095114">https://doi.org/10.1146/annurev-marine-010318-095114</a>.
+</div>
+<div id="ref-https://doi.org/10.1111/1755-0998.13542" class="csl-entry">
+Trigg, Shelly A., Yaamini R. Venkataraman, Mackenzie R. Gavery, Steven
+B. Roberts, Debashish Bhattacharya, Alan Downey-Wall, Jose M.
+Eirin-Lopez, et al. 2022. <span>“Invertebrate Methylomes Provide Insight
+into Mechanisms of Environmental Tolerance and Reveal Methodological
+Biases.”</span> <em>Molecular Ecology Resources</em> 22 (4): 1247–61. <a
+href="https://doi.org/10.1111/1755-0998.13542">https://doi.org/10.1111/1755-0998.13542</a>.
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
