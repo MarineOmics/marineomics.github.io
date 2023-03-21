@@ -14,16 +14,16 @@ Based on the expertise of the MarineOmics working group, the first topics includ
 ### Topics {.tabset .tabset-fade .tabset-pills}
 #### Population Genomics  
 
-* [Choosing a population genomics sequencing approach](choosing-population-genetics.html)  
-* [Whole Genome Resequencing (WGS)](WGS_intro.html)  
+* [Choosing a population genomics sequencing approach](POP_01_choosing_population_genetics.html)  
+* [Whole Genome Resequencing (WGS)](POP_04_WGS_intro.html)  
   * [Low coverage WGS](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md)
-* [Reduced Representation Sequencing](RADseq.html) 
-* [Poolseq](poolseq.html)
-* [Redundancy Analysis (RDA) Trait Prediction](RDAtraitPredictionTutorial.html)
+* [Reduced Representation Sequencing](POP_02_RADseq.html) 
+* [Poolseq](POP_03_poolseq.html)
+* [Redundancy Analysis (RDA) Trait Prediction](POP_05_RDAtraitPredictionTutorial.html)
 
 #### Functional Genomics  
 
-* [Multifactorial RNAseq analyses](DGE_comparison_v2.html)  
+* [Multifactorial RNAseq analyses](FUN_01_DGE_comparison_v2.html)  
 * Align and count RNAseq reads (coming soon!)
     * De novo, reference-based, and Tag-seq methods
 
@@ -33,10 +33,10 @@ Based on the expertise of the MarineOmics working group, the first topics includ
 
 ### {-}
 
-### The guidelines portion of the website should be considered a "preprint". If you are interested in contributing to the peer review process, check out the [Discussion Forum](discussion.html). {.unlisted .unnumbered}
+### The guidelines portion of the website should be considered a "preprint". If you are interested in contributing to the peer review process, check out the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions). {.unlisted .unnumbered}
 
 # Panel Seminars 
-To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we hosted [Q & A panel seminars](panels.html) with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on [YouTube](https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ)!
+To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we hosted [Q & A panel seminars](ADMIN_03_panels.html) with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on [YouTube](https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ)!
 
 # What is the MarineOmics working group? {#marineomics} 
 
@@ -50,7 +50,7 @@ The original MarineOmics working group is part of the [RCN for Evolution in Chan
 MarineOmics is also interested in evaluating and improving reproducibility in studies that use genomics to study adaptation in marine systems. We are conducting a meta-analysis of reproducibility across genomic studies of environmental adaptation in marine populations with the aim of identifying obstacles and opportunities for reproducing and synthesizing population genomic research. In Spring 2021, three undergraduate research interns contributed to this literature survey, with funding from the [RCN-ECS](https://rcn-ecs.github.io/). 
 
 # Making contributions to the MarineOmics.github.io website {#contributions}
-We are excited to incorporate new material from contributors of various backgrounds, expertise, and experience. To date these tutorials, guidelines,  and discussions have been authored and led by graduate students and postdocs with contributions from scientists at all levels, including undergraduates, technicians, and faculty members. A diverse range of perspectives and backgrounds will make these tutorials more inclusive, informative, and useful for everyone in the marine-omics community. If you are interested in developing an information page or tutorial for the website,  we ask that you review our [page with instructions for submitting content](submissions_instructions.html) and contact our Website Manager Jason Johns (jasonjohns[at]ucsb.edu).
+We are excited to incorporate new material from contributors of various backgrounds, expertise, and experience. To date these tutorials, guidelines,  and discussions have been authored and led by graduate students and postdocs with contributions from scientists at all levels, including undergraduates, technicians, and faculty members. A diverse range of perspectives and backgrounds will make these tutorials more inclusive, informative, and useful for everyone in the marine-omics community. If you are interested in developing an information page or tutorial for the website,  we ask that you review our [page with instructions for submitting content](ADMIN_01_submissions_instructions.html) and contact our Website Manager Jason Johns (jasonjohns[at]ucsb.edu).
 
 # Internship 
 In Spring 2021, MarineOmics hosted three virtual undergraduate research interns with funding from the [RCN-ECS](https://rcn-ecs.github.io/): Jecy Klinkam, Kaitlin Macaranas, and Chris Mantegna. These interns were paired with graduate student mentors within the MarineOmics group, as well as participated in training activities while contributing to the Reproducibility literature review.

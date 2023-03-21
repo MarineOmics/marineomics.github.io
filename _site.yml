@@ -6,25 +6,25 @@ navbar:
   href: index.html
   left:
     - text: "Contributions"
-      href: contributions.html  
+      href: ADMIN_02_contributions.html  
     - text: "Panel Seminars"
-      href: panels.html 
+      href: ADMIN_03_panels.html 
     - text: "Population Genomics"
       menu:
         - text: "Choosing a Population Genomics Approach"
-          href: choosing-population-genetics.html
+          href: POP_01_choosing_population_genetics.html
         - text: "Whole Genome Resequencing"
-          href: WGS_intro.html
+          href: POP_04_WGS_intro.html
         - text: "Reduced Representation Sequencing"
-          href: RADseq.html
+          href: POP_02_RADseq.html
         - text: "Poolseq"
-          href: poolseq.html
+          href: POP_03_poolseq.html
         - text: "Redundancy Analysis (RDA) Trait Prediction"
-          href: RDAtraitPredictionTutorial.html
+          href: POP_05_RDAtraitPredictionTutorial.html
     - text: "Functional Genomics"
       menu:
         - text: "Mutifactorial RNAseq"
-          href: DGE_comparison_v2.html
+          href: FUN_01_DGE_comparison_v2.html
     - text: "Genome-Phenome"
       menu:
         - text: "coming soon!"
