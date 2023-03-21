@@ -29,25 +29,48 @@ On this website you will find a growing and evolving collection of guidelines, t
 # Panel Seminars 
 To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we hosted [Q & A panel seminars](ADMIN_03_panels.html) with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on [YouTube](https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ)!
 
-# What is the MarineOmics working group? {#marineomics} 
+# How to contribute!
+We are excited to incorporate new material from contributors of various backgrounds, expertise, and experience. To date these tutorials, guidelines,  and discussions have been authored and led by graduate students and postdocs with contributions from scientists at all levels, including undergraduates, technicians, and faculty members. A diverse range of perspectives and backgrounds will make these tutorials more inclusive, informative, and useful for everyone in the marine-omics community. If you are interested in developing an information page or tutorial for the website,  we ask that you review our [page with instructions for submitting content](ADMIN_01_submissions_instructions.html) and contact our Website Manager Jason Johns (jasonjohns[at]ucsb.edu).
 
+
+# Background
 The original MarineOmics working group is part of the [RCN for Evolution in Changing Seas](https://rcn-ecs.github.io/), and was formed to promote **reproducible** and **robust** genomic research in nonmodel species, but especially marine and aquatic studies. Methods in next generation sequencing and bioinformatics advance at a pace that quickly render any static set of best practices obsolete. MarineOmics aims to support robust genomic research in ecology and evolution by disseminating guidelines through this dynamic, open-sourced website addressing introductory and advanced topics of population- and functional genomics. *We are always looking for folks to join and write content for the website, if interested please [contact us](#contact) and see the [below section](#contributions)!*
 
 **Rigorous**:  following best principles to identify and mitigate sources of error in data generation and analysis  
 
 **Reproducible**: when others can reproduce the results with accessible data, code, and documentation
 
-# Reproducibility in Marine Genomics  
 MarineOmics is also interested in evaluating and improving reproducibility in studies that use genomics to study adaptation in marine systems. We are conducting a meta-analysis of reproducibility across genomic studies of environmental adaptation in marine populations with the aim of identifying obstacles and opportunities for reproducing and synthesizing population genomic research. In Spring 2021, three undergraduate research interns contributed to this literature survey, with funding from the [RCN-ECS](https://rcn-ecs.github.io/). 
 
-# Making contributions to the MarineOmics.github.io website {#contributions}
-We are excited to incorporate new material from contributors of various backgrounds, expertise, and experience. To date these tutorials, guidelines,  and discussions have been authored and led by graduate students and postdocs with contributions from scientists at all levels, including undergraduates, technicians, and faculty members. A diverse range of perspectives and backgrounds will make these tutorials more inclusive, informative, and useful for everyone in the marine-omics community. If you are interested in developing an information page or tutorial for the website,  we ask that you review our [page with instructions for submitting content](ADMIN_01_submissions_instructions.html) and contact our Website Manager Jason Johns (jasonjohns[at]ucsb.edu).
-
-# Internship 
 In Spring 2021, MarineOmics hosted three virtual undergraduate research interns with funding from the [RCN-ECS](https://rcn-ecs.github.io/): Jecy Klinkam, Kaitlin Macaranas, and Chris Mantegna. These interns were paired with graduate student mentors within the MarineOmics group, as well as participated in training activities while contributing to the Reproducibility literature review.
 
+Original working group members  
 
-# Contact {#contact}
-For questions about the website and its materials, post to the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions)!
-For inquiries about the MarineOmics Working Group activities, please contact us at rcnecs.marineomics@gmail.com.
+#### [Katherine Silliman, PhD](https://ksilliman.weebly.com/), South Carolina Dept. of Natural Resources - sillimank[at]dnr.sc.gov {.unlisted .unnumbered}
+#### [Sam Bogan](http://www.hofmannlab.com/sam-bogan.html), UC-Santa Barbara -snbogan[at]ucsb.edu {.unlisted .unnumbered}
+#### [Alan Downey-Wall](https://cos.northeastern.edu/people/alan-downey-wall/), Northeastern University {.unlisted .unnumbered}
+#### Chris Mantegna, University of Washington (Intern)  {.unlisted .unnumbered}
+#### [Danielle Davenport](https://www.researchgate.net/profile/Danielle-Davenport-2), University of Queensland {.unlisted .unnumbered}  
+#### [Hanny Rivera, PhD](https://www2.whoi.edu/staff/hrivera/), Woods Hole Oceanographic Institute  {.unlisted .unnumbered}
+#### Jecy Klinkam, College of William and Mary (Intern) {.unlisted .unnumbered}
+#### [Joanna Griffiths, PhD](https://joannasgriffiths.wordpress.com/), UC-Davis {.unlisted .unnumbered}
+#### Jason Johns, UC-Santa Barbara (Website Manager) {.unlisted .unnumbered}
+#### [Joe McGirr, PhD](https://joemcgirr.github.io/), UC-Davis {.unlisted .unnumbered}
+#### Kaitlin Macaranas, CSU-Bakersfield (Intern) {.unlisted .unnumbered}
+#### Megan Guidry, University of Rhode Island {.unlisted .unnumbered}
+#### Natalie Ameral, University of Rhode Island & RI Dept. of Environmental Management {.unlisted .unnumbered}  
+#### Nicolas Lou, Cornell University {.unlisted .unnumbered}
+#### [Sara Schaal](https://schaals.wixsite.com/smschaal), Northeastern University {.unlisted .unnumbered} 
+#### [Sara Wuitchik, PhD](https://sjswuitchik.weebly.com/), Harvard University {.unlisted .unnumbered}
+
+
+### Faculty Advisors {.unlisted .unnumbered}
+#### [Andrew Whitehead, PhD](https://whiteheadresearch.wordpress.com/), UC-Davis {.unlisted .unnumbered}
+#### [Jon Puritz, PhD](https://www.marineevoeco.com/), University of Rhode Island {.unlisted .unnumbered}
+#### [Steven Roberts, PhD](http://faculty.washington.edu/sr320/?page_id=10850), University of Washington {.unlisted .unnumbered}
+
+
+
+
+
 

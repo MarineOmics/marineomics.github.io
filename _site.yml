@@ -24,8 +24,8 @@ navbar:
     - text: "Genome-Phenome"
       menu:
         - text: "coming soon!"
-    - text: "Contributions"
-      href: ADMIN_02_contributions.html  
+    #- text: "Contributions"
+    #  href: ADMIN_02_contributions.html  
     - text: "Panel Seminars"
       href: ADMIN_03_panels.html 
     - text: "Discussion Forum"
