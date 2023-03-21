@@ -610,7 +610,7 @@ for(i in 1:length(samps)){
   
 }
 ```
-<img src="./Pop1_17291100XcoveragePlot10000.png" width="500"> 
+<img src="POP_07_WGS_Full_Walkthrough_files/Pop1_17291100XcoveragePlot10000.png" width="500"> 
 
 #### Results (R script for 5 samples):
 Time: about 4.5 hours  

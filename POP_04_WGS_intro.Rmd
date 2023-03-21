@@ -36,9 +36,9 @@ Here we provide a couple different tutorials by our working group members, as we
 
 ## High to moderate coverage WGS  
 
-* [Fastq-to-VCF SnakeMake pipeline](POP_06_fastq2vcf_june2022_update/POP_06_fastq2vcf_june2022_update.html): in-depth explanation of an automated short-read mapping and variant calling pipeline maintained by [Harvard Informatics](https://github.com/harvardinformatics/shortRead_mapping_variantCalling). Useful if you plan to adopt this pre-packaged automated and parallelizable pipeline, and would like to understand its different components, but not necessarily change it substantially.
+* [Fastq-to-VCF SnakeMake pipeline](POP_06_fastq2vcf_june2022_update.html): in-depth explanation of an automated short-read mapping and variant calling pipeline maintained by [Harvard Informatics](https://github.com/harvardinformatics/shortRead_mapping_variantCalling). Useful if you plan to adopt this pre-packaged automated and parallelizable pipeline, and would like to understand its different components, but not necessarily change it substantially.
 
-* [Fastq-to-VCF workflow](POP_07_WGS_Full_Walkthrough/POP_07_WGS_Full_Walkthrough.html): detailed walkthrough of processing 15x sequencing depth WGS data for cod, from raw reads to a VCF. Useful if you would like to run each component of the pipeline yourself and potentially tweak some of them for your own purpose. In other words, you can more easily add, skip, or change parts of this pipeline, but will lose the convenience offered by an automated pipeline. 
+* [Fastq-to-VCF workflow](POP_07_WGS_Full_Walkthrough.html): detailed walkthrough of processing 15x sequencing depth WGS data for cod, from raw reads to a VCF. Useful if you would like to run each component of the pipeline yourself and potentially tweak some of them for your own purpose. In other words, you can more easily add, skip, or change parts of this pipeline, but will lose the convenience offered by an automated pipeline. 
 
 <br>
 
