@@ -41,7 +41,7 @@ for (i in 1:length(libraries_needed)){
   library(libraries_needed[i],character.only = TRUE) #laptop
 }
 
-knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE) 
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = FALSE) 
 ```
 
 
@@ -53,7 +53,7 @@ This data was simulated in SLiM and is associated with the complex multivariate 
 
 The six environmental variables are based on real data from western Canada and are shown below, clockwise from upper right: Clockwise from upper left: precipitation of driest month, precipitation of warmest quarter, mean annual temperature, precipitation of wettest month, mean temperature of wettest quarter, mean temperature of driest quarter. Background colors correspond to the optimum trait value on each landscape, and each small square is a simulated individual, with its color representing its trait value in that environment. 
 
-![](multivar.png)
+![](POP_05_RDAtraitPredictionTutorial_files/multivar.png)
 
 
 # Load the data
