@@ -29,8 +29,8 @@ On this website you will find a growing and evolving collection of guidelines, t
 # Panel Seminars 
 To facilitate discussions about practices and pitfalls in applying 'omics to non-model systems, we hosted [Q & A panel seminars](ADMIN_03_panels.html) with experts on topics ranging from RADseq, population genomics with WGS, and transcriptomics. Check them out on [YouTube](https://www.youtube.com/channel/UCosG6JfIj7k0DizfsD5ADfQ)!
 
-# How to contribute!
-We are excited to incorporate new material from contributors of various backgrounds, expertise, and experience. To date these tutorials, guidelines,  and discussions have been authored and led by graduate students and postdocs with contributions from scientists at all levels, including undergraduates, technicians, and faculty members. A diverse range of perspectives and backgrounds will make these tutorials more inclusive, informative, and useful for everyone in the marine-omics community. If you are interested in developing an information page or tutorial for the website,  we ask that you review our [page with instructions for submitting content](ADMIN_01_submissions_instructions.html) and contact our Website Manager Jason Johns (jasonjohns[at]ucsb.edu).
+# How to contribute
+We are excited to incorporate new material from contributors of various backgrounds, expertise, and experience. To date these tutorials, guidelines,  and discussions have been authored and led by graduate students and postdocs with contributions from scientists at all levels, including undergraduates, technicians, and faculty members. A diverse range of perspectives and backgrounds will make these tutorials more inclusive, informative, and useful for everyone in the marine-omics community. If you are interested in developing an information page or tutorial for the website, we ask that you review our [page with instructions for submitting content](ADMIN_01_submissions_instructions.html) and contact our Website Manager Jason Johns (jasonjohns[at]ucsb.edu).
 
 
 # Background
