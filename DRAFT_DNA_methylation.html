@@ -426,22 +426,22 @@ div.tocify {
 
 <h1 class="title toc-ignore">DNA Methylation Analyses</h1>
 <h3 class="subtitle"><em>Steven Roberts</em>, <em>Sam White</em>, and
-…………</h3>
+<em>Yaamini Venkataraman</em></h3>
 
 </div>
 
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>The purpose of this tutorial is to provide an example of taking
-Bisulfite treated DNA sequence data through identification of
-methylation at the loci and gene level. The principle behind creating
-bisulfite treated DNA libraries is that when cytosines are not
-methylated they will be converted to uracil, which ultimately result in
-thymine. When aligning to a reference genome the percent methylation at
-a given CpG loci is determined by examine the ratio to thymines and
-cytosines. For example if there is a given CpG loci with 30% of the
-alignment with the cytosine on the reference being and thymine, one
+<p>The purpose of this tutorial is to provide an example of identifying
+loci- and gene-level methylation in bisulfite-treated DNA sequence data.
+The principle behind creating bisulfite-treated DNA libraries is that
+when cytosines are not methylated, then they will be converted to
+uracil, which ultimately result in thymine nucleotides in the sequence
+data. When aligning to a reference genome the percent methylation at a
+given CpG loci is determined by examining the ratio of thymines to
+cytosines. For example if there is a given cytosine adjacent to a
+guanine (ie CpG locus) with 30% of the reads containing thymine, one
 would consider this cytosine loci (CpG) to be 70% methylated.</p>
 <p>For a good review of epigenetic mechanisms including DNA methylation
 in marine organisms see <span class="citation">Eirin-Lopez and Putnam
@@ -475,6 +475,10 @@ This particular data set was trimmed with the following parameters:</p>
 --path_to_cutadapt /gscratch/srlab/programs/miniconda3/bin/cutadapt \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R1_001.fastq.gz \</code></pre>
 <p><img src="DRAFT_DNA_methylation/meth-bp-chart.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>For WGBS and MBDBS data, it is general practice to hard-trim 10 bp
+from the beginning and end of each read. <a
+href="https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html#ix-notes-about-different-library-types-and-commercial-kits">RRBS
+data often needs different trimming specifications</a>.</p>
 </div>
 <div id="read-alignment" class="section level1">
 <h1>Read Alignment</h1>
@@ -498,12 +502,12 @@ ${bismark_dir}/bismark_genome_preparation \
 --path_to_aligner ${bowtie2_dir} \
 ${genome_folder}</code></pre>
 <p>You should expect to prepared genome with new directories
-indluding</p>
+including</p>
 <pre><code>./Bisulfite_Genome
 ./Bisulfite_Genome/GA_conversion
 ./Bisulfite_Genome/CT_conversion</code></pre>
-<p>For doing the alignment of the trim reads to the genome the following
-code structured is used</p>
+<p>For aligning the trimmed reads to the genome the following code
+structure is used</p>
 <pre><code>find ${reads_dir}*_R1_001_val_1.fq.gz \
 | xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
 --path_to_bowtie ${bowtie2_dir} \
@@ -517,11 +521,13 @@ code structured is used</p>
 <p>This will create bam files (sequence alignment files)</p>
 <p>Files are then deduplicated if they are whole genome bisulfite
 treated samples. This command will deduplicate the Bismark alignment BAM
-file and remove all reads but one which align to the the very same
-position and in the same orientation. This step is recommended for
-whole-genome bisulfite samples, but should not be used for reduced
-representation libraries such as RRBS, amplicon or target enrichment
-libraries.</p>
+file and remove all reads that align to the the very same position and
+in the same orientation except for one. This step is recommended for
+whole-genome bisulfite samples, but <strong>should not</strong> be used
+for reduced representation libraries such as RRBS, amplicon, or target
+enrichment libraries. The <a
+href="https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html#ix-notes-about-different-library-types-and-commercial-kits"><code>bismark</code>
+manual</a> provides additional information.</p>
 <pre><code>find *.bam | \
 xargs basename -s .bam | \
 xargs -I{} ${bismark_dir}/deduplicate_bismark \
@@ -543,9 +549,11 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 *deduplicated.bam</code></pre>
 <p>This will create a file with the suffix
 <code>deduplicated.bismark.cov.gz</code> (example shown below in
-uncompressed format). And while a bedGraph file is generated, in this
-workflow a bedGraph will be generated later that uses information from
-merged strands (as opposed to this output).</p>
+uncompressed format). The resultant bedGraph file contains information
+from <em>unmerged</em> strands, meaning reads aligning to forward and
+reverse strands in the same position are not combined. Later in this
+workflow, a bedGraph with <em>merged</em> information will be
+created.</p>
 <pre><code>NC_035784.1 141 141 37.5    3   5
 NC_035784.1 142 142 100 2   0
 NC_035784.1 155 155 70  7   3
@@ -558,8 +566,8 @@ NC_035784.1 470 470 66.6666666666667    4   2
 NC_035784.1 611 611 0   0   4</code></pre>
 <p>column organization of the file</p>
 <pre><code>&lt;chromosome&gt; &lt;start position&gt; &lt;end position&gt; &lt;methylation percentage&gt; &lt;count methylated&gt; &lt;count unmethylated&gt;</code></pre>
-<p>A genome-wide cytosine report is generated, with this code as an
-example:</p>
+<p>A genome-wide cytosine report is generated (including merged bedGraph
+file), with this code as an example:</p>
 <pre><code>find *deduplicated.bismark.cov.gz \
 | xargs basename -s _trimmed_bismark_bt2.deduplicated.bismark.cov.gz \
 | xargs -I{} ${bismark_dir}/coverage2cytosine \
@@ -568,8 +576,8 @@ example:</p>
 --merge_CpG \
 --zero_based \
 {}_trimmed_bismark_bt2.deduplicated.bismark.cov.gz</code></pre>
-<p>Generating a file
-<code>.CpG_report.merged_CpG_evidence.cov</code></p>
+<p>Generating a file <code>.CpG_report.merged_CpG_evidence.cov</code>
+(merged bedGraph file)</p>
 <pre><code>NC_035785.1 217 219 100.000000  17  0
 NC_035785.1 523 525 87.500000   7   1
 NC_035785.1 556 558 50.000000   5   5
@@ -584,10 +592,11 @@ NC_035785.1 2054    2056    93.333333   14  1</code></pre>
 <div id="file-conversions" class="section level1">
 <h1>File Conversions</h1>
 <p>From here it could be useful to do some simple file reorganizaion to
-obtain bedgraph or tab files for downstream analysis (eg bedtools,
+obtain bedGraph or tab files for downstream analysis (eg bedtools,
 GLMs).</p>
-<pre><code>#creating bedgraphs post merge
-for f in *merged_CpG_evidence.cov
+<p>Creating bedGraphs post-merge at a specific coverage threshold (ex.
+10x or 5x):</p>
+<pre><code>for f in *merged_CpG_evidence.cov
 do
   STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
   cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 10) {print $1, $2, $3, $4}}&#39; \
@@ -599,10 +608,10 @@ do
   STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
   cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 5) {print $1, $2, $3, $4}}&#39; \
   &gt; &quot;${STEM}&quot;_5x.bedgraph
-done
-
-#creating tab files with raw count for glms
-for f in *merged_CpG_evidence.cov
+done</code></pre>
+<p>Creating tab files with raw count data for GLMs at 10x and 5x
+coverage:</p>
+<pre><code>for f in *merged_CpG_evidence.cov
 do
   STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
   cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 10) {print $1, $2, $3, $4, $5, $6}}&#39; \
