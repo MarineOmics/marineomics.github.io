@@ -4,6 +4,24 @@ subtitle: '*Thea Gessler*, *Samuel N. Bogan*, and *Steven Roberts*'
 bibliography: DRAFT_Funct_Enrich/Funct_Enrich.bib
 ---
 
+# Background
+
+Functional gene enrichment analysis is a powerful tool that can aid in the interpretation of biological data by identifying biological processes and pathways that are significantly overrepresented in a gene list of interest. However, to effectively use this tool, it is essential to have a proper annotation of genes.
+
+Proper annotation of genes is crucial because it ensures that the genes are correctly identified and annotated with their appropriate biological functions. Incorrect annotation of genes can lead to inaccurate interpretations of experimental results and hinder progress in understanding the biological systems of non-model species. 
+
+Therefore, the quality of gene annotation is critical for accurate functional gene enrichment analysis. This involves careful curation of gene annotations based on experimental evidence from various sources, including transcriptomic and proteomic data, literature mining, and functional assays. This curation process can be particularly challenging for non-model species with limited genomic and transcriptomic resources. More information on this can be found at
+
+- Example 1
+- Example 2 
+
+**In some instances high quality annotation might not be possible but it is critical that before you undergo enrichment analysis you have a full understanding of how your data set was annotated, and any associated limitations**
+
+
+
+
+
+
 # Getting to Enrichment Analysis
 
 Finding your subset of genes of interest 
