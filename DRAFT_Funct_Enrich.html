@@ -347,7 +347,10 @@ div.tocify {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="dropdown">
+        <li>
+  <a href="DRAFT_04_best_principles.html">Best Principles</a>
+</li>
+<li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Population Genomics
      
@@ -429,6 +432,34 @@ and <em>Steven Roberts</em></h3>
 </div>
 
 
+<div id="background" class="section level1">
+<h1>Background</h1>
+<p>Functional gene enrichment analysis is a powerful tool that can aid
+in the interpretation of biological data by identifying biological
+processes and pathways that are significantly overrepresented in a gene
+list of interest. However, to effectively use this tool, it is essential
+to have a proper annotation of genes.</p>
+<p>Proper annotation of genes is crucial because it ensures that the
+genes are correctly identified and annotated with their appropriate
+biological functions. Incorrect annotation of genes can lead to
+inaccurate interpretations of experimental results and hinder progress
+in understanding the biological systems of non-model species.</p>
+<p>Therefore, the quality of gene annotation is critical for accurate
+functional gene enrichment analysis. This involves careful curation of
+gene annotations based on experimental evidence from various sources,
+including transcriptomic and proteomic data, literature mining, and
+functional assays. This curation process can be particularly challenging
+for non-model species with limited genomic and transcriptomic resources.
+More information on this can be found at</p>
+<ul>
+<li>Example 1</li>
+<li>Example 2</li>
+</ul>
+<p><strong>In some instances high quality annotation might not be
+possible but it is critical that before you undergo enrichment analysis
+you have a full understanding of how your data set was annotated, and
+any associated limitations</strong></p>
+</div>
 <div id="getting-to-enrichment-analysis" class="section level1">
 <h1>Getting to Enrichment Analysis</h1>
 <p>Finding your subset of genes of interest</p>
@@ -566,6 +597,76 @@ BiocManager::install(c(&quot;DESeq2&quot;,&quot;edgeR&quot;,&quot;arrayQualityMe
 
 # Load packages
 library(tidyverse)</code></pre>
+</div>
+<div
+id="run-gomwu-and-fishers-exact-tests-on-data-of-interest-see-httpsgithub.comz0ongo_mwu"
+class="section level1">
+<h1>Run GOMWU and Fisher’s exact tests on data of interest (see <a
+href="https://github.com/z0on/GO_MWU"
+class="uri">https://github.com/z0on/GO_MWU</a>)</h1>
+<pre class="r"><code># GO enrichments using Mann Whitney U tests
+setwd(&quot;GO_MWU-master/&quot;)
+
+#Now we multiply them together into a new column
+
+## Ok we also want to bring in our annotations
+#I would suggest putting a GO_MWU folder into your working directory for these steps. There is some stuff to download such as the obo files 
+#See https://github.com/z0on/GO_MWU
+
+# GO_MWU uses continuous measure of significance (such as fold-change or -log(p-value) ) to identify GO categories that are significantly enriches with either up- or down-regulated genes. The advantage - no need to impose arbitrary significance cutoff.
+# If the measure is binary (0 or 1) the script will perform a typical &quot;GO enrichment&quot; analysis based Fisher&#39;s exact test: it will show GO categories over-represented among the genes that have 1 as their measure. 
+# On the plot, different fonts are used to indicate significance and color indicates enrichment with either up (red) or down (blue) regulated genes. No colors are shown for binary measure analysis.
+# The tree on the plot is hierarchical clustering of GO categories based on shared genes. Categories with no branch length between them are subsets of each other.
+# The fraction next to GO category name indicates the fracton of &quot;good&quot; genes in it; &quot;good&quot; genes being the ones exceeding the arbitrary absValue cutoff (option in gomwuPlot). For Fisher&#39;s based test, specify absValue=0.5. This value does not affect statistics and is used for plotting only.
+# Stretch the plot manually to match tree to text
+
+# Mikhail V. Matz, UT Austin, February 2015; matz@utexas.edu
+
+################################################################
+# First, press command-D on mac or ctrl-shift-H in Rstudio and navigate to the directory containing scripts and input files. Then edit, mark and execute the following bits of code, one after another.
+
+# Edit these to match your data file names: 
+input = &quot;GOMWU_input.csv&quot; # two columns of comma-separated values: gene id, continuous measure of significance. To perform standard GO enrichment analysis based on Fisher&#39;s exact test, use binary measure (0 or 1, i.e., either sgnificant or not).
+goAnnotations = &quot;goAnnot_spu.tab&quot; # two-column, tab-delimited, one line per gene, multiple GO terms separated by semicolon. If you have multiple lines per gene, use nrify_GOtable.pl prior to running this script.
+goDatabase = &quot;go.obo&quot; # download from http://www.geneontology.org/GO.downloads.ontology.shtml
+goDivision = &quot;MF&quot; # either MF, or BP, or CC
+source(&quot;gomwu.functions.R&quot;)
+
+# Calculating stats. It might take ~3 min for MF and BP. Do not rerun it if you just want to replot the data with different cutoffs, go straight to gomwuPlot. If you change any of the numeric values below, delete the files that were generated in previos runs first.
+gomwuStats(input, goDatabase, goAnnotations, goDivision,
+    perlPath = &quot;perl&quot;, # replace with full path to perl executable if it is not in your system&#39;s PATH already
+    largest = 0.1, # a GO category will not be considered if it contains more than this fraction of the total number of genes
+    smallest = 25,   # a GO category should contain at least this many genes to be considered
+    clusterCutHeight = 0.25, # threshold for merging similar (gene-sharing) terms. See README for details.
+    Alternative = &quot;g&quot;) # # threshold for merging similar (gene-sharing) terms. See README for details.
+           #    Alternative=&quot;g&quot; # by default the MWU test is two-tailed; specify &quot;g&quot; or &quot;l&quot; of you want to test for &quot;greater&quot; or &quot;less&quot; instead. 
+           #    Module=TRUE,Alternative=&quot;g&quot; # un-remark this if you are analyzing a SIGNED WGCNA module (values: 0 for not in module genes, kME for in-module genes). In the call to gomwuPlot below, specify absValue=0.001 (count number of &quot;good genes&quot; that fall into the module)
+           #    Module=TRUE # un-remark this if you are analyzing an UNSIGNED WGCNA module
+# do not continue if the printout shows that no GO terms pass 10% FDR.
+
+quartz.save(file = &quot;quartz.png&quot;, type = &quot;png&quot;)
+results=gomwuPlot(input, goAnnotations, goDivision,
+#   absValue=-log(0.05,10),  # genes with the measure value exceeding this will be counted as &quot;good genes&quot;. Specify absValue=0.001 if you are doing Fisher&#39;s exact test for standard GO enrichment or analyzing a WGCNA module (all non-zero genes = &quot;good genes&quot;).
+    absValue= .2,
+    level1=0.01, # FDR threshold for plotting. Specify level1=1 to plot all GO categories containing genes exceeding the absValue.
+    level2=0.005, # FDR cutoff to print in regular (not italic) font.
+    level3=0.001, # FDR cutoff to print in large bold font.
+    txtsize=1.2,    # decrease to fit more on one page, or increase (after rescaling the plot so the tree fits the text) for better &quot;word cloud&quot; effect
+    treeHeight=0.5 # height of the hierarchical clustering tree
+#   colors=c(&quot;dodgerblue2&quot;,&quot;firebrick1&quot;,&quot;skyblue&quot;,&quot;lightcoral&quot;) # these are default colors, un-remar and change if needed
+)
+# manually rescale the plot so the tree matches the text 
+# if there are too many categories displayed, try make it more stringent with level1=0.05,level2=0.01,level3=0.001.  
+
+# text representation of results, with actual adjusted p-values
+results
+
+# Export list of GO terms enriched among genes in lowest quartiles of TSS acess and expression
+write.csv(results[1], 
+          &quot;~/Documents/GitHub/marineomics.github.io/DRAFT_Funct_Enrich/MF_output.csv&quot;, 
+          row.names = TRUE)
+
+# Next, manually repeat this code chunk using BP and CC terms and change exported name of file</code></pre>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

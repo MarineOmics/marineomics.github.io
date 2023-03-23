@@ -5,6 +5,8 @@ navbar:
   title: "MarineOmics"
   href: index.html
   left:
+    - text: "Best Principles"
+      href: DRAFT_04_best_principles.html
     - text: "Population Genomics"
       menu:
         - text: "Choosing a Population Genomics Approach"

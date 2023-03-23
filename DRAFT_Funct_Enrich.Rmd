@@ -134,7 +134,7 @@ library(tidyverse)
 
 # Run GOMWU and Fisher's exact tests on data of interest (see https://github.com/z0on/GO_MWU)
 
-```{r, include = TRUE}
+```{r, include = TRUE, eval = FALSE}
 
 # GO enrichments using Mann Whitney U tests
 setwd("GO_MWU-master/")

@@ -5,7 +5,11 @@ knitr::opts_chunk$set(echo = TRUE)
 title: "Welcome"
 ---
 
-On this website you will find a growing and evolving collection of guidelines, tutorials, recommended readings, and method evaluations for various 'omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid "best practices", we aim to encourage data exploration and rigorous quality control through "best principles", paying particular attention to topics for which open access guidelines are scarce. The guidelines are written by members of the [MarineOmics working group](#marineomics) or the community, then shared for peer review. Comments on current website content or suggestions for new content can be made through the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions).
+On this website you will find a growing and evolving collection of guidelines, tutorials, recommended readings, and method evaluations for various 'omics analyses that are commonly used in studies of nonmodel systems (particularly marine species). Instead of providing rigid "best practices", we aim to encourage data exploration and rigorous quality control through ["best principles"](#best_principles), paying particular attention to topics for which open access guidelines are scarce. The guidelines are written by members of the [MarineOmics working group](#marineomics) or the community, then shared for peer review. Comments on current website content or suggestions for new content can be made through the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions).
+
+# Best Principles <a id="best_principles"></a>
+
+The backbone underlying the content on the website comes from a general set of “best principles” that should be applied in genomics studies, irrespective of the specific sequencing method used. Instead of providing rigid “best practices", the website promotes “best principles”, defined as a guiding set of values and goals that can be tailored to one’s hypotheses and guided by one's data, as opposed to a specific set of instructions. Motivated by rigor and reproducibility, "best principles" are designed to encourage data exploration and critical thinking during analysis and evaluation instead of ticking off boxes on a protocol or step-list. Please visit our [best principles page](DRAFT_04_best_principles.html) for a detailed outline.
 
 # Population Genomics  
 
