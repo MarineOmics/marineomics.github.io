@@ -15,6 +15,7 @@ Therefore, the quality of gene annotation is critical for accurate functional ge
 - Example 1
 - Example 2 
 
+
 **In some instances high quality annotation might not be possible but it is critical that before you undergo enrichment analysis you have a full understanding of how your data set was annotated, and any associated limitations**
 
 
