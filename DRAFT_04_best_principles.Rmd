@@ -1,0 +1,66 @@
+---
+title: "Best Principles in Genomics Research"
+bibliography: "DRAFT_04_best_principles_files/common-bib_01.bib"
+_disableToc: true
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r #setup, echo = FALSE, message = FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+	fig.height = 5,
+	fig.width = 10,
+	cache = TRUE
+)
+library(knitcitations)
+library(kableExtra)
+opts_chunk$set(fig.width = 10,
+               fig.height = 5,
+               cache = TRUE)
+cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
+             hyperlink = "to.doc")
+```
+
+The backbone underlying the content on the website comes from a general set of “best principles” that should be applied in genomics studies, irrespective of the specific sequencing method used. Instead of providing rigid “best practices", the website promotes “best principles”, defined as a guiding set of values and goals that can be tailored to one’s hypotheses and guided by one's data, as opposed to a specific set of instructions. Motivated by rigor and reproducibility, "best principles" are designed to encourage data exploration and critical thinking during analysis and evaluation instead of ticking off boxes on a protocol or step-list. These principles are outlined below.
+
+<br>
+
+## Rigor
+
+### 1. Understand the characteristics of your chosen sequencing approach. Take these characteristics into account when designing a study and during data analysis. {.unlisted .unnumbered}
+
+Goals of study should be chosen before choosing the best sequencing approach, which will inform the total number of samples and sequencing coverage needed: e.g., PoolSeq requires larger sample sizes and deeper coverage given the lack of individual genotyping [@Guirao-Rico2021-sw].
+
+<br>
+
+### 2. Plot your data early and often. Get to know it in both its raw and processed forms. {.unlisted .unnumbered}
+
+Deepen the interpretation of results and flag sources of error throughout a workflow by plotting data such as (i) read-quality metrics pre- and post-filtering, (ii) sequence coverage across a reference and across samples, (iii) principal component analysis of replicates pre- and post-filtering, and (iv) results and predictions of statistical tests. 
+
+<br>
+
+### 3. All models and pipelines introduce some type and magnitude of error. Compare models’ nuances to find the best approach given your data. {.unlisted .unnumbered}
+
+This issue is particularly acute in non-model species. Some quantitative approaches towards     evaluating methods include (i) comparing the performance of different methods or parameter choices using simulated data [@Lotterhos2022-ff], (ii) measuring their predictive strengths using model selection statistics [[@Hooten2015-ts], [@Johnson2004-sy]], and (iii) observed-predicted plots from model outputs. A basic understanding of the sensitivity of inference in different analyses will be helpful for determining how robust the results are to nuanced decisions, especially for non-model organisms or unique experimental designs.
+
+<br>
+
+## Reproducibility
+
+### 4. Wherever your sequencing data go, their associated metadata go with them. {.unlisted .unnumbered}
+
+Any and all metadata that can be reported should accompany sequence data in databases such as NCBI or SRA. Data on Dryad or GitHub should crosslink to NCBI/SRA.
+
+### 5. Take detailed records on all analysis decisions you make, including for preliminary analyses and errors that occurred, so you remember what you did and can reproduce your own work. {.unlisted .unnumbered}
+
+Use text-annotated code notebooks for bioinformatic analyses (e.g., Rmarkdown, Jupyter).
+
+### 6. Provide a reproducible text-annotated code notebook for all final analyses, containing computing environment information (i.e. software versions), so that these methods could be reproduced by someone else. {.unlisted .unnumbered}
+
+Provide these notebooks (in Rmarkdown or Jupyter) in a publically accessible format on services such as GitHub, GitLab, Dryad, Figshare, or Zenodo.
+
+<br>
+
+## References
