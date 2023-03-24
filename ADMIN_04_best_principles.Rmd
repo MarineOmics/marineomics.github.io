@@ -1,6 +1,6 @@
 ---
 title: "Best Principles in Genomics Research"
-bibliography: "DRAFT_04_best_principles_files/common-bib_01.bib"
+bibliography: "ADMIN_04_best_principles_files/common-bib_01.bib"
 _disableToc: true
 editor_options: 
   markdown: 

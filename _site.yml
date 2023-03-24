@@ -6,7 +6,14 @@ navbar:
   href: index.html
   left:
     - text: "Best Principles"
-      href: DRAFT_04_best_principles.html
+      href: ADMIN_04_best_principles.html
+    - text: "Contributions"
+      href: ADMIN_02_contributions.html
+      menu:
+        - text: "Guide for Building a Page"
+          href: ADMIN_01_submissions_instructions.html     
+        - text: "Past and Current Contributors"
+          href: ADMIN_02_contributions.html
     - text: "Population Genomics"
       menu:
         - text: "Choosing a Population Genomics Approach"
