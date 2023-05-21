@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Jason Johns" />
+
+
+<title>QTL information page and tutorial</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="tutorial.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MarineOmics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="ADMIN_04_best_principles.html">Best Principles</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Contributions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ADMIN_01_submissions_instructions.html">Guide for Building a Page</a>
+    </li>
+    <li>
+      <a href="ADMIN_02_contributions.html">Past and Current Contributors</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Population Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="POP_01_choosing_population_genetics.html">Choosing a Population Genomics Approach</a>
+    </li>
+    <li>
+      <a href="POP_04_WGS_intro.html">Whole Genome Resequencing</a>
+    </li>
+    <li>
+      <a href="POP_02_RADseq.html">Reduced Representation Sequencing</a>
+    </li>
+    <li>
+      <a href="POP_03_poolseq.html">Poolseq</a>
+    </li>
+    <li>
+      <a href="POP_05_RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Functional Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="FUN_01_DGE_comparison_v2.html">Mutifactorial RNAseq</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Genome-Phenome
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">coming soon!</li>
+  </ul>
+</li>
+<li>
+  <a href="ADMIN_03_panels.html">Panel Seminars</a>
+</li>
+<li>
+  <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'G-53GH9PV49T', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">QTL information page and tutorial</h1>
+<h4 class="author">Jason Johns</h4>
+
+</div>
+
+
+<p>The purpose of this page is to give the reader a broad sense of how
+Quantitative Trait Locus (QTL) analysis can be used to connect phenotype
+to genotype. It is designed for those who have little to no experience
+with QTL analysis, although it should be a useful resource for anyone
+seeking the fundamentals of the method. I first give an overview of some
+different approaches to the method, then provide a basic tutorial style
+example using real data. This resource is meant to give more of a broad
+strokes overview of the methodology rather than rigorous details. As
+with any MarineOmics page, we welcome feedback and contributions that
+will strengthen and diversify its content. We invite any and all
+commentary on the <a
+href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion
+Forum</a>!</p>
+<p>*I owe most of this code and most of what I know about QTL analysis
+to Dr. Evangeline Ballerini.</p>
+<p>For more technical details, there are many valuable resources,
+referenced throughout this document. In particular, Karl Broman and
+Śaunak Sen developed a widely used R package called R/qtl, and have
+written thorough tutorials freely available on their website. While
+these tutorials are truly helpful for understanding the basic mechanics
+of QTL analysis, reading their book entitled QTL mapping with R/qtl is
+crucial for a thorough understanding.</p>
+<p>Other resources for explaining basics of QTL: <br> - <a
+href="https://www.nature.com/scitable/topicpage/quantitative-trait-locus-qtl-analysis-53904/">Nature
+Education</a>: Miles &amp; Wayne, 2008 <br> - JEB Kearsey 1998: The
+principles of QTL analysis (a minimal mathematics approach) - make sure
+to read this and vet it <br> - Darvasi 1998: Experimental strategies for
+the genetic dissection of complex traits in animals discusses intercross
+vs. backcross strategies</p>
+<div id="principles-of-qtl-analysis" class="section level2">
+<h2>Principles of QTL analysis</h2>
+<p>QTL analysis uses linkage to identify genomic regions that harbor
+gene(s) involved with a trait of interest. It identifies region(s) of
+the genome where individuals with a particular phenotype consistently
+have the same genotype, and vice versa. The idea is to eventually narrow
+the region to a specific gene or genes responsible for a trait. Even if
+candidate genes are not identified, it can be useful for describing the
+genetic architecture of a trait or for ruling out a priori candidate
+genes.</p>
+</div>
+<div id="experimental-design" class="section level2">
+<h2>Experimental design</h2>
+<div id="considerations-for-experimental-setup" class="section level3">
+<h3>considerations for experimental setup</h3>
+<ol style="list-style-type: decimal">
+<li>Is/are the trait(s) likely to be highly complex &amp; polygenic?
+<br>
+<ul>
+<li>large effect QTL can be identified with a relatively small sample
+size</li>
+<li>an increase in sample size will narrow the QTL region, decreasing
+the number of candidate genes to consider</li>
+<li>the greater the sample size, the more power you will have to
+identify small effect QTL</li>
+</ul></li>
+<li>Is there likely to be a significant influence of environment, life
+stage, etc.?
+<ul>
+<li>the more environmental influence there is on a trait, the more it
+will have to be controlled and/or accounted for</li>
+<li>environmental variables, life stage, etc. can all be accounted for
+as covariates in a QTL model</li>
+</ul></li>
+<li>Evolutionary implications of the cross
+<ul>
+<li>QTL analysis identifies the genomic region(s) responsible for the
+phenotypic difference between the parents</li>
+<li>if you are interested in the evolution of the trait in the context
+of selection and speciation, it is better to use populations or species
+that are more closely related to each other
+<ul>
+<li>for example:
+<ul>
+<li>if we cross two species that are distantly related and have
+different phenotypes, there are more likely to be regions of the genome
+associated with the trait that were not responsible for or a result of
+speciation</li>
+<li>more closely related taxa will identify regions of the genome
+associated with the trait that were involved in differentiation</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>single vs. multiple joint family design
+<ul>
+<li>In some cases (like mine), you may be able to grow your organisms in
+the lab or greenhouse and make controlled crosses. In these cases, using
+a single family design is feasible and preferred.</li>
+<li>More commonly, (especially in the marine world), controlled crosses
+are not possible, necessitating the use of multiple joint-family QTL
+analysis. <br> <br></li>
+</ul>
+The two approaches are briefly outline and compared below: <br>
+<em>single-family cross</em>
+<ul>
+<li>cross one individual with the trait, one without -&gt; F(filial)1
+hybrid</li>
+<li>ideally parents are as inbred as possible, but not crucial that they
+are</li>
+<li>cross the F1 to:
+<ul>
+<li><p>itself (intercross) - *here’s to hermaphroditism and
+monoecy</p></li>
+<li><p>to parent with trait of interest (backcross)</p></li>
+<li><p>to sibling with same phenotype <br></p></li>
+<li><p>for Jason: look at advantages vs disadvantages in Broman</p></li>
+</ul></li>
+<li>most basic approach: use 2nd generation hybrids (F2) for analysis
+<ul>
+<li>same as what Mendel did to determine modes of inheritance, but now
+we sequence and annotate genomes to find the actual genes
+responsible</li>
+</ul></li>
+<li>advantages of single-family
+<ul>
+<li>higher power to detect rare QTL (QTL segregating in small % of
+families)</li>
+<li>easier to genotype offspring with only two parents: more likely that
+parents will have different alleles</li>
+</ul></li>
+</ul>
+<em>multiple joint-family</em>
+<ul>
+<li>can use:
+<ul>
+<li>multiple offspring from the same outcrossed parents</li>
+<li>multiple offspring from multiple parents</li>
+<li>uses already existing families</li>
+</ul></li>
+<li>advantages of joint-family
+<ul>
+<li>can use already existing families rather than waiting on
+crosses</li>
+<li>do not need to be able to do controlled crosses in captivity</li>
+<li>more power to detect QTL consistent across multiple families</li>
+<li>can investigate QTL across multiple genetic backgrounds</li>
+<li>better estimation of QTL effects</li>
+<li>more alleles mean more information about function of different
+alleles in real populations</li>
+<li>more recombination means better resolution</li>
+</ul></li>
+<li>Resources for linkage maps &amp; QTL with joint multiple family
+based setup:
+<ul>
+<li>Nousias et al. 2022 Nature SR: Linkage mapping, comparative genome
+analysis, etc.</li>
+<li>Manousaki et al. 2016 - Linkage mapping with RADseq &amp; Pandora
+(Sparidae fish)</li>
+<li>Wu &amp; Ma 2002 - Math behind creating linkage map with outcrossed
+parents &amp; siblings</li>
+<li>Ogut et al. 2015 - Joint-multiple family linkage analysis predicts
+within-family variation better than single-family analysis of the maize
+nested association mapping population</li>
+</ul></li>
+</ul></li>
+</ol>
+<p>make a table comparing single and joint-family QTL</p>
+<p><em>for nice comparison paper between single and multiple see Ogut et
+al. 2015</em></p>
+</div>
+<div id="limitations-of-qtl-analysis" class="section level3">
+<h3>limitations of QTL analysis</h3>
+<ul>
+<li>often huge genomic regions fall under the peak with thousands genes
+under them</li>
+<li>limited diversity in genetic background to pull out gene
+interactions</li>
+<li>time consuming</li>
+</ul>
+</div>
+<div id="data" class="section level3">
+<h3>data</h3>
+<div id="genotype-most-common-types-of-data-used-today"
+class="section level4">
+<h4><em>genotype: most common types of data used today</em></h4>
+<ul>
+<li>reduced representation: genotype by sequencing (GBS), RADseq]</li>
+<li>WGS (link ‘Choosing a Popgen Approach’)<br></li>
+<li>As far as linkage map construction goes, relatively little sequence
+is actually needed. Because recombination only happens so often, F2s
+will have a consistent genotype (PaPa, PaPb, PbPb) across a large
+window. Thus, we only need enough sequence data to call genotypes within
+recombination windows. This can be done with:
+<ul>
+<li>low coverage (a.k.a. skim) sequencing</li>
+<li>aggregate data within recombination windows to call genotype over a
+large block</li>
+</ul></li>
+</ul>
+</div>
+<div id="phenotype" class="section level4">
+<h4><em>phenotype</em></h4>
+<ul>
+<li>can use:
+<ul>
+<li>truly quantitative and continuous</li>
+<li>categorical data, even binary</li>
+</ul></li>
+<li>keep covariates in mind
+<ul>
+<li>collect as much phenotypic data as is reasonable, keep track of
+environmental variables</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="tutorial" class="section level2">
+<h2>Tutorial</h2>
+<p>I used whole genome skim sequencing due to the ease of a multiplex
+library prep, making costs and wet lab time comparable to reduced
+representation methods</p>
+<div id="general-info-on-calling-variants" class="section level3">
+<h3>general info on calling variants</h3>
+<p>If you have a reference genome available, you can of course just call
+variants against it. If not, you’ll do a de novo assembly from your
+sequence data (link tutorials, packages for this within and outside
+MarineOmics). You may also use another program for calling SNPs without
+a reference or enough sequence for de novo assembly.</p>
+</div>
+<div id="calling-variants-for-this-tutorial" class="section level3">
+<h3>calling variants for this tutorial</h3>
+<p>We have a reference genome for <em>Aquilegia</em>, so we’re going to
+align our sequence to it and call variants from it</p>
+<p>This tutorial will start with .bam files, a result of aligning the
+raw sequence data (.fastq) to the <em>Aquilegia</em> reference genome.
+Many tutorials exist for aligning low coverage raw sequence data,
+including <a href="https://github.com/nt246/lcwgs-guide-tutorial">one on
+the MarineOmics page</a> from Nicolas Lu.</p>
+<p>This whole idea of steps 1-3 below is to determine the genotypes of
+the F2 population at enough useful sites to properly represent their
+genotypes across recombination bins. By useful, I mean only sites that
+were polymorphic between the parents, and within these, only sites where
+the F1 inherited different alleles from each parent (heterozygous).</p>
+</div>
+<div
+id="lets-start-by-determining-the-useful-sites-for-genotyping-the-f2s"
+class="section level3">
+<h3>Let’s start by determining the useful sites for genotyping the
+F2s</h3>
+<div id="generate-a-genotype-depth-sequence-file-for-the-f1"
+class="section level4">
+<h4>Generate a genotype depth sequence file for the F1</h4>
+<ul>
+<li>Of course, this can be done by sequencing the F1 to enough coverage
+to confidently genotype it at many SNPs, however there is a much easier
+and less costly way:
+<ul>
+<li>In this case, the F2 population only inherited alleles from the F1,
+so if we merge all of the F2 sequence data, we’re left with a genotype
+level sequence file of the F1!</li>
+</ul></li>
+</ul>
+</div>
+<div id="call-and-filter-snps" class="section level4">
+<h4>Call and filter SNPs</h4>
+<ul>
+<li>call SNPs with whatever program you like: we use samtools here,
+there are many others</li>
+<li>filter vcfs
+<ul>
+<li>min &amp; max depth: ___</li>
+<li>min quality: ___</li>
+</ul></li>
+</ul>
+</div>
+<div id="identify-useful-snps" class="section level4">
+<h4>Identify useful SNPs</h4>
+<ul>
+<li>As mentioned previously, useful SNPs will be heterozygous in the
+F1</li>
+<li>If we have enough sequence data from the parents, we can determine
+which allele came from which parent</li>
+<li>In this case, I only had sequence data for one of the parents (Pa),
+which narrows the list of useful sites:
+<ul>
+<li>So not only can I only use sites where the F1 is heterozygous, I
+also have to use sites that with a particular genotype in Pa.</li>
+<li>Sites where the F1 and Pa are both heterozygous for the same allele
+are not useful, because it is still unclear which allele came from which
+parent:</li>
+<li>insert image to illustrate this</li>
+<li>So the only sites that are useful are:
+<ul>
+<li>F1: is heterozygous</li>
+<li>Pa: 1. homozygous, or.. <br> 2. heterozygous with one allele that
+matches the F1 and one that doesn’t.</li>
+<li>As the latter case is relatively rare, and there were plenty of
+sites that satisfy case 1, I decided to use sites that were heterozygous
+in the F1 and homozygous in Pa *show code for this</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="now-we-can-actually-genotype-the-f2s" class="section level3">
+<h3>Now we can actually genotype the F2s</h3>
+<ul>
+<li>determine useful window sizes depending on recombination rate
+<ul>
+<li>we used from 10kb to 1Mb</li>
+<li>make a .csv or .txt defining these windows</li>
+</ul></li>
+<li>calculate frequencies of parental alleles in these windows</li>
+<li>we used windows of allele frequencies of the parent we had sequence
+for (Pa) to determine F2 genotypes
+<ul>
+<li>frequency of Pa allele
+<ul>
+<li>0 - 0.15: homozygous Pb</li>
+<li>&gt;0.15 - 0.35: unsure</li>
+<li>&gt;0.35 - 0.65: heterozygous</li>
+<li>&gt;0.65 - 0.85: unsure</li>
+<li>&gt;0.85 - 1: homozygous Pa</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<div id="make-a-genetic-map" class="section level3">
+<h3>Make a genetic map</h3>
+<ul>
+<li>used r/qtl for this, along with some manual brain power
+<ul>
+<li>in my case there was discordance between genetic and physical maps,
+which was likely due to:
+<ul>
+<li>true structural differences between reference genome and species
+used in the cross</li>
+<li>mis-assembly of the original genome
+<ul>
+<li>was done with Sanger sequencing over 15 years ago</li>
+</ul></li>
+</ul></li>
+<li>so I re-arranged markers manually by intuition
+<ul>
+<li>I took my genetic map and colored it by genotype so I could
+visualize genotypes that didn’t make sense, such as impossible patterns
+of recombination
+<ul>
+<li>in some cases, there was a recombination event more than expected by
+chance</li>
+<li>in addition, some of these alleged recombination events went from
+PAPA to PBPB between two markers, which would only be possible if there
+were two recombination events between those two markers –&gt; highly
+unlikely</li>
+</ul></li>
+</ul></li>
+<li>Thus, I manually re-ordered markers and filled in ‘unsure’ genotypes
+based on intuition</li>
+</ul></li>
+</ul>
+</div>
+<div id="qtl-analysis" class="section level3">
+<h3>QTL analysis</h3>
+<ul>
+<li>merge phenotype data with genotype data
+<ul>
+<li>transposed phenotype data onto genetic map</li>
+</ul></li>
+<li>read into to r/qtl</li>
+<li>scanone</li>
+<li>scantwo</li>
+<li>multipleqtl</li>
+<li>stepwiseqtl</li>
+<li>1.5 LODs</li>
+<li>effect plots</li>
+</ul>
+</div>
+<div id="interpretation-of-analysis" class="section level3">
+<h3>interpretation of analysis</h3>
+<ul>
+<li>remember, you’re often not honing in on a specific gene with QTL
+analysis alone, so keep your goal in mind and be reasonable with how
+much you can actually infer based on your data</li>
+<li>are candidate genes or homologs of candidate genes under the
+peak?</li>
+<li>are previously identified candidate genes not under the peak?</li>
+<li>narrowing the list of genes under the peak
+<ul>
+<li>is there any existing expression data for your tissue of
+interest?</li>
+<li>RNA-seq, qPCR if you have a good candidate</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="terminology-glossary" class="section level2">
+<h2>Terminology glossary</h2>
+<ul>
+<li>marker</li>
+<li>genetic map</li>
+<li>linkage mapping</li>
+<li>association mapping</li>
+<li>interval mapping</li>
+<li>linkage group</li>
+<li>recombination rate (maybe ditch)</li>
+<li>recombination fraction</li>
+<li>multiple QTL regression analysis</li>
+<li>significance threshold</li>
+<li>missingness</li>
+<li>Quantitative Trait Locus</li>
+<li>LOD score</li>
+<li>LOD interval (1.5, 1.8)</li>
+<li>intercross</li>
+<li>backcross</li>
+<li>single family based QTL mapping</li>
+<li>joint family based QTL mapping</li>
+<li>genetic interaction</li>
+<li>epistasis</li>
+</ul>
+<p>graveyard fine mapping: recombinant inbred lines (RIL) see Takuno et
+al. 2012 near isogenic lines (NIL)</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

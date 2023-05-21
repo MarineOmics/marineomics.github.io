@@ -1,0 +1,238 @@
+---
+title: "QTL information page and tutorial"
+author: "Jason Johns"
+bibliography: "ADMIN_01_submissions_instructions_files/common-bib_01.bib"
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, echo = FALSE, message = FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+	fig.height = 5,
+	fig.width = 10,
+	cache = TRUE
+)
+library(knitcitations)
+library(kableExtra)
+opts_chunk$set(fig.width = 10,
+               fig.height = 5,
+               cache = TRUE)
+cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
+             hyperlink = "to.doc")
+```
+
+The purpose of this page is to give the reader a broad sense of how Quantitative Trait Locus (QTL) analysis can be used to connect phenotype to genotype. It is designed for those who have little to no experience with QTL analysis, although it should be a useful resource for anyone seeking the fundamentals of the method. I first give an overview of some different approaches to the method, then provide a basic tutorial style example using real data. This resource is meant to give more of a broad strokes overview of the methodology rather than rigorous details. As with any MarineOmics page, we welcome feedback and contributions that will strengthen and diversify its content. We invite any and all commentary on the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions)!
+
+*I owe most of this code and most of what I know about QTL analysis to Dr. Evangeline Ballerini.
+
+For more technical details, there are many valuable resources, referenced throughout this document. In particular, Karl Broman and Śaunak Sen developed a widely used R package called R/qtl, and have written thorough tutorials freely available on their website. While these tutorials are truly helpful for understanding the basic mechanics of QTL analysis, reading their book entitled QTL mapping with R/qtl is crucial for a thorough understanding.
+
+Other resources for explaining basics of QTL: <br>
+-  [Nature Education](https://www.nature.com/scitable/topicpage/quantitative-trait-locus-qtl-analysis-53904/): Miles & Wayne, 2008 <br>
+-  JEB Kearsey 1998: The principles of QTL analysis (a minimal mathematics approach) - make sure to read this and vet it <br>
+-  Darvasi 1998: Experimental strategies for the genetic dissection of complex traits in animals
+discusses intercross vs. backcross strategies
+
+## Principles of QTL analysis
+QTL analysis uses linkage to identify genomic regions that harbor gene(s) involved with a trait of interest. It identifies region(s) of the genome where individuals with a particular phenotype consistently have the same genotype, and vice versa. The idea is to eventually narrow the region to a specific gene or genes responsible for a trait. Even if candidate genes are not identified, it can be useful for describing the genetic architecture of a trait or for ruling out a priori candidate genes.
+
+## Experimental design
+### considerations for experimental setup
+1. Is/are the trait(s) likely to be highly complex & polygenic? <br>
+    * large effect QTL can be identified with a relatively small sample size
+    * an increase in sample size will narrow the QTL region, decreasing the number of candidate genes to consider
+    * the greater the sample size, the more power you will have to identify small effect QTL
+
+2. Is there likely to be a significant influence of environment, life stage, etc.?
+    * the more environmental influence there is on a trait, the more it will have to be controlled and/or accounted for
+    * environmental variables, life stage, etc. can all be accounted for as covariates in a QTL model
+
+3. Evolutionary implications of the cross
+    * QTL analysis identifies the genomic region(s) responsible for the phenotypic difference between the parents
+    * if you are interested in the evolution of the trait in the context of selection and speciation, it is better to use populations or species that are more closely related to each other
+      * for example: 
+        * if we cross two species that are distantly related and have different phenotypes, there are more likely to be regions of the genome associated with the trait that were not responsible for or a result of speciation
+        * more closely related taxa will identify regions of the genome associated with the trait that were involved in differentiation
+
+4. single vs. multiple joint family design
+    * In some cases (like mine), you may be able to grow your organisms in the lab or greenhouse and make controlled crosses. In these cases, using a single family design is feasible and preferred. 
+    * More commonly, (especially in the marine world), controlled crosses are not possible, necessitating the use of multiple joint-family QTL analysis.
+<br>
+<br>
+
+    The two approaches are briefly outline and compared below: <br>
+    *single-family cross*
+      * cross one individual with the trait, one without -> F(filial)1 hybrid
+      * ideally parents are as inbred as possible, but not crucial that they are
+      * cross the F1 to:
+        * itself (intercross) - *here’s to hermaphroditism and monoecy
+        * to parent with trait of interest (backcross)
+        * to sibling with same phenotype <br>
+        
+        * for Jason: look at advantages vs disadvantages in Broman
+      * most basic approach: use 2nd generation hybrids (F2) for analysis
+        * same as what Mendel did to determine modes of inheritance, but now we sequence and annotate genomes to find the actual genes responsible
+
+      * advantages of single-family
+        * higher power to detect rare QTL (QTL segregating in small % of families)
+        * easier to genotype offspring with only two parents: more likely that parents will have different alleles
+
+    *multiple joint-family*
+      * can use: 
+        * multiple offspring from the same outcrossed parents
+        * multiple offspring from multiple parents
+        * uses already existing families
+
+      * advantages of joint-family
+        * can use already existing families rather than waiting on crosses
+        * do not need to be able to do controlled crosses in captivity
+        * more power to detect QTL consistent across multiple families
+        * can investigate QTL across multiple genetic backgrounds
+        * better estimation of QTL effects
+        * more alleles mean more information about function of different alleles in real populations
+        * more recombination means better resolution
+
+      * Resources for linkage maps & QTL with joint multiple family based setup:
+        * Nousias et al. 2022 Nature SR: Linkage mapping, comparative genome analysis, etc.
+        * Manousaki et al. 2016 - Linkage mapping with RADseq & Pandora (Sparidae fish)
+        * Wu & Ma 2002 - Math behind creating linkage map with outcrossed parents & siblings
+        * Ogut et al. 2015 - Joint-multiple family linkage analysis predicts within-family variation better than single-family analysis of the maize nested association mapping population
+
+make a table comparing single and joint-family QTL
+
+*for nice comparison paper between single and multiple see Ogut et al. 2015*
+
+### limitations of QTL analysis
+  * often huge genomic regions fall under the peak with thousands genes under them
+  * limited diversity in genetic background to pull out gene interactions
+  * time consuming
+
+### data
+#### *genotype: most common types of data used today*
+  * reduced representation: genotype by sequencing (GBS), RADseq]
+  * WGS (link ‘Choosing a Popgen Approach’)<br>
+  * As far as linkage map construction goes, relatively little sequence is actually needed. Because recombination only happens so often, F2s will have a consistent genotype (PaPa, PaPb, PbPb) across a large window. Thus, we only need enough sequence data to call genotypes within recombination windows. This can be done with:
+    * low coverage (a.k.a. skim) sequencing
+    * aggregate data within recombination windows to call genotype over a large block
+
+#### *phenotype*
+  * can use: 
+    * truly quantitative and continuous
+    * categorical data, even binary
+  * keep covariates in mind
+    * collect as much phenotypic data as is reasonable, keep track of environmental variables
+
+<hr />
+
+## Tutorial
+I used whole genome skim sequencing due to the ease of a multiplex library prep, making costs and wet lab time comparable to reduced representation methods
+
+### general info on calling variants
+If you have a reference genome available, you can of course just call variants against it. If not, you’ll do a de novo assembly from your sequence data (link tutorials, packages for this within and outside MarineOmics). You may also use another program for calling SNPs without a reference or enough sequence for de novo assembly.
+
+### calling variants for this tutorial
+We have a reference genome for *Aquilegia*, so we’re going to align our sequence to it and call variants from it
+
+This tutorial will start with .bam files, a result of aligning the raw sequence data (.fastq) to the *Aquilegia* reference genome. Many tutorials exist for aligning low coverage raw sequence data, including [one on the MarineOmics page](https://github.com/nt246/lcwgs-guide-tutorial) from Nicolas Lu.
+
+This whole idea of steps 1-3 below is to determine the genotypes of the F2 population at enough useful sites to properly represent their genotypes across recombination bins. By useful, I mean only sites that were polymorphic between the parents, and within these, only sites where the F1 inherited different alleles from each parent (heterozygous). 
+
+### Let's start by determining the useful sites for genotyping the F2s
+####  Generate a genotype depth sequence file for the F1
+  * Of course, this can be done by sequencing the F1 to enough coverage to confidently genotype it at many SNPs, however there is a much easier and less costly way:
+    * In this case, the F2 population only inherited alleles from the F1, so if we merge all of the F2 sequence data, we're left with a genotype level sequence file of the F1!
+
+#### Call and filter SNPs
+  * call SNPs with whatever program you like: we use samtools here, there are many others
+  * filter vcfs
+    * min & max depth: ___
+    * min quality: ___
+  
+#### Identify useful SNPs 
+  * As mentioned previously, useful SNPs will be heterozygous in the F1
+  * If we have enough sequence data from the parents, we can determine which allele came from which parent
+  * In this case, I only had sequence data for one of the parents (Pa), which narrows the list of useful sites:
+    * So not only can I only use sites where the F1 is heterozygous, I also have to use sites that with a particular genotype in Pa.
+    * Sites where the F1 and Pa are both heterozygous for the same allele are not useful, because it is still unclear which allele came from which parent:
+    * insert image to illustrate this
+    * So the only sites that are useful are: 
+      * F1: is heterozygous 
+      * Pa: 1. homozygous, or.. <br>
+            2. heterozygous with one allele that matches the F1 and one that doesn't. 
+      * As the latter case is relatively rare, and there were plenty of sites that satisfy case 1, I decided to use sites that were heterozygous in the F1 and homozygous in Pa
+      *show code for this
+
+### Now we can actually genotype the F2s
+ * determine useful window sizes depending on recombination rate
+    * we used from 10kb to 1Mb
+    * make a .csv or .txt defining these windows
+  * calculate frequencies of parental alleles in these windows
+  * we used windows of allele frequencies of the parent we had sequence for (Pa) to determine F2 genotypes
+    * frequency of Pa allele
+      * 0 - 0.15: homozygous Pb
+      * \>0.15 - 0.35: unsure
+      * \>0.35 - 0.65: heterozygous
+      * \>0.65 - 0.85: unsure
+      * \>0.85 - 1: homozygous Pa
+
+### Make a genetic map
+  * used r/qtl for this, along with some manual brain power
+    * in my case there was discordance between genetic and physical maps, which was likely due to: 
+      * true structural differences between reference genome and species used in the cross
+      * mis-assembly of the original genome
+        * was done with Sanger sequencing over 15 years ago
+    * so I re-arranged markers manually by intuition
+      * I took my genetic map and colored it by genotype so I could visualize genotypes that didn't make sense, such as impossible patterns of recombination 
+        * in some cases, there was a recombination event more than expected by chance
+        * in addition, some of these alleged recombination events went from PAPA to PBPB between two markers, which would only be possible if there were two recombination events between those two markers --> highly unlikely
+    * Thus, I manually re-ordered markers and filled in ‘unsure’ genotypes based on intuition
+
+### QTL analysis
+  * merge phenotype data with genotype data
+    * transposed phenotype data onto genetic map
+  * read into to r/qtl
+  * scanone
+  * scantwo
+  * multipleqtl
+  * stepwiseqtl
+  * 1.5 LODs
+  * effect plots
+
+### interpretation of analysis
+  * remember, you’re often not honing in on a specific gene with QTL analysis alone, so keep your goal in mind and be reasonable with how much you can actually infer based on your data
+  * are candidate genes or homologs of candidate genes under the peak?
+  * are previously identified candidate genes not under the peak?
+  * narrowing the list of genes under the peak
+    * is there any existing expression data for your tissue of interest?
+    * RNA-seq, qPCR if you have a good candidate
+
+## Terminology glossary
+  * marker
+  * genetic map
+  * linkage mapping
+  * association mapping
+  * interval mapping
+  * linkage group
+  * recombination rate (maybe ditch)
+  * recombination fraction
+  * multiple QTL regression analysis
+  * significance threshold
+  * missingness
+  * Quantitative Trait Locus
+  * LOD score
+  * LOD interval (1.5, 1.8)
+  * intercross
+  * backcross
+  * single family based QTL mapping
+  * joint family based QTL mapping
+  * genetic interaction
+  * epistasis
+
+graveyard
+fine mapping:
+recombinant inbred lines (RIL) see Takuno et al. 2012
+near isogenic lines (NIL)
+
+
