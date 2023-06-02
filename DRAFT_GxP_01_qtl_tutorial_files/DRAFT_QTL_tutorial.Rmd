@@ -143,7 +143,7 @@ The whole idea of steps 1-3 below is to determine the genotypes of the F2 popula
 
 ### We're going to start by defining all of our filepaths, variable names, and tools
 ```{bash, eval = F}
-# make variables for commonly used directories. as always, set your working directory wherever works for you
+# make variables for commonly used directories
 workingdir="/Users/jason/qtl.tutorial"
 mkdir $workingdir
 
@@ -158,10 +158,9 @@ idallelesdir="$genodir/id.alleles"
 mkdir $genodir
 mkdir $idallelesdir
 
-# file with the Aquilegia reference genome, and bams for the f1 and the parent I have sequence for ('Pa')
+# file with the Aquilegia reference genome
 reference="/Volumes/HD/genomes.reference/Aquilegia/V3/sequences/Aquilegia_coerulea.main_genome.scaffolds.fasta"
-f1bam="$bamdir/f2.merged.bam"
-pabam="/Volumes/HD/projects/genomes.species/V3/alignments/jonesii.sorted.bam"
+f1bam="$infodir/f2.merged.bam"
 
 # on our lab computer we call samtools from it's location
 samtools="/Volumes/HD/tools/samtools-1.3/samtools"
@@ -178,115 +177,47 @@ samtools="/Volumes/HD/tools/samtools-1.3/samtools"
 cd $workingdir
 
 # make a list file with all of the file paths of our .bams for samtools to merge
-ls -d -1 $bamdir/*.* > $bamdir/f2.paths.list
+ls -d -1 $PWD/*.* > $infodir/f2.paths.list
 
 # merge bam files
-samtools merge $bamdir/f2.merged.bam -b $bamdir/f2.paths.list
+samtools merge $infodir/f2.merged.bam -b $infodir/f2.paths.list
 
 # index bam files
-samtools index $bamdir/f2.merged.bam
+samtools index $infodir/f2.merged.bam
 ```
 
-We can view the merged, indexed .bam file of the F2s in IGV (link). Because I got ~1x coverage on ~350 individuals, this merged .bam file is (on average) a 350x coverage sequence file of the F1...plenty to call a genotype at every base pair. As you can see from the below screenshot of this 53kb region, the coverage was quite variable. This is typical of the library prep method I used (formerly iGenomx, now Twist 96-plex kit), and is just fine for this application.
-
-```{r, echo = FALSE, include = TRUE, out.height = "100%", fig.align = "center", fig.cap="screen shot of the merged .bam file in IGV"}
-
-knitr::include_graphics("DRAFT_GxP_01_qtl_tutorial_files/images/merged.f2.igv.png")
-
-```
+We can view the merged, indexed .bam file of the F2s in IGV (link). Because I got ~1x coverage on ~350 individuals, this merged .bam file is essentially a 350x coverage sequence file of the F1...plenty to call genotypes :).
 
 #### Call and filter SNPs
-  * We can only use sites that are heterozygous in the F1, as those are sites where it inherited different alleles from either parent, and these are the sites that may be useful for genotyping our F2s across recombination bins. If this doesn't make sense yet it hopefully will after reading more.
-  
-  ```{r, echo = FALSE, include = TRUE, out.width = "250px", fig.align = "center", fig.cap="no way to tell which allle came from which parent"}
-
-  knitr::include_graphics("DRAFT_GxP_01_qtl_tutorial_files/images/genotype_homf1.png")
-
-  ```
-    
   * call SNPs with whatever program you like: we use samtools here, there are many others
-    ```{bash, eval = F}
-    # move into the id.alleles directory
-    cd $idallelesdir
+  * filter vcfs
+    * min & max depth: ___
+    * min quality: ___
 
-    # run samtool mpileup to identify variant sites in the F1 and create a .vcf file with those sites
-    samtools mpileup -q 30 -B -u -v -f $reference $f1bam | bcftools call -vm -f GQ > var.f1.vcf
-    
-    # we can look at the first 10 lines (SNPs) after the 'contig', 'INFO', and 'FORMAT' lines
-    
-    ```
+```{bash, eval = F}
+# move into the id.alleles directory
+cd $idallelesdir
+
+# run samtool mpileup to identify variant sites and create a .vcf file with those sites in our 'F1'
+samtools mpileup -q 30 -B -u -v -f $reference $f1bam | bcftools call -vm -f GQ > var.f1.vcf
+
+```
+
   
-  * filter vcfs, I used bcftools, then output a text file with our useful SNP positions
-    * here's all of the code, which I'll break down piece by piece below:
-    ```{bash, eval = F}
-        cd $idallelesdir
-        bcftools filter -g3 var.F1.vcf | awk ' ($8 !~ /INDEL/) {print $0} ' | bcftools query -i 'QUAL>30 && DP>20 && DP<700 && GT="0/1" && GQ>100' -f '%CHROM\t%POS\n' > f1.het.pos
-    ```
-      * use bcftools to filter my .vcf, and remove SNPs within 3 base pairs of an INDEL
-      ```{bash, eval = F}
-        bcftools filter -g3 var.F1.vcf
-      ```
-      * remove INDELs: INDELs can be hard to genotype, and we'll have plenty of SNPs, so we keep it to just those.
-      ```{bash, eval = F}
-        awk ' ($8 !~ /INDEL/) {print $0} '
-      ```
-      * filter for depth & quality and define output format: 
-        * QUAL>30 (Phred score): 1/1000 chance that a base was called incorrectly
-        * DP>20 && DP<700: site must have between 20 and 700x coverage
-        * GT="0/1": heterozygous at that SNP
-        * GQ>100: we're really, really sure that the genotype call is correct
-        * -f '%CHROM\t%POS\n': defines the format of the output text file, outputting the chromosome, then a tab, then the number position of the SNP on that chromosome
-
-        ** Explanation of why I chose these cutoffs: We want to get some idea of our coverage, which we can do by looking at IGV above. We want to include sites that had enough coverage to confidently call a genotype (I used 20x) and not so high that many of those reads are a result of PCR duplicates. My data was filtered for PCR duplicates using Picard MarkDuplicates, but some likely still remain. I set my top end of acceptable coverage at 700x, as this includes sites that got a lot of 'extra' coverage, but will avoid many sites with PCR duplicates.
-      ```{bash, eval = F}
-        bcftools query -i 'QUAL>30 && DP>20 && DP<700 && GT="0/1" && GQ>100' -f '%CHROM\t%POS\n'
-      ```
-        
 #### Identify useful SNPs 
-  * As mentioned previously, useful SNPs will be heterozygous in the F1. We identified these sites above.
-  * If we have enough sequence data from the parents, we can determine which allele came from which parent.
+  * As mentioned previously, useful SNPs will be heterozygous in the F1
+  * If we have enough sequence data from the parents, we can determine which allele came from which parent
   * In this case, I only had sequence data for one of the parents (Pa), which narrows the list of useful sites:
     * So not only can I only use sites where the F1 is heterozygous, I also have to use sites that with a particular genotype in Pa.
-    * Sites where Pa is heterozygous are not useful, because either allele could have come from Pa:
-    ```{r, echo = FALSE, include = TRUE, out.width = "250px", fig.align = "center", fig.cap="still unclear which allele came from which parent"}
-
-    knitr::include_graphics("DRAFT_GxP_01_qtl_tutorial_files/images/genotype_hetjon.png")
-
-    ```
+    * Sites where the F1 and Pa are both heterozygous for the same allele are not useful, because it is still unclear which allele came from which parent:
+    * insert image to illustrate this
     * So the only sites that are useful are: 
       * F1: is heterozygous 
       * Pa: 1. homozygous, or.. <br>
             2. heterozygous with one allele that matches the F1 and one that doesn't. 
       * As the latter case is relatively rare, and there were plenty of sites that satisfy case 1, I decided to use sites that were heterozygous in the F1 and homozygous in Pa
-    ```{r, echo = FALSE, include = TRUE, out.width = "250px", fig.align = "center", fig.cap="now we can determine that the T came from Pa and the G from Pb"}
+      *show code for this
 
-    knitr::include_graphics("DRAFT_GxP_01_qtl_tutorial_files/images/genotype_homjon.png")
-
-    ```
-    * We have our list of high quality, heterozygus sites from the F1, so now we need to determine their genotype in Pa and output that vcf file
-      * The below code uses [samtools mpileup](http://www.htslib.org/doc/samtools-mpileup.html) to take particular sites from a .bam file (f1.het.pos) and make a .vcf file from it with [bcftools call](https://samtools.github.io/bcftools/bcftools.html#call). You can look up the individuals commands on the linked manual pages.
-        ```{bash, eval = F}
-        samtools mpileup -l f1.het.pos -q 30 -u -B -f $reference $pabam | bcftools call -m -f GQ > pa.genotypes.vcf
-        ```
-    * Now we grab sites homozygous in Pa
-      * SNPs only
-      * high quality
-      * 20x < coverage < 100x (coverage on this parent was ~80x)
-      * note that all of our parameters are 'removing'excluding' sites with those specs due to the '-e' in bcftools query (e.g. DP<20 = remove sites with less than 20x coverage). You could do this either way.
-        ```{bash, eval = F}
-        bcftools filter -g3 pa.genotypes.vcf | awk ' ($8 !~ /INDEL/) {print $0} ' | bcftools query -e 'QUAL<30 || DP<20 || DP>100 || GQ<100 || GT="0/1" || GT="1/2"'      -f'%CHROM\t%POS\n' > snp.list
-        ```
-    * snp.list is our final list of usable SNPs, of which there were ~1,000,000 in this case
-    * Now we'll call genotypes for both the F1 and Pa at these sites using a combination of [samtools mpileup](http://www.htslib.org/doc/samtools-mpileup.html), [bcftools call](https://samtools.github.io/bcftools/bcftools.html#call), and [bcftools query](https://samtools.github.io/bcftools/bcftools.html#query). This is a simple text file with 4 columns: 
-      * chromosome, position, reference allele, and the alternate allele:
-      ```{bash, eval = F}
-      samtools mpileup -l snp.list -q 30 -u -B -f $reference $f1 $pabam | bcftools call -vm -f GQ | awk ' ($8 !~ /INDEL/) {print $0} ' | bcftools query -f        '%CHROM\:%POS\t%REF\t%ALT[\t%GT]\n' > f1.pa.genotypes
-      ```
-    * Finally, we'll print a file with the sites, the Pa allele, and the Pb allele
-    ```{bash, eval = F}
-    awk ' { if ( $5 ~ /0\/0/ ) print $1 "\t" $2 "\t" $3; else print $1 "\t" $3 "\t" $2; } ' f1.pa.genotypes > pos.pa.pb.txt    
-    ```
-    
 ### Now we can actually genotype the F2s
  * determine useful window sizes depending on recombination rate
     * we used from 10kb to 1Mb

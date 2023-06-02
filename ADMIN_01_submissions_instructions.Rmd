@@ -297,8 +297,7 @@ package has a lot of functionality for fancier tables.
 ### **insert an image**
 
 To insert an image, you need the image file to also be uploaded to the
-Github repositority. We store the images hosted on the website in the
-`images/` folder. For any image, please make sure you have permission to
+Github repository. We store the images hosted on the website in each page's folder and call them accordingly. For any image, please make sure you have permission to
 share the image and that it is appropriately cited.
 
 *code chunk in .Rmd*:
