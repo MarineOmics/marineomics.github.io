@@ -40,6 +40,16 @@ Finding your subset of genes of interest
 * Overrepresentation vs Enrichment (Thea)
 * Explanation of statistics (Sam) - include key terms
 
+## Overrepresentation vs Enrichment
+
+Often, everything gets referred to as enrichment analysis, but this is not the case. The two primary analyses to be run that examine functional patterns are statistical over-representation analysis and statistial enrichment analysis. There are differences in how data are input, what kind of data are used, and what statistical tests are employed by each analysis.
+
+Over-represenation analysis is used when you do not have expression values associated with your data. In this case you will provide a list of a subset of genes of interest as well as a reference list. This reference list will contain all the genes in your study. For example, in a transcriptomic analysis the reference list would include all expressed genes in the experiment while the gene of interest list might include genes that are over expressed under a specific condition (e.g., genes over expressed in females compared to all genes expressed in males and females). These two lists are compared to one another and a Fisher's Exact Test is used to calculate whether any functional categories (based on how genes are annotated to particular GO terms) are over-represented in your list of genes of interest, relative to the representation of all functional categories present in your full data set. 
+
+Enrichment analysis is used when you do have expression values associated with your data. In this case, you will provide the full list of genes in your experiment and their associated expression values (e.g., this might be a library from an RNA-seq experiment). Any expression metric can be used. This flexiblity is because enrichment analysis uses a Mann-Whitney U Test to calculate enrichment, which is based on rankings - thus values need to be interpretable for rank-based relationships, and an appropriate normalization metric should be applied to your data. 
+
+See later sections for further discussion of Fisher's Exact Test and Mann-Whitney U Test.
+
 <br>
 
 # Tools and Approaches
