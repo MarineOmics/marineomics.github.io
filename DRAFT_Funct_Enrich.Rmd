@@ -40,6 +40,10 @@ Finding your subset of genes of interest
 * Overrepresentation vs Enrichment (Thea)
 * Explanation of statistics (Sam) - include key terms
 
+## The Gene Ontology
+
+## Annotation and filtration decisions
+
 ## Overrepresentation vs Enrichment
 
 Often, everything gets referred to as enrichment analysis, but this is not the case. The two primary analyses to be run that examine functional patterns are statistical over-representation analysis and statistial enrichment analysis. There are differences in how data are input, what kind of data are used, and what statistical tests are employed by each analysis.
@@ -50,6 +54,8 @@ Enrichment analysis is used when you do have expression values associated with y
 
 See later sections for further discussion of Fisher's Exact Test and Mann-Whitney U Test.
 
+## Explanation of Statistics
+
 <br>
 
 # Tools and Approaches
@@ -57,6 +63,29 @@ See later sections for further discussion of Fisher's Exact Test and Mann-Whitne
 * Ontologizer (command line) (Thea)
 * Panther (online GUI) - endorsed by The Gene Ontology (Thea)
 * R...Mann-Whitney U Test and Fisher’s Exact Test (Sam) 
+
+## Ontologizer
+
+[Ontologizer](http://ontologizer.de/) offers a command-line option for functional analysis using the Gene Ontology and is one of several tools endorsed by the GO. Functionally, it represents a tool for overrepresentation analysis as it makes use of the Fisher's Exact Test. The most challenging part of running ontologizer is preparing your input files and ensuring they are annotated properly. 
+
+To run Ontologizer on the command line the Ontologizer.jar file will need to be downloaded from [here](http://ontologizer.de/commandline/). Additionally, Ontologizer requires java to run, so ensure you have this installed or call the relevant module in your hpc system.  It needs to be supplied with the following:
+
+* The association file (-a) relating genes to GO terms (ends in .gaf for gene association file). A number of options are available through the annotations link on [this page](http://geneontology.org/docs/download-go-annotations/).
+* The file (-g) containing the GO terminology and structure [go-basic.obo](http://geneontology.org/docs/download-ontology/).
+* A population reference file (-p), which you will generate.
+* Files representing your gene subsets of interest (-s). Multiple subsets can be provided at one time to Ontologizer and run in parallel by specifying a path to the directory containing only these files. 
+
+There are a number of other options that can be specified. Some worth consider are your calculation method (-c), whether to ignore genes with no associations in your calculations (-i), and the name of the directory that you want your output written to (-o).
+
+A sample script run on an hpc cluster may look like the following:
+
+```
+java -jar Ontologizer.jar -a goa_uniprot_all.gaf -g go-basic.obo -p pop.CPISwissProtIDs.txt -s Subset/CPIDEA/StudySet -c "MGSA" -d 0.05 -i -o CPIOntologizerSubsetOutput
+```
+
+## PANTHER
+
+## Using R
 
 <br>
 
