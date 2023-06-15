@@ -563,6 +563,95 @@ Mann-Whitney U Test.</p>
 <li>Panther (online GUI) - endorsed by The Gene Ontology (Thea)</li>
 <li>R…Mann-Whitney U Test and Fisher’s Exact Test (Sam)</li>
 </ul>
+<<<<<<< HEAD
+=======
+</div>
+<div id="a-primer-on-the-statistics-of-functional-enrichment"
+class="section level1">
+<h1>A primer on the statistics of functional enrichment</h1>
+<p>Two popular methods of testing for GO term enrichment are the Fishers
+exact test and Mann Whitney U tests. Each test can produce results that
+are sensitive to the kinds of data they are input with such as
+differential expression or WGCNA coefficients [cite]. Neither test
+necessarily needs to be used alongside known networks of genes and use
+GO terms, enabling their use in non-model systems. These two methods are
+summarized and derived below:</p>
+<p><br></p>
+<div id="fishers-exact-test" class="section level2">
+<h2>Fisher’s Exact Test</h2>
+<p>The Fisher’s exact test evaluates the relationship between two
+categorical variables: whether the ontology of a gene is represented in
+a test set or a background set. In the case of differential expression
+(DE), the test set is al DE genes and the background set is all genes
+included in DE analysis after filtering, not the entire transcriptome.
+The test asks whether the number of genes for a given GO term
+represented in a test set relative to the background is greater than
+what is expected due to chance alone (p).</p>
+<p><span class="math display">\[
+p = \frac{{\binom{{a+b}}{{a}} \cdot
+\binom{{c+d}}{{c}}}}{{\binom{{n}}{{a+c}}}}
+\]</span></p>
+<p>Where</p>
+<ul>
+<li><span class="math inline">\(a =\)</span> <span
+class="math inline">\(n\)</span> genes of GO term <span
+class="math inline">\(i\)</span> in both the test and background
+set</li>
+<li><span class="math inline">\(b =\)</span> <span
+class="math inline">\(n\)</span> genes of GO <span
+class="math inline">\(i\)</span> in the background but not test</li>
+<li><span class="math inline">\(c =\)</span> <span
+class="math inline">\(n\)</span> genes of GO <span
+class="math inline">\(i\)</span> absent from the test but present in the
+background</li>
+<li><span class="math inline">\(d =\)</span> <span
+class="math inline">\(n\)</span> genes of GO <span
+class="math inline">\(i\)</span> absent in both the category and the
+background</li>
+<li><span class="math inline">\(n =\)</span> <span
+class="math inline">\(n\)</span> genes in the background set</li>
+</ul>
+<p>A Fisher’s exact test can be executed in base R using the
+fishers.text() function</p>
+<p><br></p>
+</div>
+<div id="mann-whitney-u-test" class="section level2">
+<h2>Mann Whitney U Test</h2>
+<p>The critical difference between Mann Whitney U and Fisher’s exact
+tests and are that Mann Whitney U’s permit the analysis of continuous
+rather than categorical variables. These continuous values can be log
+fold changes of differential expression or -log p-values associated with
+DE or inclusion in a WGCNA. Because it doesn’t rely on binary values
+denoting the existence of an effect, but rather the strength of an
+effect, the Mann Whitney U test is a more quantitative approach toward
+functional enrichment. The test asks whether the distribution of ranks
+for this continuous value in a GO term is significantly skewed from the
+distribution of ranks across all other GO terms. Like the background set
+employed in a Fisher’s exact test, “all other GO terms” refers to those
+terms included in genes used for analysis following filtering.</p>
+<p>The skewedness of a GO term’s rank distribution relative to the
+background is represented by the statistic <span
+class="math inline">\(U\)</span>. The p-value output by the Mann Whitney
+U test is calculated with the following equation:</p>
+<p><span class="math display">\[
+p = \frac{{U}}{{a \cdot b}}
+\]</span></p>
+<p>Where</p>
+<ul>
+<li><span class="math inline">\(a =\)</span> <span
+class="math inline">\(n\)</span> genes in GO term <span
+class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(b =\)</span> <span
+class="math inline">\(n\)</span> genes in the background set</li>
+</ul>
+<p>A Mann Whitney U test can be executed for GO enrichment analysis
+using code from <span
+class="citation">(<strong>Wright2015-dc?</strong>)</span></p>
+<p><br></p>
+<p>A number of different parameters can be used to filter results or
+modify the execution of both tests, which we detail below.</p>
+</div>
+>>>>>>> 086513607fab562f20b9fdaa582d163e29690724
 <div id="ontologizer" class="section level2">
 <h2>Ontologizer</h2>
 <p><a href="http://ontologizer.de/">Ontologizer</a> offers a
@@ -618,6 +707,7 @@ href="http://pantherdb.org/downloads/index.jsp">here</a></p>
 pantherScore2.2/pantherScore2.2.pl, submit amino acid sequences to be
 searched against the PANTHER HMM library and assign appropriate IDs.
 Thus you may need to translate your transcript sequences using a tool
+<<<<<<< HEAD
 such as <a
 href="https://github.com/TransDecoder/TransDecoder/wiki">TransDecoder</a>.
 Searching your sequences against the PANTHER HMM library can be done on
@@ -625,6 +715,13 @@ the command line. You will need to load perl and hmmer software
 packages. Test data are provided to check that everything installed
 properly. Once you are ready to go, you can run some version of the
 following. See command options for alternative variables to
+=======
+such as TransDecoder. Searching your sequences against the PANTHER HMM
+library can be done on the command line. You will need to load perl and
+hmmer software packages. Test data are provided to check that everything
+installed properly. Once you are ready to go, you can run some version
+of the following. See command options for alternative variables to
+>>>>>>> 086513607fab562f20b9fdaa582d163e29690724
 consider.</p>
 <pre><code>pantherScore2.2.pl -l ../target/famlib/rel/PANTHER17.0_altVersion/hmmscoring/PANTHER17.0/ -D B -V -i translated_coding_sequences.faa -o hits.txt -n</code></pre>
 <pre><code>-l PANTER (l)ibrary with HMMs when using hmmsearch, binary PANTHER HMM model when using hmmscan
