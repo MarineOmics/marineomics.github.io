@@ -103,7 +103,7 @@ Unpack the tar file.
 tar -xvzf PANTHER17.0_hmmscoring.tgz
 ```
 
-Using the provided script located at pantherScore2.2/pantherScore2.2.pl, submit amino acid sequences to be searched against the PANTHER HMM library and assign appropriate IDs. Thus you may need to translate your transcript sequences using a tool such as TransDecoder. Searching your sequences against the PANTHER HMM library can be done on the command line. You will need to load perl and hmmer software packages. Test data are provided to check that everything installed properly. Once you are ready to go, you can run some version of the following. See command options for alternative variables to consider.
+Using the provided script located at pantherScore2.2/pantherScore2.2.pl, submit amino acid sequences to be searched against the PANTHER HMM library and assign appropriate IDs. Thus you may need to translate your transcript sequences using a tool such as [TransDecoder](https://github.com/TransDecoder/TransDecoder/wiki). Searching your sequences against the PANTHER HMM library can be done on the command line. You will need to load perl and hmmer software packages. Test data are provided to check that everything installed properly. Once you are ready to go, you can run some version of the following. See command options for alternative variables to consider.
 
 ```
 pantherScore2.2.pl -l ../target/famlib/rel/PANTHER17.0_altVersion/hmmscoring/PANTHER17.0/ -D B -V -i translated_coding_sequences.faa -o hits.txt -n
