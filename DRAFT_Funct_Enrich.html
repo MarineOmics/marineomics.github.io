@@ -454,11 +454,11 @@ in the interpretation of biological data by identifying biological
 processes and pathways that are significantly overrepresented in a gene
 list of interest. However, to effectively use this tool, it is essential
 to have a proper annotation of genes.</p>
-<p>Proper annotation of genes is crucial because it ensures that the
-genes are correctly identified and annotated with their appropriate
-biological functions. Incorrect annotation of genes can lead to
-inaccurate interpretations of experimental results and hinder progress
-in understanding the biological systems of non-model species.</p>
+<p>Proper annotation of genes is crucial because it ensures the genes
+are correctly identified and annotated with their appropriate biological
+functions. Incorrect annotation of genes can lead to inaccurate
+interpretations of experimental results and hinder progress in
+understanding the biological systems of non-model species.</p>
 <p>Therefore, the quality of gene annotation is critical for accurate
 functional gene enrichment analysis. This involves careful curation of
 gene annotations based on experimental evidence from various sources,
@@ -469,6 +469,25 @@ More information on this can be found at</p>
 <ul>
 <li>Example 1</li>
 <li>Example 2</li>
+</ul>
+<p>While functional gene enrichment analysis poses many challenges to
+non-model systems, it is critical the analyses conducted be as rigorous
+and replicable as possible. A recent survey of published enrichment
+results indicated that issues in the performance and reporting of
+enrichment analyses is not uncommon <span class="citation">(Wijesooriya
+et al. 2022)</span>. Basic standards advised by the authors include:</p>
+<ul>
+<li>Selection of appropriate gene background set. This set should not
+necessarily be the full set of genes in the genome. Rather it should be
+the set of genes expressed in the experiment. This is especially an
+issue with overrepresentation analysis and showed a consider impact on
+results when done incorrectly.</li>
+<li>Multiple hypothesis correction. A common metric used with enrichment
+results is a false discovery rate (FDR) correction.</li>
+<li>Adequate methodological reporting including software and parameters
+used, versions of software and annotation files, all gene lists analyzed
+including subset and background sets, types of statistical tests and
+corrections performed, and any code used to conduct the analyses.</li>
 </ul>
 <p><strong>In some instances high quality annotation might not be
 possible but it is critical that before you undergo enrichment analysis
@@ -493,7 +512,49 @@ any associated limitations</strong></p>
 <li>Overrepresentation vs Enrichment (Thea)</li>
 <li>Explanation of statistics (Sam) - include key terms</li>
 </ul>
+<div id="the-gene-ontology" class="section level2">
+<h2>The Gene Ontology</h2>
+</div>
+<div id="annotation-and-filtration-decisions" class="section level2">
+<h2>Annotation and filtration decisions</h2>
+</div>
+<div id="overrepresentation-vs-enrichment" class="section level2">
+<h2>Overrepresentation vs Enrichment</h2>
+<p>Often, everything gets referred to as enrichment analysis, but this
+is not the case. The two primary analyses to be run that examine
+functional patterns are statistical over-representation analysis and
+statistial enrichment analysis. There are differences in how data are
+input, what kind of data are used, and what statistical tests are
+employed by each analysis.</p>
+<p>Over-representation analysis is used when you do not have expression
+values associated with your data. In this case you will provide a list
+of a subset of genes of interest as well as a reference list. This
+reference list will contain all the genes in your study. For example, in
+a transcriptomic analysis the reference list would include all expressed
+genes in the experiment while the gene of interest list might include
+genes that are over expressed under a specific condition (e.g., genes
+over expressed in females compared to all genes expressed in males and
+females). These two lists are compared to one another and a Fisher’s
+Exact Test is used to calculate whether any functional categories (based
+on how genes are annotated to particular GO terms) are over-represented
+in your list of genes of interest, relative to the representation of all
+functional categories present in your full data set.</p>
+<p>Enrichment analysis is used when you do have expression values
+associated with your data. In this case, you will provide the full list
+of genes in your experiment and their associated expression values
+(e.g., this might be a library from an RNA-seq experiment). Any
+expression metric can be used. This flexiblity is because enrichment
+analysis uses a Mann-Whitney U Test to calculate enrichment, which is
+based on rankings - thus values need to be interpretable for rank-based
+relationships, and an appropriate normalization metric should be applied
+to your data.</p>
+<p>See later sections for further discussion of Fisher’s Exact Test and
+Mann-Whitney U Test.</p>
+</div>
+<div id="explanation-of-statistics" class="section level2">
+<h2>Explanation of Statistics</h2>
 <p><br></p>
+</div>
 </div>
 <div id="tools-and-approaches" class="section level1">
 <h1>Tools and Approaches</h1>
@@ -502,7 +563,286 @@ any associated limitations</strong></p>
 <li>Panther (online GUI) - endorsed by The Gene Ontology (Thea)</li>
 <li>R…Mann-Whitney U Test and Fisher’s Exact Test (Sam)</li>
 </ul>
+</div>
+<div id="a-primer-on-the-statistics-of-functional-enrichment"
+class="section level1">
+<h1>A primer on the statistics of functional enrichment</h1>
+<p>Two popular methods of testing for GO term enrichment are the Fishers
+exact test and Mann Whitney U tests. Each test can produce results that
+are sensitive to the kinds of data they are input with such as
+differential expression or WGCNA coefficients [cite]. Neither test
+necessarily needs to be used alongside known networks of genes and use
+GO terms, enabling their use in non-model systems. These two methods are
+summarized and derived below:</p>
 <p><br></p>
+<div id="fishers-exact-test" class="section level2">
+<h2>Fisher’s Exact Test</h2>
+<p>The Fisher’s exact test evaluates the relationship between two
+categorical variables: whether the ontology of a gene is represented in
+a test set or a background set. In the case of differential expression
+(DE), the test set is al DE genes and the background set is all genes
+included in DE analysis after filtering, not the entire transcriptome.
+The test asks whether the number of genes for a given GO term
+represented in a test set relative to the background is greater than
+what is expected due to chance alone (p).</p>
+<p><span class="math display">\[
+p = \frac{{\binom{{a+b}}{{a}} \cdot
+\binom{{c+d}}{{c}}}}{{\binom{{n}}{{a+c}}}}
+\]</span></p>
+<p>Where</p>
+<ul>
+<li><span class="math inline">\(a =\)</span> <span
+class="math inline">\(n\)</span> genes of GO term <span
+class="math inline">\(i\)</span> in both the test and background
+set</li>
+<li><span class="math inline">\(b =\)</span> <span
+class="math inline">\(n\)</span> genes of GO <span
+class="math inline">\(i\)</span> in the background but not test</li>
+<li><span class="math inline">\(c =\)</span> <span
+class="math inline">\(n\)</span> genes of GO <span
+class="math inline">\(i\)</span> absent from the test but present in the
+background</li>
+<li><span class="math inline">\(d =\)</span> <span
+class="math inline">\(n\)</span> genes of GO <span
+class="math inline">\(i\)</span> absent in both the category and the
+background</li>
+<li><span class="math inline">\(n =\)</span> <span
+class="math inline">\(n\)</span> genes in the background set</li>
+</ul>
+<p>A Fisher’s exact test can be executed in base R using the
+fishers.text() function</p>
+<p><br></p>
+</div>
+<div id="mann-whitney-u-test" class="section level2">
+<h2>Mann Whitney U Test</h2>
+<p>The critical difference between Mann Whitney U and Fisher’s exact
+tests and are that Mann Whitney U’s permit the analysis of continuous
+rather than categorical variables. These continuous values can be log
+fold changes of differential expression or -log p-values associated with
+DE or inclusion in a WGCNA. Because it doesn’t rely on binary values
+denoting the existence of an effect, but rather the strength of an
+effect, the Mann Whitney U test is a more quantitative approach toward
+functional enrichment. The test asks whether the distribution of ranks
+for this continuous value in a GO term is significantly skewed from the
+distribution of ranks across all other GO terms. Like the background set
+employed in a Fisher’s exact test, “all other GO terms” refers to those
+terms included in genes used for analysis following filtering.</p>
+<p>The skewedness of a GO term’s rank distribution relative to the
+background is represented by the statistic <span
+class="math inline">\(U\)</span>. The p-value output by the Mann Whitney
+U test is calculated with the following equation:</p>
+<p><span class="math display">\[
+p = \frac{{U}}{{a \cdot b}}
+\]</span></p>
+<p>Where</p>
+<ul>
+<li><span class="math inline">\(a =\)</span> <span
+class="math inline">\(n\)</span> genes in GO term <span
+class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(b =\)</span> <span
+class="math inline">\(n\)</span> genes in the background set</li>
+</ul>
+<p>A Mann Whitney U test can be executed for GO enrichment analysis
+using code from <span
+class="citation">(<strong>Wright2015-dc?</strong>)</span></p>
+<p><br></p>
+<p>A number of different parameters can be used to filter results or
+modify the execution of both tests, which we detail below.</p>
+</div>
+<div id="ontologizer" class="section level2">
+<h2>Ontologizer</h2>
+<p><a href="http://ontologizer.de/">Ontologizer</a> offers a
+command-line option for functional analysis using the Gene Ontology and
+is one of several tools endorsed by the GO. Functionally, it represents
+a tool for overrepresentation analysis as it makes use of the Fisher’s
+Exact Test. The most challenging part of running ontologizer is
+preparing your input files and ensuring they are annotated properly.</p>
+<p>To run Ontologizer on the command line the Ontologizer.jar file will
+need to be downloaded from <a
+href="http://ontologizer.de/commandline/">here</a>. Additionally,
+Ontologizer requires java to run, so ensure you have this installed or
+call the relevant module in your hpc system. It needs to be supplied
+with the following:</p>
+<ul>
+<li>The association file (-a) relating genes to GO terms (ends in .gaf
+for gene association file). A number of options are available through
+the annotations link on <a
+href="http://geneontology.org/docs/download-go-annotations/">this
+page</a>.</li>
+<li>The file (-g) containing the GO terminology and structure <a
+href="http://geneontology.org/docs/download-ontology/">go-basic.obo</a>.</li>
+<li>A population reference file (-p), which you will generate.</li>
+<li>Files representing your gene subsets of interest (-s). Multiple
+subsets can be provided at one time to Ontologizer and run in parallel
+by specifying a path to the directory containing only these files.</li>
+</ul>
+<p>There are a number of other options that can be specified. Some worth
+consider are your calculation method (-c), whether to ignore genes with
+no associations in your calculations (-i), and the name of the directory
+that you want your output written to (-o).</p>
+<p>A sample script run on an hpc cluster may look like the
+following:</p>
+<pre><code>java -jar Ontologizer.jar -a goa_uniprot_all.gaf -g go-basic.obo -p pop.CPISwissProtIDs.txt -s Subset/CPIDEA/StudySet -c &quot;MGSA&quot; -d 0.05 -i -o CPIOntologizerSubsetOutput</code></pre>
+</div>
+<div id="panther" class="section level2">
+<h2>PANTHER</h2>
+<p>PANTHER is a GUI option that is endorsed by The Gene Ontology and
+integrated into their website. PANTHER stands for Protein ANalysis
+THrough Evolutionary Relationships.</p>
+<div id="preparing-data-for-input-into-panther." class="section level3">
+<h3>Preparing data for input into Panther.</h3>
+<p>Here we will go over how to map your transcripts to PANTHER IDs for
+input into the PANTHER analysis pipeline. PANTHER can accept a number of
+ID types, but this is method may be useful if you are working in a
+nonmodel system with limited annotation data available.</p>
+<p>Download the PANTHER HMM scoring tool from <a
+href="http://pantherdb.org/downloads/index.jsp">here</a></p>
+<pre><code>wget http://data.pantherdb.org/ftp/hmm_scoring/current_release</code></pre>
+<p>Unpack the tar file.</p>
+<pre><code>tar -xvzf PANTHER17.0_hmmscoring.tgz</code></pre>
+<p>Using the provided script located at
+pantherScore2.2/pantherScore2.2.pl, submit amino acid sequences to be
+searched against the PANTHER HMM library and assign appropriate IDs.
+Thus you may need to translate your transcript sequences using a tool
+such as TransDecoder. Searching your sequences against the PANTHER HMM
+library can be done on the command line. You will need to load perl and
+hmmer software packages. Test data are provided to check that everything
+installed properly. Once you are ready to go, you can run some version
+of the following. See command options for alternative variables to
+consider.</p>
+<pre><code>pantherScore2.2.pl -l ../target/famlib/rel/PANTHER17.0_altVersion/hmmscoring/PANTHER17.0/ -D B -V -i translated_coding_sequences.faa -o hits.txt -n</code></pre>
+<pre><code>-l PANTER (l)ibrary with HMMs when using hmmsearch, binary PANTHER HMM model when using hmmscan
+-D display type for results
+    options: I (interproscan), B (best hit), A (all hits)
+-o (o)utput file (redirect STDOUT)
+-i (i)nput fasta file to score
+-V (V)ery verbose (debug info to STDERR)</code></pre>
+<p>The results will look something like this:</p>
+<pre><code>CpiID   PantherID       GeneName        HmmEvalue       HmmBitscore     AlignRange
+lcl|NC_024225.1_prot_XP_023959495.1_6146        PTHR46343:SF3   SUSHI REPEAT-CONTAINING PROTEIN SRPX2   1.2e-266        887.6   9-462
+lcl|NW_007359912.1_prot_XP_008164062.1_46642    PTHR10048:SF33  PHOSPHATIDYLINOSITOL 4,5-BISPHOSPHATE 3-KINASE CATALYTIC SUBUNIT BETA ISOFORM   0       2111.3  1-1040
+lcl|NW_007281451.1_prot_XP_008170789.1_21777    PTHR23119:SF48  LEUCINE-RICH REPEAT-CONTAINING PROTEIN 7        0       2508.4  7-1351
+lcl|NW_007281531.1_prot_XP_005308912.1_25857    PTHR12157:SF18  REGULATING SYNAPTIC MEMBRANE EXOCYTOSIS PROTEIN 1       0       2637.1  1-1502
+lcl|NW_007359900.1_prot_XP_005287749.1_44438    PTHR13040:SF2   AUTOPHAGY PROTEIN 5     3.2e-105        355.0   3-272
+lcl|NW_007359900.1_prot_XP_005287749.1_44438    PTHR13040       AUTOPHAGY PROTEIN 5     3.2e-105        355.0   3-272
+lcl|NW_007282136.1_prot_XP_005313942.1_33204    PTHR26450:SF179 OLFACTORY RECEPTOR      2.6e-146        489.7   1-311
+...</code></pre>
+<p>Now that you have the PANTHER annotations, the next step is to do any
+final parsing of your data for input into PANTHER. For
+overrepresentation analysis you will need a reference file representing
+your population of genes and a subset file representing your set of
+target genes of interest. They can both take the format for Generic
+Mapping which follows the form shown above. If performing enrichment
+analysis, some extra data formatting will be needed. In this case, input
+should contain three columns: a gene ID (in a form useful to you), the
+PANTHER ID (resulting from the search against the HMM library described
+above), and an expression metric for each gene.</p>
+</div>
+<div id="running-panther-overrepresentation" class="section level3">
+<h3>Running PANTHER Overrepresentation</h3>
+<p>Go to <a href="http://pantherdb.org"
+class="uri">http://pantherdb.org</a>. This will bring up the start page
+which will look something like this:</p>
+<p>image: <img src="DRAFT_Funct_Enrich/PantherStartPage.png" /></p>
+<p>Step 1 is to upload your file of interest. If you are doing an
+overrepresentation analysis, this would be a your subset list of genes.
+Your list type will need to be specified. If you are working with a
+non-model system with limited genomic resources, chances are you will
+want to use the PANTHER Generic Mapping option (see elsewhere for
+instructions on preparing this data). See both the Supported IDs and
+File format links on this page for descriptions of acceptable IDs.</p>
+<p>Step 2 depends on your selection in step one. Here is where you would
+specify your organism (and consequent reference file) if it is avialable
+within the PANTHER database. If your organism is not avialable, you will
+have selected PANTHER Generic Mapping and will provide your own
+reference set (for overrepresenation analysis only) at a later stage and
+this step will be skipped.</p>
+<p>Step 3 selects the type of analysis you would like to run. Here we
+will discuss the statistical overrperesentation test.</p>
+<p>Here is what things will look like once your data are uploaded:</p>
+<p>image: <img
+src="DRAFT_Funct_Enrich/PantherStartPageWithData.png" /></p>
+<p>Click Submit.</p>
+<p>You will now be brought to the second data entry page. Here is where
+you will provide your reference list. If you are working with a species
+present in the PANTHER DATABASE you can specify that here. Alternatively
+you can provide your own. In this example we will provide a PANTHER
+Generic Mapping File, since we also provided this type of file for our
+subset list.</p>
+<p>First, select the list type - in this case we select PANTHER Generic
+Mapping File. Then choose file; you will be able to upload a file from
+your computer. Select upload list and you will be brought the the
+analysis page.</p>
+<p>Prior to selecting upload list, the page should look something like
+this:</p>
+<p>image: <img src="DRAFT_Funct_Enrich/PantherReferencePage.png" /></p>
+<p>Once you have uploaded your reference file you will be brought to a
+new page. You should see your subset of interest file after Analyzed
+List and your population reference file after Reference List. You can
+select which annotation data set you want to query:</p>
+<ul>
+<li>PANTHER Pathways</li>
+<li>PANTHER GO-Slim Molecular Function</li>
+<li>PANTHER GO-Slim Biological Process</li>
+<li>PANTHER GO-Slim Cellular Component</li>
+<li>PANTHER Protein Class</li>
+</ul>
+<p>Select your test type (either Fisher’s Exact Test or Binomial) and
+test correction type (False Discovery Rate, Bonferroni, or None).</p>
+<p>Here is an example of what the page will look like once it is ready
+to go:</p>
+<p>image: <img src="DRAFT_Funct_Enrich/PantherAnalysisPage.png" /></p>
+<p>Launch Analysis.</p>
+<p>Results will load below. The default is to only show significant
+results. There are several options for downloading results. Simply
+select the type you wish to download and save it to your computer.</p>
+<p>Here is an example of the results page when there are significant
+hits:</p>
+<p>image: <img src="DRAFT_Funct_Enrich/PantherResults.png" /></p>
+</div>
+<div id="running-panther-enrichment" class="section level3">
+<h3>Running PANTHER Enrichment</h3>
+<p>Go to <a href="http://pantherdb.org"
+class="uri">http://pantherdb.org</a>. This will bring up the start page
+which will look something like this:</p>
+<p>image: <img src="DRAFT_Funct_Enrich/PantherStartPage.png" /></p>
+<p>Step 1 is to upload your file of interest. If you are running
+enrichment analysis, then you would upload your full set of genes with
+expression values. Your list type will need to be specified. If you are
+working with a non-model system with limited genomic resources, chances
+are you will want to use the PANTHER Generic Mapping option (see
+elsewhere for instructions on preparing this data). See both the
+Supported IDs and File format links on this page for descriptions of
+acceptable IDs.</p>
+<p>Step 2 depends on your selection in step one. Here is where you would
+specify your organism if it is avialable within the PANTHER database. If
+your organism is not avialable, you will have selected PANTHER Generic
+Mapping and this step will be skipped.</p>
+<p>Step 3 selects the type of analysis you would like to run. Here we
+will discuss the statistical enrichment test.</p>
+<p>Here is what things will look like once your data are uploaded:</p>
+<p>image: <img
+src="DRAFT_Funct_Enrich/PantherStartPageWithDataEnrichment.png" /></p>
+<p>Click Submit.</p>
+<p>This will bring up the results page for the analysis. You can select
+a different type of annotation data set to analyze if you wish as well
+as change the multiple hypothesis correction type. The data sets
+available are the same as for running the overrepresentation test. A
+false discovery rate correction is applied automatically and any
+significant results are displayed below, but Bonferroni and none are
+options as well. There are several options for downloading results.
+Simply select the type you wish to download and save it to your
+computer.</p>
+<p>Here is an example of the results page when there are significant
+hits:</p>
+<p>image: <img
+src="DRAFT_Funct_Enrich/PantherResultsEnrichment.png" /></p>
+</div>
+</div>
+<div id="using-r" class="section level2">
+<h2>Using R</h2>
+<p><br></p>
+</div>
 </div>
 <div id="what-to-do-with-the-output" class="section level1">
 <h1>What to Do with the Output</h1>
@@ -692,6 +1032,13 @@ from the</p>
 Bleazard, Thomas, Janine A Lamb, and Sam Griffiths-Jones. 2015.
 <span>“Bias in <span class="nocase">microRNA</span> Functional
 Enrichment Analysis.”</span> <em>Bioinformatics</em> 31 (10): 1592–98.
+</div>
+<div id="ref-RN335" class="csl-entry">
+Wijesooriya, K. L., S. Jadaan, K. L. Perera, T. Kaur, and M. L. Ziemann.
+2022. <span>“Urgent Need for Consistent Standards in Functional
+Enrichment Analysis.”</span> Journal Article. <em>Plos Computational
+Biology</em> 18 (3): 14. <a
+href="https://doi.org/10.1371/journal.pcbi.1009935">https://doi.org/10.1371/journal.pcbi.1009935</a>.
 </div>
 </div>
 </div>

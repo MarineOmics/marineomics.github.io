@@ -70,7 +70,7 @@ Two popular methods of testing for GO term enrichment are the Fishers exact test
 
 <br>
 
-##Fisher’s Exact Test
+## Fisher’s Exact Test
 
 The Fisher’s exact test evaluates the relationship between two categorical variables: whether the ontology of a gene is represented in a test set or a background set. In the case of differential expression (DE), the test set is al DE genes and the background set is all genes included in DE analysis after filtering, not the entire transcriptome. The test asks whether the number of genes for a given GO term represented in a test set relative to the background is greater than what is expected due to chance alone (p).
 
@@ -80,17 +80,17 @@ $$
 
 Where
 
-$a =$ $n$ genes of GO term $i$ in both the test and background set
-$b =$ $n$ genes of GO $i$ in the background but not test
-$c =$ $n$ genes of GO $i$ absent from the test but present in the background
-$d =$ $n$ genes of GO $i$ absent in both the category and the background
-$n =$ $n$ genes in the background set
+* $a =$ $n$ genes of GO term $i$ in both the test and background set
+* $b =$ $n$ genes of GO $i$ in the background but not test
+* $c =$ $n$ genes of GO $i$ absent from the test but present in the background
+* $d =$ $n$ genes of GO $i$ absent in both the category and the background
+* $n =$ $n$ genes in the background set
 
 A Fisher's exact test can be executed in base R using the fishers.text() function
 
 <br>
 
-##Mann Whitney U Test
+## Mann Whitney U Test
 
 The critical difference between Mann Whitney U and Fisher’s exact tests and are that Mann Whitney U’s permit the analysis of continuous rather than categorical variables. These continuous values can be log fold changes of differential expression or -log p-values associated with DE or inclusion in a WGCNA. Because it doesn’t rely on binary values denoting the existence of an effect, but rather the strength of an effect, the Mann Whitney U test is a more quantitative approach toward functional enrichment. The test asks whether the distribution of ranks for this continuous value in a GO term is significantly skewed from the distribution of ranks across all other GO terms. Like the background set employed in a Fisher’s exact test, “all other GO terms” refers to those terms included in genes used for analysis following filtering.
 
@@ -102,8 +102,8 @@ $$
 
 Where
 
-$a =$ $n$ genes in GO term $i$
-$b =$ $n$ genes in the background set
+* $a =$ $n$ genes in GO term $i$
+* $b =$ $n$ genes in the background set
 
 A Mann Whitney U test can be executed for GO enrichment analysis using code from [@Wright2015-dc]
 
