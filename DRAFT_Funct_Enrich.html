@@ -13,7 +13,7 @@
 
 <title>Functional Enrichment Tests: Intro and methods comparison</title>
 
-<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -447,8 +447,6 @@ and <em>Steven Roberts</em></h3>
 </div>
 
 
-<div id="background" class="section level1">
-<h1>Background</h1>
 <p>Functional gene enrichment analysis is a powerful tool that can aid
 in the interpretation of biological data by identifying biological
 processes and pathways that are significantly overrepresented in a gene
@@ -464,12 +462,24 @@ functional gene enrichment analysis. This involves careful curation of
 gene annotations based on experimental evidence from various sources,
 including transcriptomic and proteomic data, literature mining, and
 functional assays. This curation process can be particularly challenging
-for non-model species with limited genomic and transcriptomic resources.
-More information on this can be found at</p>
-<ul>
-<li>Example 1</li>
-<li>Example 2</li>
-</ul>
+for non-model species with limited genomic and transcriptomic
+resources.</p>
+<div id="annotation" class="section level1">
+<h1>Annotation</h1>
+<p>The following is a stepwise example or annotation of a gene set using
+Swiss-Prot such that Gene Ontology terms can be associated with each
+gene.</p>
+<pre class="bash"><code>cd ../blastdb
+curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+mv uniprot_sprot.fasta.gz uniprot_sprot_r2022_02.fasta.gz
+gunzip -k uniprot_sprot_r2022_02.fasta.gz</code></pre>
+<pre class="bash"><code>/home/shared/ncbi-blast-2.11.0+/bin/makeblastdb \
+-in ../blastdb/uniprot_sprot_r2022_02.fasta \
+-dbtype prot \
+-out ../blastdb/uniprot_sprot_r2022_02</code></pre>
+</div>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
 <p>While functional gene enrichment analysis poses many challenges to
 non-model systems, it is critical the analyses conducted be as rigorous
 and replicable as possible. A recent survey of published enrichment
@@ -563,8 +573,6 @@ Mann-Whitney U Test.</p>
 <li>Panther (online GUI) - endorsed by The Gene Ontology (Thea)</li>
 <li>R…Mann-Whitney U Test and Fisher’s Exact Test (Sam)</li>
 </ul>
-<<<<<<< HEAD
-=======
 </div>
 <div id="a-primer-on-the-statistics-of-functional-enrichment"
 class="section level1">
@@ -651,7 +659,6 @@ class="citation">(<strong>Wright2015-dc?</strong>)</span></p>
 <p>A number of different parameters can be used to filter results or
 modify the execution of both tests, which we detail below.</p>
 </div>
->>>>>>> 086513607fab562f20b9fdaa582d163e29690724
 <div id="ontologizer" class="section level2">
 <h2>Ontologizer</h2>
 <p><a href="http://ontologizer.de/">Ontologizer</a> offers a
@@ -707,7 +714,6 @@ href="http://pantherdb.org/downloads/index.jsp">here</a></p>
 pantherScore2.2/pantherScore2.2.pl, submit amino acid sequences to be
 searched against the PANTHER HMM library and assign appropriate IDs.
 Thus you may need to translate your transcript sequences using a tool
-<<<<<<< HEAD
 such as <a
 href="https://github.com/TransDecoder/TransDecoder/wiki">TransDecoder</a>.
 Searching your sequences against the PANTHER HMM library can be done on
@@ -715,13 +721,6 @@ the command line. You will need to load perl and hmmer software
 packages. Test data are provided to check that everything installed
 properly. Once you are ready to go, you can run some version of the
 following. See command options for alternative variables to
-=======
-such as TransDecoder. Searching your sequences against the PANTHER HMM
-library can be done on the command line. You will need to load perl and
-hmmer software packages. Test data are provided to check that everything
-installed properly. Once you are ready to go, you can run some version
-of the following. See command options for alternative variables to
->>>>>>> 086513607fab562f20b9fdaa582d163e29690724
 consider.</p>
 <pre><code>pantherScore2.2.pl -l ../target/famlib/rel/PANTHER17.0_altVersion/hmmscoring/PANTHER17.0/ -D B -V -i translated_coding_sequences.faa -o hits.txt -n</code></pre>
 <pre><code>-l PANTER (l)ibrary with HMMs when using hmmsearch, binary PANTHER HMM model when using hmmscan
