@@ -13,7 +13,7 @@
 
 <title>Functional Enrichment Tests: Intro and methods comparison</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -472,15 +472,17 @@ associated with each gene.</p>
 <p>In this following chunk where the fasta file is downloaded the <a
 href="https://www.uniprot.org/help/release-statistics">release</a> is
 noted and the file name is modified accordingly.</p>
-<pre class="bash"><code>cd ../blastdb
+<pre class="bash"><code>cd DRAFT_Funct_Enrich/annot
+
 curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
-mv uniprot_sprot.fasta.gz uniprot_sprot_r2022_02.fasta.gz
-gunzip -k uniprot_sprot_r2022_02.fasta.gz</code></pre>
+
+mv uniprot_sprot.fasta.gz uniprot_sprot_r2023_02.fasta.gz
+gunzip -k uniprot_sprot_r2023_02.fasta.gz</code></pre>
 <p>A protein blast database is then made.</p>
 <pre class="bash"><code>/home/shared/ncbi-blast-2.11.0+/bin/makeblastdb \
--in ../blastdb/uniprot_sprot_r2022_02.fasta \
+-in DRAFT_Funct_Enrich/annot/uniprot_sprot_r2023_02.fasta \
 -dbtype prot \
--out ../blastdb/uniprot_sprot_r2022_02</code></pre>
+-out DRAFT_Funct_Enrich/annot/uniprot_sprot_r2023_02</code></pre>
 <p>In a majority of cases you will want to annotate a gene set to get
 gene ontology information. If you are creating your own genome or
 transcriptome it should be rather straightforward to know what file to
@@ -507,16 +509,26 @@ href="https://github.com/epigeneticstoocean/2018_L18-adult-methylation/blob/main
 responsible for gene naming. Specifically the naming format is as
 follows
 <code>gene-LOC111099033,gene-LOC111099034,gene-LOC111099035</code>.</p>
-<p>No single file seems obvious or simple with respect to the primary
-fasta header labelled with LOCXXXXXXXXXX. Have decided to use</p>
-<pre><code>&gt;lcl|NC_035780.1_ncrna_XR_002636969.1_1 [gene=LOC111116054] [db_xref=GeneID:111116054] [product=uncharacterized LOC111116054] [ncRNA_class=lncRNA] [transcript_id=XR_002636969.1] [location=join(13578..13603,14237..14290,14557..14594)] [gbkey=ncRNA]
-TGATATTGTTGTGTGCAGAACGTGGGTCATGCTGTCTTGTTGAAGAATACCCTCAATCCAAGGCTAGATTAATCATCTAG
-CCATGATATTGATGATAGCAAGATTTGTGTTGATCCTG</code></pre>
-<pre class="bash"><code>cd ../data
+<p>The following fasta was selected for annotation:
+<code>GCF_002022765.2_C_virginica-3.0_translated_cds.faa.gz</code></p>
+<pre class="bash"><code>cd DRAFT_Funct_Enrich/annot
 
-curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_protein.faa.gz
+curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_translated_cds.faa.gz
 
-gunzip -k GCF_002022765.2_C_virginica-3.0_protein.faa.gz</code></pre>
+gunzip -k GCF_002022765.2_C_virginica-3.0_translated_cds.faa.gz</code></pre>
+<pre class="bash"><code>head -2 DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa
+</code></pre>
+<pre><code>&gt;lcl|NC_035780.1_prot_XP_022327646.1_1 [gene=LOC111126949] [db_xref=GeneID:111126949] [protein=UNC5C-like protein] [protein_id=XP_022327646.1] [location=join(30535..31557,31736..31887,31977..32565,32959..33204)] [gbkey=CDS]
+MTEVCYIWASSSTTVVICGIFFIVWRCFISIKKRASPLHGSSQQVCQTCQIEGHDFGEFQLSCRRQNTNVGYDLQGRRSD
+</code></pre>
+<pre class="bash"><code>/home/shared/ncbi-blast-2.11.0+/bin/blastp \
+-query DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa \
+-db DRAFT_Funct_Enrich/annot/uniprot_sprot_r2023_02 \
+-out DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab \
+-evalue 1E-20 \
+-num_threads 40 \
+-max_target_seqs 1 \
+-outfmt 6</code></pre>
 </div>
 <div id="overview" class="section level1">
 <h1>Overview</h1>

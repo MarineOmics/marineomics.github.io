@@ -28,7 +28,6 @@ gunzip -k uniprot_sprot_r2023_02.fasta.gz
 A protein blast database is then made.
 
 ```{r engine='bash', eval=FALSE}
-
 /home/shared/ncbi-blast-2.11.0+/bin/makeblastdb \
 -in DRAFT_Funct_Enrich/annot/uniprot_sprot_r2023_02.fasta \
 -dbtype prot \
@@ -57,13 +56,16 @@ gunzip -k GCF_002022765.2_C_virginica-3.0_translated_cds.faa.gz
 
 
 ```{r engine='bash', eval=FALSE}
-
-head DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa
+head -2 DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa
 
 ```
 
+```
+>lcl|NC_035780.1_prot_XP_022327646.1_1 [gene=LOC111126949] [db_xref=GeneID:111126949] [protein=UNC5C-like protein] [protein_id=XP_022327646.1] [location=join(30535..31557,31736..31887,31977..32565,32959..33204)] [gbkey=CDS]
+MTEVCYIWASSSTTVVICGIFFIVWRCFISIKKRASPLHGSSQQVCQTCQIEGHDFGEFQLSCRRQNTNVGYDLQGRRSD
 
-```{bash}
+```
+```{r engine='bash', eval=FALSE}
 /home/shared/ncbi-blast-2.11.0+/bin/blastp \
 -query DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa \
 -db DRAFT_Funct_Enrich/annot/uniprot_sprot_r2023_02 \
@@ -73,6 +75,36 @@ head DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa
 -max_target_seqs 1 \
 -outfmt 6
 ```
+
+Here is what the output file looks like, and at this point we want to get the UniProt Accession number for each gene 
+
+```{r engine='bash', eval=TRUE}
+head -2 DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab \
+```
+
+
+
+
+
+
+```{r engine='bash', eval=FALSE}
+cd DRAFT_Funct_Enrich/annot
+
+curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_genomic.gff.gz
+
+gunzip -k GCF_002022765.2_C_virginica-3.0_genomic.gff.gz
+```
+
+
+You will notice the LOC iD is not present, but we will revisit that later with some
+
+!tr '|' '\t' < $blastout \
+> _blast-sep.tab
+
+!awk -v OFS='\t' '{print $4, $1, $14}' < _blast-sep.tab | sort \
+> _blast-sort.tab
+
+
 
 
 
