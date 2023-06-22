@@ -502,7 +502,16 @@ subject to functional enrichment tests.</p>
 experiment where male and female oysters where exposed to low pH (and
 control) conditions. The count matrix is accessible <a
 href="https://github.com/epigeneticstoocean/2018_L18-adult-methylation/blob/main/analyses/gene_fpkm.csv">here
-(csv)</a></p>
+(csv)</a>. Hisat2/Stringtie was used to generate the count matrix with
+<code>GCF_002022765.2_C_virginica-3.0_genomic.gff</code> formatting thus
+responsible for gene naming. Specifically the naming format is as
+follows
+<code>gene-LOC111099033,gene-LOC111099034,gene-LOC111099035</code>.</p>
+<p>No single file seems obvious or simple with respect to the primary
+fasta header labelled with LOCXXXXXXXXXX. Have decided to use</p>
+<pre><code>&gt;lcl|NC_035780.1_ncrna_XR_002636969.1_1 [gene=LOC111116054] [db_xref=GeneID:111116054] [product=uncharacterized LOC111116054] [ncRNA_class=lncRNA] [transcript_id=XR_002636969.1] [location=join(13578..13603,14237..14290,14557..14594)] [gbkey=ncRNA]
+TGATATTGTTGTGTGCAGAACGTGGGTCATGCTGTCTTGTTGAAGAATACCCTCAATCCAAGGCTAGATTAATCATCTAG
+CCATGATATTGATGATAGCAAGATTTGTGTTGATCCTG</code></pre>
 <pre class="bash"><code>cd ../data
 
 curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_protein.faa.gz
