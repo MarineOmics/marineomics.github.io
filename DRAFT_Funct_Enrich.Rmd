@@ -17,19 +17,22 @@ The following is a stepwise example or annotation of a gene set using UniProt::S
 In this following chunk where the fasta file is downloaded the [release](https://www.uniprot.org/help/release-statistics) is noted and the file name is modified accordingly.
 
 ```{r engine='bash', eval=FALSE}
-cd ../blastdb
+cd DRAFT_Funct_Enrich/annot
+
 curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
-mv uniprot_sprot.fasta.gz uniprot_sprot_r2022_02.fasta.gz
-gunzip -k uniprot_sprot_r2022_02.fasta.gz
+
+mv uniprot_sprot.fasta.gz uniprot_sprot_r2023_02.fasta.gz
+gunzip -k uniprot_sprot_r2023_02.fasta.gz
 ```
 
 A protein blast database is then made.
 
 ```{r engine='bash', eval=FALSE}
+
 /home/shared/ncbi-blast-2.11.0+/bin/makeblastdb \
--in ../blastdb/uniprot_sprot_r2022_02.fasta \
+-in DRAFT_Funct_Enrich/annot/uniprot_sprot_r2023_02.fasta \
 -dbtype prot \
--out ../blastdb/uniprot_sprot_r2022_02
+-out DRAFT_Funct_Enrich/annot/uniprot_sprot_r2023_02
 ```
 
 
@@ -40,22 +43,35 @@ In order to know which of the numerous fasta files should annotated with gene on
 The resulting fpkm count matrix for our case study is from an experiment where male and female oysters where exposed to low pH (and control) conditions. 
 The count matrix is accessible [here (csv)](https://github.com/epigeneticstoocean/2018_L18-adult-methylation/blob/main/analyses/gene_fpkm.csv). Hisat2/Stringtie was used to generate the count matrix with `GCF_002022765.2_C_virginica-3.0_genomic.gff` formatting thus responsible for gene naming. Specifically the naming format is as follows `gene-LOC111099033,gene-LOC111099034,gene-LOC111099035`.
 
-No single file seems obvious or simple with respect to the primary fasta header labelled with LOCXXXXXXXXXX. Have decided to use 
+The following fasta was selected for annotation: `GCF_002022765.2_C_virginica-3.0_translated_cds.faa.gz`
 
-```
->lcl|NC_035780.1_ncrna_XR_002636969.1_1 [gene=LOC111116054] [db_xref=GeneID:111116054] [product=uncharacterized LOC111116054] [ncRNA_class=lncRNA] [transcript_id=XR_002636969.1] [location=join(13578..13603,14237..14290,14557..14594)] [gbkey=ncRNA]
-TGATATTGTTGTGTGCAGAACGTGGGTCATGCTGTCTTGTTGAAGAATACCCTCAATCCAAGGCTAGATTAATCATCTAG
-CCATGATATTGATGATAGCAAGATTTGTGTTGATCCTG
+
+```{r engine='bash', eval=FALSE}
+cd DRAFT_Funct_Enrich/annot
+
+curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_translated_cds.faa.gz
+
+gunzip -k GCF_002022765.2_C_virginica-3.0_translated_cds.faa.gz
 ```
 
 
 
 ```{r engine='bash', eval=FALSE}
-cd ../data
 
-curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_protein.faa.gz
+head DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa
 
-gunzip -k GCF_002022765.2_C_virginica-3.0_protein.faa.gz
+```
+
+
+```{bash}
+/home/shared/ncbi-blast-2.11.0+/bin/blastp \
+-query DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa \
+-db DRAFT_Funct_Enrich/annot/uniprot_sprot_r2023_02 \
+-out DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab \
+-evalue 1E-20 \
+-num_threads 40 \
+-max_target_seqs 1 \
+-outfmt 6
 ```
 
 
