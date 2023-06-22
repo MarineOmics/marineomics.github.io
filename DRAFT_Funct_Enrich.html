@@ -464,19 +464,50 @@ including transcriptomic and proteomic data, literature mining, and
 functional assays. This curation process can be particularly challenging
 for non-model species with limited genomic and transcriptomic
 resources.</p>
-<div id="annotation" class="section level1">
-<h1>Annotation</h1>
+<div id="navigating-annotation" class="section level1">
+<h1>Navigating Annotation</h1>
 <p>The following is a stepwise example or annotation of a gene set using
-Swiss-Prot such that Gene Ontology terms can be associated with each
-gene.</p>
+UniProt::Swiss-Prot (reviewed) such that Gene Ontology terms can be
+associated with each gene.</p>
+<p>In this following chunk where the fasta file is downloaded the <a
+href="https://www.uniprot.org/help/release-statistics">release</a> is
+noted and the file name is modified accordingly.</p>
 <pre class="bash"><code>cd ../blastdb
 curl -O https://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
 mv uniprot_sprot.fasta.gz uniprot_sprot_r2022_02.fasta.gz
 gunzip -k uniprot_sprot_r2022_02.fasta.gz</code></pre>
+<p>A protein blast database is then made.</p>
 <pre class="bash"><code>/home/shared/ncbi-blast-2.11.0+/bin/makeblastdb \
 -in ../blastdb/uniprot_sprot_r2022_02.fasta \
 -dbtype prot \
 -out ../blastdb/uniprot_sprot_r2022_02</code></pre>
+<p>In a majority of cases you will want to annotate a gene set to get
+gene ontology information. If you are creating your own genome or
+transcriptome it should be rather straightforward to know what file to
+annotate. If using a widely studied system where there are publically
+available resources, it is advisable to use those as this is the best
+way to facilitate integration of data sets. In this case study we will
+be considering the Eastern oyster, (<em>Crassostrea virginica</em>) for
+which there is data at <a
+href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002022765.2/">NCBI</a>
+and <a
+href="http://metazoa.ensembl.org/Crassostrea_virginica_gca002022765v4/Info/Index">Ensembl
+Metazoa</a>. At NCBI there is both a GenBank and RefSeq assembly
+available.</p>
+<p>In order to know which of the numerous fasta files should annotated
+with gene ontology information one should think downstream (or look to
+files already generated) to the identifiers in genesets that would be
+subject to functional enrichment tests.</p>
+<p>The resulting fpkm count matrix for our case study is from an
+experiment where male and female oysters where exposed to low pH (and
+control) conditions. The count matrix is accessible <a
+href="https://github.com/epigeneticstoocean/2018_L18-adult-methylation/blob/main/analyses/gene_fpkm.csv">here
+(csv)</a></p>
+<pre class="bash"><code>cd ../data
+
+curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_protein.faa.gz
+
+gunzip -k GCF_002022765.2_C_virginica-3.0_protein.faa.gz</code></pre>
 </div>
 <div id="overview" class="section level1">
 <h1>Overview</h1>

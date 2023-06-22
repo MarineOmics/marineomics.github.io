@@ -33,7 +33,22 @@ A protein blast database is then made.
 ```
 
 
-In a majority of cases you will want to annotate a gene set to get gene ontology information. If you are creating your own genome or transcriptome it should be rather straightforward to know what file to annotate. If using a widely studied system where there are publically available resources, it is advisable to use those as this is the best way to facilitate integration of data sets. In this case study we will be considering the Eastern oyster, (_Crassostrea virginica_)
+In a majority of cases you will want to annotate a gene set to get gene ontology information. If you are creating your own genome or transcriptome it should be rather straightforward to know what file to annotate. If using a widely studied system where there are publically available resources, it is advisable to use those as this is the best way to facilitate integration of data sets. In this case study we will be considering the Eastern oyster, (_Crassostrea virginica_) for which there is data at [NCBI](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002022765.2/) and [Ensembl Metazoa](http://metazoa.ensembl.org/Crassostrea_virginica_gca002022765v4/Info/Index). At NCBI there is both a GenBank and RefSeq assembly available. 
+
+In order to know which of the numerous fasta files should annotated with gene ontology information one should think downstream (or look to files already generated) to the identifiers in genesets that would be subject to functional enrichment tests. 
+
+The resulting fpkm count matrix for our case study is from an experiment where male and female oysters where exposed to low pH (and control) conditions. 
+The count matrix is accessible [here (csv)](https://github.com/epigeneticstoocean/2018_L18-adult-methylation/blob/main/analyses/gene_fpkm.csv). Hisat2/Stringtie was used to generate the count matrix with `GCF_002022765.2_C_virginica-3.0_genomic.gff` formatting thus responsible for gene naming. Specifically the naming format is as follows `gene-LOC111099033,gene-LOC111099034,gene-LOC111099035`.
+
+No single file seems obvious or simple with respect to the primary fasta header labelled with LOCXXXXXXXXXX. Have decided to use 
+
+```
+>lcl|NC_035780.1_ncrna_XR_002636969.1_1 [gene=LOC111116054] [db_xref=GeneID:111116054] [product=uncharacterized LOC111116054] [ncRNA_class=lncRNA] [transcript_id=XR_002636969.1] [location=join(13578..13603,14237..14290,14557..14594)] [gbkey=ncRNA]
+TGATATTGTTGTGTGCAGAACGTGGGTCATGCTGTCTTGTTGAAGAATACCCTCAATCCAAGGCTAGATTAATCATCTAG
+CCATGATATTGATGATAGCAAGATTTGTGTTGATCCTG
+```
+
+
 
 ```{r engine='bash', eval=FALSE}
 cd ../data
