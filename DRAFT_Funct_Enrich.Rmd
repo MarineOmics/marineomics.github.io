@@ -4,6 +4,10 @@ subtitle: '*Thea Gessler*, *Samuel N. Bogan*, and *Steven Roberts*'
 bibliography: DRAFT_Funct_Enrich/Funct_Enrich.bib
 ---
 
+```{r}
+library(tidyverse)
+```
+
 Functional gene enrichment analysis is a powerful tool that can aid in the interpretation of biological data by identifying biological processes and pathways that are significantly overrepresented in a gene list of interest. However, to effectively use this tool, it is essential to have a proper annotation of genes.
 
 Proper annotation of genes is crucial because it ensures the genes are correctly identified and annotated with their appropriate biological functions. Incorrect annotation of genes can lead to inaccurate interpretations of experimental results and hinder progress in understanding the biological systems of non-model species.
@@ -12,7 +16,7 @@ Therefore, the quality of gene annotation is critical for accurate functional ge
 
 # Navigating Annotation
 
-The following is a stepwise example or annotation of a gene set using UniProt::Swiss-Prot (reviewed) such that Gene Ontology terms can be associated with each gene. 
+The following is a stepwise example or annotation of a gene set using UniProt::Swiss-Prot (reviewed) such that Gene Ontology terms can be associated with each gene.
 
 In this following chunk where the fasta file is downloaded the [release](https://www.uniprot.org/help/release-statistics) is noted and the file name is modified accordingly.
 
@@ -34,16 +38,13 @@ A protein blast database is then made.
 -out DRAFT_Funct_Enrich/annot/uniprot_sprot_r2023_02
 ```
 
+In a majority of cases you will want to annotate a gene set to get gene ontology information. If you are creating your own genome or transcriptome it should be rather straightforward to know what file to annotate. If using a widely studied system where there are publically available resources, it is advisable to use those as this is the best way to facilitate integration of data sets. In this case study we will be considering the Eastern oyster, (*Crassostrea virginica*) for which there is data at [NCBI](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002022765.2/) and [Ensembl Metazoa](http://metazoa.ensembl.org/Crassostrea_virginica_gca002022765v4/Info/Index). At NCBI there is both a GenBank and RefSeq assembly available.
 
-In a majority of cases you will want to annotate a gene set to get gene ontology information. If you are creating your own genome or transcriptome it should be rather straightforward to know what file to annotate. If using a widely studied system where there are publically available resources, it is advisable to use those as this is the best way to facilitate integration of data sets. In this case study we will be considering the Eastern oyster, (_Crassostrea virginica_) for which there is data at [NCBI](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_002022765.2/) and [Ensembl Metazoa](http://metazoa.ensembl.org/Crassostrea_virginica_gca002022765v4/Info/Index). At NCBI there is both a GenBank and RefSeq assembly available. 
+In order to know which of the numerous fasta files should annotated with gene ontology information one should think downstream (or look to files already generated) to the identifiers in genesets that would be subject to functional enrichment tests.
 
-In order to know which of the numerous fasta files should annotated with gene ontology information one should think downstream (or look to files already generated) to the identifiers in genesets that would be subject to functional enrichment tests. 
-
-The resulting fpkm count matrix for our case study is from an experiment where male and female oysters where exposed to low pH (and control) conditions. 
-The count matrix is accessible [here (csv)](https://github.com/epigeneticstoocean/2018_L18-adult-methylation/blob/main/analyses/gene_fpkm.csv). Hisat2/Stringtie was used to generate the count matrix with `GCF_002022765.2_C_virginica-3.0_genomic.gff` formatting thus responsible for gene naming. Specifically the naming format is as follows `gene-LOC111099033,gene-LOC111099034,gene-LOC111099035`.
+The resulting fpkm count matrix for our case study is from an experiment where male and female oysters where exposed to low pH (and control) conditions. The count matrix is accessible [here (csv)](https://github.com/epigeneticstoocean/2018_L18-adult-methylation/blob/main/analyses/gene_fpkm.csv). Hisat2/Stringtie was used to generate the count matrix with `GCF_002022765.2_C_virginica-3.0_genomic.gff` formatting thus responsible for gene naming. Specifically the naming format is as follows `gene-LOC111099033,gene-LOC111099034,gene-LOC111099035`.
 
 The following fasta was selected for annotation: `GCF_002022765.2_C_virginica-3.0_translated_cds.faa.gz`
-
 
 ```{r engine='bash', eval=FALSE}
 cd DRAFT_Funct_Enrich/annot
@@ -53,18 +54,19 @@ curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2
 gunzip -k GCF_002022765.2_C_virginica-3.0_translated_cds.faa.gz
 ```
 
-
-
 ```{r engine='bash', eval=FALSE}
 head -2 DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa
 
-```
+echo "number of sequences"
+grep -c  ">" DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa
 
 ```
+
+```         
 >lcl|NC_035780.1_prot_XP_022327646.1_1 [gene=LOC111126949] [db_xref=GeneID:111126949] [protein=UNC5C-like protein] [protein_id=XP_022327646.1] [location=join(30535..31557,31736..31887,31977..32565,32959..33204)] [gbkey=CDS]
 MTEVCYIWASSSTTVVICGIFFIVWRCFISIKKRASPLHGSSQQVCQTCQIEGHDFGEFQLSCRRQNTNVGYDLQGRRSD
-
 ```
+
 ```{r engine='bash', eval=FALSE}
 /home/shared/ncbi-blast-2.11.0+/bin/blastp \
 -query DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa \
@@ -76,16 +78,23 @@ MTEVCYIWASSSTTVVICGIFFIVWRCFISIKKRASPLHGSSQQVCQTCQIEGHDFGEFQLSCRRQNTNVGYDLQGRRSD
 -outfmt 6
 ```
 
-Here is what the output file looks like, and at this point we want to get the UniProt Accession number for each gene 
+Here is what the output file looks like, and at this point we want to get the UniProt Accession number for each gene
 
 ```{r engine='bash', eval=TRUE}
-head -2 DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab \
+head -2 DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab
 ```
 
+```{r}
+blast <- read.csv("DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab", sep = '\t', header = FALSE)
+```
 
+```{r engine='bash', eval=FALSE}
+cd DRAFT_Funct_Enrich/annot
 
+curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_genomic.fna.gz
 
-
+gunzip -k GCF_002022765.2_C_virginica-3.0_genomic.fna.gz
+```
 
 ```{r engine='bash', eval=FALSE}
 cd DRAFT_Funct_Enrich/annot
@@ -95,19 +104,77 @@ curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2
 gunzip -k GCF_002022765.2_C_virginica-3.0_genomic.gff.gz
 ```
 
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("rtracklayer")
+
+# Load the library
+library(rtracklayer)
+
+# Define the file path to your GFF file
+file_path <- "DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_genomic.gff"
+
+# Import the GFF file
+gff_data <- import(file_path)
+
+# Convert GRanges object to a DataFrame for easier manipulation
+gff_data_frame <- as.data.frame(gff_data)
+```
+
+```{r}
+cds <- gff_data_frame %>%
+  filter(gbkey == "CDS", source == "Gnomon")
+```
+
+Convert fasta to tab
+
+```{bash}
+perl -e '$count=0; $len=0; while(<>) {s/\r?\n//; s/\t/ /g; if (s/^>//) { if ($. != 1) {print "\n"} s/ |$/\t/; $count++; $_ .= "\t";} else {s/ //g; $len += length($_)} print $_;} print "\n"; warn "\nConverted $count FASTA records in $. lines to tabular format\nTotal sequence length: $len\n\n";' \
+DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa > DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.tab
+```
+
+```{bash}
+head -1 DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.tab
+```
+
+```{r}
+cdsftab <- read.csv("DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.tab", sep = '\t', header = FALSE, row.names=NULL)
+```
+
+join blast with cdsftab
+
+```{r}
+g.spid <- left_join(blast, cdsftab, by = "V1") %>%
+  mutate(gene = str_extract(V2.y, "(?<=\\[gene=)\\w+")) %>%
+  select(gene, V11, V2.x) %>%
+  mutate(SPID = str_extract(V2.x, "(?<=\\|)[^\\|]*(?=\\|)")) %>%
+  distinct(gene, SPID, .keep_all = TRUE)
+```
+
+```{r}
+left_join(blast, cdsftab, by = "V1") %>%
+  mutate(gene = str_extract(V2.y, "(?<=\\[gene=)\\w+")) %>%
+  select(gene, V11, V2.x) %>%
+  mutate(SPID = str_extract(V2.x, "(?<=\\|)[^\\|]*(?=\\|)")) %>%
+  distinct(gene, SPID, .keep_all = TRUE) %>%
+  select(SPID) %>%
+  write.table(file = "DRAFT_Funct_Enrich/annot/SPID.txt", sep = "\t", row.names = FALSE, quote = FALSE
+ ) 
+```
+
+```{python}
+python DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt
+```
 
 You will notice the LOC iD is not present, but we will revisit that later with some
 
-!tr '|' '\t' < $blastout \
-> _blast-sep.tab
+!tr '\|' '\t' \< \$blastout\
+\> \_blast-sep.tab
 
-!awk -v OFS='\t' '{print $4, $1, $14}' < _blast-sep.tab | sort \
-> _blast-sort.tab
-
-
-
-
-
+!awk -v OFS='\t''{print \$4, \$1, \$14}' \< \_blast-sep.tab \| sort\
+\> \_blast-sort.tab
 
 # Overview
 
