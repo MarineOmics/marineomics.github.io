@@ -4,8 +4,8 @@ subtitle: '*Thea Gessler*, *Samuel N. Bogan*, and *Steven Roberts*'
 bibliography: DRAFT_Funct_Enrich/Funct_Enrich.bib
 ---
 
-```{r}
-library(tidyverse)
+```{r setup, include=FALSE}
+#library(tidyverse)
 ```
 
 Functional gene enrichment analysis is a powerful tool that can aid in the interpretation of biological data by identifying biological processes and pathways that are significantly overrepresented in a gene list of interest. However, to effectively use this tool, it is essential to have a proper annotation of genes.
@@ -84,49 +84,10 @@ Here is what the output file looks like, and at this point we want to get the Un
 head -2 DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab
 ```
 
-```{r}
+```{r eval=TRUE}}
 blast <- read.csv("DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab", sep = '\t', header = FALSE)
 ```
 
-```{r engine='bash', eval=FALSE}
-cd DRAFT_Funct_Enrich/annot
-
-curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_genomic.fna.gz
-
-gunzip -k GCF_002022765.2_C_virginica-3.0_genomic.fna.gz
-```
-
-```{r engine='bash', eval=FALSE}
-cd DRAFT_Funct_Enrich/annot
-
-curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2_C_virginica-3.0/GCF_002022765.2_C_virginica-3.0_genomic.gff.gz
-
-gunzip -k GCF_002022765.2_C_virginica-3.0_genomic.gff.gz
-```
-
-```{r}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("rtracklayer")
-
-# Load the library
-library(rtracklayer)
-
-# Define the file path to your GFF file
-file_path <- "DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_genomic.gff"
-
-# Import the GFF file
-gff_data <- import(file_path)
-
-# Convert GRanges object to a DataFrame for easier manipulation
-gff_data_frame <- as.data.frame(gff_data)
-```
-
-```{r}
-cds <- gff_data_frame %>%
-  filter(gbkey == "CDS", source == "Gnomon")
-```
 
 Convert fasta to tab
 
