@@ -5,7 +5,7 @@ bibliography: DRAFT_Funct_Enrich/Funct_Enrich.bib
 ---
 
 ```{r setup, include=FALSE}
-#library(tidyverse)
+library(tidyverse)
 ```
 
 Functional gene enrichment analysis is a powerful tool that can aid in the interpretation of biological data by identifying biological processes and pathways that are significantly overrepresented in a gene list of interest. However, to effectively use this tool, it is essential to have a proper annotation of genes.
@@ -67,6 +67,8 @@ grep -c  ">" DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated
 MTEVCYIWASSSTTVVICGIFFIVWRCFISIKKRASPLHGSSQQVCQTCQIEGHDFGEFQLSCRRQNTNVGYDLQGRRSD
 ```
 
+This protein fasta is used as query for blast of uniprot_sprot database.
+
 ```{r engine='bash', eval=FALSE}
 /home/shared/ncbi-blast-2.11.0+/bin/blastp \
 -query DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa \
@@ -91,12 +93,12 @@ blast <- read.csv("DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab", s
 
 Convert fasta to tab
 
-```{bash}
+```{r engine='bash', eval=TRUE}
 perl -e '$count=0; $len=0; while(<>) {s/\r?\n//; s/\t/ /g; if (s/^>//) { if ($. != 1) {print "\n"} s/ |$/\t/; $count++; $_ .= "\t";} else {s/ //g; $len += length($_)} print $_;} print "\n"; warn "\nConverted $count FASTA records in $. lines to tabular format\nTotal sequence length: $len\n\n";' \
 DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa > DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.tab
 ```
 
-```{bash}
+```{r engine='bash', eval=TRUE}
 head -1 DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.tab
 ```
 
@@ -104,9 +106,9 @@ head -1 DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.
 cdsftab <- read.csv("DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.tab", sep = '\t', header = FALSE, row.names=NULL)
 ```
 
-join blast with cdsftab
+Now we can take the two data frames: A) blast output of taking protein fasta and comparing to uniprot_swiss-prot and B) a tabular version of same fasta file that has ID numbers of importance. Note this importance was determined based on what we want to use down stream. 
 
-```{r}
+```{r, eval=TRUE}
 g.spid <- left_join(blast, cdsftab, by = "V1") %>%
   mutate(gene = str_extract(V2.y, "(?<=\\[gene=)\\w+")) %>%
   select(gene, V11, V2.x) %>%
