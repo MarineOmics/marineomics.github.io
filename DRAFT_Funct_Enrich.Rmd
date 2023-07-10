@@ -86,10 +86,9 @@ Here is what the output file looks like, and at this point we want to get the Un
 head -2 DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab
 ```
 
-```{r eval=TRUE}}
+```{r eval=TRUE}
 blast <- read.csv("DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab", sep = '\t', header = FALSE)
 ```
-
 
 Convert fasta to tab
 
@@ -106,7 +105,7 @@ head -1 DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.
 cdsftab <- read.csv("DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.tab", sep = '\t', header = FALSE, row.names=NULL)
 ```
 
-Now we can take the two data frames: A) blast output of taking protein fasta and comparing to uniprot_swiss-prot and B) a tabular version of same fasta file that has ID numbers of importance. Note this importance was determined based on what we want to use down stream. 
+Now we can take the two data frames: A) blast output of taking protein fasta and comparing to uniprot_swiss-prot and B) a tabular version of same fasta file that has ID numbers of importance. Note this importance was determined based on what we want to use down stream.
 
 ```{r, eval=TRUE}
 g.spid <- left_join(blast, cdsftab, by = "V1") %>%
@@ -116,7 +115,23 @@ g.spid <- left_join(blast, cdsftab, by = "V1") %>%
   distinct(gene, SPID, .keep_all = TRUE)
 ```
 
-```{r}
+Let's break it down step by step:
+
+1.  **`g.spid <- left_join(blast, cdsftab, by = "V1")`** - This line is using the **`left_join()`** function from **`dplyr`** to merge the **`blast`** and **`cdsftab`** datasets by the column "V1". A left join retains all the rows in the **`blast`** data frame and appends the matching rows in the **`cdsftab`** data frame. If there is no match, the result is **`NA`**. The result of this operation is assigned to the **`g.spid`** object.
+
+2.  **`mutate(gene = str_extract(V2.y, "(?<=\\[gene=)\\w+"))`** - This line is using the **`mutate()`** function from **`dplyr`** to add a new column called "gene" to the data frame. The new column is created by extracting substrings from the "V2.y" column based on the given regular expression pattern **`"(?<=\\[gene=)\\w+"`**. This regular expression matches and extracts any word (sequence of word characters, i.e., alphanumeric and underscore) that comes after "[gene=".
+
+3.  **`select(gene, V11, V2.x)`** - This line is using the **`select()`** function from **`dplyr`** to keep only the specified columns ("gene", "V11", and "V2.x") in the data frame.
+
+4.  **`mutate(SPID = str_extract(V2.x, "(?<=\\|)[^\\|]*(?=\\|)"))`** - Again, the **`mutate()`** function is used to add another new column named "SPID". This column is created by extracting substrings from the "V2.x" column. The regular expression **`"(?<=\\|)[^\\|]*(?=\\|)"`** is designed to extract any character(s) that is/are surrounded by "\|" (pipe symbol). This is a common format for delimited strings.
+
+5.  **`distinct(gene, SPID, .keep_all = TRUE)`** - This line is using the **`distinct()`** function from **`dplyr`** to remove duplicate rows based on the "gene" and "SPID" columns. The **`.keep_all = TRUE`** argument means that all other columns are also kept in the result, not just the "gene" and "SPID" columns.
+
+The resulting **`g.spid`** data frame should have unique rows with respect to the "gene" and "SPID" columns, and it should contain these two new columns, "gene" and "SPID", extracted from the original data based on specific string patterns.
+
+Now lets just write out SPIDs.
+
+```{r, eval=TRUE}
 left_join(blast, cdsftab, by = "V1") %>%
   mutate(gene = str_extract(V2.y, "(?<=\\[gene=)\\w+")) %>%
   select(gene, V11, V2.x) %>%
@@ -127,17 +142,59 @@ left_join(blast, cdsftab, by = "V1") %>%
  ) 
 ```
 
-```{python}
-python DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt
+
+With a list of matching Swiss-Prot IDs, (technically UniProt Accession number) we can go back to https://www.uniprot.org and grab corresponding GO terms. This can be done via a web or using Python API.
+
+**Using Web**
+
+Using ID Mapping 
+
+![id](http://gannet.fish.washington.edu/seashell/snaps/Monosnap_RetrieveID_mapping__UniProt_2023-07-10_10-03-33.png)
+
+
+
+
+
+
+![finished](http://gannet.fish.washington.edu/seashell/snaps/Monosnap_Tool_results__UniProt_2023-07-10_10-05-07.png)
+
+
+Now will customize columns to get GO IDs.
+
+![custcol](http://gannet.fish.washington.edu/seashell/snaps/Monosnap_RetrieveID_mapping_results__UniProtKB__UniProt_2023-07-10_10-07-05.png)
+
+
+```{r engine='bash', eval=TRUE}
+head -2 DRAFT_Funct_Enrich/annot/uniprotGO.tab
 ```
 
-You will notice the LOC iD is not present, but we will revisit that later with some
+Finally we can join table to get "LOCIDs" the notation for our DEGs, with GO terms.
 
-!tr '\|' '\t' \< \$blastout\
-\> \_blast-sep.tab
+```{r, eval=TRUE}
+go <- read.csv("DRAFT_Funct_Enrich/annot/uniprotGO.tab", sep = '\t', header = TRUE, row.names=NULL)
+```
 
-!awk -v OFS='\t''{print \$4, \$1, \$14}' \< \_blast-sep.tab \| sort\
-\> \_blast-sort.tab
+
+```{r, eval=TRUE}
+left_join(g.spid, go, by = c("SPID" = "Entry")) %>%
+  select(gene,Gene.Ontology.IDs) %>%
+  write.table(file = "DRAFT_Funct_Enrich/annot/geneGO.txt", sep = "\t", row.names = FALSE, quote = FALSE
+  )
+```
+
+
+```{r engine='bash', eval=TRUE}
+head DRAFT_Funct_Enrich/annot/geneGO.txt
+```
+
+
+
+
+**Using API** (DOES NOTE WORK)
+
+```{python}
+#DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt
+```
 
 # Overview
 

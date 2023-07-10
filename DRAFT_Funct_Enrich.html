@@ -13,7 +13,7 @@
 
 <title>Functional Enrichment Tests: Intro and methods comparison</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -517,10 +517,14 @@ curl -O https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/002/022/765/GCF_002022765.2
 
 gunzip -k GCF_002022765.2_C_virginica-3.0_translated_cds.faa.gz</code></pre>
 <pre class="bash"><code>head -2 DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa
+
+echo &quot;number of sequences&quot;
+grep -c  &quot;&gt;&quot; DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa
 </code></pre>
 <pre><code>&gt;lcl|NC_035780.1_prot_XP_022327646.1_1 [gene=LOC111126949] [db_xref=GeneID:111126949] [protein=UNC5C-like protein] [protein_id=XP_022327646.1] [location=join(30535..31557,31736..31887,31977..32565,32959..33204)] [gbkey=CDS]
-MTEVCYIWASSSTTVVICGIFFIVWRCFISIKKRASPLHGSSQQVCQTCQIEGHDFGEFQLSCRRQNTNVGYDLQGRRSD
-</code></pre>
+MTEVCYIWASSSTTVVICGIFFIVWRCFISIKKRASPLHGSSQQVCQTCQIEGHDFGEFQLSCRRQNTNVGYDLQGRRSD</code></pre>
+<p>This protein fasta is used as query for blast of uniprot_sprot
+database.</p>
 <pre class="bash"><code>/home/shared/ncbi-blast-2.11.0+/bin/blastp \
 -query DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa \
 -db DRAFT_Funct_Enrich/annot/uniprot_sprot_r2023_02 \
@@ -529,6 +533,132 @@ MTEVCYIWASSSTTVVICGIFFIVWRCFISIKKRASPLHGSSQQVCQTCQIEGHDFGEFQLSCRRQNTNVGYDLQGRRSD
 -num_threads 40 \
 -max_target_seqs 1 \
 -outfmt 6</code></pre>
+<p>Here is what the output file looks like, and at this point we want to
+get the UniProt Accession number for each gene</p>
+<pre class="bash"><code>head -2 DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab</code></pre>
+<pre><code>## lcl|NC_035780.1_prot_XP_022327646.1_1    sp|Q8IV45|UN5CL_HUMAN   33.403  479 270 8   151 626 78  510 4.80e-77    258
+## lcl|NC_035780.1_prot_XP_022305632.1_4    sp|P39021|MEOX2_XENLA   55.118  127 57  0   104 230 115 241 5.84e-38    138</code></pre>
+<pre class="r"><code>blast &lt;- read.csv(&quot;DRAFT_Funct_Enrich/annot/Cvir_transcds-uniprot_blastp.tab&quot;, sep = &#39;\t&#39;, header = FALSE)</code></pre>
+<p>Convert fasta to tab</p>
+<pre class="bash"><code>perl -e &#39;$count=0; $len=0; while(&lt;&gt;) {s/\r?\n//; s/\t/ /g; if (s/^&gt;//) { if ($. != 1) {print &quot;\n&quot;} s/ |$/\t/; $count++; $_ .= &quot;\t&quot;;} else {s/ //g; $len += length($_)} print $_;} print &quot;\n&quot;; warn &quot;\nConverted $count FASTA records in $. lines to tabular format\nTotal sequence length: $len\n\n&quot;;&#39; \
+DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.faa &gt; DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.tab</code></pre>
+<pre><code>## 
+## Converted 60213 FASTA records in 580876 lines to tabular format
+## Total sequence length: 39274970</code></pre>
+<pre class="bash"><code>head -1 DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.tab</code></pre>
+<pre><code>## lcl|NC_035780.1_prot_XP_022327646.1_1    [gene=LOC111126949] [db_xref=GeneID:111126949] [protein=UNC5C-like protein] [protein_id=XP_022327646.1] [location=join(30535..31557,31736..31887,31977..32565,32959..33204)] [gbkey=CDS]    MTEVCYIWASSSTTVVICGIFFIVWRCFISIKKRASPLHGSSQQVCQTCQIEGHDFGEFQLSCRRQNTNVGYDLQGRRSDVTAIIQGQSVLRPSPVPVEVLPVEGNRVSRTSESVRTHSSTHSAGSSSHVATSPVMSSCSVGKETSLNPYSYCRDIYSISERSTMKTVGGKLVVSVAHYVTSRGDWLMLDDMGISLRIPPNAVPVGEEKLICLVLNWDLGDNPPMTGTDSLVSPVVFVGPHGLKLNKPCELHYRHCAYDPRQIVVLRSETDLHGDKHWTEMCGQENQDGVCRLSSDECILQIDTFTLYTCIQRPLRNLKMAKWLQIAAFSNPLEKRIDHHEVRVYFLNKTPCALQWAIQNEAQFQHVLICPEKAFLFHGQVDDILDIRVTLKYLSADWESIDNDVYERVPYLHIWHGQCPHIVMCFKKKPKHSVRELNFHLNIYQDTLENEGEKIVVHATENPRCVYDNSCIINIHTSDSPEKKTLPNVEVKKTEDNVNVSIKQSHSPSAALLEEMRTESTQYIPYDIRKHLKVKLDPPNPLGNDWRRLAEVLDLSQFIEYLKSLHSSPTETLLSVIEHRNISLEELATMLNEIQRYDAEKIVSDYLHQHQNSSPVCIRGGLQHDERPFAHMSATNNLSNVEPDNVSQEENRAQYLPLGNSGHDNNAYM</code></pre>
+<pre class="r"><code>cdsftab &lt;- read.csv(&quot;DRAFT_Funct_Enrich/annot/GCF_002022765.2_C_virginica-3.0_translated_cds.tab&quot;, sep = &#39;\t&#39;, header = FALSE, row.names=NULL)</code></pre>
+<p>Now we can take the two data frames: A) blast output of taking
+protein fasta and comparing to uniprot_swiss-prot and B) a tabular
+version of same fasta file that has ID numbers of importance. Note this
+importance was determined based on what we want to use down stream.</p>
+<pre class="r"><code>g.spid &lt;- left_join(blast, cdsftab, by = &quot;V1&quot;) %&gt;%
+  mutate(gene = str_extract(V2.y, &quot;(?&lt;=\\[gene=)\\w+&quot;)) %&gt;%
+  select(gene, V11, V2.x) %&gt;%
+  mutate(SPID = str_extract(V2.x, &quot;(?&lt;=\\|)[^\\|]*(?=\\|)&quot;)) %&gt;%
+  distinct(gene, SPID, .keep_all = TRUE)</code></pre>
+<p>Let’s break it down step by step:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong><code>g.spid &lt;- left_join(blast, cdsftab, by = "V1")</code></strong>
+- This line is using the <strong><code>left_join()</code></strong>
+function from <strong><code>dplyr</code></strong> to merge the
+<strong><code>blast</code></strong> and
+<strong><code>cdsftab</code></strong> datasets by the column “V1”. A
+left join retains all the rows in the
+<strong><code>blast</code></strong> data frame and appends the matching
+rows in the <strong><code>cdsftab</code></strong> data frame. If there
+is no match, the result is <strong><code>NA</code></strong>. The result
+of this operation is assigned to the
+<strong><code>g.spid</code></strong> object.</p></li>
+<li><p><strong><code>mutate(gene = str_extract(V2.y, "(?&lt;=\\[gene=)\\w+"))</code></strong>
+- This line is using the <strong><code>mutate()</code></strong> function
+from <strong><code>dplyr</code></strong> to add a new column called
+“gene” to the data frame. The new column is created by extracting
+substrings from the “V2.y” column based on the given regular expression
+pattern <strong><code>"(?&lt;=\\[gene=)\\w+"</code></strong>. This
+regular expression matches and extracts any word (sequence of word
+characters, i.e., alphanumeric and underscore) that comes after
+“[gene=”.</p></li>
+<li><p><strong><code>select(gene, V11, V2.x)</code></strong> - This line
+is using the <strong><code>select()</code></strong> function from
+<strong><code>dplyr</code></strong> to keep only the specified columns
+(“gene”, “V11”, and “V2.x”) in the data frame.</p></li>
+<li><p><strong><code>mutate(SPID = str_extract(V2.x, "(?&lt;=\\|)[^\\|]*(?=\\|)"))</code></strong>
+- Again, the <strong><code>mutate()</code></strong> function is used to
+add another new column named “SPID”. This column is created by
+extracting substrings from the “V2.x” column. The regular expression
+<strong><code>"(?&lt;=\\|)[^\\|]*(?=\\|)"</code></strong> is designed to
+extract any character(s) that is/are surrounded by “|” (pipe symbol).
+This is a common format for delimited strings.</p></li>
+<li><p><strong><code>distinct(gene, SPID, .keep_all = TRUE)</code></strong>
+- This line is using the <strong><code>distinct()</code></strong>
+function from <strong><code>dplyr</code></strong> to remove duplicate
+rows based on the “gene” and “SPID” columns. The
+<strong><code>.keep_all = TRUE</code></strong> argument means that all
+other columns are also kept in the result, not just the “gene” and
+“SPID” columns.</p></li>
+</ol>
+<p>The resulting <strong><code>g.spid</code></strong> data frame should
+have unique rows with respect to the “gene” and “SPID” columns, and it
+should contain these two new columns, “gene” and “SPID”, extracted from
+the original data based on specific string patterns.</p>
+<p>Now lets just write out SPIDs.</p>
+<pre class="r"><code>left_join(blast, cdsftab, by = &quot;V1&quot;) %&gt;%
+  mutate(gene = str_extract(V2.y, &quot;(?&lt;=\\[gene=)\\w+&quot;)) %&gt;%
+  select(gene, V11, V2.x) %&gt;%
+  mutate(SPID = str_extract(V2.x, &quot;(?&lt;=\\|)[^\\|]*(?=\\|)&quot;)) %&gt;%
+  distinct(gene, SPID, .keep_all = TRUE) %&gt;%
+  select(SPID) %&gt;%
+  write.table(file = &quot;DRAFT_Funct_Enrich/annot/SPID.txt&quot;, sep = &quot;\t&quot;, row.names = FALSE, quote = FALSE
+ ) </code></pre>
+<p>With a list of matching Swiss-Prot IDs, (technically UniProt
+Accession number) we can go back to <a href="https://www.uniprot.org"
+class="uri">https://www.uniprot.org</a> and grab corresponding GO terms.
+This can be done via a web or using Python API.</p>
+<p><strong>Using Web</strong></p>
+<p>Using ID Mapping</p>
+<div class="float">
+<img
+src="http://gannet.fish.washington.edu/seashell/snaps/Monosnap_RetrieveID_mapping__UniProt_2023-07-10_10-03-33.png"
+alt="id" />
+<div class="figcaption">id</div>
+</div>
+<div class="float">
+<img
+src="http://gannet.fish.washington.edu/seashell/snaps/Monosnap_Tool_results__UniProt_2023-07-10_10-05-07.png"
+alt="finished" />
+<div class="figcaption">finished</div>
+</div>
+<p>Now will customize columns to get GO IDs.</p>
+<div class="float">
+<img
+src="http://gannet.fish.washington.edu/seashell/snaps/Monosnap_RetrieveID_mapping_results__UniProtKB__UniProt_2023-07-10_10-07-05.png"
+alt="custcol" />
+<div class="figcaption">custcol</div>
+</div>
+<pre class="bash"><code>head -2 DRAFT_Funct_Enrich/annot/uniprotGO.tab</code></pre>
+<pre><code>## From Entry   Reviewed    Entry Name  Protein names   Gene Names  Organism    Length  Gene Ontology IDs
+## Q8IV45   Q8IV45  reviewed    UN5CL_HUMAN UNC5C-like protein (Protein unc-5 homolog C-like) (ZU5 and death domain-containing protein) UNC5CL ZUD  Homo sapiens (Human)    518 GO:0005042; GO:0005737; GO:0008233; GO:0016020; GO:0043123; GO:0046330</code></pre>
+<p>Finally we can join table to get “LOCIDs” the notation for our DEGs,
+with GO terms.</p>
+<pre class="r"><code>go &lt;- read.csv(&quot;DRAFT_Funct_Enrich/annot/uniprotGO.tab&quot;, sep = &#39;\t&#39;, header = TRUE, row.names=NULL)</code></pre>
+<pre class="r"><code>left_join(g.spid, go, by = c(&quot;SPID&quot; = &quot;Entry&quot;)) %&gt;%
+  select(gene,Gene.Ontology.IDs) %&gt;%
+  write.table(file = &quot;DRAFT_Funct_Enrich/annot/geneGO.txt&quot;, sep = &quot;\t&quot;, row.names = FALSE, quote = FALSE
+  )</code></pre>
+<pre class="bash"><code>head DRAFT_Funct_Enrich/annot/geneGO.txt</code></pre>
+<pre><code>## gene Gene.Ontology.IDs
+## LOC111126949 GO:0005042; GO:0005737; GO:0008233; GO:0016020; GO:0043123; GO:0046330
+## LOC111112434 GO:0000981; GO:0003700; GO:0005634; GO:0016607; GO:0043565; GO:0045944
+## LOC111120752 GO:0004750; GO:0005829; GO:0005975; GO:0006098; GO:0009052; GO:0042802; GO:0042803; GO:0046872; GO:0070062
+## LOC111105685 GO:0003682; GO:0004518; GO:0005634; GO:0035098; GO:0035102; GO:0040029; GO:0046872
+## LOC111113860 GO:0004062; GO:0005737; GO:0006068; GO:0006805; GO:0008146; GO:0009812; GO:0030855; GO:0042403; GO:0050427; GO:0051923
+## LOC111109550 GO:0004062; GO:0005737; GO:0005764; GO:0008146; GO:0051923
+## LOC111109753 GO:0004062; GO:0005737; GO:0005829; GO:0006068; GO:0006576; GO:0006805; GO:0008146; GO:0009812; GO:0018958; GO:0030855; GO:0042403; GO:0050427; GO:0051923
+## LOC111109452 GO:0004062; GO:0005829; GO:0008146; GO:0009812; GO:0050427
+## LOC111101273 GO:0005743; GO:0008535; GO:0032977; GO:0032979; GO:0033617; GO:0051204</code></pre>
+<p><strong>Using API</strong> (DOES NOTE WORK)</p>
+<pre class="python"><code>#DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt</code></pre>
 </div>
 <div id="overview" class="section level1">
 <h1>Overview</h1>
