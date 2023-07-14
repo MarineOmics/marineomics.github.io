@@ -14,6 +14,8 @@ Proper annotation of genes is crucial because it ensures the genes are correctly
 
 Therefore, the quality of gene annotation is critical for accurate functional gene enrichment analysis. This involves careful curation of gene annotations based on experimental evidence from various sources, including transcriptomic and proteomic data, literature mining, and functional assays. This curation process can be particularly challenging for non-model species with limited genomic and transcriptomic resources.
 
+**In some instances high quality annotation might not be possible but it is critical that before you undergo enrichment analysis you have a full understanding of how your data set was annotated, and any associated limitations**
+
 # Navigating Annotation
 
 The following is a stepwise example or annotation of a gene set using UniProt::Swiss-Prot (reviewed) such that Gene Ontology terms can be associated with each gene.
@@ -196,7 +198,7 @@ head DRAFT_Funct_Enrich/annot/geneGO.txt
 #DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt
 ```
 
-# Overview
+# Considerations for a Rigourous Analysis
 
 While functional gene enrichment analysis poses many challenges to non-model systems, it is critical the analyses conducted be as rigorous and replicable as possible. A recent survey of published enrichment results indicated that issues in the performance and reporting of enrichment analyses is not uncommon [@RN335]. Basic standards advised by the authors include:
 
@@ -204,13 +206,11 @@ While functional gene enrichment analysis poses many challenges to non-model sys
 -   Multiple hypothesis correction. A common metric used with enrichment results is a false discovery rate (FDR) correction.
 -   Adequate methodological reporting including software and parameters used, versions of software and annotation files, all gene lists analyzed including subset and background sets, types of statistical tests and corrections performed, and any code used to conduct the analyses.
 
-**In some instances high quality annotation might not be possible but it is critical that before you undergo enrichment analysis you have a full understanding of how your data set was annotated, and any associated limitations**
-
 # Getting to Enrichment Analysis
 
-Finding your subset of genes of interest
+Once the challenge of annotating data has been met, the next step is determining the focus of your functional analysis. In some cases, you will use the complete dataset, but in other cases you may be interested in a subset of interest. There are numerous approaches that can be used to achieve this, many with excellent tutorials available online. These include: 
 
--   Differential expression
+-   Differential Expression Analysis
 -   Clustering
 -   WGCNA
 
