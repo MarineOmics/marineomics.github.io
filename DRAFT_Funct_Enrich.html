@@ -468,6 +468,7 @@ resources.</p>
 possible but it is critical that before you undergo enrichment analysis
 you have a full understanding of how your data set was annotated, and
 any associated limitations</strong></p>
+<p><br></p>
 <div id="navigating-annotation" class="section level1">
 <h1>Navigating Annotation</h1>
 <p>The following is a stepwise example or annotation of a gene set using
@@ -663,10 +664,13 @@ with GO terms.</p>
 ## LOC111101273 GO:0005743; GO:0008535; GO:0032977; GO:0032979; GO:0033617; GO:0051204</code></pre>
 <p><strong>Using API</strong> (DOES NOTE WORK)</p>
 <pre class="python"><code>#DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt</code></pre>
+<p><br></p>
 </div>
+<div id="introduction-and-considerations" class="section level1">
+<h1>Introduction and Considerations</h1>
 <div id="considerations-for-a-rigourous-analysis"
-class="section level1">
-<h1>Considerations for a Rigourous Analysis</h1>
+class="section level2">
+<h2>Considerations for a Rigourous Analysis</h2>
 <p>While functional gene enrichment analysis poses many challenges to
 non-model systems, it is critical the analyses conducted be as rigorous
 and replicable as possible. A recent survey of published enrichment
@@ -686,15 +690,19 @@ used, versions of software and annotation files, all gene lists analyzed
 including subset and background sets, types of statistical tests and
 corrections performed, and any code used to conduct the analyses.</li>
 </ul>
+<p><br></p>
 </div>
-<div id="getting-to-enrichment-analysis" class="section level1">
-<h1>Getting to Enrichment Analysis</h1>
+<div
+id="getting-to-enrichment-analysis-annotation-and-filtration-decisions"
+class="section level2">
+<h2>Getting to Enrichment Analysis: Annotation and Filtration
+Decisions</h2>
 <p>Once the challenge of annotating data has been met, the next step is
 determining the focus of your functional analysis. In some cases, you
 will use the complete dataset, but in other cases you may be interested
 in a subset of interest. There are numerous approaches that can be used
-to achieve this, many with excellent tutorials available online. These
-include:</p>
+to achieve this, many with excellent tutorials available online. Some
+commonly used approaches include:</p>
 <ul>
 <li>Differential Expression Analysis</li>
 <li>Clustering</li>
@@ -702,22 +710,13 @@ include:</p>
 </ul>
 <p><br></p>
 </div>
-<div id="introduction-and-considerations" class="section level1">
-<h1>Introduction and Considerations</h1>
-<ul>
-<li>The Gene Ontology (Thea)</li>
-<li>Annotation and filtration decisions (Sam) - include key terms</li>
-<li>Overrepresentation vs Enrichment (Thea)</li>
-<li>Explanation of statistics (Sam) - include key terms</li>
-</ul>
 <div id="the-gene-ontology" class="section level2">
 <h2>The Gene Ontology</h2>
+<p><br></p>
 </div>
-<div id="annotation-and-filtration-decisions" class="section level2">
-<h2>Annotation and filtration decisions</h2>
-</div>
-<div id="overrepresentation-vs-enrichment" class="section level2">
-<h2>Overrepresentation vs Enrichment</h2>
+<div id="overrepresentation-vs-enrichment-approaches"
+class="section level2">
+<h2>Overrepresentation vs Enrichment Approaches</h2>
 <p>Often, everything gets referred to as enrichment analysis, but this
 is not the case. The two primary analyses to be run that examine
 functional patterns are statistical over-representation analysis and
@@ -748,23 +747,11 @@ relationships, and an appropriate normalization metric should be applied
 to your data.</p>
 <p>See later sections for further discussion of Fisher’s Exact Test and
 Mann-Whitney U Test.</p>
-</div>
-<div id="explanation-of-statistics" class="section level2">
-<h2>Explanation of Statistics</h2>
 <p><br></p>
 </div>
-</div>
-<div id="tools-and-approaches" class="section level1">
-<h1>Tools and Approaches</h1>
-<ul>
-<li>Ontologizer (command line) (Thea)</li>
-<li>Panther (online GUI) - endorsed by The Gene Ontology (Thea)</li>
-<li>R…Mann-Whitney U Test and Fisher’s Exact Test (Sam)</li>
-</ul>
-</div>
 <div id="a-primer-on-the-statistics-of-functional-enrichment"
-class="section level1">
-<h1>A primer on the statistics of functional enrichment</h1>
+class="section level2">
+<h2>A Primer on the Statistics of Functional Enrichment</h2>
 <p>Two popular methods of testing for GO term enrichment are the Fishers
 exact test and Mann Whitney U tests. Each test can produce results that
 are sensitive to the kinds of data they are input with such as
@@ -773,8 +760,8 @@ necessarily needs to be used alongside known networks of genes and use
 GO terms, enabling their use in non-model systems. These two methods are
 summarized and derived below:</p>
 <p><br></p>
-<div id="fishers-exact-test" class="section level2">
-<h2>Fisher’s Exact Test</h2>
+<div id="fishers-exact-test" class="section level3">
+<h3>Fisher’s Exact Test</h3>
 <p>The Fisher’s exact test evaluates the relationship between two
 categorical variables: whether the ontology of a gene is represented in
 a test set or a background set. In the case of differential expression
@@ -811,8 +798,8 @@ class="math inline">\(n\)</span> genes in the background set</li>
 fishers.text() function</p>
 <p><br></p>
 </div>
-<div id="mann-whitney-u-test" class="section level2">
-<h2>Mann Whitney U Test</h2>
+<div id="mann-whitney-u-test" class="section level3">
+<h3>Mann Whitney U Test</h3>
 <p>The critical difference between Mann Whitney U and Fisher’s exact
 tests and are that Mann Whitney U’s permit the analysis of continuous
 rather than categorical variables. These continuous values can be log
@@ -846,7 +833,17 @@ class="citation">(<strong>Wright2015-dc?</strong>)</span></p>
 <p><br></p>
 <p>A number of different parameters can be used to filter results or
 modify the execution of both tests, which we detail below.</p>
+<p><br></p>
 </div>
+</div>
+</div>
+<div id="tools-and-approaches" class="section level1">
+<h1>Tools and Approaches</h1>
+<ul>
+<li>Ontologizer (command line) (Thea)</li>
+<li>Panther (online GUI) - endorsed by The Gene Ontology (Thea)</li>
+<li>R…Mann-Whitney U Test and Fisher’s Exact Test (Sam)</li>
+</ul>
 <div id="ontologizer" class="section level2">
 <h2>Ontologizer</h2>
 <p><a href="http://ontologizer.de/">Ontologizer</a> offers a

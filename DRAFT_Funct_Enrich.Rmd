@@ -17,6 +17,8 @@ Therefore, the quality of gene annotation is critical for accurate functional ge
 
 **In some instances high quality annotation might not be possible but it is critical that before you undergo enrichment analysis you have a full understanding of how your data set was annotated, and any associated limitations**
 
+<br>
+
 # Navigating Annotation
 
 The following is a stepwise example or annotation of a gene set using UniProt::Swiss-Prot (reviewed) such that Gene Ontology terms can be associated with each gene.
@@ -199,7 +201,11 @@ head DRAFT_Funct_Enrich/annot/geneGO.txt
 #DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt
 ```
 
-# Considerations for a Rigourous Analysis
+<br>
+
+# Introduction and Considerations
+
+## Considerations for a Rigourous Analysis
 
 While functional gene enrichment analysis poses many challenges to non-model systems, it is critical the analyses conducted be as rigorous and replicable as possible. A recent survey of published enrichment results indicated that issues in the performance and reporting of enrichment analyses is not uncommon [@RN335]. Basic standards advised by the authors include:
 
@@ -207,9 +213,11 @@ While functional gene enrichment analysis poses many challenges to non-model sys
 -   Multiple hypothesis correction. A common metric used with enrichment results is a false discovery rate (FDR) correction.
 -   Adequate methodological reporting including software and parameters used, versions of software and annotation files, all gene lists analyzed including subset and background sets, types of statistical tests and corrections performed, and any code used to conduct the analyses.
 
-# Getting to Enrichment Analysis
+<br>
 
-Once the challenge of annotating data has been met, the next step is determining the focus of your functional analysis. In some cases, you will use the complete dataset, but in other cases you may be interested in a subset of interest. There are numerous approaches that can be used to achieve this, many with excellent tutorials available online. These include: 
+## Getting to Enrichment Analysis: Annotation and Filtration Decisions
+
+Once the challenge of annotating data has been met, the next step is determining the focus of your functional analysis. In some cases, you will use the complete dataset, but in other cases you may be interested in a subset of interest. There are numerous approaches that can be used to achieve this, many with excellent tutorials available online. Some commonly used approaches include: 
 
 -   Differential Expression Analysis
 -   Clustering
@@ -217,18 +225,11 @@ Once the challenge of annotating data has been met, the next step is determining
 
 <br>
 
-# Introduction and Considerations
-
--   The Gene Ontology (Thea)
--   Annotation and filtration decisions (Sam) - include key terms
--   Overrepresentation vs Enrichment (Thea)
--   Explanation of statistics (Sam) - include key terms
-
 ## The Gene Ontology
 
-## Annotation and filtration decisions
+<br>
 
-## Overrepresentation vs Enrichment
+## Overrepresentation vs Enrichment Approaches
 
 Often, everything gets referred to as enrichment analysis, but this is not the case. The two primary analyses to be run that examine functional patterns are statistical over-representation analysis and statistial enrichment analysis. There are differences in how data are input, what kind of data are used, and what statistical tests are employed by each analysis.
 
@@ -238,23 +239,15 @@ Enrichment analysis is used when you do have expression values associated with y
 
 See later sections for further discussion of Fisher's Exact Test and Mann-Whitney U Test.
 
-## Explanation of Statistics
-
 <br>
 
-# Tools and Approaches
-
--   Ontologizer (command line) (Thea)
--   Panther (online GUI) - endorsed by The Gene Ontology (Thea)
--   R...Mann-Whitney U Test and Fisher's Exact Test (Sam)
-
-# A primer on the statistics of functional enrichment
+## A Primer on the Statistics of Functional Enrichment
 
 Two popular methods of testing for GO term enrichment are the Fishers exact test and Mann Whitney U tests. Each test can produce results that are sensitive to the kinds of data they are input with such as differential expression or WGCNA coefficients [cite]. Neither test necessarily needs to be used alongside known networks of genes and use GO terms, enabling their use in non-model systems. These two methods are summarized and derived below:
 
 <br>
 
-## Fisher's Exact Test
+### Fisher's Exact Test
 
 The Fisher's exact test evaluates the relationship between two categorical variables: whether the ontology of a gene is represented in a test set or a background set. In the case of differential expression (DE), the test set is al DE genes and the background set is all genes included in DE analysis after filtering, not the entire transcriptome. The test asks whether the number of genes for a given GO term represented in a test set relative to the background is greater than what is expected due to chance alone (p).
 
@@ -274,7 +267,7 @@ A Fisher's exact test can be executed in base R using the fishers.text() functio
 
 <br>
 
-## Mann Whitney U Test
+### Mann Whitney U Test
 
 The critical difference between Mann Whitney U and Fisher's exact tests and are that Mann Whitney U's permit the analysis of continuous rather than categorical variables. These continuous values can be log fold changes of differential expression or -log p-values associated with DE or inclusion in a WGCNA. Because it doesn't rely on binary values denoting the existence of an effect, but rather the strength of an effect, the Mann Whitney U test is a more quantitative approach toward functional enrichment. The test asks whether the distribution of ranks for this continuous value in a GO term is significantly skewed from the distribution of ranks across all other GO terms. Like the background set employed in a Fisher's exact test, "all other GO terms" refers to those terms included in genes used for analysis following filtering.
 
@@ -294,6 +287,14 @@ A Mann Whitney U test can be executed for GO enrichment analysis using code from
 <br>
 
 A number of different parameters can be used to filter results or modify the execution of both tests, which we detail below.
+
+<br>
+
+# Tools and Approaches
+
+-   Ontologizer (command line) (Thea)
+-   Panther (online GUI) - endorsed by The Gene Ontology (Thea)
+-   R...Mann-Whitney U Test and Fisher's Exact Test (Sam)
 
 ## Ontologizer
 
