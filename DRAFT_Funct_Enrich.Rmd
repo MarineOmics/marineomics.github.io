@@ -199,20 +199,10 @@ head DRAFT_Funct_Enrich/annot/geneGO.txt
 
 **Using API** 
 
-
-
-```{r, include=FALSE}
-knitr::opts_chunk$set(engine.path = '/usr/bin/python3')
-
+```{r engine='bash'}
+python3 DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt
 ```
 
-```{python}
-uniprot-retrieval.py SPID.txt
-```
-
-```{r, engine.path = '/usr/bin/python3'}
-uniprot-retrieval.py
-```
 
 <br>
 
