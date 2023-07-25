@@ -7,6 +7,7 @@ bibliography: DRAFT_Funct_Enrich/Funct_Enrich.bib
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(reticulate)
+
 ```
 
 Functional gene enrichment analysis is a powerful tool that can aid in the interpretation of biological data by identifying biological processes and pathways that are significantly overrepresented in a gene list of interest. However, to effectively use this tool, it is essential to have a proper annotation of genes.
@@ -188,6 +189,7 @@ left_join(g.spid, go, by = c("SPID" = "Entry")) %>%
 ```
 
 
+
 ```{r engine='bash', eval=TRUE}
 head DRAFT_Funct_Enrich/annot/geneGO.txt
 ```
@@ -195,10 +197,21 @@ head DRAFT_Funct_Enrich/annot/geneGO.txt
 
 
 
-**Using API** (DOES NOTE WORK)
+**Using API** 
+
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(engine.path = '/usr/bin/python3')
+
+```
 
 ```{python}
-#DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt
+uniprot-retrieval.py SPID.txt
+```
+
+```{r, engine.path = '/usr/bin/python3'}
+uniprot-retrieval.py
 ```
 
 <br>
