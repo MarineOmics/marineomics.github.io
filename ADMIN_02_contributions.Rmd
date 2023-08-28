@@ -18,14 +18,14 @@ page, this guide can be a useful resource as you develop your content. The guide
 
 # Active Contributors 
 #### [Katherine Silliman, PhD](https://ksilliman.weebly.com/), NOAA Atlantic Oceanographic and Meteorological Lab - katherine.silliman[at]noaa.gov (Working Group Co-leader) {.unlisted .unnumbered}
-#### [Sam Bogan](http://www.hofmannlab.com/sam-bogan.html), UC-Santa Barbara -snbogan[at]ucsb.edu {.unlisted .unnumbered}
+#### [Sam Bogan](http://www.hofmannlab.com/sam-bogan.html), UC-Santa Barbara - snbogan[at]ucsb.edu (Working Group Co-leader) {.unlisted .unnumbered}
 #### Tait Algayer, Washington State University {.unlisted .unnumbered}
 #### Len Aguila, Texas A&M University Galveston {.unlisted .unnumbered}
 #### [Danielle Davenport, PhD](https://www.researchgate.net/profile/Danielle-Davenport-2), Fisheries and Oceans Canada {.unlisted .unnumbered}  
 #### Stephen Gaughran, PhD, Princeton University {.unlisted .unnumbered}
 #### Thea Gessler, Iowa State University {.unlisted .unnumbered}
 #### [Joanna Griffiths, PhD](https://joannasgriffiths.wordpress.com/), UC-Davis {.unlisted .unnumbered}
-#### Jason Johns, UC-Santa Barbara (Website Manager) {.unlisted .unnumbered}
+#### Jason Johns, UC-Santa Barbara - jasonjohns[at]ucsb.edu (Website Manager) {.unlisted .unnumbered}
 #### Sarit Truskey, Northeastern University {.unlisted .unnumbered}
 
 <br>
