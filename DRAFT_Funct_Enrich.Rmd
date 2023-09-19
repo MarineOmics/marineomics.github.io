@@ -199,7 +199,9 @@ head DRAFT_Funct_Enrich/annot/geneGO.txt
 
 **Using API** 
 
-```{r engine='bash'}
+Instead of using the web interface, one can also use the API.
+
+```{bash}
 python3 DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt
 ```
 
