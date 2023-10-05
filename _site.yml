@@ -29,7 +29,7 @@ navbar:
     - text: "Functional Genomics"
       menu:
         - text: "Mutifactorial RNAseq"
-          href: FUN_01_DGE_comparison_v2.html
+          href: DGE_comparison_v2.html
     - text: "Genome-Phenome"
       menu:
         - text: "coming soon!"
