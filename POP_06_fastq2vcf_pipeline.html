@@ -376,7 +376,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="FUN_01_DGE_comparison_v2.html">Mutifactorial RNAseq</a>
+      <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
     </li>
   </ul>
 </li>
@@ -596,17 +596,14 @@ for interrogation.</p>
 vcftools --gzvcf {input.vcf} --depth --out {output.prefix}
 vcftools --gzvcf {input.vcf} --missing-indv --out {output.prefix}</code></pre>
 <p>Where <br> <code>--gzvcf</code> is the input VCF, gzipped (use
-<code>--vcf</code> if working with an uncompressed VCF) <br></p>
-<pre class="--filter-summary```"><code>```--depth```
-```--missing-indv``` generates a file reporting the missingness per indivdual &lt;br&gt;
-```--out`` assigns a prefix to each output e.g., the filter summary output would be titled &quot;prefix.FILTER.summary&quot;
-
-&lt;br&gt;
-&lt;br&gt;
-Create a PCA from PLINK, using biallelic variants only
-
-```bash
-# First, remove filtered sites and keep only the biallelic SNPs
+<code>--vcf</code> if working with an uncompressed VCF) <br>
+<code>--FILTER-summary</code> <code>--depth</code>
+<code>--missing-indv</code> generates a file reporting the missingness
+per indivdual <br> `<code>--out</code> assigns a prefix to each output
+e.g., the filter summary output would be titled
+“prefix.FILTER.summary”</p>
+<p><br> <br> Create a PCA from PLINK, using biallelic variants only</p>
+<pre class="bash"><code># First, remove filtered sites and keep only the biallelic SNPs
 bcftools view -v snps -m2 -M2 -f .,PASS -e &#39;AF==1 | AF==0 | ALT=&quot;*&quot; | TYPE~&quot;indel&quot; | ref=&quot;N&quot;&#39; {input.vcf} -O z -o {output.filtered}
 bcftools index {output.filtered}
 

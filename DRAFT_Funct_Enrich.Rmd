@@ -201,7 +201,7 @@ head DRAFT_Funct_Enrich/annot/geneGO.txt
 
 Instead of using the web interface, one can also use the API.
 
-```{bash}
+```{bash, eval = F}
 python3 DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt
 ```
 

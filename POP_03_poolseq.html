@@ -397,7 +397,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="FUN_01_DGE_comparison_v2.html">Mutifactorial RNAseq</a>
+      <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
     </li>
   </ul>
 </li>
@@ -861,10 +861,12 @@ fst2 &lt;- FindReplace(data = fst, Var = &quot;CHR&quot;, replaceData = Replaces
 fst2$CHR &lt;- as.numeric(fst2$CHR)
 
 manhattan(fst2, chr=&quot;CHR&quot;, bp=&quot;BP&quot;, snp=&quot;ID&quot;, p=&quot;X1.11&quot;, suggestiveline = F, genomewideline = F, logp = F, ylim =c(0,1)) #p here refers to pvalue or in this case the Fst value, substitute with which column comparison you are interested in graphing</code></pre>
-<div class="figure">
-<img src="POP_03_poolseq_files/Fst_SvsBR_SDmap.png" alt="" />
-<p class="caption">Manhattan plot of mean Fst values for 10,000-bp
-windows of all the selected lines versus the pure Bodega population.</p>
+<div class="float">
+<img src="POP_03_poolseq_files/Fst_SvsBR_SDmap.png"
+alt="Manhattan plot of mean Fst values for 10,000-bp windows of all the selected lines versus the pure Bodega population." />
+<div class="figcaption">Manhattan plot of mean Fst values for 10,000-bp
+windows of all the selected lines versus the pure Bodega
+population.</div>
 </div>
 </div>
 <div id="calculate-fishers-exact-test" class="section level2">
@@ -1236,11 +1238,13 @@ treat_df &lt;- data.frame(
 line &lt;- treat_df$line
 
 adonis2(t(pi_all[,2:11])~line, data = treat_df, permutations = 1000000, method = &quot;manhattan&quot;)</code></pre>
-<div class="figure">
-<img src="POP_03_poolseq_files/pi_PCA.png" alt="" />
-<p class="caption">Principle coordinate analysis of allele frequencies
-for selected lines (red), control lines (blue), the pure Bodega
-population (white), and the pure San Diego population (black).</p>
+<div class="float">
+<img src="POP_03_poolseq_files/pi_PCA.png"
+alt="Principle coordinate analysis of allele frequencies for selected lines (red), control lines (blue), the pure Bodega population (white), and the pure San Diego population (black)." />
+<div class="figcaption">Principle coordinate analysis of allele
+frequencies for selected lines (red), control lines (blue), the pure
+Bodega population (white), and the pure San Diego population
+(black).</div>
 </div>
 </div>
 <div id="references" class="section level2 unnumbered">

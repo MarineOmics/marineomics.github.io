@@ -13,7 +13,7 @@
 
 <title>Functional Enrichment Tests: Intro and methods comparison</title>
 
-<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -397,7 +397,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="FUN_01_DGE_comparison_v2.html">Mutifactorial RNAseq</a>
+      <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
     </li>
   </ul>
 </li>
@@ -662,8 +662,9 @@ with GO terms.</p>
 ## LOC111109753 GO:0004062; GO:0005737; GO:0005829; GO:0006068; GO:0006576; GO:0006805; GO:0008146; GO:0009812; GO:0018958; GO:0030855; GO:0042403; GO:0050427; GO:0051923
 ## LOC111109452 GO:0004062; GO:0005829; GO:0008146; GO:0009812; GO:0050427
 ## LOC111101273 GO:0005743; GO:0008535; GO:0032977; GO:0032979; GO:0033617; GO:0051204</code></pre>
-<p><strong>Using API</strong> (DOES NOTE WORK)</p>
-<pre class="python"><code>#DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt</code></pre>
+<p><strong>Using API</strong></p>
+<p>Instead of using the web interface, one can also use the API.</p>
+<pre class="bash"><code>python3 DRAFT_Funct_Enrich/annot/uniprot-retrieval.py DRAFT_Funct_Enrich/annot/SPID.txt</code></pre>
 <p><br></p>
 </div>
 <div id="introduction-and-considerations" class="section level1">
