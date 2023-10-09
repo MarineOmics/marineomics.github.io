@@ -16,7 +16,7 @@ The backbone underlying the content on the website comes from a general set of â
 * [Choosing a population genomics sequencing approach](POP_01_choosing_population_genetics.html)  
 * [Whole Genome Resequencing (WGS)](POP_04_WGS_intro.html)  
   * [Low coverage WGS](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md)
-* [Reduced Representation Sequencing](POP_02_RADseq.html) 
+* [Reduced Representation Sequencing](RADseq.html) 
 * [Poolseq](POP_03_poolseq.html)
 * [Redundancy Analysis (RDA) Trait Prediction](POP_05_RDAtraitPredictionTutorial.html)
 

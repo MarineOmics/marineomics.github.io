@@ -1,3 +1,14 @@
+---
+title: 'RADseq'
+subtitle: '*Katherine Silliman, Danielle Davenport*'
+bibliography: POP_02_RADseq_files/common-bib_01.bib
+output: 
+  html_document:
+    pandoc_args: [ 
+      "--output=RADseq.html" 
+    ]
+---
+
 ```{r,message = FALSE,echo = FALSE}
 library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
@@ -8,12 +19,9 @@ opts_chunk$set(fig.width = 10,
                cache = FALSE)
 cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
              hyperlink = "to.doc")
+
 ```
----
-title: 'RADseq'
-subtitle: '*Katherine Silliman, Danielle Davenport*'
-bibliography: POP_02_RADseq_files/common-bib_01.bib
----
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)

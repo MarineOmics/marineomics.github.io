@@ -21,7 +21,7 @@ navbar:
         - text: "Whole Genome Resequencing"
           href: POP_04_WGS_intro.html
         - text: "Reduced Representation Sequencing"
-          href: POP_02_RADseq.html
+          href: RADseq.html
         - text: "Poolseq"
           href: POP_03_poolseq.html
         - text: "Redundancy Analysis (RDA) Trait Prediction"

@@ -379,7 +379,7 @@ div.tocify {
       <a href="POP_04_WGS_intro.html">Whole Genome Resequencing</a>
     </li>
     <li>
-      <a href="POP_02_RADseq.html">Reduced Representation Sequencing</a>
+      <a href="RADseq.html">Reduced Representation Sequencing</a>
     </li>
     <li>
       <a href="POP_03_poolseq.html">Poolseq</a>
@@ -1037,119 +1037,19 @@ hits:</p>
 src="DRAFT_Funct_Enrich/PantherResultsEnrichment.png" /></p>
 </div>
 </div>
-<div id="using-r" class="section level2">
-<h2>Using R</h2>
-<p><br></p>
-</div>
-</div>
-<div id="what-to-do-with-the-output" class="section level1">
-<h1>What to Do with the Output</h1>
-<ul>
-<li>Visualizing results</li>
-<li>Interpreting results - gather consensus advice</li>
-<li>R…Mann-Whitney U Test and Fisher’s Exact Test (Sam)</li>
-</ul>
-<p><br></p>
-</div>
-<div id="formatting-examples" class="section level1">
-<h1>Formatting Examples</h1>
-<p><br></p>
-<div id="example-of-table-syntax" class="section level2">
-<h2>Example of table syntax</h2>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Term A</th>
-<th align="left">Term B</th>
-<th align="left">Term C</th>
-<th align="left">Term D</th>
-<th align="left">Term E</th>
-<th align="left">Term F</th>
-<th align="left">Term G</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-</tr>
-<tr class="even">
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-</tr>
-<tr class="odd">
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-</tr>
-</tbody>
-</table>
-<p><br></p>
-</div>
-<div id="example-of-how-to-insert-an-image" class="section level2">
-<h2>Example of how to insert an image</h2>
-<p><img src="DRAFT_Funct_Enrich/Rivera_etal_fig.png" width="1137" height="40%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="example-of-how-to-write-and-print-an-equation"
+<div id="comparing-fishers-exact-vs.-mann-whitney-u-tests"
 class="section level2">
-<h2>Example of how to write and print an equation</h2>
-<p>For illustrative purposes, here is a simple and famous equation</p>
-<p><span class="math display">\[
-E = mc^2
-\]</span></p>
-<p><br></p>
-<p>As an example of a more complex equation, here is an equation for the
-t-statistic</p>
-<p><span class="math display">\[
-t = \frac{\overline{x_{1}}-\overline{x_{2}}}
-{\sqrt{(s^2(
-\frac{1}{n_{1}} + \frac{1}{n_{2}}
-))}}
-\]</span></p>
+<h2>Comparing Fisher’s Exact vs. Mann Whitney U tests</h2>
+<pre class="r"><code>## To-do list for Sam once he has data
+
+# 1. Conduct differential expression analysis w/ oyster data modeling continuous vs. categorical effects of pH (small effect; continuous) and sex (large effect; categorical) on gene expression
+
+# 2. Using example GO annotations, perform FE and MWU tests
+
+# 3. Compare results and discuss differences... why was one effect type influenced more than the other? How does this inform what kind of test you should use?
+
+# 4. Querying how annotation quality is influencing results</code></pre>
 </div>
-<div id="example-of-how-to-cite-a-reference-from-your-.bib-in-text"
-class="section level2">
-<h2>Example of how to cite a reference from your .bib in-text</h2>
-<p>Functional enrichment tests applied to mRNA analyses often impose
-significant biases <span class="citation">(Bleazard, Lamb, and
-Griffiths-Jones 2015)</span>.</p>
-<pre><code>```{r setup, include = FALSE} 
-
-# Set root directory... in this draft, ensure that you have the same path
-knitr::opts_knit$set(root.dir = &#39;~/Documents/GitHub/marineomics.github.io/&#39;)
-
-```</code></pre>
-<p><br></p>
-</div>
-</div>
-<div id="lets-get-started" class="section level1">
-<h1>Let’s get started</h1>
-<p>Below is an example of what should be the first, visible code
-chunk</p>
-<pre class="r"><code>## Unhash and run the code below if you believe you may need to install the packages loaded below
-# Edit code below to list packages that are used in this draft... at present these are just examples
-
-if (!require(&quot;BiocManager&quot;, quietly = TRUE))
-    install.packages(&quot;BiocManager&quot;)
-
-BiocManager::install(c(&quot;DESeq2&quot;,&quot;edgeR&quot;,&quot;arrayQualityMetrics&quot;))
-
-# Load packages
-library(tidyverse)</code></pre>
 </div>
 <div
 id="run-gomwu-and-fishers-exact-tests-on-data-of-interest-see-httpsgithub.comz0ongo_mwu"
@@ -1226,11 +1126,6 @@ write.csv(results[1],
 <p>Below are the markdown-formatted references for our document derived
 from the</p>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-Bleazard2015-vn" class="csl-entry">
-Bleazard, Thomas, Janine A Lamb, and Sam Griffiths-Jones. 2015.
-<span>“Bias in <span class="nocase">microRNA</span> Functional
-Enrichment Analysis.”</span> <em>Bioinformatics</em> 31 (10): 1592–98.
-</div>
 <div id="ref-RN335" class="csl-entry">
 Wijesooriya, K. L., S. Jadaan, K. L. Perera, T. Kaur, and M. L. Ziemann.
 2022. <span>“Urgent Need for Consistent Standards in Functional
