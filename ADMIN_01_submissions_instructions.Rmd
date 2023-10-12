@@ -21,6 +21,11 @@ opts_chunk$set(fig.width = 10,
 cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
              hyperlink = "to.doc")
 ```
+## {#howtocite}
+
+Initial publication year: 2022
+<br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
 
 ## Overview
 
@@ -65,6 +70,11 @@ basic level.
 3. Review: Full drafts of content will be reviewed by the website manager, Katherine Silliman and/or Sam Bogan, and at least one other active MarineOmics member assigned to the project.
 
 *See the [bottom of the page](#conflicts) for our policy on disagreements or conflicts during the development process
+
+#### Please include the initial publication date (year at minimum) at the top of your page so it can be properly cited. We also ask that you include the below text at the [top of your page](#howtocite), which will make a link to a section on the main website about how to cite.
+
+      [How to cite](https://marineomics.github.io/#How_to_Cite)
+
 
 <hr />
 
@@ -386,5 +396,6 @@ At any point in the process, disagreements on what content to include may arise.
 <br>
 <br>
 Disagreements will be discussed with all of those involved at the time that the disagreement arises. The first attempt at resolving the disagreement will be via discussion. If a resolution is not agreed upon by all parties through discussion, it will be put to a majority vote including all of those actively involved at the time, not including the content author. In case of a tie, a MarineOmics senior scientist will be assigned to break the tie.
+
 
 ## References

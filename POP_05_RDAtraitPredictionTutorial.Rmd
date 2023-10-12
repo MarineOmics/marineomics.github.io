@@ -7,6 +7,8 @@ output:
     df_print: paged
 ---
 
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
 This tutorial accompanies the paper ["The paradox of adaptive trait clines with non-clinal patterns in the underlying genes"](https://doi.org/10.1073/pnas.2220313120) published in PNAS.
 
 # Abstract

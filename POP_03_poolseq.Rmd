@@ -5,6 +5,9 @@ date: "8/12/2021"
 bibliography: "POP_03_poolseq_files/common-bib_01.bib"
 ---
 
+Initial publication year: 2022 <br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ```

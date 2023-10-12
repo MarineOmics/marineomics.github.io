@@ -3,6 +3,9 @@ title: "snpArcher: FASTQ -> VCF workflow for WGS data"
 author: "Sara JS Wuitchik"
 ---
 
+Initial publication year: 2022 <br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 library(knitcitations)

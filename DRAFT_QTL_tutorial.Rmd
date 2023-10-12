@@ -7,6 +7,9 @@ editor_options:
     wrap: 72
 ---
 
+Initial publication year: 2023 <br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
 ```{r setup, echo = FALSE, message = FALSE}
 library(knitr)
 knitr::opts_chunk$set(

@@ -8,6 +8,8 @@ output:
       "--output=RADseq.html" 
     ]
 ---
+Initial publication year: 2022 <br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
 
 ```{r,message = FALSE,echo = FALSE}
 library(knitr)

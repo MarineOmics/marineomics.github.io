@@ -4,6 +4,9 @@ title:  Whole Genome Resequencing for Population Genomics
 subtitle: '*Katherine Silliman, Nicolas Lou*'
 ---
 
+Initial publication year: 2022 <br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 library(knitcitations)
@@ -13,8 +16,6 @@ knitr::opts_chunk$set(fig.width = 10,
 cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
              hyperlink = "to.doc")
 ```
-
-<br>
 
 # Introduction
 

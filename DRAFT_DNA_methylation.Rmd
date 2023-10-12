@@ -15,6 +15,8 @@ title: 'DNA Methylation Analyses'
 subtitle: '*Steven Roberts*, *Sam White*, and *Yaamini Venkataraman*'
 bibliography: DRAFT_DNA_methylation/DNA-Methylation.bib
 ---
+Initial publication year: TBD <br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
 
 # Introduction
 

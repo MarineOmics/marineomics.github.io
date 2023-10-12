@@ -2,6 +2,9 @@
 title: WGS fastq2vcf walkthrough
 ---
 
+Initial publication year: 2022 <br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
 # **Stacks**
 If your samples need to be demultiplexed, running the program Stacks is a necessary first step. Stack’s process_radtags function searches sequence reads for barcodes that you provide and demultiplexes the reads using your barcode file. This file specifies which barcode belongs to which sample and will trim off those barcodes once it demultiplexes. 
 

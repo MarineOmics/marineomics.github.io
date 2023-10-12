@@ -4,6 +4,9 @@ subtitle: '*Thea Gessler*, *Samuel N. Bogan*, and *Steven Roberts*'
 bibliography: DRAFT_Funct_Enrich/Funct_Enrich.bib
 ---
 
+Initial publication year: TBD <br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(reticulate)

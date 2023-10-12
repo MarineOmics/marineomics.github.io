@@ -9,6 +9,9 @@ output:
     ]
 ---
 
+Initial publication year: 2022 <br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
 # Intro to multifactorial RNA-seq models  
 
 Studies of molecular responses to environmental change increasingly employ multifactorial experimental designs incorporating different developmental stages, stressors, populations, or non-linear dynamics that resolve interactions between variables that shape expression, physiology, and performance. After an experiment during which a study organism was exposed to abiotic variation and perhaps other variables, researchers interested in how gene expression correlates with these variables will often extract RNA across treatment groups, prepare cDNA libraries for sequencing, and conduct an analysis of differential expression (DE) across variables of interest after mapping and counting RNA-seq reads. DE analysis is achieved by fitting RNA-seq read count data to statistical models, often using tried-and-true DE packages. Most packages do not have the flexibility to accommodate a number of common experimental design components and it can be difficult to navigate their functionality for fitting multivariate models. When these packages fall short, determining how to fit customized multifactorial models yourself can be an additional challenge. Many great walkthroughs exist for conducting DE analysis across using single-variable experimental designs, but there is a lack of guidance on multifactorial approaches for testing for DE and modelling gene expression. Regardless of whether you have RNA-seq data on hand or you're in the process of planning your experiment, this walkthrough will help you navigate what DE packages and model fitting approaches are best suited to your experimental design.

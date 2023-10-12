@@ -14,6 +14,8 @@ knitr::opts_chunk$set(fig.width = 10,
 cite_options(citation_format = "pandoc", max.names = 3, style = "html",
              hyperlink = "to.doc")
 ```
+Initial publication year: 2022 <br>
+[How to cite](https://marineomics.github.io/#How_to_Cite)
 
 # Population Genomic Sequencing Approaches
 Deciding on a sequencing approach for a new project can be challenging. Your choice depends primarily on the questions of interest, but also constraints set by funding, existing genomic resources, sample size, genome characteristics and expertise in the research group.
