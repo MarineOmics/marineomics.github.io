@@ -64,12 +64,13 @@ In Spring 2021, MarineOmics hosted three virtual undergraduate research interns 
 
 If referencing marineomics.io, please use the following citation:
 
-Bogan, S. N., Johns, J., Griffiths, J. S., Davenport, D., Smith, S. J., Schaal, S. M., Downey-Wall, A., Lou, R. N., Lotterhos, K., Guidry, M. E., Rivera, H. E., McGirr, J. A., Puritz, J. B., Roberts, S. B., and Silliman, K. (2023). A dynamic web resource for robust and reproducible genomics in nonmodel species: marineomics.io. Methods in Ecology and Evolution, 00, 1–8. https://doi.org/10.1111/2041-210X.14219
+Bogan, S. N., Johns, J., Griffiths, J. S., Davenport, D., Smith, S. J., Schaal, S. M., Downey-Wall, A., Lou, R. N., Lotterhos, K., Guidry, M. E., Rivera, H. E., McGirr, J. A., Puritz, J. B., Roberts, S. B., and Silliman, K. (2023). A dynamic web resource for robust and reproducible genomics in nonmodel species: marineomics.io. *Methods in Ecology and Evolution*, 00, 1–8. https://doi.org/10.1111/2041-210X.14219
 <br>
 
-If referencing a specific page on marineomics.io please reference the above citation in addition to a reference to the individual page as follows:
+If citing a specific page, please use the above citation and a reference to the individual page as follows:
 <br>
-LastName1, Initials1, LastName2, Initials2, etc. (Publication year) Webpage title. URL.
+
+LastName1, Initials1, LastName2, Initials2, etc. (Publication year). Webpage title. URL
 
 For the page "Choosing a Population Genomics Approach" the citation would be written as
 
