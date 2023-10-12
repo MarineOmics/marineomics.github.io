@@ -60,6 +60,21 @@ MarineOmics is also interested in evaluating and improving reproducibility in st
 
 In Spring 2021, MarineOmics hosted three virtual undergraduate research interns with funding from the [RCN-ECS](https://rcn-ecs.github.io/): Jecy Klinkam, Kaitlin Macaranas, and Chris Mantegna. These interns were paired with graduate student mentors within the MarineOmics group, as well as participated in training activities while contributing to the Reproducibility literature review.
 
+# How to Cite{#how_to_cite}
+
+If referencing marineomics.io, please use the following citation:
+
+Bogan, S. N., Johns, J., Griffiths, J. S., Davenport, D., Smith, S. J., Schaal, S. M., Downey-Wall, A., Lou, R. N., Lotterhos, K., Guidry, M. E., Rivera, H. E., McGirr, J. A., Puritz, J. B., Roberts, S. B., and Silliman, K. (2023). A dynamic web resource for robust and reproducible genomics in nonmodel species: marineomics.io. Methods in Ecology and Evolution, 00, 1–8. https://doi.org/10.1111/2041-210X.14219
+<br>
+
+If referencing a specific page on marineomics.io please reference the above citation in addition to a reference to the individual page as follows:
+<br>
+LastName1, Initials1, LastName2, Initials2, etc. (Publication year) Webpage title. URL.
+
+For the page "Choosing a Population Genomics Approach" the citation would be written as
+
+Silliman, K. and Lou, R. N. (2022). Choosing a Population Genomics Approach. MarineOmics. https://marineomics.github.io/POP_01_choosing_population_genetics.html
+
 # Contact {#contact}
 For questions about the website and its materials, post to the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions)!
 For inquiries about the MarineOmics Working Group activities, please contact us at rcnecs.marineomics@gmail.com.
