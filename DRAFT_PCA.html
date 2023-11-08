@@ -63,6 +63,28 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="tutorial.css" type="text/css" />
 
@@ -440,8 +462,8 @@ method and then detail some ‘ins-and-outs’ as it relates to population
 genomics. Importantly, there are many existing resources for navigating
 PCA from both the primary literature and online tutorials, several of
 which we reference throughout this page. These useful resources can be
-found in the <a href="link%20to%20section">References</a> section at the
-bottom of this page!</p>
+found in the <a href="#refs">References</a> section at the bottom of
+this page!</p>
 <p>On this page we outline and describe many aspects of PCA:</p>
 <ul>
 <li>What is PCA and what are its common uses in population
@@ -460,15 +482,11 @@ in PCA’):
 <li>Hybridization and inbreeding effects</li>
 <li>Horseshoe and wave patterns</li>
 </ul></li>
-<li>PCA to inform filtering for other downstream analyses
-<strong>keep?</strong></li>
 <li>Comparison to other common approaches to investigating population
 genetic structure
 <ul>
 <li>PCA vs ADMIXTURE/STRUCTURE</li>
 </ul></li>
-<li>PCA in outlier analysis (i.e. genotype-environment analysis)
-<strong>keep?</strong></li>
 </ul>
 <hr />
 <div
@@ -497,20 +515,22 @@ substantial proportion of the variation in the original variables, and
 can consequently be used to provide a convenient lower-dimensional
 summary of these variables.</p>
 <p>The output of PCA are the eigenvalues and eigenvectors (eigenvalues =
-principal components (PCs), eigenvectors = principal axes) (see here for
-video explanation) which can be represented as graphical outputs that
+principal components (PCs), eigenvectors = principal axes) (see <a
+href="https://www.youtube.com/watch?v=PFDu9oVAE-g">here</a> for video
+explanation) which can be represented as graphical outputs that
 summarise the information of a large number of variables by a smaller
 number of dimensions (PCs). When applied to very large genetic datasets,
 the eigenvectors and eigenvalues are usually determined by a method
 called singular value decomposition (SVD) or some variation of it, a
 matrix factorisation method recommended when the number of variables is
 very large (i.e. often more variables than observed entities, n &lt;&lt;
-m, see this youtube playlist for details). Other methods use the
-covariance (or correlation) matrix. The data are usually centered (so it
-becomes zero mean gaussian, center = TRUE ), and scaled ( scale = TRUE
-), where scaling is recommended when the variance is not homogeneous
-across variables (REF Jolliffe, I. (2005). Principal component analysis.
-Wiley Online Library).</p>
+m, see this <a
+href="https://www.youtube.com/playlist?list=PLMrJAkhIeNNSVjnsviglFoY2nXildDCcv">YouTube
+playlist</a> for details). Other methods use the covariance (or
+correlation) matrix. The data are usually centered (so it becomes zero
+mean gaussian, center = TRUE ), and scaled ( scale = TRUE ), where
+scaling is recommended when the variance is not homogeneous across
+variables (<span class="citation">Jolliffe (2005)</span>).</p>
 <p>The eigenvalues represent the amount of variance explained per
 component and are typically represented as a barplot, in descending
 order (Figure 1) (also called variable loadings). The percentage of
@@ -742,13 +762,15 @@ happen!</p>
 <p>In this respect, PCA is a useful tool to apply to your data, both
 prior to broader analysis, and as an analysis tool. Below we show how
 PCA can be applied including how it can be used to check for issues in
-your data during the filtering/cleaning stage (Batch effects, missing
-data, linkage disequilibrium, hybridization), how it can be used to
-highlight informative loci/samples for further exploration
-(i.e. structural variation, linkage-disequilibrium, sex-linked markers,
-hybrids), and how it it is commonly used to visualise population
-structure in a set of unlinked genetic markers.</p>
-<div id="batch-effects" class="section level3">
+your data during the filtering/cleaning stage (<a
+href="#batcheffects">batch effects</a>, <a href="#missingdata">missing
+data</a>, <a href="#ld">linkage disequilibrium</a>, <a
+href="#hybrid">hybridization</a>), how it can be used to highlight
+informative loci/samples for further exploration (i.e. structural
+variation, linkage-disequilibrium, sex-linked markers, hybrids), and how
+it it is commonly used to visualise population structure in a set of
+unlinked genetic markers.</p>
+<div id="batcheffects" class="section level3">
 <h3>Batch effects</h3>
 <p>Batch effects are caused by technical differences among batches
 (i.e. groups) of samples in a dataset and may reflect differences in DNA
@@ -825,7 +847,7 @@ population increased from left to right, false patterns of clustering by
 read depth become less apparent and suggest that larger sample sizes can
 help to mitigate batch effects caused by differences in coverage.</p>
 </div>
-<div id="ld-and-inversion-effects" class="section level3">
+<div id="ld" class="section level3">
 <h3>LD and Inversion effects</h3>
 <p>Linkage disequilibrium (LD) is the non-random association between
 alleles and can arise from physical proximity on a chromosome,
@@ -878,7 +900,7 @@ data. Removing the sex-linked markers led to nonsignificant genetic
 structure in one species and a more accurate estimation of FST in the
 second species.</p>
 </div>
-<div id="missing-data-in-pca-and-imputation" class="section level3">
+<div id="missingdata" class="section level3">
 <h3>Missing Data in PCA and Imputation</h3>
 <p>Missing data in population genomic analysis is common. Sometimes it
 is random, or it may be a feature of the data type (i.e. low coverage
@@ -910,7 +932,7 @@ the mean-imputed matrix is centered and scaled, the original missing
 become non-informative in PCA (missing values are placed at the origin).
 This can be problematic if you have a lot of missing data in your
 dataset, especially if that missing data is biased (not random). Yi and
-Latch (2021) demonstrated this effect using different simulated
+Latch (2022) demonstrated this effect using different simulated
 populations (no migration. 5% migration, isolation-by-distance-cline)
 with 1%, 10% and 20% missing data, either randomly distributed among
 individuals, or biased among some individuals and some populations. They
@@ -922,9 +944,9 @@ making them indistinguishable from known admixed individuals,
 potentially leading to misinterpreted population structure (Figure
 11).</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.9_Yi_Latch_fig2.png" alt="Figure 9. Figure 2(b) from Yi and Latch (2021) shows PCA on the individual-biased missing data (1%, 10% or 20%) introduced to a simulated population experiencing an isolation-by-distance cline, where one population (represented as triangles) is an admixture of the remaining two (circle and squares). Individual colors represent their amounts of missing data with relatively higher missingness shown in lighter blue in each plot (legend, notice changing scale from left to right). As the % of missing data increases, the samples with the most missing data become centered at the PCA origin." width="80%" />
+<img src="DRAFT_PCA/Fig.9_Yi_Latch_fig2.png" alt="Figure 9. Figure 2(b) from Yi and Latch (2022) shows PCA on the individual-biased missing data (1%, 10% or 20%) introduced to a simulated population experiencing an isolation-by-distance cline, where one population (represented as triangles) is an admixture of the remaining two (circle and squares). Individual colors represent their amounts of missing data with relatively higher missingness shown in lighter blue in each plot (legend, notice changing scale from left to right). As the % of missing data increases, the samples with the most missing data become centered at the PCA origin." width="80%" />
 <p class="caption">
-Figure 9. Figure 2(b) from Yi and Latch (2021) shows PCA on the
+Figure 9. Figure 2(b) from Yi and Latch (2022) shows PCA on the
 individual-biased missing data (1%, 10% or 20%) introduced to a
 simulated population experiencing an isolation-by-distance cline, where
 one population (represented as triangles) is an admixture of the
@@ -948,9 +970,9 @@ Yi &amp; Latch 2021), since within-group mean imputation depends largely
 on the a priori population designation and can easily bring artificial
 biases.</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.10_Yi_Latch_fig4.png" alt="Figure 10. Figure 4 from Yi and Latch (2021) shows PCA on the cline model with missing data condensed in either the (a) admixed population and (b) one end population. The admixed population (pop2) has high migration with both end populations (pop1 and pop3) while no migration occurs between the end populations." width="80%" />
+<img src="DRAFT_PCA/Fig.10_Yi_Latch_fig4.png" alt="Figure 10. Figure 4 from Yi and Latch (2022) shows PCA on the cline model with missing data condensed in either the (a) admixed population and (b) one end population. The admixed population (pop2) has high migration with both end populations (pop1 and pop3) while no migration occurs between the end populations." width="80%" />
 <p class="caption">
-Figure 10. Figure 4 from Yi and Latch (2021) shows PCA on the cline
+Figure 10. Figure 4 from Yi and Latch (2022) shows PCA on the cline
 model with missing data condensed in either the (a) admixed population
 and (b) one end population. The admixed population (pop2) has high
 migration with both end populations (pop1 and pop3) while no migration
@@ -975,7 +997,7 @@ population clustering and final inferences.</p>
 implement a method of PCA which explicitly accepts it (i.e pcadapt,
 PCAngsd).</p>
 </div>
-<div id="hybridization-and-inbreeding-effects" class="section level3">
+<div id="hybrid" class="section level3">
 <h3>Hybridization and inbreeding effects</h3>
 <p>Genetic differences between two different parental species typically
 constitute the dominant axis of genetic variation in a PCA, with hybrids
@@ -1086,7 +1108,8 @@ correct interpretation of these patterns.</p>
 of the source populations can be identified and sampled, estimation of
 admixture proportions can be achieved from projecting samples onto the
 PCs identified from the source populations. Figure 5 from McVean 2009
-below shows an example for human populations from the HapMap3 project.
+below shows an example for human populations from the <a
+href="https://www.sanger.ac.uk/science/tools/#">HapMap3 project</a>.
 Samples having African ancestry in Southwest USA (ASW) and two groups of
 samples representing the “source” populations for ASW: (1) Yoruba in
 Ibadan, Nigeria (YRI) and (2) Utah USA with Northern and Western
@@ -1124,8 +1147,8 @@ Nucleotide Polymorphism (SNP), genomic relationship matrix (GRM), minor
 allele frequency (MAF)</p>
 <table>
 <colgroup>
-<col width="52%" />
-<col width="40%" />
+<col width="16%" />
+<col width="75%" />
 <col width="7%" />
 </colgroup>
 <thead>
@@ -1150,7 +1173,9 @@ product and cross-product of the (scaled) genotype matrix with a given
 vector (see Privé et al., 2020 supplementary materials). If you have A
 LOT of missing data, this method can affect the finding of ‘outlier
 loci’ (significance of loadings).</td>
-<td align="left">(Privé et al., 2020; Luu, et al., 2016)</td>
+<td align="left"><span class="citation">Privé, Luu, Vilhjálmsson, et al.
+(2020)</span>; <span class="citation">Luu, Bazin, and Blum
+(2017)</span></td>
 </tr>
 <tr class="even">
 <td align="left">NIPALS (Nonlinear Iterative Partial Least Squares)</td>
@@ -1158,19 +1183,19 @@ loci’ (significance of loadings).</td>
 and SVD of the SNP matrix is used to create orthogonal PCs. The PCs
 which correspond to the largest eigenvalues are then used to reconstruct
 the missing SNP genotypes in the SNP matrix (REF).</td>
-<td align="left">World, 1996</td>
+<td align="left"><span class="citation">Wold (1975)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">adegenet::glPCA</td>
 <td align="left">Missing values are replaced by the dosage (a factor
 homozygous ref = 0, heterozygous = 1, homozygous alternate = 2) mean of
 the column representing the variant</td>
-<td align="left"><strong>fill in</strong></td>
+<td align="left"><span class="citation">Jombart (2008)</span></td>
 </tr>
 <tr class="even">
 <td align="left">SNPRelate::SNPRelatePCA</td>
 <td align="left">Missing values are imputed by the dosage mean</td>
-<td align="left"><strong>fill in</strong></td>
+<td align="left"><span class="citation">Zheng et al. (2012)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">PCAngsd/EMU</td>
@@ -1178,28 +1203,31 @@ the column representing the variant</td>
 inferred from the posterior genotype dosages from the top K inferred
 PCs. The method to choose the top PCs to represent population structure
 and estimate the individual allele frequencies follows Velicier’s
-minimum average partial (MAP) (Shriner, 2011).</td>
-<td align="left">(Meisner, Liu, et al. 2021;Meisner &amp; Albrechtsen,
-2018)</td>
+minimum average partial (MAP) (<span class="citation">Shriner
+(2011)</span>).</td>
+<td align="left"><span class="citation">Meisner et al. (2021)</span>;
+<span class="citation">Meisner and Albrechtsen (2018)</span></td>
 </tr>
 <tr class="even">
 <td align="left">dudi.pca()</td>
 <td align="left">Does not work with missing genotypes. Missingness can
 manually be replaced or removed</td>
-<td align="left"><strong>fill in</strong></td>
+<td align="left"><span class="citation">Dray and Dufour
+(2007)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">BaseR, prcomp()</td>
 <td align="left">Does not work with missing genotypes. Missingness can
 manually be replaced or removed</td>
-<td align="left"><strong>fill in</strong></td>
+<td align="left"><span class="citation">R Core Team (2013)</span></td>
 </tr>
 <tr class="even">
 <td align="left">vegan::RDA()</td>
 <td align="left">This function performs a PCA when no conditions are
 added. Does not work with missing genotypes. Missingness can manually be
 replaced, usually by the dosage mean.</td>
-<td align="left"><strong>fill in</strong></td>
+<td align="left"><span class="citation">Oksanen et al.
+(2019)</span></td>
 </tr>
 <tr class="odd">
 <td align="left">Plink PCA</td>
@@ -1208,26 +1236,142 @@ computation computes the covariance matrix between pairs of individuals,
 using only variables (loci) that are available for both individuals (but
 you can add the modifier “meanimpute” for mean imputation). The
 randomisation algorithm (aka. FASTPCA) (–pca approx) performs
-mean-imputation of missing genotypes</td>
-<td align="left">//plink handbook. Randomisation algorithm (aka
-see)</td>
+mean-imputation of missing genotypes (see <span
+class="citation">Galinsky et al. (2016)</span>)</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
+<td align="left"><span class="citation">Purcell et al.
+(2007)</span></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
 <td align="left">bigSNPR:, big_SVD() and big_randomSVD()</td>
 <td align="left">Does not work with missing data, but offers various
 functions to impute missingness based on plink, beagle or methods
-outlined in (Wang et al., 2012)</td>
-<td align="left"><strong>fill in</strong></td>
-</tr>
-<tr class="odd">
-<td align="left">smartPCA</td>
-<td align="left">Based on Randomized Singular Value Decomposition (RSVD)
-(Halko et al. 2011), performs full eigendecomposition on the GRM with
-mean imputation</td>
-<td align="left"><strong>fill in</strong></td>
+outlined in <span class="citation">Wang et al. (2012)</span></td>
+<td align="left"><span class="citation">Privé et al. (2018)</span>;
+<span class="citation">Privé, Luu, Blum, et al. (2020)</span></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="refs" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-dray2007ade4" class="csl-entry">
+Dray, Stéphane, and Anne-Béatrice Dufour. 2007. <span>“The Ade4 Package:
+Implementing the Duality Diagram for Ecologists.”</span> <em>Journal of
+Statistical Software</em> 22: 1–20.
+</div>
+<div id="ref-galinskyFastPrincipalComponentAnalysis2016a"
+class="csl-entry">
+Galinsky, Kevin J., Gaurav Bhatia, Po-Ru Loh, Stoyan Georgiev, Sayan
+Mukherjee, Nick J. Patterson, and Alkes L. Price. 2016. <span>“Fast
+<span>Principal-Component Analysis Reveals Convergent Evolution</span>
+of <span>ADH1B</span> in <span>Europe</span> and <span>East
+Asia</span>.”</span> <em>The American Journal of Human Genetics</em> 98
+(3): 456–72. <a
+href="https://doi.org/10.1016/j.ajhg.2015.12.022">https://doi.org/10.1016/j.ajhg.2015.12.022</a>.
+</div>
+<div id="ref-Jolliffe2005-hw" class="csl-entry">
+Jolliffe, I. 2005. <span>“Principal Component Analysis: Wiley Online
+Library.”</span> <em>Google Scholar</em>.
+</div>
+<div id="ref-jombart2008adegenet" class="csl-entry">
+Jombart, Thibaut. 2008. <span>“Adegenet: A <span>R</span> Package for
+the Multivariate Analysis of Genetic Markers.”</span>
+<em>Bioinformatics</em> 24 (11): 1403–5.
+</div>
+<div id="ref-luuPcadaptPackagePerform2017" class="csl-entry">
+Luu, Keurcien, Eric Bazin, and Michael G. B. Blum. 2017. <span>“Pcadapt
+: An <span>R</span> Package to Perform Genome Scans for Selection Based
+on Principal Component Analysis.”</span> <em>Molecular Ecology
+Resources</em> 17 (1): 67–77. <a
+href="https://doi.org/10.1111/1755-0998.12592">https://doi.org/10.1111/1755-0998.12592</a>.
+</div>
+<div id="ref-meisnerInferringPopulationStructure2018" class="csl-entry">
+Meisner, Jonas, and Anders Albrechtsen. 2018. <span>“Inferring
+<span>Population Structure</span> and <span>Admixture Proportions</span>
+in <span>Low-Depth NGS Data</span>.”</span> <em>Genetics</em> 210 (2):
+719–31. <a
+href="https://doi.org/10.1534/genetics.118.301336">https://doi.org/10.1534/genetics.118.301336</a>.
+</div>
+<div id="ref-meisnerLargescaleInferencePopulation2021"
+class="csl-entry">
+Meisner, Jonas, Siyang Liu, Mingxi Huang, and Anders Albrechtsen. 2021.
+<span>“Large-Scale Inference of Population Structure in Presence of
+Missingness Using <span>PCA</span>.”</span> Edited by Russell Schwartz.
+<em>Bioinformatics</em> 37 (13): 1868–75. <a
+href="https://doi.org/10.1093/bioinformatics/btab027">https://doi.org/10.1093/bioinformatics/btab027</a>.
+</div>
+<div id="ref-oksanenVeganCommunityEcology2019" class="csl-entry">
+Oksanen, Jari, F. Guillaume Blanchet, Michael Friendly, Roeland Kindt,
+Pierre Legendre, Dan McGlinn, Peter R. Minchin, et al. 2019. <em>Vegan:
+<span>Community</span> Ecology Package</em>. Manual.
+</div>
+<div id="ref-prive2018efficient" class="csl-entry">
+Privé, Florian, Hugues Aschard, Andrey Ziyatdinov, and Michael GB Blum.
+2018. <span>“Efficient Analysis of Large-Scale Genome-Wide Data with Two
+<span>R</span> Packages: Bigstatsr and Bigsnpr.”</span>
+<em>Bioinformatics (Oxford, England)</em> 34 (16): 2781–87.
+</div>
+<div id="ref-Prive2020-fp" class="csl-entry">
+Privé, Florian, Keurcien Luu, Michael G B Blum, John J McGrath, and
+Bjarni J Vilhjálmsson. 2020. <span>“Efficient Toolkit Implementing Best
+Practices for Principal Component Analysis of Population Genetic
+Data.”</span> <em>Bioinformatics</em> 36 (16): 4449–57.
+</div>
+<div id="ref-privePerformingHighlyEfficient2020" class="csl-entry">
+Privé, Florian, Keurcien Luu, Bjarni J Vilhjálmsson, and Michael G B
+Blum. 2020. <span>“Performing <span>Highly Efficient Genome Scans</span>
+for <span>Local Adaptation</span> with <span>R Package</span> Pcadapt
+<span>Version</span> 4.”</span> Edited by Michael Rosenberg.
+<em>Molecular Biology and Evolution</em> 37 (7): 2153–54. <a
+href="https://doi.org/10.1093/molbev/msaa053">https://doi.org/10.1093/molbev/msaa053</a>.
+</div>
+<div id="ref-purcell2007plink" class="csl-entry">
+Purcell, Shaun, Benjamin Neale, Kathe Todd-Brown, Lori Thomas, Manuel AR
+Ferreira, David Bender, Julian Maller, et al. 2007.
+<span>“<span>PLINK</span>: A Tool Set for Whole-Genome Association and
+Population-Based Linkage Analyses.”</span> <em>The American Journal of
+Human Genetics</em> 81 (3): 559–75.
+</div>
+<div id="ref-rcoreteamLanguageEnvironmentStatistical2013"
+class="csl-entry">
+R Core Team. 2013. <em>R: <span>A</span> Language and Environment for
+Statistical Computing</em>. Manual. <span>Vienna, Austria</span>:
+<span>R Foundation for Statistical Computing</span>.
+</div>
+<div id="ref-shrinerInvestigatingPopulationStratification2011"
+class="csl-entry">
+Shriner, D. 2011. <span>“Investigating Population Stratification and
+Admixture Using Eigenanalysis of Dense Genotypes.”</span>
+<em>Heredity</em> 107 (5): 413–20. <a
+href="https://doi.org/10.1038/hdy.2011.26">https://doi.org/10.1038/hdy.2011.26</a>.
+</div>
+<div id="ref-wang2012fast" class="csl-entry">
+Wang, Yining, Zhipeng Cai, Paul Stothard, Steve Moore, Randy Goebel,
+Lusheng Wang, and Guohui Lin. 2012. <span>“Fast Accurate Missing
+<span>SNP</span> Genotype Local Imputation.”</span> <em>BMC Research
+Notes</em> 5: 1–12.
+</div>
+<div id="ref-wold1975path" class="csl-entry">
+Wold, Herman. 1975. <span>“Path Models with Latent Variables: <span>The
+NIPALS</span> Approach.”</span> In <em>Quantitative Sociology</em>,
+307–57. <span>Elsevier</span>.
+</div>
+<div id="ref-zhengHighperformanceComputingToolset2012a"
+class="csl-entry">
+Zheng, Xiuwen, David Levine, Jess Shen, Stephanie M. Gogarten, Cathy
+Laurie, and Bruce S. Weir. 2012. <span>“A High-Performance Computing
+Toolset for Relatedness and Principal Component Analysis of
+<span>SNP</span> Data.”</span> <em>Bioinformatics</em> 28 (24): 3326–28.
+<a
+href="https://doi.org/10.1093/bioinformatics/bts606">https://doi.org/10.1093/bioinformatics/bts606</a>.
+</div>
+</div>
 </div>
 
 
