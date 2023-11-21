@@ -11,6 +11,9 @@ output:
 ```{r setup, eval=TRUE, echo=TRUE, message = FALSE, include = FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE) 
 ```
+Authors: KE Lotterhos, DL Davenport, S Truskey <br>
+Acknowledgements/ Page Reviewers: Jason Johns 
+
 
 [How to cite](https://marineomics.github.io/#How_to_Cite)
 
@@ -18,24 +21,24 @@ Principal component analysis (PCA) is a multivariate method often used for summa
 
 This page aims to provide a helpful resource for applying PCA in the field of population genomics. We provide a brief outline of the PCA method and then detail some ‘ins-and-outs’ as it relates to population genomics. Importantly, there are many existing resources for navigating PCA from both the primary literature and online tutorials, several of which we reference throughout this page. These useful resources can be found in the [References](#refs) section at the bottom of this page!
 
-On this page we outline and describe many aspects of PCA:
+On this page we outline and describe many aspects of PCA as it relates to population genomics:
 
-* What is PCA and what are its common uses in population genetics?
+* [What is PCA and what are its common uses in population genetics?](#whatspca)
 * Considerations before sampling:
-    + How one chooses to sample from a landscape
-    + Sample sizes
+    + [How one chooses to sample from a landscape](#sampling)
+    + [Sample sizes](#samplesize)
 * Considerations while processing data (aka 'weird stuff that happens in PCA'): 
-    + Batch effects
-    + LD and inversion effects
-    + Missing data and imputation
-    + Hybridization and inbreeding effects
-    + Horseshoe and wave patterns
+    + [Batch effects](#batcheffects)
+    + [LD and inversion effects](#ld)
+    + [Missing data and imputation](#missingdata)
+    + [Hybridization and inbreeding effects](#hybrid)
+    + [Horseshoe and wave patterns](#horseshoe)
 * Comparison to other common approaches to investigating population genetic structure
-    + PCA  vs ADMIXTURE/STRUCTURE
+    + [PCA  vs ADMIXTURE/STRUCTURE](#pca_admix)
 
 <hr />
 
-## What is PCA and what are its common uses in population genetics?
+## What is PCA and what are its common uses in population genetics?{#whatspca}
 
 Primarily, PCA is about dimension-reduction. PCA captures the linear relationships (constrained, orthogonal axes) that best explain the correlated structure across the data.
 
@@ -53,7 +56,7 @@ knitr::include_graphics("DRAFT_PCA/Fig.1_Spies_2022_supfig2.png")
 
 ```
 
-The eigenvectors are represented as a standard scatter plot, where points are samples/individuals represented on the new system of axes (PCs). Dimension reduction to eigenvectrors (PCs) means that the 1st PC is the linear combination of the original variables that explains the most/greatest amount of variation, while the 2nd PC accounts for the greatest amount of the remaining variation being orthogonal (uncorrelated) to the 1st PC, the 3rd PC accounts for the greatest amount of the remaining variation being orthogonal (uncorrelated) to the 1st and 2nd PC so on and so on. In population genomics, typically the 1st PC will capture broad scale population structure (because broadly distributed populations are usually the most differentiated) while subsequent axes capture more regional population structure (usually less differentiated at smaller geographic scales, see Figure 2A). However, other cool examples using PCA find the greatest amount of variation is between individuals, particularly in the case of inversions, structural variation or regions associated with a specific phenotype or adaption (see Figure 2B). 
+The eigenvectors are represented as a standard scatter plot, where points are samples/individuals represented on the new system of axes (PCs). Dimension reduction to eigenvectors (PCs) means that the 1st PC is the linear combination of the original variables that explains the most/greatest amount of variation, while the 2nd PC accounts for the greatest amount of the remaining variation being orthogonal (uncorrelated) to the 1st PC, the 3rd PC accounts for the greatest amount of the remaining variation being orthogonal (uncorrelated) to the 1st and 2nd PC so on and so on. In population genomics, typically the 1st PC will capture broad scale population structure (because broadly distributed populations are usually the most differentiated) while subsequent axes capture more regional population structure (usually less differentiated at smaller geographic scales, see Figure 2A). However, other cool examples using PCA find the greatest amount of variation is between individuals, particularly in the case of inversions, structural variation or regions associated with a specific phenotype or adaptation (see Figure 2B). 
 
 
 ```{r, echo = FALSE, include = TRUE, out.width = "60%", fig.align = "center", fig.cap="Figure 2. PCA plots from two studies (A) from Figure 2 in @sillimanPopulationStructureGenetic2019, showing population structure results for 19 Ostrea lurida populations Plots of individual admixture determined using the program STRUCTURE (top) and PCA plots for PCs 1–5. PC1 is plotted against the latitude of the sampling site, then PC2 versus PC3 and PC4 versus PC5 and (B) from Figure 2 in @kessPutativeStructuralVariant2021, showing PCA scores of 734 individuals of Atlantic Halibut (Hippoglossus hippoglossus) from samling sites on the North West Atlantic on PC1 and PC3 axes from PCA on 86 043 SNPs, highlighting population structure (PC3) and a putative inversion (PC1). In both plots, colors refer to the phylogeographic regions of each sample."}
@@ -69,11 +72,14 @@ To get a better understanding of PCA, we recommend reading these useful reviews 
 * [Hotelling H (1936) Relations between two sets of variates. Biometrika 28:321–377](https://doi.org/10.1007/978-1-4612-4380-9_14)
 * [Fentaw Abegaz et al. (2019) Principals about principal components in statistical genetics, Briefings in Bioinformatics](https://doi.org/10.1093/bib/bby08)
 * [Josse J., Husson F. (2012) Handling missing values in exploratory multivariate data analysis methods. J. Soc. Française Stat., 153, 79–99.](http://www.numdam.org/item/JSFS_2012__153_2_79_0/)
+* [François O, Gain C (2021) A spectral theory for Wright’s inbreeding coefficients and related quantities. PLoS Genet 17: e1009665](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1009665)
+* [Patterson N, Price AL, Reich D (2006) Population structure and eigenanalysis. PLoS Genet 2: e190](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.0020190)
+* [Bakker JD (2023) PCA. Applied Multivariate Statistics in R. University of Washington](https://uw.pressbooks.pub/appliedmultivariatestatistics/chapter/pca/)
 
 <hr />
 
 ## Considerations before sampling
-### How one chooses to sample from a landscape
+### How one chooses to sample from a landscape{#sampling}
 How samples are selected from a metapopulation also affects the visual pattern in a PCA. 
 
 This study by @Gompert2016-wa simulated a metapopulation along a 1-D stepping stone model with 50 patches (patch - a location in space), where dispersal was allowed only between adjacent patches, leading to isolation by distance (@Gompert2016-wa). 
@@ -96,7 +102,7 @@ knitr::include_graphics("DRAFT_PCA/Fig.3_Gompert_Buerkle_fig4.png")
 
 ```
 
-### Sample sizes
+### Sample sizes{#samplesize}
 Uneven sampling between groups, the number of samples and/or the number of markers/SNPs used in PCA can change the PCA projection space, and thus interpretation of results, relative to the true demographic history of the sampled groups.
 
 In the paper “A Genealogical Interpretation of Principal Components Analysis,” McVean demonstrates the relationship between fundamental demographic parameters and the projection of samples onto the primary axes. This paper highlights how different demographic processes can lead to the same projections, and that projections can be influenced by uneven sampling. The study reviews nuances in how PCA is conducted. For example, if one chooses to normalize the rows to have equal variance, it will tend to up-weight the influence of rare variants.
@@ -182,14 +188,14 @@ Similar patterns have been observed for sex linked-markers. For example, @Benest
 
 ### Missing Data in PCA and Imputation {#missingdata}
 
-Missing data in population genomic analysis is common.  Sometimes it is random, or it may be a feature of the data type (i.e. low coverage NGS, microsatellite null alleles, mutation at RAD cut sites). In general, if missing data reflects a true population signal (e.g. null alleles in one population but not others) then it requires careful consideration during analysis. 
+Missing data in population genomic analysis is common.  Sometimes it is random, or it may be a feature of the data type (i.e. low coverage NGS, microsatellite null alleles, mutation at RAD cut sites). In general, if missing data reflects a true population signal then it requires careful consideration during analysis. 
  
 However, PCA and other multivariate analyses typically do not allow missing data in the input, and many commonly used PCA methods cannot handle missing data which can bias results. It is therefore relevant to know how the implementations of PCA used often in MarineOmics and other conservation genomic studies account, or not,  for missing data. 
 
-Implementations of PCA in genomics typically (a) avoid missing values (i.e pcadapt, plink) usually by first determining the covariance-matrix or genomic relationship matrix (GRM)) between each pair of individuals using the variables (loci) that are available for both samples or by (b) impute missing values. Imputation is the process of replacing a missing value with a numerical value via inference. Imputation of missing data can be done by sophisticated methods such as in genomic association studies, linked haplotypes, and strong genotype-phenotype correlations (see @Yi2022-bi). However, in population genomic studies for species of conservation concern which may have few genomic resources, simple imputations such as mean imputation (replace missing with column mean) are commonly encountered. 
+Implementations of PCA in genomics typically (a) avoid missing values (i.e pcadapt, plink) usually by first determining the covariance-matrix or genomic relationship matrix (GRM)) between each pair of individuals using the variables (loci) that are available for both samples or by (b) imputing missing values. Imputation is the process of replacing a missing value with a numerical value via inference. Imputation of missing data can be done by sophisticated methods often seen in genomic association studies, or if you have linked haplotypes or strong genotype-phenotype correlations (see @Yi2022-bi). However, in population genomic studies for species of conservation concern which may have few genomic resources, simple imputations such as mean imputation (replace missing with column mean) is commonly encountered. 
 
 Imputation via the mean genotype in the metapopulation.
-In this case, missing values for all individuals at a locus are replaced with the mean for that locus (also called a mean-imputed matrix). Importantly, when the mean-imputed matrix is centered and scaled, the original missing become non-informative in PCA (missing values are placed at the origin). This can be problematic if you have a lot of missing data in your dataset, especially if that missing data is biased (not random). @Yi2022-bi demonstrated this effect using different simulated populations (no migration. 5% migration, isolation-by-distance-cline) with 1%, 10% and 20% missing data, either randomly distributed among individuals, or biased among some individuals and some populations. They conducted PCA using the adegenet::glPca() implementation of PCA with default mean imputation and standardization, retaining all PCA axes. They found that individuals biased with missing data would be dragged away from their real population clusters to the origin of PCA plots, making them indistinguishable from known admixed individuals, potentially leading to misinterpreted population structure (Figure 11). 
+In this case, missing values for all individuals at a locus are replaced with the mean for that locus (also called a mean-imputed matrix). Importantly, when the mean-imputed matrix is centered and scaled, the original missing genotypes become non-informative in PCA (missing values are placed at the origin). This can be problematic if you have a lot of missing data in your dataset, especially if that missing data is biased (not random). @Yi2022-bi demonstrated this effect using different simulated populations (no migration. 5% migration, isolation-by-distance-cline) with 1%, 10% and 20% missing data, either randomly distributed among individuals, or biased among some individuals and some populations. They conducted PCA using the adegenet::glPca() implementation of PCA with default mean imputation and standardization, retaining all PCA axes. They found that individuals biased with missing data would be dragged away from their real population clusters to the origin of PCA plots, making them indistinguishable from known admixed individuals, potentially leading to misinterpreted population structure (Figure 11). 
 
 ```{r, echo = FALSE, include = TRUE, out.width = "80%", fig.align = "center", fig.cap="Figure 9. Figure 2(b) from @Yi2022-bi shows PCA on the individual-biased missing data (1%, 10% or 20%) introduced to a simulated population experiencing an isolation-by-distance cline, where one population (represented as triangles) is an admixture of the remaining two (circle and squares). Individual colors represent their amounts of missing data with relatively higher missingness shown in lighter blue in each plot (legend, notice changing scale from left to right). As the % of missing data increases, the samples with the most missing data become centered at the PCA origin."}
 
@@ -206,11 +212,25 @@ knitr::include_graphics("DRAFT_PCA/Fig.10_Yi_Latch_fig4.png")
 
 ```
 
-**Effects of different approaches to imputation on PCA.**
+In summary, the choice of imputation can have drastic effects on inference if there is a lot of missing data. When there is population structure and missing genotypes are imputed with the mean genotype across all populations, the genetic differentiation among populations may be artificially reduced and the metapopulation would appear to be panmictic.  When there is no population structure and missing genotypes are imputed with the mean genotype within each sampling location, the genetic differentiation among populations may be artificially inflated and it could appear that there is genetic structure when there is not. 
 
-The choice of imputation can have drastic effects on inference if there is a lot of missing data. When there is population structure and missing genotypes are imputed with the mean genotype across all populations, the genetic differentiation among populations may be artificially reduced and the metapopulation would appear to be panmictic.  When there is no population structure and missing genotypes are imputed with the mean genotype within each sampling location, the genetic differentiation among populations may be artificially inflated and it could appear that their genetic structure when there is in fact none. As such, it is really important to understand the type of imputation a PCA method might be implementing  and its effect  on population clustering and final inferences. 
+Since most genomic data has missingness, it may be preferable to implement a method of PCA which explicitly accounts for it (i.e pcadapt, PCAngsd).  
 
-Since most genomic data has missingness, it may be preferable to implement a method of PCA which explicitly accepts it (i.e pcadapt, PCAngsd).  
+Table 1. Common PCA methods implemented in population genomics studies, a description of how they work, and how they treat missing data.  Abbreviations include Singular Value Decomposition (SVD), Single Nucleotide Polymorphism (SNP), genomic relationship matrix (GRM), minor allele frequency (MAF) 
+
+| Method or Function, command call | Treatment of Missingness | Ref |
+|:----------|:------------------------------------------------|:----|
+|pcadapt|Missing data are coded as ‘9’ in the input. Applies a covariance approach to missing data, outlined in @drayPrincipalComponentAnalysis2015; this approach deals with missing data by only computing the covariance matrix (also called the genomic relationship matrix (GRM)) between each pair of individuals using the variables (loci) that are available for both individuals (at least until version < 3.x). The updated pcadapt (v.4.x)  is very fast, using a truncated SVD algorithm and accounts for missing data using a function which computes the product and cross-product of the (scaled) genotype matrix with a given vector (see @privePerformingHighlyEfficient2020 supplementary materials). If you have A LOT of missing data, this method can affect the finding of ‘outlier loci’ (significance of loadings).|@privePerformingHighlyEfficient2020; @luuPcadaptPackagePerform2017|
+|NIPALS (Nonlinear Iterative Partial Least Squares)|Missing values are initially set to the row averages, and SVD of the SNP matrix is used to create orthogonal PCs. The PCs which correspond to the largest eigenvalues are then used to reconstruct the missing SNP genotypes in the SNP matrix (REF). |@wold1975path|
+|adegenet::glPCA|Missing values are replaced by the dosage (a factor homozygous ref = 0, heterozygous = 1, homozygous alternate = 2) mean of the column representing the variant |@jombart2008adegenet|
+|SNPRelate::SNPRelatePCA|Missing values are imputed by the dosage mean|@zhengHighperformanceComputingToolset2012a|
+|PCAngsd/EMU|Missing data is imputed based on population structure inferred from the posterior genotype dosages from the top K inferred PCs. The method to choose the top PCs to represent population structure and  estimate the individual allele frequencies follows Velicier’s minimum average partial (MAP) (@shrinerInvestigatingPopulationStratification2011).|@meisnerLargescaleInferencePopulation2021; @meisnerInferringPopulationStructure2018|
+|dudi.pca()|Does not work with missing genotypes. Missingness can manually be replaced or removed|@dray2007ade4|
+|BaseR, prcomp()|Does not work with missing genotypes. Missingness can manually be replaced or removed|@rcoreteamLanguageEnvironmentStatistical2013|
+|vegan::RDA()|This function performs a PCA when no conditions are added. Does not work with missing genotypes. Missingness can manually be replaced, usually by the dosage mean.|@oksanenVeganCommunityEcology2019|
+|Plink PCA|Can implement different computations: The standard computation computes the covariance matrix between pairs of individuals, using only variables (loci) that are available for both individuals (but you can add the modifier “meanimpute” for mean imputation). The randomisation algorithm (aka. FASTPCA) (--pca approx) performs mean-imputation of missing genotypes (see @galinskyFastPrincipalComponentAnalysis2016a)|
+ |@purcell2007plink|
+|bigSNPR:, big_SVD() and big_randomSVD()|Does not work with missing data, but offers various  functions to impute missingness based on plink, beagle or methods outlined in @wang2012fast|@prive2018efficient; @Prive2020-fp|
 
 ### Hybridization and inbreeding effects {#hybrid}
 Genetic differences between two different parental species typically constitute the dominant axis of genetic variation in a PCA, with hybrids mapping in PC space between the parental species (@Gompert2016-wa). However, PC axes can also pick up on differences in homozygosity caused by many generations of inbreeding. These PCA patterns can be informative during early data exploration for identifying cryptic species or hybrids that you may want to remove prior to analyzing for population structure.  
@@ -224,7 +244,7 @@ knitr::include_graphics("DRAFT_PCA/Fig.11_Gompert_Buerkle_fig5.png")
 ```
 
 
-### Horseshoe and Wave patterns
+### Horseshoe and Wave patterns{#horseshoe}
 Horseshoe patterns arise in population genetic data that has isolation by distance structure, by which genetic differentiation among locations increases with the distance between them. The result when this type of data is put into a PCA is that the pattern looks like a horseshoe (Figure 1B from @Morton2017-xy below). In Figure 1B, Sample 0 is most distantly related from Sample 20, but they have the same loading on the PC1 axis. Horseshoe patterns also arise in microbial ecology, where they were originally misinterpreted as having an ecological explanation before they were proven to be a statistical artifact (@Morton2017-xy). The pattern arises in microbial data or genetic data as a consequence of distance metrics that saturate (Figure 1A and C below), typically when distance metrics as used in PCA cannot discriminate between samples that do not share any common features. Figure 1A below shows an isolation by distance or “band” pattern, in which neighboring samples have mostly similar alleles, but the similarity in allelic composition declines with the distance between samples. For example, “Sample 0” has the reference alleles at SNPs 1-10, but does not share the same alleles at any SNPs with samples 10-20. As a result, the euclidean distance (on which a PCA is based) saturates with increasing distance between samples (Figure 1C below). 
 
 ```{r, echo = FALSE, include = TRUE, out.width = "70%", fig.align = "center", fig.cap="Figure 12. Figure 1 from @Morton2017-xy.  (a) A band table for haploids where SNPs are in rows, samples are in columns, and the color is the allele (0 or 1). Blocks that are colored black have a value of 1 while blocks that are colored white have a value of 0. (b) The first 2 components from a PCA of the band table, yielding the typical horseshoe shape. (c) The Euclidean distance (e.g., genetic relatedness) from point 0 to all of the other points. (d) An illustration of the distance saturation property."}
@@ -245,7 +265,7 @@ These highly structured patterns are mathematical artifacts that arise generally
 
 <hr />
 
-## Relationship between PCA and Admixture
+## Relationship between PCA and Admixture{#pca_admix}
 
 In cases of simple two- or three-way admixture, where close relatives of the source populations can be identified and sampled, estimation of admixture proportions can be achieved from projecting samples onto the PCs identified from the source populations. Figure 5 from McVean 2009 below shows an example for human populations from the [HapMap3 project](https://www.sanger.ac.uk/science/tools/#). Samples having African ancestry in Southwest USA (ASW) and two groups of samples representing the “source” populations for ASW: (1) Yoruba in Ibadan, Nigeria (YRI) and (2) Utah USA with Northern and Western European ancestry (CEU). The ASW group is admixed between the YRI and CEU groups. The YRI and CEU groups are not necessarily the source populations for the admixed group, but they are closely related to the true source. It is important when using PCA to infer admixture that the PCA is conducted on each chromosome on the two source groups, and all samples are subsequently projected onto the PCA.
 
@@ -257,21 +277,5 @@ Figure 5B below shows how the genome-wide admixture proportions can be inferred 
 knitr::include_graphics("DRAFT_PCA/Fig.14_McVean_fig5.png")
 
 ```
-
-Table 1. Common PCA methods implemented in population genomics studies, a description of how they work, and how they treat missing data.  Abbreviations include Singular Value Decomposition (SVD), Single Nucleotide Polymorphism (SNP), genomic relationship matrix (GRM), minor allele frequency (MAF) 
-
-| Method or Function, command call | Treatment of Missingness | Ref |
-|:----------|:------------------------------------------------|:----|
-|pcadapt|Missing data are coded as ‘9’ in the input. Applies a covariance approach to missing data, outlined in @drayPrincipalComponentAnalysis2015; this approach deals with missing data by only computing the covariance matrix (also called the genomic relationship matrix (GRM)) between each pair of individuals using the variables (loci) that are available for both individuals (at least until version < 3.x). The updated pcadapt (v.4.x)  is very fast, using a truncated SVD algorithm and accounts for missing data using a function which computes the product and cross-product of the (scaled) genotype matrix with a given vector (see @privePerformingHighlyEfficient2020 supplementary materials). If you have A LOT of missing data, this method can affect the finding of ‘outlier loci’ (significance of loadings).|@privePerformingHighlyEfficient2020; @luuPcadaptPackagePerform2017|
-|NIPALS (Nonlinear Iterative Partial Least Squares)|Missing values are initially set to the row averages, and SVD of the SNP matrix is used to create orthogonal PCs. The PCs which correspond to the largest eigenvalues are then used to reconstruct the missing SNP genotypes in the SNP matrix (REF). |@wold1975path|
-|adegenet::glPCA|Missing values are replaced by the dosage (a factor homozygous ref = 0, heterozygous = 1, homozygous alternate = 2) mean of the column representing the variant |@jombart2008adegenet|
-|SNPRelate::SNPRelatePCA|Missing values are imputed by the dosage mean|@zhengHighperformanceComputingToolset2012a|
-|PCAngsd/EMU|Missing data is imputed based on population structure inferred from the posterior genotype dosages from the top K inferred PCs. The method to choose the top PCs to represent population structure and  estimate the individual allele frequencies follows Velicier’s minimum average partial (MAP) (@shrinerInvestigatingPopulationStratification2011).|@meisnerLargescaleInferencePopulation2021; @meisnerInferringPopulationStructure2018|
-|dudi.pca()|Does not work with missing genotypes. Missingness can manually be replaced or removed|@dray2007ade4|
-|BaseR, prcomp()|Does not work with missing genotypes. Missingness can manually be replaced or removed|@rcoreteamLanguageEnvironmentStatistical2013|
-|vegan::RDA()|This function performs a PCA when no conditions are added. Does not work with missing genotypes. Missingness can manually be replaced, usually by the dosage mean.|@oksanenVeganCommunityEcology2019|
-|Plink PCA|Can implement different computations: The standard computation computes the covariance matrix between pairs of individuals, using only variables (loci) that are available for both individuals (but you can add the modifier “meanimpute” for mean imputation). The randomisation algorithm (aka. FASTPCA) (--pca approx) performs mean-imputation of missing genotypes (see @galinskyFastPrincipalComponentAnalysis2016a)|
- |@purcell2007plink|
-|bigSNPR:, big_SVD() and big_randomSVD()|Does not work with missing data, but offers various  functions to impute missingness based on plink, beagle or methods outlined in @wang2012fast|@prive2018efficient; @Prive2020-fp|
 
 ## References {#refs}

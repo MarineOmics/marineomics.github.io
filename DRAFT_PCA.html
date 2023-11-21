@@ -448,6 +448,8 @@ div.tocify {
 </div>
 
 
+<p>Authors: KE Lotterhos, DL Davenport, S Truskey <br> Acknowledgements/
+Page Reviewers: Jason Johns</p>
 <p><a href="https://marineomics.github.io/#How_to_Cite">How to
 cite</a></p>
 <p>Principal component analysis (PCA) is a multivariate method often
@@ -463,34 +465,34 @@ PCA from both the primary literature and online tutorials, several of
 which we reference throughout this page. These useful resources can be
 found in the <a href="#refs">References</a> section at the bottom of
 this page!</p>
-<p>On this page we outline and describe many aspects of PCA:</p>
+<p>On this page we outline and describe many aspects of PCA as it
+relates to population genomics:</p>
 <ul>
-<li>What is PCA and what are its common uses in population
-genetics?</li>
+<li><a href="#whatspca">What is PCA and what are its common uses in
+population genetics?</a></li>
 <li>Considerations before sampling:
 <ul>
-<li>How one chooses to sample from a landscape</li>
-<li>Sample sizes</li>
+<li><a href="#sampling">How one chooses to sample from a
+landscape</a></li>
+<li><a href="#samplesize">Sample sizes</a></li>
 </ul></li>
 <li>Considerations while processing data (aka ‘weird stuff that happens
 in PCA’):
 <ul>
-<li>Batch effects</li>
-<li>LD and inversion effects</li>
-<li>Missing data and imputation</li>
-<li>Hybridization and inbreeding effects</li>
-<li>Horseshoe and wave patterns</li>
+<li><a href="#batcheffects">Batch effects</a></li>
+<li><a href="#ld">LD and inversion effects</a></li>
+<li><a href="#missingdata">Missing data and imputation</a></li>
+<li><a href="#hybrid">Hybridization and inbreeding effects</a></li>
+<li><a href="#horseshoe">Horseshoe and wave patterns</a></li>
 </ul></li>
 <li>Comparison to other common approaches to investigating population
 genetic structure
 <ul>
-<li>PCA vs ADMIXTURE/STRUCTURE</li>
+<li><a href="#pca_admix">PCA vs ADMIXTURE/STRUCTURE</a></li>
 </ul></li>
 </ul>
 <hr />
-<div
-id="what-is-pca-and-what-are-its-common-uses-in-population-genetics"
-class="section level2">
+<div id="whatspca" class="section level2">
 <h2>What is PCA and what are its common uses in population
 genetics?</h2>
 <p>Primarily, PCA is about dimension-reduction. PCA captures the linear
@@ -550,7 +552,7 @@ for every eigenvector. From <span class="citation">Spies et al.
 </div>
 <p>The eigenvectors are represented as a standard scatter plot, where
 points are samples/individuals represented on the new system of axes
-(PCs). Dimension reduction to eigenvectrors (PCs) means that the 1st PC
+(PCs). Dimension reduction to eigenvectors (PCs) means that the 1st PC
 is the linear combination of the original variables that explains the
 most/greatest amount of variation, while the 2nd PC accounts for the
 greatest amount of the remaining variation being orthogonal
@@ -563,7 +565,7 @@ subsequent axes capture more regional population structure (usually less
 differentiated at smaller geographic scales, see Figure 2A). However,
 other cool examples using PCA find the greatest amount of variation is
 between individuals, particularly in the case of inversions, structural
-variation or regions associated with a specific phenotype or adaption
+variation or regions associated with a specific phenotype or adaptation
 (see Figure 2B).</p>
 <div class="figure" style="text-align: center">
 <img src="DRAFT_PCA/Fig.2_PCAs.png" alt="Figure 2. PCA plots from two studies (A) from Figure 2 in @sillimanPopulationStructureGenetic2019, showing population structure results for 19 Ostrea lurida populations Plots of individual admixture determined using the program STRUCTURE (top) and PCA plots for PCs 1–5. PC1 is plotted against the latitude of the sampling site, then PC2 versus PC3 and PC4 versus PC5 and (B) from Figure 2 in @kessPutativeStructuralVariant2021, showing PCA scores of 734 individuals of Atlantic Halibut (Hippoglossus hippoglossus) from samling sites on the North West Atlantic on PC1 and PC3 axes from PCA on 86 043 SNPs, highlighting population structure (PC3) and a putative inversion (PC1). In both plots, colors refer to the phylogeographic regions of each sample." width="60%" />
@@ -600,13 +602,24 @@ genetics, Briefings in Bioinformatics</a></li>
 <li><a href="http://www.numdam.org/item/JSFS_2012__153_2_79_0/">Josse
 J., Husson F. (2012) Handling missing values in exploratory multivariate
 data analysis methods. J. Soc. Française Stat., 153, 79–99.</a></li>
+<li><a
+href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1009665">François
+O, Gain C (2021) A spectral theory for Wright’s inbreeding coefficients
+and related quantities. PLoS Genet 17: e1009665</a></li>
+<li><a
+href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.0020190">Patterson
+N, Price AL, Reich D (2006) Population structure and eigenanalysis. PLoS
+Genet 2: e190</a></li>
+<li><a
+href="https://uw.pressbooks.pub/appliedmultivariatestatistics/chapter/pca/">Bakker
+JD (2023) PCA. Applied Multivariate Statistics in R. University of
+Washington</a></li>
 </ul>
 <hr />
 </div>
 <div id="considerations-before-sampling" class="section level2">
 <h2>Considerations before sampling</h2>
-<div id="how-one-chooses-to-sample-from-a-landscape"
-class="section level3">
+<div id="sampling" class="section level3">
 <h3>How one chooses to sample from a landscape</h3>
 <p>How samples are selected from a metapopulation also affects the
 visual pattern in a PCA.</p>
@@ -652,7 +665,7 @@ Figure 3. Figure 4 from <span class="citation">Gompert and Buerkle
 </p>
 </div>
 </div>
-<div id="sample-sizes" class="section level3">
+<div id="samplesize" class="section level3">
 <h3>Sample sizes</h3>
 <p>Uneven sampling between groups, the number of samples and/or the
 number of markers/SNPs used in PCA can change the PCA projection space,
@@ -887,9 +900,8 @@ species.</p>
 <p>Missing data in population genomic analysis is common. Sometimes it
 is random, or it may be a feature of the data type (i.e. low coverage
 NGS, microsatellite null alleles, mutation at RAD cut sites). In
-general, if missing data reflects a true population signal (e.g. null
-alleles in one population but not others) then it requires careful
-consideration during analysis.</p>
+general, if missing data reflects a true population signal then it
+requires careful consideration during analysis.</p>
 <p>However, PCA and other multivariate analyses typically do not allow
 missing data in the input, and many commonly used PCA methods cannot
 handle missing data which can bias results. It is therefore relevant to
@@ -899,32 +911,33 @@ conservation genomic studies account, or not, for missing data.</p>
 (i.e pcadapt, plink) usually by first determining the covariance-matrix
 or genomic relationship matrix (GRM)) between each pair of individuals
 using the variables (loci) that are available for both samples or by (b)
-impute missing values. Imputation is the process of replacing a missing
-value with a numerical value via inference. Imputation of missing data
-can be done by sophisticated methods such as in genomic association
-studies, linked haplotypes, and strong genotype-phenotype correlations
-(see <span class="citation">Yi and Latch (2022)</span>). However, in
-population genomic studies for species of conservation concern which may
-have few genomic resources, simple imputations such as mean imputation
-(replace missing with column mean) are commonly encountered.</p>
+imputing missing values. Imputation is the process of replacing a
+missing value with a numerical value via inference. Imputation of
+missing data can be done by sophisticated methods often seen in genomic
+association studies, or if you have linked haplotypes or strong
+genotype-phenotype correlations (see <span class="citation">Yi and Latch
+(2022)</span>). However, in population genomic studies for species of
+conservation concern which may have few genomic resources, simple
+imputations such as mean imputation (replace missing with column mean)
+is commonly encountered.</p>
 <p>Imputation via the mean genotype in the metapopulation. In this case,
 missing values for all individuals at a locus are replaced with the mean
 for that locus (also called a mean-imputed matrix). Importantly, when
 the mean-imputed matrix is centered and scaled, the original missing
-become non-informative in PCA (missing values are placed at the origin).
-This can be problematic if you have a lot of missing data in your
-dataset, especially if that missing data is biased (not random). <span
-class="citation">Yi and Latch (2022)</span> demonstrated this effect
-using different simulated populations (no migration. 5% migration,
-isolation-by-distance-cline) with 1%, 10% and 20% missing data, either
-randomly distributed among individuals, or biased among some individuals
-and some populations. They conducted PCA using the adegenet::glPca()
-implementation of PCA with default mean imputation and standardization,
-retaining all PCA axes. They found that individuals biased with missing
-data would be dragged away from their real population clusters to the
-origin of PCA plots, making them indistinguishable from known admixed
-individuals, potentially leading to misinterpreted population structure
-(Figure 11).</p>
+genotypes become non-informative in PCA (missing values are placed at
+the origin). This can be problematic if you have a lot of missing data
+in your dataset, especially if that missing data is biased (not random).
+<span class="citation">Yi and Latch (2022)</span> demonstrated this
+effect using different simulated populations (no migration. 5%
+migration, isolation-by-distance-cline) with 1%, 10% and 20% missing
+data, either randomly distributed among individuals, or biased among
+some individuals and some populations. They conducted PCA using the
+adegenet::glPca() implementation of PCA with default mean imputation and
+standardization, retaining all PCA axes. They found that individuals
+biased with missing data would be dragged away from their real
+population clusters to the origin of PCA plots, making them
+indistinguishable from known admixed individuals, potentially leading to
+misinterpreted population structure (Figure 11).</p>
 <div class="figure" style="text-align: center">
 <img src="DRAFT_PCA/Fig.9_Yi_Latch_fig2.png" alt="Figure 9. Figure 2(b) from @Yi2022-bi shows PCA on the individual-biased missing data (1%, 10% or 20%) introduced to a simulated population experiencing an isolation-by-distance cline, where one population (represented as triangles) is an admixture of the remaining two (circle and squares). Individual colors represent their amounts of missing data with relatively higher missingness shown in lighter blue in each plot (legend, notice changing scale from left to right). As the % of missing data increases, the samples with the most missing data become centered at the PCA origin." width="80%" />
 <p class="caption">
@@ -962,160 +975,19 @@ admixed population (pop2) has high migration with both end populations
 (pop1 and pop3) while no migration occurs between the end populations.
 </p>
 </div>
-<p><strong>Effects of different approaches to imputation on
-PCA.</strong></p>
-<p>The choice of imputation can have drastic effects on inference if
-there is a lot of missing data. When there is population structure and
-missing genotypes are imputed with the mean genotype across all
-populations, the genetic differentiation among populations may be
-artificially reduced and the metapopulation would appear to be
+<p>In summary, the choice of imputation can have drastic effects on
+inference if there is a lot of missing data. When there is population
+structure and missing genotypes are imputed with the mean genotype
+across all populations, the genetic differentiation among populations
+may be artificially reduced and the metapopulation would appear to be
 panmictic. When there is no population structure and missing genotypes
 are imputed with the mean genotype within each sampling location, the
 genetic differentiation among populations may be artificially inflated
-and it could appear that their genetic structure when there is in fact
-none. As such, it is really important to understand the type of
-imputation a PCA method might be implementing and its effect on
-population clustering and final inferences.</p>
+and it could appear that there is genetic structure when there is
+not.</p>
 <p>Since most genomic data has missingness, it may be preferable to
-implement a method of PCA which explicitly accepts it (i.e pcadapt,
+implement a method of PCA which explicitly accounts for it (i.e pcadapt,
 PCAngsd).</p>
-</div>
-<div id="hybrid" class="section level3">
-<h3>Hybridization and inbreeding effects</h3>
-<p>Genetic differences between two different parental species typically
-constitute the dominant axis of genetic variation in a PCA, with hybrids
-mapping in PC space between the parental species (<span
-class="citation">Gompert and Buerkle (2016)</span>). However, PC axes
-can also pick up on differences in homozygosity caused by many
-generations of inbreeding. These PCA patterns can be informative during
-early data exploration for identifying cryptic species or hybrids that
-you may want to remove prior to analyzing for population structure.</p>
-<p>Below is Figure 5 from <span class="citation">Gompert and Buerkle
-(2016)</span>, with two parental species shown in dark red or dark blue,
-the F1 hybrids in yellow circles, and the F1-parental backcrosses in the
-lighter colors. Subsequent crosses between hybrids are shown in yellow
-with different symbols (F2 squares, F5 upward triangles, F20 downward
-triangles). F1…FN are genetically intermediate on PC1, and across all
-hybrids, PC1 mirrors the admixture proportion. In general, PC2 is
-associated with genetic variation among Fn generations.</p>
-<div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.11_Gompert_Buerkle_fig5.png" alt="Figure 11. Figure 5 from @Gompert2016-wa." width="50%" />
-<p class="caption">
-Figure 11. Figure 5 from <span class="citation">Gompert and Buerkle
-(2016)</span>.
-</p>
-</div>
-</div>
-<div id="horseshoe-and-wave-patterns" class="section level3">
-<h3>Horseshoe and Wave patterns</h3>
-<p>Horseshoe patterns arise in population genetic data that has
-isolation by distance structure, by which genetic differentiation among
-locations increases with the distance between them. The result when this
-type of data is put into a PCA is that the pattern looks like a
-horseshoe (Figure 1B from <span class="citation">Morton et al.
-(2017)</span> below). In Figure 1B, Sample 0 is most distantly related
-from Sample 20, but they have the same loading on the PC1 axis.
-Horseshoe patterns also arise in microbial ecology, where they were
-originally misinterpreted as having an ecological explanation before
-they were proven to be a statistical artifact (<span
-class="citation">Morton et al. (2017)</span>). The pattern arises in
-microbial data or genetic data as a consequence of distance metrics that
-saturate (Figure 1A and C below), typically when distance metrics as
-used in PCA cannot discriminate between samples that do not share any
-common features. Figure 1A below shows an isolation by distance or
-“band” pattern, in which neighboring samples have mostly similar
-alleles, but the similarity in allelic composition declines with the
-distance between samples. For example, “Sample 0” has the reference
-alleles at SNPs 1-10, but does not share the same alleles at any SNPs
-with samples 10-20. As a result, the euclidean distance (on which a PCA
-is based) saturates with increasing distance between samples (Figure 1C
-below).</p>
-<div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.12_Morton_fig1.png" alt="Figure 12. Figure 1 from @Morton2017-xy.  (a) A band table for haploids where SNPs are in rows, samples are in columns, and the color is the allele (0 or 1). Blocks that are colored black have a value of 1 while blocks that are colored white have a value of 0. (b) The first 2 components from a PCA of the band table, yielding the typical horseshoe shape. (c) The Euclidean distance (e.g., genetic relatedness) from point 0 to all of the other points. (d) An illustration of the distance saturation property." width="70%" />
-<p class="caption">
-Figure 12. Figure 1 from <span class="citation">Morton et al.
-(2017)</span>. (a) A band table for haploids where SNPs are in rows,
-samples are in columns, and the color is the allele (0 or 1). Blocks
-that are colored black have a value of 1 while blocks that are colored
-white have a value of 0. (b) The first 2 components from a PCA of the
-band table, yielding the typical horseshoe shape. (c) The Euclidean
-distance (e.g., genetic relatedness) from point 0 to all of the other
-points. (d) An illustration of the distance saturation property.
-</p>
-</div>
-<p>The saturation property of PCA can also create “wave” patterns in a
-PCA of genetic data, which were initially misinterpreted to be
-signatures of specific migration events before they were shown to be
-statistical artifacts (<span class="citation">Novembre and Stephens
-(2008)</span>). Figure 2 from <span class="citation">Novembre and
-Stephens (2008)</span> below shows the pattern arising from simulating a
-1-D stepping stone model, which is analogous to marine samples that are
-collected along a coastline. The horseshoe pattern arises in the first
-2PC axes (Figure 2C), but this example also shows the wave patterns that
-arise on subsequent PC axes.</p>
-<div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.13_Novembre_Stephens_fig2.png" alt="Figure 13. Figure 2 from @Novembre2008-gs. (a) Schematic of the one-dimensional habitat, with circles marking sampling locations and shades of blue marking order along the line. (b) One-dimensional PC maps (that is, plots of each PC element against the geographic position of the corresponding sample location). (c) Biplots of PC1 versus PC2, PC2 versus PC3, and PC3 versus PC4. Colors correspond to those in a. In many datasets without spatially referenced samples, the colors and the lines connecting neighboring points would not be observed; here they are shown to aid interpretation." width="70%" />
-<p class="caption">
-Figure 13. Figure 2 from <span class="citation">Novembre and Stephens
-(2008)</span>. (a) Schematic of the one-dimensional habitat, with
-circles marking sampling locations and shades of blue marking order
-along the line. (b) One-dimensional PC maps (that is, plots of each PC
-element against the geographic position of the corresponding sample
-location). (c) Biplots of PC1 versus PC2, PC2 versus PC3, and PC3 versus
-PC4. Colors correspond to those in a. In many datasets without spatially
-referenced samples, the colors and the lines connecting neighboring
-points would not be observed; here they are shown to aid interpretation.
-</p>
-</div>
-<p>These highly structured patterns are mathematical artifacts that
-arise generally when PCA is applied to spatial data in which covariance
-(similarity) between locations tends to decay with geographic distance.
-These artifacts happen because the distance metrics on which PCA is
-based do not capture all of the information about genetic dissimilarity
-along a gradient - in other words, distance metrics cannot discriminate
-between samples that do not share any common features. Understanding the
-statistical reasons for the horseshoe and wave effects is useful for
-correct interpretation of these patterns.</p>
-<hr />
-</div>
-</div>
-<div id="relationship-between-pca-and-admixture" class="section level2">
-<h2>Relationship between PCA and Admixture</h2>
-<p>In cases of simple two- or three-way admixture, where close relatives
-of the source populations can be identified and sampled, estimation of
-admixture proportions can be achieved from projecting samples onto the
-PCs identified from the source populations. Figure 5 from McVean 2009
-below shows an example for human populations from the <a
-href="https://www.sanger.ac.uk/science/tools/#">HapMap3 project</a>.
-Samples having African ancestry in Southwest USA (ASW) and two groups of
-samples representing the “source” populations for ASW: (1) Yoruba in
-Ibadan, Nigeria (YRI) and (2) Utah USA with Northern and Western
-European ancestry (CEU). The ASW group is admixed between the YRI and
-CEU groups. The YRI and CEU groups are not necessarily the source
-populations for the admixed group, but they are closely related to the
-true source. It is important when using PCA to infer admixture that the
-PCA is conducted on each chromosome on the two source groups, and all
-samples are subsequently projected onto the PCA.</p>
-<p>In <span class="citation">McVean (2009)</span> Figure 5A below, PCA
-is carried out only on the haplotypes from CEU and YRI and all samples
-are subsequently projected onto the first PC identified from this
-analysis. Figure 5A shows how the loadings of individuals map onto PC1
-each chromosome (in rows), and note the uniformity of the loadings for
-the source populations. However for the admixed group ASW, note how
-there is considerable variation at the level of individual chromosomes,
-with some chromosomes within an individual appearing essentially
-European (when a green point maps at the blue end) and others
-essentially African (when a green point maps at the orange end). Figure
-5B below shows how the genome-wide admixture proportions can be inferred
-directly from the location of admixed samples on the first PC between
-the two source populations.</p>
-<div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.14_McVean_fig5.png" alt="Figure 14. Figure 5 from @McVean2009-ms. See text above for explanation." width="50%" />
-<p class="caption">
-Figure 14. Figure 5 from <span class="citation">McVean (2009)</span>.
-See text above for explanation.
-</p>
-</div>
 <p>Table 1. Common PCA methods implemented in population genomics
 studies, a description of how they work, and how they treat missing
 data. Abbreviations include Singular Value Decomposition (SVD), Single
@@ -1233,6 +1105,143 @@ outlined in <span class="citation">Wang et al. (2012)</span></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="hybrid" class="section level3">
+<h3>Hybridization and inbreeding effects</h3>
+<p>Genetic differences between two different parental species typically
+constitute the dominant axis of genetic variation in a PCA, with hybrids
+mapping in PC space between the parental species (<span
+class="citation">Gompert and Buerkle (2016)</span>). However, PC axes
+can also pick up on differences in homozygosity caused by many
+generations of inbreeding. These PCA patterns can be informative during
+early data exploration for identifying cryptic species or hybrids that
+you may want to remove prior to analyzing for population structure.</p>
+<p>Below is Figure 5 from <span class="citation">Gompert and Buerkle
+(2016)</span>, with two parental species shown in dark red or dark blue,
+the F1 hybrids in yellow circles, and the F1-parental backcrosses in the
+lighter colors. Subsequent crosses between hybrids are shown in yellow
+with different symbols (F2 squares, F5 upward triangles, F20 downward
+triangles). F1…FN are genetically intermediate on PC1, and across all
+hybrids, PC1 mirrors the admixture proportion. In general, PC2 is
+associated with genetic variation among Fn generations.</p>
+<div class="figure" style="text-align: center">
+<img src="DRAFT_PCA/Fig.11_Gompert_Buerkle_fig5.png" alt="Figure 11. Figure 5 from @Gompert2016-wa." width="50%" />
+<p class="caption">
+Figure 11. Figure 5 from <span class="citation">Gompert and Buerkle
+(2016)</span>.
+</p>
+</div>
+</div>
+<div id="horseshoe" class="section level3">
+<h3>Horseshoe and Wave patterns</h3>
+<p>Horseshoe patterns arise in population genetic data that has
+isolation by distance structure, by which genetic differentiation among
+locations increases with the distance between them. The result when this
+type of data is put into a PCA is that the pattern looks like a
+horseshoe (Figure 1B from <span class="citation">Morton et al.
+(2017)</span> below). In Figure 1B, Sample 0 is most distantly related
+from Sample 20, but they have the same loading on the PC1 axis.
+Horseshoe patterns also arise in microbial ecology, where they were
+originally misinterpreted as having an ecological explanation before
+they were proven to be a statistical artifact (<span
+class="citation">Morton et al. (2017)</span>). The pattern arises in
+microbial data or genetic data as a consequence of distance metrics that
+saturate (Figure 1A and C below), typically when distance metrics as
+used in PCA cannot discriminate between samples that do not share any
+common features. Figure 1A below shows an isolation by distance or
+“band” pattern, in which neighboring samples have mostly similar
+alleles, but the similarity in allelic composition declines with the
+distance between samples. For example, “Sample 0” has the reference
+alleles at SNPs 1-10, but does not share the same alleles at any SNPs
+with samples 10-20. As a result, the euclidean distance (on which a PCA
+is based) saturates with increasing distance between samples (Figure 1C
+below).</p>
+<div class="figure" style="text-align: center">
+<img src="DRAFT_PCA/Fig.12_Morton_fig1.png" alt="Figure 12. Figure 1 from @Morton2017-xy.  (a) A band table for haploids where SNPs are in rows, samples are in columns, and the color is the allele (0 or 1). Blocks that are colored black have a value of 1 while blocks that are colored white have a value of 0. (b) The first 2 components from a PCA of the band table, yielding the typical horseshoe shape. (c) The Euclidean distance (e.g., genetic relatedness) from point 0 to all of the other points. (d) An illustration of the distance saturation property." width="70%" />
+<p class="caption">
+Figure 12. Figure 1 from <span class="citation">Morton et al.
+(2017)</span>. (a) A band table for haploids where SNPs are in rows,
+samples are in columns, and the color is the allele (0 or 1). Blocks
+that are colored black have a value of 1 while blocks that are colored
+white have a value of 0. (b) The first 2 components from a PCA of the
+band table, yielding the typical horseshoe shape. (c) The Euclidean
+distance (e.g., genetic relatedness) from point 0 to all of the other
+points. (d) An illustration of the distance saturation property.
+</p>
+</div>
+<p>The saturation property of PCA can also create “wave” patterns in a
+PCA of genetic data, which were initially misinterpreted to be
+signatures of specific migration events before they were shown to be
+statistical artifacts (<span class="citation">Novembre and Stephens
+(2008)</span>). Figure 2 from <span class="citation">Novembre and
+Stephens (2008)</span> below shows the pattern arising from simulating a
+1-D stepping stone model, which is analogous to marine samples that are
+collected along a coastline. The horseshoe pattern arises in the first
+2PC axes (Figure 2C), but this example also shows the wave patterns that
+arise on subsequent PC axes.</p>
+<div class="figure" style="text-align: center">
+<img src="DRAFT_PCA/Fig.13_Novembre_Stephens_fig2.png" alt="Figure 13. Figure 2 from @Novembre2008-gs. (a) Schematic of the one-dimensional habitat, with circles marking sampling locations and shades of blue marking order along the line. (b) One-dimensional PC maps (that is, plots of each PC element against the geographic position of the corresponding sample location). (c) Biplots of PC1 versus PC2, PC2 versus PC3, and PC3 versus PC4. Colors correspond to those in a. In many datasets without spatially referenced samples, the colors and the lines connecting neighboring points would not be observed; here they are shown to aid interpretation." width="70%" />
+<p class="caption">
+Figure 13. Figure 2 from <span class="citation">Novembre and Stephens
+(2008)</span>. (a) Schematic of the one-dimensional habitat, with
+circles marking sampling locations and shades of blue marking order
+along the line. (b) One-dimensional PC maps (that is, plots of each PC
+element against the geographic position of the corresponding sample
+location). (c) Biplots of PC1 versus PC2, PC2 versus PC3, and PC3 versus
+PC4. Colors correspond to those in a. In many datasets without spatially
+referenced samples, the colors and the lines connecting neighboring
+points would not be observed; here they are shown to aid interpretation.
+</p>
+</div>
+<p>These highly structured patterns are mathematical artifacts that
+arise generally when PCA is applied to spatial data in which covariance
+(similarity) between locations tends to decay with geographic distance.
+These artifacts happen because the distance metrics on which PCA is
+based do not capture all of the information about genetic dissimilarity
+along a gradient - in other words, distance metrics cannot discriminate
+between samples that do not share any common features. Understanding the
+statistical reasons for the horseshoe and wave effects is useful for
+correct interpretation of these patterns.</p>
+<hr />
+</div>
+</div>
+<div id="pca_admix" class="section level2">
+<h2>Relationship between PCA and Admixture</h2>
+<p>In cases of simple two- or three-way admixture, where close relatives
+of the source populations can be identified and sampled, estimation of
+admixture proportions can be achieved from projecting samples onto the
+PCs identified from the source populations. Figure 5 from McVean 2009
+below shows an example for human populations from the <a
+href="https://www.sanger.ac.uk/science/tools/#">HapMap3 project</a>.
+Samples having African ancestry in Southwest USA (ASW) and two groups of
+samples representing the “source” populations for ASW: (1) Yoruba in
+Ibadan, Nigeria (YRI) and (2) Utah USA with Northern and Western
+European ancestry (CEU). The ASW group is admixed between the YRI and
+CEU groups. The YRI and CEU groups are not necessarily the source
+populations for the admixed group, but they are closely related to the
+true source. It is important when using PCA to infer admixture that the
+PCA is conducted on each chromosome on the two source groups, and all
+samples are subsequently projected onto the PCA.</p>
+<p>In <span class="citation">McVean (2009)</span> Figure 5A below, PCA
+is carried out only on the haplotypes from CEU and YRI and all samples
+are subsequently projected onto the first PC identified from this
+analysis. Figure 5A shows how the loadings of individuals map onto PC1
+each chromosome (in rows), and note the uniformity of the loadings for
+the source populations. However for the admixed group ASW, note how
+there is considerable variation at the level of individual chromosomes,
+with some chromosomes within an individual appearing essentially
+European (when a green point maps at the blue end) and others
+essentially African (when a green point maps at the orange end). Figure
+5B below shows how the genome-wide admixture proportions can be inferred
+directly from the location of admixed samples on the first PC between
+the two source populations.</p>
+<div class="figure" style="text-align: center">
+<img src="DRAFT_PCA/Fig.14_McVean_fig5.png" alt="Figure 14. Figure 5 from @McVean2009-ms. See text above for explanation." width="50%" />
+<p class="caption">
+Figure 14. Figure 5 from <span class="citation">McVean (2009)</span>.
+See text above for explanation.
+</p>
+</div>
 </div>
 <div id="refs" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
