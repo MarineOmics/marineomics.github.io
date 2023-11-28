@@ -449,7 +449,7 @@ div.tocify {
 
 
 <p>Authors: KE Lotterhos, DL Davenport, S Truskey <br> Acknowledgements/
-Page Reviewers: Jason Johns</p>
+Page Reviewers: Jason Johns, Katherine Silliman</p>
 <p><a href="https://marineomics.github.io/#How_to_Cite">How to
 cite</a></p>
 <p>Principal component analysis (PCA) is a multivariate method often
@@ -469,7 +469,10 @@ this page!</p>
 relates to population genomics:</p>
 <ul>
 <li><a href="#whatspca">What is PCA and what are its common uses in
-population genetics?</a></li>
+population genetics?</a>
+<ul>
+<li><a href="#recreading">Recommended reading</a></li>
+</ul></li>
 <li>Considerations before sampling:
 <ul>
 <li><a href="#sampling">How one chooses to sample from a
@@ -506,41 +509,43 @@ x SNP) PCA, each SNP is a variable, so that in a dataset with 500,000
 SNPs there will be 500,000 variables (or dimensions) in the data.</p>
 <p>Because we cannot visualise 500,000 dimensions, PCA helps us distill
 these down to increase the interpretability of data while preserving the
-maximum amount of information (aka variance) . It does this by creating
-new, uncorrelated variables that maximise variance called “principal
-components” (PCs, see <span class="citation">Pearson (1901)</span>).
-Like other multivariate methods, PCA involves a series of geometric
-operations and associated computations, usually achieved by matrix
-factorization methods (for details see <span class="citation">Thioulouse
-et al. (2018)</span>). In PCA, the first few PCs will account for a
-substantial proportion of the variation in the original variables, and
-can consequently be used to provide a convenient lower-dimensional
-summary of these variables.</p>
-<p>The output of PCA are the eigenvalues and eigenvectors (eigenvalues =
-principal components (PCs), eigenvectors = principal axes) (see <a
+maximum amount of information (aka <strong>variance</strong>) . It does
+this by creating new, uncorrelated variables that maximise variance
+called “principal components” (PCs, see <span class="citation">Pearson
+(1901)</span>). Like other multivariate methods, PCA involves a series
+of geometric operations and associated computations, usually achieved by
+matrix factorization methods (for details see <span
+class="citation">Thioulouse et al. (2018)</span>). In PCA, the first few
+PCs will account for a substantial proportion of the variation in the
+original variables, and can consequently be used to provide a convenient
+lower-dimensional summary of these variables.</p>
+<p>The output of PCA are the eigenvalues and eigenvectors
+(<strong>eigenvalues</strong> = principal components (PCs),
+<strong>eigenvectors</strong> = principal axes) (see <a
 href="https://www.youtube.com/watch?v=PFDu9oVAE-g">here</a> for video
 explanation) which can be represented as graphical outputs that
 summarise the information of a large number of variables by a smaller
 number of dimensions (PCs). When applied to very large genetic datasets,
 the eigenvectors and eigenvalues are usually determined by a method
-called singular value decomposition (SVD) or some variation of it, a
-matrix factorisation method recommended when the number of variables is
-very large (i.e. often more variables than observed entities, n &lt;&lt;
-m, see this <a
+called <strong>singular value decomposition (SVD)</strong> or some
+variation of it, a matrix factorisation method recommended when the
+number of variables is very large (i.e. often more variables than
+observed entities, n &lt;&lt; m, see this <a
 href="https://www.youtube.com/playlist?list=PLMrJAkhIeNNSVjnsviglFoY2nXildDCcv">YouTube
 playlist</a> for details). Other methods use the covariance (or
-correlation) matrix. The data are usually centered (so it becomes zero
-mean gaussian, center = TRUE ), and scaled ( scale = TRUE ), where
-scaling is recommended when the variance is not homogeneous across
-variables (<span class="citation">Jolliffe (2005)</span>).</p>
+correlation) matrix. The data are usually <strong>centered</strong> (so
+it becomes zero mean gaussian, center = TRUE ), and
+<strong>scaled</strong> ( scale = TRUE ), where scaling is recommended
+when the variance is not homogeneous across variables (<span
+class="citation">Jolliffe (2005)</span>).</p>
 <p>The eigenvalues represent the amount of variance explained per
 component and are typically represented as a barplot, in descending
-order (Figure 1) (also called variable loadings). The percentage of
-explained variance by each eigenvector will vary between datasets since
-it is highly dependent on the size of the data and the correlation
-structure between variables. The eigenvalues are typically used as an
-empirical way of choosing the number of PCs to represent the data.
-Usually, the “elbow” of this barplot shows the number of the least
+order (Figure 1) (also called <strong>variable loadings</strong>). The
+percentage of explained variance by each eigenvector will vary between
+datasets since it is highly dependent on the size of the data and the
+correlation structure between variables. The eigenvalues are typically
+used as an empirical way of choosing the number of PCs to represent the
+data. Usually, the “elbow” of this barplot shows the number of the least
 amount of variables (PCs) explaining the most amount of variation.</p>
 <div class="figure" style="text-align: center">
 <img src="DRAFT_PCA/Fig.1_Spies_2022_supfig2.png" alt="Figure 1. 'Screeplot' of PCA eigenvalues, where there is one eigenvalue for every eigenvector. From @Spies2022-xj (Supp. Fig. 2)." width="60%" />
@@ -584,6 +589,8 @@ SNPs, highlighting population structure (PC3) and a putative inversion
 each sample.
 </p>
 </div>
+<div id="recreading" class="section level3">
+<h3>Recommended reading</h3>
 <p>To get a better understanding of PCA, we recommend reading these
 useful reviews and studies of PCA:</p>
 <ul>
@@ -616,6 +623,7 @@ JD (2023) PCA. Applied Multivariate Statistics in R. University of
 Washington</a></li>
 </ul>
 <hr />
+</div>
 </div>
 <div id="considerations-before-sampling" class="section level2">
 <h2>Considerations before sampling</h2>
@@ -687,28 +695,35 @@ genetic distance (i.e. FST) among populations decreases, the number of
 SNPs needed to separate the signal from the noise increases. The paper
 makes useful recommendations on how many SNPs would be needed to resolve
 population structure in PCA space for a given FST for a two population
-model (see <span class="citation">McVean (2009)</span>):</p>
-<p>FST &gt; 1/sqrt(number_of_SNPs * number_of_samples_per_group) Eq1
+model (see <span class="citation">McVean (2009)</span>). Note that
+number of samples below represents haploid samples, so double the number
+for diploid samples:</p>
+<p><strong>Eq. 1</strong><br />
+<span class="math display">\[FST &gt; \frac{1}{\sqrt{(number\_of\_SNPs *
+number\_of\_samples\_per\_group)}}\]</span><br />
 Rearranging, if we know FST and the number of samples per group, we can
 calculate how many SNPs we would need to sequence for our PCA to be
 above the signal-to-noise ratio; or if we know FST and the number of
 SNPs, we can calculate how many samples per group we would need to
 sequence for our PCA to be above the signal-to-noise ratio:</p>
-<p>Number_of_samples_per_group &lt;- 1/(number_of_SNPs * FST^2) Eq2</p>
-<p>Number_of_SNPs &lt;- 1/(Number_of_samples_per_group * FST^2) Eq3</p>
+<p><strong>Eq. 2</strong> <span
+class="math display">\[number\_of\_samples\_per\_group &gt;
+\frac{1}{(number\_of\_SNPs * FST^2)}\]</span> <strong>Eq. 3</strong>
+<span class="math display">\[number\_of\_snps&gt;
+\frac{1}{(number\_of\_samples\_per\_group * FST^2)}\]</span></p>
 <p>For instance, if FST = 0.01 and there is 100 samples per group, then
-you would need 1/(100 * 0.01^2) = 100 SNPs . If FST = 0.001 and there is
-20 samples per group (not out of the question for a marine species),
-then you would need 1/(20 * 0.001^2) = 50,000 SNPs. Anecdotally, we have
-observed with SNP data for a high gene flow marine species (low FST)
-that &gt;50,000 SNPs was needed to resolve structure in PC space between
-adjacent populations.</p>
+you would need at least 1/(100 * 0.01^2) = 100 SNPs . If FST = 0.001 and
+there is 20 samples per group (not out of the question for a marine
+species), then you would need 1/(20 * 0.001^2) = 50,000 SNPs.
+Anecdotally, we have observed with SNP data for a high gene flow marine
+species (low FST) that &gt;50,000 SNPs was needed to resolve structure
+in PC space between adjacent populations.</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.4_McVean_fig2.png" alt="Figure 4. Figure 2 from MacVean - Simulated a population (Fig 2A), where the expected locations for the two populations on the first PC are defined by the time-since-divergence (the lines in Fig 2C). The signal-to-noise threshold for a sample size of 100 and FST=0.01 is 100 SNPs (see Eq3 above). Fig 2C shows that around or below this threshold of 100 SNPs, the PCA is affected by random clustering. The author notes that the separation of samples (Fig 2C) with 10 SNPs does not correlate with population divergence, but reflects random clustering arising from the small numbers of SNPs." width="60%" />
+<img src="DRAFT_PCA/Fig.4_McVean_fig2.png" alt="Figure 4. Figure 2 from MacVean (2009) - Simulated a population (Fig 2A), where the expected locations for the two populations on the first PC are defined by the time-since-divergence (the lines in Fig 2C). The signal-to-noise threshold for a sample size of 100 and FST=0.01 is 100 SNPs (see Eq3 above). Fig 2C shows that around or below this threshold of 100 SNPs, the PCA is affected by random clustering. The author notes that the separation of samples (Fig 2C) with 10 SNPs does not correlate with population divergence, but reflects random clustering arising from the small numbers of SNPs." width="60%" />
 <p class="caption">
-Figure 4. Figure 2 from MacVean - Simulated a population (Fig 2A), where
-the expected locations for the two populations on the first PC are
-defined by the time-since-divergence (the lines in Fig 2C). The
+Figure 4. Figure 2 from MacVean (2009) - Simulated a population (Fig
+2A), where the expected locations for the two populations on the first
+PC are defined by the time-since-divergence (the lines in Fig 2C). The
 signal-to-noise threshold for a sample size of 100 and FST=0.01 is 100
 SNPs (see Eq3 above). Fig 2C shows that around or below this threshold
 of 100 SNPs, the PCA is affected by random clustering. The author notes
@@ -720,19 +735,19 @@ the small numbers of SNPs.
 <p><strong>Unequal sample size per population</strong></p>
 <p>MacVean (2009) used simulations of two populations of equal size to
 show how the number of individuals sampled per group influenced PC
-projections (Figure 2a, MacVean, 2009). Figure 2B (MacVean, 2009) shows
-how groups with larger sample sizes will lie closer to the origin of the
-first PC axis, while Figure 2c shows the effect of using fewer SNPs on
-the inferring the true population configuration, where lines indicate
-the expectation of population scores on the PC-axis.</p>
+projections (Figure 4A). Figure 4B shows how groups with larger sample
+sizes will lie closer to the origin of the first PC axis, while Figure
+4C shows the effect of using fewer SNPs on the inferring the true
+population configuration, where lines indicate the expectation of
+population scores on the PC-axis.</p>
 <p>The author extended this analysis to a 9-population stepping stone
 lattice. Figure 3 from the paper shows how differences in the number of
 samples per population can warp the projection space of PCA, even when
-migration rates and effective population size in each deme are the same.
-Note that FST among demes would be similar in all panels because it is
-based on an allele frequency in each deme (although small differences
-would occur due to sampling error when fewer individuals within a deme
-are sampled).</p>
+migration rates and effective population size in each deme are the same
+(Figure 5). Note that FST among demes would be similar in all panels
+because it is based on an allele frequency in each deme (although small
+differences would occur due to sampling error when fewer individuals
+within a deme are sampled).</p>
 <div class="figure" style="text-align: center">
 <img src="DRAFT_PCA/Fig.5_McVean_fig3.png" alt="Figure 5. Figure 3 from MacVean (2009). PCA projection of samples taken from a set of nine populations arranged in a lattice, each of which exchanges migrants at rate M per Ne generations with each adjoining neighbor, leads to a recovery of the migration-space if samples are of equal size (A), or a distortion of migration-space if populations are not equally represented (B,C). The left-hand panel for each pair shows analytical results, where the area of each point represents the relative sample size and lines show migration routes, while the right-hand panel shows how the projection space no longer reflects the migration matrix when sample size is uneven between projected groups." width="50%" />
 <p class="caption">
@@ -920,24 +935,26 @@ genotype-phenotype correlations (see <span class="citation">Yi and Latch
 conservation concern which may have few genomic resources, simple
 imputations such as mean imputation (replace missing with column mean)
 is commonly encountered.</p>
-<p>Imputation via the mean genotype in the metapopulation. In this case,
-missing values for all individuals at a locus are replaced with the mean
-for that locus (also called a mean-imputed matrix). Importantly, when
-the mean-imputed matrix is centered and scaled, the original missing
-genotypes become non-informative in PCA (missing values are placed at
-the origin). This can be problematic if you have a lot of missing data
-in your dataset, especially if that missing data is biased (not random).
-<span class="citation">Yi and Latch (2022)</span> demonstrated this
-effect using different simulated populations (no migration. 5%
-migration, isolation-by-distance-cline) with 1%, 10% and 20% missing
-data, either randomly distributed among individuals, or biased among
-some individuals and some populations. They conducted PCA using the
-adegenet::glPca() implementation of PCA with default mean imputation and
-standardization, retaining all PCA axes. They found that individuals
-biased with missing data would be dragged away from their real
-population clusters to the origin of PCA plots, making them
-indistinguishable from known admixed individuals, potentially leading to
-misinterpreted population structure (Figure 11).</p>
+<p><strong>Imputation via the mean genotype in the
+metapopulation.</strong></p>
+<p>In this case, missing values for all individuals at a locus are
+replaced with the mean for that locus (also called a mean-imputed
+matrix). Importantly, when the mean-imputed matrix is centered and
+scaled, the original missing genotypes become non-informative in PCA
+(missing values are placed at the origin). This can be problematic if
+you have a lot of missing data in your dataset, especially if that
+missing data is biased (not random). <span class="citation">Yi and Latch
+(2022)</span> demonstrated this effect using different simulated
+populations (no migration. 5% migration, isolation-by-distance-cline)
+with 1%, 10% and 20% missing data, either randomly distributed among
+individuals, or biased among some individuals and some populations. They
+conducted PCA using the adegenet::glPca() implementation of PCA with
+default mean imputation and standardization, retaining all PCA axes.
+They found that individuals biased with missing data would be dragged
+away from their real population clusters to the origin of PCA plots,
+making them indistinguishable from known admixed individuals,
+potentially leading to misinterpreted population structure (Figure
+9).</p>
 <div class="figure" style="text-align: center">
 <img src="DRAFT_PCA/Fig.9_Yi_Latch_fig2.png" alt="Figure 9. Figure 2(b) from @Yi2022-bi shows PCA on the individual-biased missing data (1%, 10% or 20%) introduced to a simulated population experiencing an isolation-by-distance cline, where one population (represented as triangles) is an admixture of the remaining two (circle and squares). Individual colors represent their amounts of missing data with relatively higher missingness shown in lighter blue in each plot (legend, notice changing scale from left to right). As the % of missing data increases, the samples with the most missing data become centered at the PCA origin." width="80%" />
 <p class="caption">
@@ -953,13 +970,14 @@ data increases, the samples with the most missing data become centered
 at the PCA origin.
 </p>
 </div>
-<p>Imputation via the mean genotype within a site, sampling location, or
-population. In this case, missing values for each individual sample at
-each locus is replaced with the mean genotype of other individuals from
-the same sampling location or population. The effect of this imputation
-in a PCA is that the mapping for that imputed sample will move closer to
-the center of the population cluster, and will make the PCA appear to be
-more clustered (Figure 12). This is because this method of imputation
+<p><strong>Imputation via the mean genotype within a site, sampling
+location, or population.</strong></p>
+<p>In this case, missing values for each individual sample at each locus
+is replaced with the mean genotype of other individuals from the same
+sampling location or population. The effect of this imputation in a PCA
+is that the mapping for that imputed sample will move closer to the
+center of the population cluster, and will make the PCA appear to be
+more clustered (Figure 10). This is because this method of imputation
 would make samples with missing data look more similar to the samples
 used to generate imputation values. This method is not recommended (see
 <span class="citation">Yi and Latch (2022)</span>), since within-group
@@ -1087,15 +1105,10 @@ you can add the modifier “meanimpute” for mean imputation). The
 randomisation algorithm (aka. FASTPCA) (–pca approx) performs
 mean-imputation of missing genotypes (see <span
 class="citation">Galinsky et al. (2016)</span>)</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
 <td align="left"><span class="citation">Purcell et al.
 (2007)</span></td>
-<td align="left"></td>
-<td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">bigSNPR:, big_SVD() and big_randomSVD()</td>
 <td align="left">Does not work with missing data, but offers various
 functions to impute missingness based on plink, beagle or methods
