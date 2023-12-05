@@ -19,6 +19,7 @@ The backbone underlying the content on the website comes from a general set of â
 * [Reduced Representation Sequencing](RADseq.html) 
 * [Poolseq](POP_03_poolseq.html)
 * [Redundancy Analysis (RDA) Trait Prediction](POP_05_RDAtraitPredictionTutorial.html)
+* [PCA](POP_08_PCA.html)
 
 # Functional Genomics  
 

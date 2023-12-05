@@ -1,8 +1,8 @@
 ---
 title: "PCA"
-bibliography: DRAFT_PCA/PCA_marineomics.bib
+bibliography: POP_08_PCA_files/PCA_marineomics.bib
 authors: "DL Davenport, KE Lotterhos"
-date: "2023-11-07"
+date: "2023-12-05"
 output:
   html_document:
     df_print: paged
@@ -53,7 +53,7 @@ The eigenvalues represent the amount of variance explained per component and are
 
 ```{r, echo = FALSE, include = TRUE, out.width = "60%", fig.align = "center", fig.cap="Figure 1. 'Screeplot' of PCA eigenvalues, where there is one eigenvalue for every eigenvector. From @Spies2022-xj (Supp. Fig. 2)."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.1_Spies_2022_supfig2.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.1_Spies_2022_supfig2.png")
 
 ```
 
@@ -62,7 +62,7 @@ The eigenvectors are represented as a standard scatter plot, where points are sa
 
 ```{r, echo = FALSE, include = TRUE, out.width = "60%", fig.align = "center", fig.cap="Figure 2. PCA plots from two studies (A) from Figure 2 in @sillimanPopulationStructureGenetic2019, showing population structure results for 19 Ostrea lurida populations Plots of individual admixture determined using the program STRUCTURE (top) and PCA plots for PCs 1–5. PC1 is plotted against the latitude of the sampling site, then PC2 versus PC3 and PC4 versus PC5 and (B) from Figure 2 in @kessPutativeStructuralVariant2021, showing PCA scores of 734 individuals of Atlantic Halibut (Hippoglossus hippoglossus) from samling sites on the North West Atlantic on PC1 and PC3 axes from PCA on 86 043 SNPs, highlighting population structure (PC3) and a putative inversion (PC1). In both plots, colors refer to the phylogeographic regions of each sample."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.2_PCAs.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.2_PCAs.png")
 
 ```
 
@@ -100,7 +100,7 @@ D) 50 individuals were sampled from patches 20–31. Dark red and dark blue are 
 
 ```{r, echo = FALSE, include = TRUE, out.width = "70%", fig.align = "center", fig.cap="Figure 3. Figure 4 from @Gompert2016-wa"}
 
-knitr::include_graphics("DRAFT_PCA/Fig.3_Gompert_Buerkle_fig4.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.3_Gompert_Buerkle_fig4.png")
 
 ```
 
@@ -126,7 +126,7 @@ For instance, if FST = 0.01 and there is 100 samples per group, then you would n
 
 ```{r, echo = FALSE, include = TRUE, out.width = "60%", fig.align = "center", fig.cap="Figure 4. Figure 2 from MacVean (2009) - Simulated a population (Fig 2A), where the expected locations for the two populations on the first PC are defined by the time-since-divergence (the lines in Fig 2C). The signal-to-noise threshold for a sample size of 100 and FST=0.01 is 100 SNPs (see Eq3 above). Fig 2C shows that around or below this threshold of 100 SNPs, the PCA is affected by random clustering. The author notes that the separation of samples (Fig 2C) with 10 SNPs does not correlate with population divergence, but reflects random clustering arising from the small numbers of SNPs."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.4_McVean_fig2.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.4_McVean_fig2.png")
 
 ```
 
@@ -138,7 +138,7 @@ The author extended this analysis to a 9-population stepping stone lattice. Figu
 
 ```{r, echo = FALSE, include = TRUE, out.width = "50%", fig.align = "center", fig.cap="Figure 5. Figure 3 from MacVean (2009). PCA projection of samples taken from a set of nine populations arranged in a lattice, each of which exchanges migrants at rate M per Ne generations with each adjoining neighbor, leads to a recovery of the migration-space if samples are of equal size (A), or a distortion of migration-space if populations are not equally represented (B,C). The left-hand panel for each pair shows analytical results, where the area of each point represents the relative sample size and lines show migration routes, while the right-hand panel shows how the projection space no longer reflects the migration matrix when sample size is uneven between projected groups."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.5_McVean_fig3.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.5_McVean_fig3.png")
 
 ```
 
@@ -159,7 +159,7 @@ Simulations consisted of nine populations on a 3x3 grid connected to neighbors i
 
 ```{r, echo = FALSE, include = TRUE, out.width = "30%", fig.align = "center", fig.cap="Figure 6. Example figure above modified from Figure 4 in @Lou2021-at. This figure depicts patterns of spatial population structure inferred through principal component analysis (PCA) with lcWGS data. At top is a schematic for a scenario with nine populations (each coloured node corresponds to a simulated population) on a 3x3 grid connected to neighbors via gene flow, and below is the PCA based on the true genotypes under low migration conditions."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.6_Lou_Thilk_fig4.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.6_Lou_Thilk_fig4.png")
 
 ```
 
@@ -167,7 +167,7 @@ Under these conditions, two batches of sequencing data generation - one reflecti
 
 ```{r, echo = FALSE, include = TRUE, out.width = "100%", fig.align = "center", fig.cap="Figure 7. Differences in the sensitivity of three PCA programs to batch effects caused by different sequencing depths and number of samples. The number at the top of each panel is the number of individuals sampled from each simulated population. Color represents sequencing depth: yellow points mark individuals that were simulated sequenced at 0.125×; grey points for 4×. Figure 6 from @Lou2022-lc."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.7_Lou_Thilk_fig6.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.7_Lou_Thilk_fig6.png")
 
 ```
 
@@ -182,7 +182,7 @@ When SNPs were thinned for LD and then a PCA was run on the data, the PCA showed
 
 ```{r, echo = FALSE, include = TRUE, out.width = "50%", fig.align = "center", fig.cap="Figure 8. Figure 3 from @Lotterhos2019-yz."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.8_Lotterhos2019_fig3.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.8_Lotterhos2019_fig3.png")
 
 ```
 
@@ -202,7 +202,7 @@ In this case, missing values for all individuals at a locus are replaced with th
 
 ```{r, echo = FALSE, include = TRUE, out.width = "80%", fig.align = "center", fig.cap="Figure 9. Figure 2(b) from @Yi2022-bi shows PCA on the individual-biased missing data (1%, 10% or 20%) introduced to a simulated population experiencing an isolation-by-distance cline, where one population (represented as triangles) is an admixture of the remaining two (circle and squares). Individual colors represent their amounts of missing data with relatively higher missingness shown in lighter blue in each plot (legend, notice changing scale from left to right). As the % of missing data increases, the samples with the most missing data become centered at the PCA origin."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.9_Yi_Latch_fig2.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.9_Yi_Latch_fig2.png")
 
 ```
 
@@ -212,7 +212,7 @@ In this case, missing values for each individual sample at each locus is replace
 
 ```{r, echo = FALSE, include = TRUE, out.width = "80%", fig.align = "center", fig.cap="Figure 10. Figure 4 from @Yi2022-bi shows PCA on the cline model with missing data condensed in either the (a) admixed population and (b) one end population. The admixed population (pop2) has high migration with both end populations (pop1 and pop3) while no migration occurs between the end populations."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.10_Yi_Latch_fig4.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.10_Yi_Latch_fig4.png")
 
 ```
 
@@ -242,7 +242,7 @@ Below is Figure 5 from @Gompert2016-wa, with two parental species shown in dark 
 
 ```{r, echo = FALSE, include = TRUE, out.width = "50%", fig.align = "center", fig.cap="Figure 11. Figure 5 from @Gompert2016-wa."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.11_Gompert_Buerkle_fig5.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.11_Gompert_Buerkle_fig5.png")
 
 ```
 
@@ -252,7 +252,7 @@ Horseshoe patterns arise in population genetic data that has isolation by distan
 
 ```{r, echo = FALSE, include = TRUE, out.width = "70%", fig.align = "center", fig.cap="Figure 12. Figure 1 from @Morton2017-xy.  (a) A band table for haploids where SNPs are in rows, samples are in columns, and the color is the allele (0 or 1). Blocks that are colored black have a value of 1 while blocks that are colored white have a value of 0. (b) The first 2 components from a PCA of the band table, yielding the typical horseshoe shape. (c) The Euclidean distance (e.g., genetic relatedness) from point 0 to all of the other points. (d) An illustration of the distance saturation property."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.12_Morton_fig1.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.12_Morton_fig1.png")
 
 ```
 
@@ -260,7 +260,7 @@ The saturation property of PCA can also create “wave” patterns in a PCA of g
 
 ```{r, echo = FALSE, include = TRUE, out.width = "70%", fig.align = "center", fig.cap="Figure 13. Figure 2 from @Novembre2008-gs. (a) Schematic of the one-dimensional habitat, with circles marking sampling locations and shades of blue marking order along the line. (b) One-dimensional PC maps (that is, plots of each PC element against the geographic position of the corresponding sample location). (c) Biplots of PC1 versus PC2, PC2 versus PC3, and PC3 versus PC4. Colors correspond to those in a. In many datasets without spatially referenced samples, the colors and the lines connecting neighboring points would not be observed; here they are shown to aid interpretation."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.13_Novembre_Stephens_fig2.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.13_Novembre_Stephens_fig2.png")
 
 ```
 
@@ -277,7 +277,7 @@ Figure 5B below shows how the genome-wide admixture proportions can be inferred 
 
 ```{r, echo = FALSE, include = TRUE, out.width = "50%", fig.align = "center", fig.cap="Figure 14. Figure 5 from @McVean2009-ms. See text above for explanation."}
 
-knitr::include_graphics("DRAFT_PCA/Fig.14_McVean_fig5.png")
+knitr::include_graphics("POP_08_PCA_files/Fig.14_McVean_fig5.png")
 
 ```
 

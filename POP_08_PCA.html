@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2023-11-07" />
+<meta name="date" content="2023-12-05" />
 
 <title>PCA</title>
 
@@ -390,6 +390,9 @@ div.tocify {
     <li>
       <a href="POP_05_RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
     </li>
+    <li>
+      <a href="POP_08_PCA.html">PCA</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -443,7 +446,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">PCA</h1>
-<h4 class="date">2023-11-07</h4>
+<h4 class="date">2023-12-05</h4>
 
 </div>
 
@@ -548,7 +551,7 @@ used as an empirical way of choosing the number of PCs to represent the
 data. Usually, the “elbow” of this barplot shows the number of the least
 amount of variables (PCs) explaining the most amount of variation.</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.1_Spies_2022_supfig2.png" alt="Figure 1. 'Screeplot' of PCA eigenvalues, where there is one eigenvalue for every eigenvector. From @Spies2022-xj (Supp. Fig. 2)." width="60%" />
+<img src="POP_08_PCA_files/Fig.1_Spies_2022_supfig2.png" alt="Figure 1. 'Screeplot' of PCA eigenvalues, where there is one eigenvalue for every eigenvector. From @Spies2022-xj (Supp. Fig. 2)." width="60%" />
 <p class="caption">
 Figure 1. ‘Screeplot’ of PCA eigenvalues, where there is one eigenvalue
 for every eigenvector. From <span class="citation">Spies et al.
@@ -573,7 +576,7 @@ between individuals, particularly in the case of inversions, structural
 variation or regions associated with a specific phenotype or adaptation
 (see Figure 2B).</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.2_PCAs.png" alt="Figure 2. PCA plots from two studies (A) from Figure 2 in @sillimanPopulationStructureGenetic2019, showing population structure results for 19 Ostrea lurida populations Plots of individual admixture determined using the program STRUCTURE (top) and PCA plots for PCs 1–5. PC1 is plotted against the latitude of the sampling site, then PC2 versus PC3 and PC4 versus PC5 and (B) from Figure 2 in @kessPutativeStructuralVariant2021, showing PCA scores of 734 individuals of Atlantic Halibut (Hippoglossus hippoglossus) from samling sites on the North West Atlantic on PC1 and PC3 axes from PCA on 86 043 SNPs, highlighting population structure (PC3) and a putative inversion (PC1). In both plots, colors refer to the phylogeographic regions of each sample." width="60%" />
+<img src="POP_08_PCA_files/Fig.2_PCAs.png" alt="Figure 2. PCA plots from two studies (A) from Figure 2 in @sillimanPopulationStructureGenetic2019, showing population structure results for 19 Ostrea lurida populations Plots of individual admixture determined using the program STRUCTURE (top) and PCA plots for PCs 1–5. PC1 is plotted against the latitude of the sampling site, then PC2 versus PC3 and PC4 versus PC5 and (B) from Figure 2 in @kessPutativeStructuralVariant2021, showing PCA scores of 734 individuals of Atlantic Halibut (Hippoglossus hippoglossus) from samling sites on the North West Atlantic on PC1 and PC3 axes from PCA on 86 043 SNPs, highlighting population structure (PC3) and a putative inversion (PC1). In both plots, colors refer to the phylogeographic regions of each sample." width="60%" />
 <p class="caption">
 Figure 2. PCA plots from two studies (A) from Figure 2 in <span
 class="citation">Silliman (2019)</span>, showing population structure
@@ -666,7 +669,7 @@ saturates with distance), and PCA cannot discriminate between samples
 that do not share any common features.</p></li>
 </ol>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.3_Gompert_Buerkle_fig4.png" alt="Figure 3. Figure 4 from @Gompert2016-wa" width="70%" />
+<img src="POP_08_PCA_files/Fig.3_Gompert_Buerkle_fig4.png" alt="Figure 3. Figure 4 from @Gompert2016-wa" width="70%" />
 <p class="caption">
 Figure 3. Figure 4 from <span class="citation">Gompert and Buerkle
 (2016)</span>
@@ -719,7 +722,7 @@ Anecdotally, we have observed with SNP data for a high gene flow marine
 species (low FST) that &gt;50,000 SNPs was needed to resolve structure
 in PC space between adjacent populations.</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.4_McVean_fig2.png" alt="Figure 4. Figure 2 from MacVean (2009) - Simulated a population (Fig 2A), where the expected locations for the two populations on the first PC are defined by the time-since-divergence (the lines in Fig 2C). The signal-to-noise threshold for a sample size of 100 and FST=0.01 is 100 SNPs (see Eq3 above). Fig 2C shows that around or below this threshold of 100 SNPs, the PCA is affected by random clustering. The author notes that the separation of samples (Fig 2C) with 10 SNPs does not correlate with population divergence, but reflects random clustering arising from the small numbers of SNPs." width="60%" />
+<img src="POP_08_PCA_files/Fig.4_McVean_fig2.png" alt="Figure 4. Figure 2 from MacVean (2009) - Simulated a population (Fig 2A), where the expected locations for the two populations on the first PC are defined by the time-since-divergence (the lines in Fig 2C). The signal-to-noise threshold for a sample size of 100 and FST=0.01 is 100 SNPs (see Eq3 above). Fig 2C shows that around or below this threshold of 100 SNPs, the PCA is affected by random clustering. The author notes that the separation of samples (Fig 2C) with 10 SNPs does not correlate with population divergence, but reflects random clustering arising from the small numbers of SNPs." width="60%" />
 <p class="caption">
 Figure 4. Figure 2 from MacVean (2009) - Simulated a population (Fig
 2A), where the expected locations for the two populations on the first
@@ -749,7 +752,7 @@ because it is based on an allele frequency in each deme (although small
 differences would occur due to sampling error when fewer individuals
 within a deme are sampled).</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.5_McVean_fig3.png" alt="Figure 5. Figure 3 from MacVean (2009). PCA projection of samples taken from a set of nine populations arranged in a lattice, each of which exchanges migrants at rate M per Ne generations with each adjoining neighbor, leads to a recovery of the migration-space if samples are of equal size (A), or a distortion of migration-space if populations are not equally represented (B,C). The left-hand panel for each pair shows analytical results, where the area of each point represents the relative sample size and lines show migration routes, while the right-hand panel shows how the projection space no longer reflects the migration matrix when sample size is uneven between projected groups." width="50%" />
+<img src="POP_08_PCA_files/Fig.5_McVean_fig3.png" alt="Figure 5. Figure 3 from MacVean (2009). PCA projection of samples taken from a set of nine populations arranged in a lattice, each of which exchanges migrants at rate M per Ne generations with each adjoining neighbor, leads to a recovery of the migration-space if samples are of equal size (A), or a distortion of migration-space if populations are not equally represented (B,C). The left-hand panel for each pair shows analytical results, where the area of each point represents the relative sample size and lines show migration routes, while the right-hand panel shows how the projection space no longer reflects the migration matrix when sample size is uneven between projected groups." width="50%" />
 <p class="caption">
 Figure 5. Figure 3 from MacVean (2009). PCA projection of samples taken
 from a set of nine populations arranged in a lattice, each of which
@@ -822,7 +825,7 @@ In this case, the PCA based on “true genotypes” should look similar to
 the figure below in which each of the populations are able to be
 distinguished as separate clusters in PC space.</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.6_Lou_Thilk_fig4.png" alt="Figure 6. Example figure above modified from Figure 4 in @Lou2021-at. This figure depicts patterns of spatial population structure inferred through principal component analysis (PCA) with lcWGS data. At top is a schematic for a scenario with nine populations (each coloured node corresponds to a simulated population) on a 3x3 grid connected to neighbors via gene flow, and below is the PCA based on the true genotypes under low migration conditions." width="30%" />
+<img src="POP_08_PCA_files/Fig.6_Lou_Thilk_fig4.png" alt="Figure 6. Example figure above modified from Figure 4 in @Lou2021-at. This figure depicts patterns of spatial population structure inferred through principal component analysis (PCA) with lcWGS data. At top is a schematic for a scenario with nine populations (each coloured node corresponds to a simulated population) on a 3x3 grid connected to neighbors via gene flow, and below is the PCA based on the true genotypes under low migration conditions." width="30%" />
 <p class="caption">
 Figure 6. Example figure above modified from Figure 4 in <span
 class="citation">Lou et al. (2021)</span>. This figure depicts patterns
@@ -841,7 +844,7 @@ population. The performance of three different PCA/PCoA approaches to
 inferring patterns of spatial population structure under these
 conditions is compared in the figure below.</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.7_Lou_Thilk_fig6.png" alt="Figure 7. Differences in the sensitivity of three PCA programs to batch effects caused by different sequencing depths and number of samples. The number at the top of each panel is the number of individuals sampled from each simulated population. Color represents sequencing depth: yellow points mark individuals that were simulated sequenced at 0.125×; grey points for 4×. Figure 6 from @Lou2022-lc." width="100%" />
+<img src="POP_08_PCA_files/Fig.7_Lou_Thilk_fig6.png" alt="Figure 7. Differences in the sensitivity of three PCA programs to batch effects caused by different sequencing depths and number of samples. The number at the top of each panel is the number of individuals sampled from each simulated population. Color represents sequencing depth: yellow points mark individuals that were simulated sequenced at 0.125×; grey points for 4×. Figure 6 from @Lou2022-lc." width="100%" />
 <p class="caption">
 Figure 7. Differences in the sensitivity of three PCA programs to batch
 effects caused by different sequencing depths and number of samples. The
@@ -897,7 +900,7 @@ PCA showed a pattern of isolation-by-environment, which more accurately
 captured the population structure in the simulation (Figure B below
 <span class="citation">Lotterhos (2019)</span>).</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.8_Lotterhos2019_fig3.png" alt="Figure 8. Figure 3 from @Lotterhos2019-yz." width="50%" />
+<img src="POP_08_PCA_files/Fig.8_Lotterhos2019_fig3.png" alt="Figure 8. Figure 3 from @Lotterhos2019-yz." width="50%" />
 <p class="caption">
 Figure 8. Figure 3 from <span class="citation">Lotterhos (2019)</span>.
 </p>
@@ -956,7 +959,7 @@ making them indistinguishable from known admixed individuals,
 potentially leading to misinterpreted population structure (Figure
 9).</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.9_Yi_Latch_fig2.png" alt="Figure 9. Figure 2(b) from @Yi2022-bi shows PCA on the individual-biased missing data (1%, 10% or 20%) introduced to a simulated population experiencing an isolation-by-distance cline, where one population (represented as triangles) is an admixture of the remaining two (circle and squares). Individual colors represent their amounts of missing data with relatively higher missingness shown in lighter blue in each plot (legend, notice changing scale from left to right). As the % of missing data increases, the samples with the most missing data become centered at the PCA origin." width="80%" />
+<img src="POP_08_PCA_files/Fig.9_Yi_Latch_fig2.png" alt="Figure 9. Figure 2(b) from @Yi2022-bi shows PCA on the individual-biased missing data (1%, 10% or 20%) introduced to a simulated population experiencing an isolation-by-distance cline, where one population (represented as triangles) is an admixture of the remaining two (circle and squares). Individual colors represent their amounts of missing data with relatively higher missingness shown in lighter blue in each plot (legend, notice changing scale from left to right). As the % of missing data increases, the samples with the most missing data become centered at the PCA origin." width="80%" />
 <p class="caption">
 Figure 9. Figure 2(b) from <span class="citation">Yi and Latch
 (2022)</span> shows PCA on the individual-biased missing data (1%, 10%
@@ -984,7 +987,7 @@ used to generate imputation values. This method is not recommended (see
 mean imputation depends largely on the a priori population designation
 and can easily bring artificial biases.</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.10_Yi_Latch_fig4.png" alt="Figure 10. Figure 4 from @Yi2022-bi shows PCA on the cline model with missing data condensed in either the (a) admixed population and (b) one end population. The admixed population (pop2) has high migration with both end populations (pop1 and pop3) while no migration occurs between the end populations." width="80%" />
+<img src="POP_08_PCA_files/Fig.10_Yi_Latch_fig4.png" alt="Figure 10. Figure 4 from @Yi2022-bi shows PCA on the cline model with missing data condensed in either the (a) admixed population and (b) one end population. The admixed population (pop2) has high migration with both end populations (pop1 and pop3) while no migration occurs between the end populations." width="80%" />
 <p class="caption">
 Figure 10. Figure 4 from <span class="citation">Yi and Latch
 (2022)</span> shows PCA on the cline model with missing data condensed
@@ -1138,7 +1141,7 @@ triangles). F1…FN are genetically intermediate on PC1, and across all
 hybrids, PC1 mirrors the admixture proportion. In general, PC2 is
 associated with genetic variation among Fn generations.</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.11_Gompert_Buerkle_fig5.png" alt="Figure 11. Figure 5 from @Gompert2016-wa." width="50%" />
+<img src="POP_08_PCA_files/Fig.11_Gompert_Buerkle_fig5.png" alt="Figure 11. Figure 5 from @Gompert2016-wa." width="50%" />
 <p class="caption">
 Figure 11. Figure 5 from <span class="citation">Gompert and Buerkle
 (2016)</span>.
@@ -1170,7 +1173,7 @@ with samples 10-20. As a result, the euclidean distance (on which a PCA
 is based) saturates with increasing distance between samples (Figure 1C
 below).</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.12_Morton_fig1.png" alt="Figure 12. Figure 1 from @Morton2017-xy.  (a) A band table for haploids where SNPs are in rows, samples are in columns, and the color is the allele (0 or 1). Blocks that are colored black have a value of 1 while blocks that are colored white have a value of 0. (b) The first 2 components from a PCA of the band table, yielding the typical horseshoe shape. (c) The Euclidean distance (e.g., genetic relatedness) from point 0 to all of the other points. (d) An illustration of the distance saturation property." width="70%" />
+<img src="POP_08_PCA_files/Fig.12_Morton_fig1.png" alt="Figure 12. Figure 1 from @Morton2017-xy.  (a) A band table for haploids where SNPs are in rows, samples are in columns, and the color is the allele (0 or 1). Blocks that are colored black have a value of 1 while blocks that are colored white have a value of 0. (b) The first 2 components from a PCA of the band table, yielding the typical horseshoe shape. (c) The Euclidean distance (e.g., genetic relatedness) from point 0 to all of the other points. (d) An illustration of the distance saturation property." width="70%" />
 <p class="caption">
 Figure 12. Figure 1 from <span class="citation">Morton et al.
 (2017)</span>. (a) A band table for haploids where SNPs are in rows,
@@ -1193,7 +1196,7 @@ collected along a coastline. The horseshoe pattern arises in the first
 2PC axes (Figure 2C), but this example also shows the wave patterns that
 arise on subsequent PC axes.</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.13_Novembre_Stephens_fig2.png" alt="Figure 13. Figure 2 from @Novembre2008-gs. (a) Schematic of the one-dimensional habitat, with circles marking sampling locations and shades of blue marking order along the line. (b) One-dimensional PC maps (that is, plots of each PC element against the geographic position of the corresponding sample location). (c) Biplots of PC1 versus PC2, PC2 versus PC3, and PC3 versus PC4. Colors correspond to those in a. In many datasets without spatially referenced samples, the colors and the lines connecting neighboring points would not be observed; here they are shown to aid interpretation." width="70%" />
+<img src="POP_08_PCA_files/Fig.13_Novembre_Stephens_fig2.png" alt="Figure 13. Figure 2 from @Novembre2008-gs. (a) Schematic of the one-dimensional habitat, with circles marking sampling locations and shades of blue marking order along the line. (b) One-dimensional PC maps (that is, plots of each PC element against the geographic position of the corresponding sample location). (c) Biplots of PC1 versus PC2, PC2 versus PC3, and PC3 versus PC4. Colors correspond to those in a. In many datasets without spatially referenced samples, the colors and the lines connecting neighboring points would not be observed; here they are shown to aid interpretation." width="70%" />
 <p class="caption">
 Figure 13. Figure 2 from <span class="citation">Novembre and Stephens
 (2008)</span>. (a) Schematic of the one-dimensional habitat, with
@@ -1249,7 +1252,7 @@ essentially African (when a green point maps at the orange end). Figure
 directly from the location of admixed samples on the first PC between
 the two source populations.</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_PCA/Fig.14_McVean_fig5.png" alt="Figure 14. Figure 5 from @McVean2009-ms. See text above for explanation." width="50%" />
+<img src="POP_08_PCA_files/Fig.14_McVean_fig5.png" alt="Figure 14. Figure 5 from @McVean2009-ms. See text above for explanation." width="50%" />
 <p class="caption">
 Figure 14. Figure 5 from <span class="citation">McVean (2009)</span>.
 See text above for explanation.
