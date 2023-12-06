@@ -68,6 +68,7 @@ basic level.
     + The contributor presents their idea for new material to any involved working group members. <br>
     + There will be regular meetings (frequency decided by those involved) with the website manager, Katherine Silliman and/or Sam Bogan, and any other participating members for progress updates and support. <br>
 3. Review: Full drafts of content will be reviewed by the website manager, Katherine Silliman and/or Sam Bogan, and at least one other active MarineOmics member assigned to the project.
+4. Publishing: Final versions of content will be published with the help of the website manager. Please have a list of all software dependencies necessary for your .Rmd to be rendered so we can add it to our MarineOmics conda environment.
 
 *See the [bottom of the page](#conflicts) for our policy on disagreements or conflicts during the development process
 
