@@ -30,15 +30,15 @@ The tutorial will cover the following:
 - Read alignment
 - Methylation quantification
 - File conversions
-- Potential downstream applications. Although this tutorial will not provide code for downstream applications, it will link to other open-access resources and examples.
+- Potential downstream applications. Although this tutorial will not provide code for downstream applications such as differential methylation analysis, it will link to other open-access resources and examples.
 
 The tutorial below is based on WGBS from a species of marine intertebrate (*Montipora capitata* coral) examined in @https://doi.org/10.1111/1755-0998.13542, and all raw data can be accessed under NCBI Bioproject PRJNA691891 if you would like to follow the tutorial with this dataset. The general workflow would be consistent for other library preparation and sequencing methods that produce loci-level data. The tutorial indicates places where special analytical consideration should be given to other data types. 
 
 # Sequence Quality
 
-An example of what raw data might look like from a marine invertebrate is shown. *Note that DNA methylation patters are diverse across taxa with most marine invertebrates demonstrating a mosiac pattern and global methylation at CpG loci is approximately 15%.*
+An example of what raw data might look like from a marine invertebrate is shown. *Note that DNA methylation patters are diverse across taxa with most invertebrates demonstrating a mosiac pattern and global methylation at CpG loci is approximately 15%.*
 
-Following trimming one would expect to see something similar to this. This particular data set was trimmed with the following parameters:
+Following trimming one would expect to see FastQC per base sequencing content similar to the plot shown below. This particular data set was trimmed with the following parameters:
 
     /gscratch/srlab/programs/TrimGalore-0.4.5/trim_galore \
     --output_dir /gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD \
@@ -62,7 +62,7 @@ For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the begi
 
 # Read Alignment
 
-The software used as part of this tutorial is **Bismark Bisulfite Mapper**. As with any software it is best to be famililar with the [User Manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html). Thus content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
+The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@http://dx.doi.org/10.1093/bioinformatics/btr167). As with any software it is best to be famililar with the [User Manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html). The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
 
 The first step in the process in preparing the genome. Example code:
 
