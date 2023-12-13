@@ -30,9 +30,13 @@ For a good review of epigenetic mechanisms including DNA methylation in marine o
 - File conversions
 - Potential downstream applications. Although this tutorial will not provide code for downstream applications such as differential methylation analysis, it will link to other open-access resources and examples.
 
-## What to expect
-DNA methylation at CpG locus can vary to 0-100%. Like wise methyation at the level Generally speaking in 
 
+## What to expect
+DNA methylation at CpG locus can vary to 0-100%. Like wise methylation at the gene level can vary and is commonly established as mean methylation level of CpG across gene, assuming some majority degree of gene coverage. Similarly with considering the methylation level of a given loci often time some threshold might be set as seen in code below. From an taxa perspective it can vary WIDELY on what to expect. The figure below shows 
+
+```{r meth-bp, echo = FALSE, out.width = "70%", fig.align = "center"}
+knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
+```
 
 # Sequence Quality
 
