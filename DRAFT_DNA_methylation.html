@@ -540,8 +540,8 @@ data often needs different trimming specifications</a>.</p>
 <div id="considerations" class="section level2">
 <h2>Considerations</h2>
 <p>The software used as part of this tutorial is <strong>Bismark
-Bisulfite Mapper</strong> <span class="citation">Krueger and Andrews
-(2011)</span>. As with any software it is best to be famililar with the
+Bisulfite Mapper</strong> (<span class="citation">Krueger and Andrews
+(2011)</span>). As with any software it is best to be famililar with the
 <a
 href="https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html">User
 Manual</a>. The content below will provided with the assumption that the
@@ -889,8 +889,155 @@ xargs basename -s .sorted.bam | \
 xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam</code></pre>
 </div>
-<div id="downstream-applications" class="section level1">
-<h1>Downstream applications</h1>
+<div id="next-steps-downstream-applications" class="section level1">
+<h1>Next Steps &amp; Downstream applications</h1>
+<div id="ct-snps" class="section level2">
+<h2>CT SNPs</h2>
+<p>Masking cytosine (C) to thymine (T) single nucleotide polymorphisms
+(SNPs) in bisulfite sequencing analysis could be something to
+considerfor a few reasons:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Bisulfite Conversion Process</strong>: In bisulfite
+sequencing, unmethylated cytosines are converted to uracil, which is
+then read as thymine in sequencing. This conversion is key to
+identifying methylated cytosines. However, if a genomic DNA sequence
+naturally has a C to T SNP, it can be falsely interpreted as a converted
+cytosine, leading to incorrect conclusions about methylation.</p></li>
+<li><p><strong>Reduction of False Positives</strong>: By masking C to T
+SNPs, one can reduce false positives in methylation analysis. Without
+masking, these SNPs might be misinterpreted as unmethylated cytosines
+that have undergone conversion, skewing the data towards an apparent
+increase in methylation.</p></li>
+<li><p><strong>Accurate Methylation Mapping</strong>: For precise
+mapping of methylation patterns, it’s crucial to distinguish between
+true methylation signals and genetic variation (SNPs). Masking C to T
+SNPs allows for a more accurate representation of the methylation status
+of the genome.</p></li>
+<li><p><strong>Analysis Consistency</strong>: In comparative studies,
+where multiple samples or conditions are analyzed, masking C to T SNPs
+ensures consistency across samples. This is especially important in
+cases where SNP profiles may vary between samples, which could otherwise
+lead to inconsistent methylation data.</p></li>
+<li><p><strong>Enhanced Data Interpretation</strong>: By eliminating
+these potential sources of error, researchers can have more confidence
+in their interpretation of the bisulfite sequencing data, leading to
+more reliable and valid conclusions about DNA methylation
+patterns.</p></li>
+</ol>
+<p>One way to do this is using BS-Snper (<span class="citation">Gao et
+al. (2015)</span>). <a href="https://github.com/hellbelly/BS-Snper"
+class="uri">https://github.com/hellbelly/BS-Snper</a>. In short one
+could merge all BAM files from experiment run BS-Snper, filter out CT
+SNPS then use this to remove loci.</p>
+<pre><code>samtools merge \
+Pg_merged.bam \
+*.sorted.bam
+
+
+perl /gscratch/srlab/programs/BS-Snper-master/BS-Snper.pl \
+Pg_merged.bam \
+--fa Panopea-generosa-v1.0.fa \
+--output snp.candidate.out \
+--methcg meth.cg \
+--methchg meth.chg \
+--methchh meth.chh \
+--minhetfreq 0.1 \
+--minhomfreq 0.85 \
+--minquali 15 \
+--mincover 10 \
+--maxcover 1000 \
+--minread2 2 \
+--errorate 0.02 \
+--mapvalue 20 \
+&gt;SNP.vcf 2&gt;SNP.log
+
+
+grep $&#39;C\tG&#39; output/SNP.vcf &gt; output/CT-SNP.vcf
+wc -l output/CT-SNP.vcf</code></pre>
+<p>Let’s break down the command and its arguments:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong><code>perl /gscratch/srlab/programs/BS-Snper-master/BS-Snper.pl</code></strong>:
+This part of the command calls the Perl interpreter to execute the
+<strong><code>BS-Snper.pl</code></strong> script. The script is located
+in the
+<strong><code>/gscratch/srlab/programs/BS-Snper-master/</code></strong>
+directory.</p></li>
+<li><p><strong><code>Pg_merged.bam</code></strong>: This is the input
+file for the script, likely a BAM file (Binary Alignment/Map format)
+which contains alignment information of bisulfite-treated sequencing
+reads.</p></li>
+<li><p><strong><code>--fa Panopea-generosa-v1.0.fa</code></strong>: This
+option specifies the reference genome file in FASTA format against which
+the BAM file will be compared.</p></li>
+<li><p><strong><code>--output snp.candidate.out</code></strong>: This
+argument sets the name of the output file where the SNP candidates will
+be written.</p></li>
+<li><p><strong><code>--methcg meth.cg</code>,
+<code>--methchg meth.chg</code>,
+<code>--methchh meth.chh</code></strong>: These options specify the
+output files for methylation analysis for CG, CHG, and CHH contexts,
+respectively (where H can be A, C, or T).</p></li>
+<li><p><strong><code>--minhetfreq 0.1</code></strong>: Sets the minimum
+frequency for heterozygous bases to be considered in SNP calling (here,
+10%).</p></li>
+<li><p><strong><code>--minhomfreq 0.85</code></strong>: Sets the minimum
+frequency for homozygous bases to be considered in SNP calling (here,
+85%).</p></li>
+<li><p><strong><code>--minquali 15</code></strong>: Sets the minimum
+base quality score.</p></li>
+<li><p><strong><code>--mincover 10</code>,
+<code>--maxcover 1000</code></strong>: These set the minimum and maximum
+coverage (number of reads) for a position to be considered in the
+analysis.</p></li>
+<li><p><strong><code>--minread2 2</code></strong>: The minimum number of
+reads required to support a SNP candidate.</p></li>
+<li><p><strong><code>--errorate 0.02</code></strong>: Sets the error
+rate of sequencing (here, 2%).</p></li>
+<li><p><strong><code>--mapvalue 20</code></strong>: Specifies the
+mapping quality value, a threshold for considering reads in the
+analysis.</p></li>
+<li><p><strong><code>&gt;SNP.vcf</code></strong>: Redirects the standard
+output to a file named <strong><code>SNP.vcf</code></strong>. This file
+will contain the SNP calls in VCF (Variant Call Format) format.</p></li>
+<li><p><strong><code>2&gt;SNP.log</code></strong>: Redirects the
+standard error output to a file named
+<strong><code>SNP.log</code></strong>. This file will contain error
+messages and possibly additional log information.</p></li>
+</ol>
+<p>If for example in downstream analysis you would might be using a
+_5x.tab file described above the following is a means in R to remove
+these SNPs.</p>
+<pre class="r"><code># Read in CT SNP file
+ct &lt;- read.csv(&quot;../output/CT-SNP.vcf&quot;, header = FALSE, sep = &quot;\t&quot;) %&gt;%
+  mutate(loci = paste0(V1, &quot;_&quot;, V2))
+
+
+# 1. List all files with _5x.tab suffix
+files &lt;- list.files(path = &quot;../data/&quot;, pattern = &quot;_5x.tab$&quot;, full.names = TRUE)
+
+# 2. Iterate over each file
+for(file in files) {
+  
+  # Extract base filename without the directory for naming purposes
+  base_name &lt;- basename(file)
+  
+  # Read the file
+  data &lt;- read.csv(file, header = FALSE, sep = &quot;\t&quot;)
+  
+  # Modify the data
+  modified_data &lt;- data %&gt;%
+    mutate(loci = paste0(V1, &quot;_&quot;, V2)) %&gt;%
+    anti_join(ct, by = &quot;loci&quot;) %&gt;%
+    select(-loci)
+    
+  
+  # Write the modified data to an output file
+  output_file &lt;- paste0(&quot;../output/f&quot;, base_name)
+  write.table(modified_data, file = output_file, sep = &quot;\t&quot;, row.names = FALSE, quote = FALSE, col.names = FALSE)
+}</code></pre>
+</div>
+<div id="other-application" class="section level2">
+<h2>Other application</h2>
 <ul>
 <li>Gene-level methylation analysis: people do this, but worth
 considering the utility of converting loci-level resolution data to
@@ -899,6 +1046,7 @@ gene-level resolution data</li>
 <li>IGV</li>
 <li>Analysis with other datasets (ex. pop gen, RNA-Seq)</li>
 </ul>
+</div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
@@ -909,6 +1057,13 @@ Eirin-Lopez, Jose M., and Hollie M. Putnam. 2019. <span>“Marine
 Environmental Epigenetics.”</span> <em>Annual Review of Marine
 Science</em> 11 (1): 335–68. <a
 href="https://doi.org/10.1146/annurev-marine-010318-095114">https://doi.org/10.1146/annurev-marine-010318-095114</a>.
+</div>
+<div id="ref-10.1093/bioinformatics/btv507" class="csl-entry">
+Gao, Shengjie, Dan Zou, Likai Mao, Huayu Liu, Pengfei Song, Youguo Chen,
+Shancen Zhao, et al. 2015. <span>“<span class="nocase">BS-SNPer: SNP
+calling in bisulfite-seq data</span>.”</span> <em>Bioinformatics</em> 31
+(24): 4006–8. <a
+href="https://doi.org/10.1093/bioinformatics/btv507">https://doi.org/10.1093/bioinformatics/btv507</a>.
 </div>
 <div id="ref-10.7717/peerj.215" class="csl-entry">
 Gavery, Mackenzie R., and Steven B. Roberts. 2013. <span>“Predominant

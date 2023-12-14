@@ -20,9 +20,31 @@ Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#
 
 # Introduction
 
+## Background
+
 Thanks to advances in sample preparation and sequencing methods, there is an influx of research examining epigenomics in non-model systems. Broadly, epigenetics can be defined as changes to gene expression that do not arise from changes in the DNA sequence. DNA methylation, or addition of a methyl (CH<sub>3</sub>) group to a cytosine base adjacent to a guanine (CpG) is one of the more commonly studies epigenetic mechanisms, partly because of its environmental sensitivity and potential role in phenotypic plasticity. For a good review of epigenetic mechanisms including DNA methylation in marine organisms see @doi:10.1146/annurev-marine-010318-095114.
 
-The purpose of this tutorial is to provide an example of aligning bisulfite-treated and enzymatically converted DNA sequence data and discuss needs for potential downstream applications. The principle behind creating bisulfite-treated DNA libraries is that when cytosines are not methylated, then they will be converted to uracil, which ultimately result in thymine nucleotides in the sequence data. @https://doi.org/10.1111/1755-0998.13542 offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). When aligning bisulfite-converted data to a reference genome the percent methylation at a given CpG loci is determined by examining the ratio of thymines to cytosines. For example if there is a given cytosine adjacent to a guanine (ie CpG locus) with 30% of the reads containing thymine, one would consider this cytosine loci (CpG) to be 70% methylated. Since bisulfite treatment can damage DNA, newer library preparation and sequencing methods (ex. [NEBNext® Enzymatic Methyl-seq Kit; EM-seq](https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&%20Usage) are starting to gain popularity. As EM-Seq produces loci-level data, alignment of EM-Seq data is similar to WGBS.
+The purpose of this tutorial is to provide an example of aligning bisulfite-treated and enzymatically converted DNA sequence data and discuss needs for potential downstream applications. The principle behind creating bisulfite-treated DNA libraries is that when cytosines are not methylated, then they will be converted to uracil, which ultimately result in thymine nucleotides in the sequence data. @https://doi.org/10.1111/1755-0998.13542 offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). When aligning bisulfite-converted data to a reference genome the percent methylation at a given CpG loci is determined by examining the ratio of thymines to cytosines. For example if there is a given cytosine adjacent to a guanine (ie CpG locus) with 30% of the reads containing thymine, one would consider this cytosine loci (CpG) to be 70% methylated. Since bisulfite treatment can damage DNA, newer library preparation and sequencing methods (ex. [NEBNext® Enzymatic Methyl-seq Kit; EM-seq](https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&%20Usage) are starting to gain popularity. As EM-Seq produces loci-level data, alignment of EM-Seq data is similar to WGBS. Also, technologies like Nanopore and PacBio sequencing can directly detect DNA methylation without bisulfite conversion. As DNA passes through a nanopore or is sequenced by single-molecule real-time (SMRT) technology, changes in electrical current or fluorescence patterns can indicate the presence of methylated bases.
+
+## Experimental Considerations
+
+### Sample Size
+
+something about samples size.
+
+### Bisulfite Conversion Efficiency
+
+Bisulfite Conversion Efficiency is important to assess. One common step during library preparation us spiking library with Lambda phage DNA. Lambda phage DNA lacks cytosine methylation, making it an ideal control for bisulfite treatment. Here's how it works and why it's useful:
+
+1.  **Background on Lambda Phage DNA**: Lambda phage DNA is a widely used control in bisulfite sequencing because it is naturally unmethylated. By including this DNA in your sample, you create a known unmethylated reference.
+
+2.  **Preparation and Spiking**: You prepare the lambda phage DNA and spike it into your DNA samples before bisulfite treatment. The proportion of lambda DNA added should be enough to be detected post-sequencing, but not so much that it overwhelms the sample. A typical proportion might be around 0.1% to 1% of the total DNA.
+
+3.  **Bisulfite Treatment and Sequencing**: After spiking, you proceed with bisulfite treatment and sequencing of the entire sample, which now includes your genomic DNA of interest and the spiked lambda DNA.
+
+4.  **Assessing Conversion Efficiency**: Once sequencing is complete, you analyze the lambda phage DNA sequences. Since this DNA is unmethylated, all cytosines should be converted to thymines after bisulfite treatment and subsequent PCR. By calculating the percentage of cytosines that were successfully converted to thymines in the lambda DNA, you can determine the bisulfite conversion efficiency. An efficient conversion typically results in over 99% of cytosines being converted.
+
+## Tutorial Details
 
 For a good review of epigenetic mechanisms including DNA methylation in marine organisms see @doi:10.1146/annurev-marine-010318-095114. @https://doi.org/10.1111/1755-0998.13542 offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). The tutorial below is based on WGBS, though the general workflow would be consistent.
 
@@ -413,9 +435,9 @@ Let's break down the command and its arguments:
 
 14. **`2>SNP.log`**: Redirects the standard error output to a file named **`SNP.log`**. This file will contain error messages and possibly additional log information.
 
-If for example in downstream analysis you would might be using a _5x.tab file described above the following is a means in R to remove these SNPs.
+If for example in downstream analysis you would might be using a \_5x.tab file described above the following is a means in R to remove these SNPs.
 
-```{r}
+```{r, eval=FALSE}
 # Read in CT SNP file
 ct <- read.csv("../output/CT-SNP.vcf", header = FALSE, sep = "\t") %>%
   mutate(loci = paste0(V1, "_", V2))
@@ -445,8 +467,6 @@ for(file in files) {
   write.table(modified_data, file = output_file, sep = "\t", row.names = FALSE, quote = FALSE, col.names = FALSE)
 }
 ```
-
-
 
 ## Other application
 
