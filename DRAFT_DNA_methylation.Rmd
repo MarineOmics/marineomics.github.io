@@ -12,7 +12,7 @@ cite_options(citation_format = "pandoc", max.names = 3, style = "html",
 
 ---
 title: 'DNA Methylation Analyses'
-subtitle: '*Steven Roberts*, *Sam White*, and *Yaamini Venkataraman*'
+subtitle: '*Yaamini Venkataraman*, *Sam White*, and *Steven Roberts*'
 bibliography: DRAFT_DNA_methylation/DNA-Methylation.bib
 ---
 
@@ -33,8 +33,6 @@ The tutorial will cover the following: - Sequence quality assessment\
 - Potential downstream applications. Although this tutorial will not provide code for downstream applications such as differential methylation analysis, it will link to other open-access resources and examples.
 
 The tutorial below is based on WGBS from a species of marine intertebrate (*Montipora capitata* coral) examined in @https://doi.org/10.1111/1755-0998.13542, and all raw data can be accessed under NCBI Bioproject PRJNA691891 if you would like to follow the tutorial with this dataset. The general workflow would be consistent for other library preparation and sequencing methods that produce loci-level data. The tutorial indicates places where special analytical consideration should be given to other data types.
-
-*Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue.* DOI: [10.7717/peerj.215/fig-1](https://doi.org/10.7717/peerj.215/fig-1)
 
 # Sequence Quality
 
@@ -66,6 +64,9 @@ For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the begi
 
 # Read Alignment
 
+## Considerations
+
+
 The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@http://dx.doi.org/10.1093/bioinformatics/btr167). As with any software it is best to be famililar with the [User Manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html). The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
 
 The first step in the process in preparing the genome. Example code:
@@ -95,7 +96,7 @@ ${genome_folder}
 
     -   **`${genome_folder}`**: Finally, this specifies the location of the genome files. The script uses the **`${genome_folder}`** variable, which holds the path to these files.
 
-This will result in a prepared genome with associated new directories including
+Bismark will create the following subdirectories as outputs of the above code for genome preparation
 
 ```         
 ./Bisulfite_Genome
@@ -118,7 +119,7 @@ find ${reads_dir}*_R1_001_val_1.fq.gz \
 -o Mcap_tg
 ```
 
-This will create bam files (sequence alignment files)
+This will create BAM files (sequence alignment files)
 
 Specifically this is what the code chunk does:
 
@@ -180,13 +181,9 @@ ${bismark_dir}/bismark_methylation_extractor \
 *deduplicated.bam
 ```
 
-This particular command is used to extract and process methylation data from BAM files (generated after sequencing data alignment). Let's break down the command and its options:
+This particular command is used to extract and process methylation data from BAM files (generated after sequencing data alignment). Let's break down the options:
 
-1.  **Command Base**:
-
-    -   **`${bismark_dir}/bismark_methylation_extractor`**: This specifies the path to the **`bismark_methylation_extractor`** executable within the Bismark software directory. The variable **`${bismark_dir}`** holds the path to the Bismark installation directory.
-
-2.  **Options**:
+1.  **Options**:
 
     -   **`--bedGraph`**: Generates a BedGraph file output, which is a format that allows visualization of the methylation levels across the genome in genome browsers.
 
