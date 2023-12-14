@@ -65,7 +65,7 @@ For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the begi
 
 ## Considerations
 
-The software used as part of this tutorial is **Bismark Bisulfite Mapper** @10.1093/bioinformatics/btr167. As with any software it is best to be famililar with the [User Manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html). The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
+The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@10.1093/bioinformatics/btr167). As with any software it is best to be famililar with the [User Manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html). The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
 
 The first step in the process in preparing the genome. Example code:
 
@@ -337,7 +337,118 @@ xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam
 ```
 
-# Downstream applications
+# Next Steps & Downstream applications
+
+## CT SNPs
+
+Masking cytosine (C) to thymine (T) single nucleotide polymorphisms (SNPs) in bisulfite sequencing analysis could be something to considerfor a few reasons:
+
+1.  **Bisulfite Conversion Process**: In bisulfite sequencing, unmethylated cytosines are converted to uracil, which is then read as thymine in sequencing. This conversion is key to identifying methylated cytosines. However, if a genomic DNA sequence naturally has a C to T SNP, it can be falsely interpreted as a converted cytosine, leading to incorrect conclusions about methylation.
+
+2.  **Reduction of False Positives**: By masking C to T SNPs, one can reduce false positives in methylation analysis. Without masking, these SNPs might be misinterpreted as unmethylated cytosines that have undergone conversion, skewing the data towards an apparent increase in methylation.
+
+3.  **Accurate Methylation Mapping**: For precise mapping of methylation patterns, it's crucial to distinguish between true methylation signals and genetic variation (SNPs). Masking C to T SNPs allows for a more accurate representation of the methylation status of the genome.
+
+4.  **Analysis Consistency**: In comparative studies, where multiple samples or conditions are analyzed, masking C to T SNPs ensures consistency across samples. This is especially important in cases where SNP profiles may vary between samples, which could otherwise lead to inconsistent methylation data.
+
+5.  **Enhanced Data Interpretation**: By eliminating these potential sources of error, researchers can have more confidence in their interpretation of the bisulfite sequencing data, leading to more reliable and valid conclusions about DNA methylation patterns.
+
+One way to do this is using BS-Snper (@10.1093/bioinformatics/btv507). <https://github.com/hellbelly/BS-Snper>. In short one could merge all BAM files from experiment run BS-Snper, filter out CT SNPS then use this to remove loci.
+
+```         
+samtools merge \
+Pg_merged.bam \
+*.sorted.bam
+
+
+perl /gscratch/srlab/programs/BS-Snper-master/BS-Snper.pl \
+Pg_merged.bam \
+--fa Panopea-generosa-v1.0.fa \
+--output snp.candidate.out \
+--methcg meth.cg \
+--methchg meth.chg \
+--methchh meth.chh \
+--minhetfreq 0.1 \
+--minhomfreq 0.85 \
+--minquali 15 \
+--mincover 10 \
+--maxcover 1000 \
+--minread2 2 \
+--errorate 0.02 \
+--mapvalue 20 \
+>SNP.vcf 2>SNP.log
+
+
+grep $'C\tG' output/SNP.vcf > output/CT-SNP.vcf
+wc -l output/CT-SNP.vcf
+```
+
+Let's break down the command and its arguments:
+
+1.  **`perl /gscratch/srlab/programs/BS-Snper-master/BS-Snper.pl`**: This part of the command calls the Perl interpreter to execute the **`BS-Snper.pl`** script. The script is located in the **`/gscratch/srlab/programs/BS-Snper-master/`** directory.
+
+2.  **`Pg_merged.bam`**: This is the input file for the script, likely a BAM file (Binary Alignment/Map format) which contains alignment information of bisulfite-treated sequencing reads.
+
+3.  **`--fa Panopea-generosa-v1.0.fa`**: This option specifies the reference genome file in FASTA format against which the BAM file will be compared.
+
+4.  **`--output snp.candidate.out`**: This argument sets the name of the output file where the SNP candidates will be written.
+
+5.  **`--methcg meth.cg`, `--methchg meth.chg`, `--methchh meth.chh`**: These options specify the output files for methylation analysis for CG, CHG, and CHH contexts, respectively (where H can be A, C, or T).
+
+6.  **`--minhetfreq 0.1`**: Sets the minimum frequency for heterozygous bases to be considered in SNP calling (here, 10%).
+
+7.  **`--minhomfreq 0.85`**: Sets the minimum frequency for homozygous bases to be considered in SNP calling (here, 85%).
+
+8.  **`--minquali 15`**: Sets the minimum base quality score.
+
+9.  **`--mincover 10`, `--maxcover 1000`**: These set the minimum and maximum coverage (number of reads) for a position to be considered in the analysis.
+
+10. **`--minread2 2`**: The minimum number of reads required to support a SNP candidate.
+
+11. **`--errorate 0.02`**: Sets the error rate of sequencing (here, 2%).
+
+12. **`--mapvalue 20`**: Specifies the mapping quality value, a threshold for considering reads in the analysis.
+
+13. **`>SNP.vcf`**: Redirects the standard output to a file named **`SNP.vcf`**. This file will contain the SNP calls in VCF (Variant Call Format) format.
+
+14. **`2>SNP.log`**: Redirects the standard error output to a file named **`SNP.log`**. This file will contain error messages and possibly additional log information.
+
+If for example in downstream analysis you would might be using a _5x.tab file described above the following is a means in R to remove these SNPs.
+
+```{r}
+# Read in CT SNP file
+ct <- read.csv("../output/CT-SNP.vcf", header = FALSE, sep = "\t") %>%
+  mutate(loci = paste0(V1, "_", V2))
+
+
+# 1. List all files with _5x.tab suffix
+files <- list.files(path = "../data/", pattern = "_5x.tab$", full.names = TRUE)
+
+# 2. Iterate over each file
+for(file in files) {
+  
+  # Extract base filename without the directory for naming purposes
+  base_name <- basename(file)
+  
+  # Read the file
+  data <- read.csv(file, header = FALSE, sep = "\t")
+  
+  # Modify the data
+  modified_data <- data %>%
+    mutate(loci = paste0(V1, "_", V2)) %>%
+    anti_join(ct, by = "loci") %>%
+    select(-loci)
+    
+  
+  # Write the modified data to an output file
+  output_file <- paste0("../output/f", base_name)
+  write.table(modified_data, file = output_file, sep = "\t", row.names = FALSE, quote = FALSE, col.names = FALSE)
+}
+```
+
+
+
+## Other application
 
 -   Gene-level methylation analysis: people do this, but worth considering the utility of converting loci-level resolution data to gene-level resolution data
 -   methylKit
