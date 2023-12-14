@@ -96,7 +96,7 @@ ${genome_folder}
 
     -   **`${genome_folder}`**: Finally, this specifies the location of the genome files. The script uses the **`${genome_folder}`** variable, which holds the path to these files.
 
-Bismark will create the following subdirectories as outputs of the above code for genome preparation
+Bismark will create two individual folders within this directory, one for a C->T converted genome and the other one for the G->A converted genome. After creating C->T and G->A versions of the genome they will be indexed in parallel usingthe indexer. Bismark will create the following subdirectories as outputs.
 
 ```         
 ./Bisulfite_Genome
