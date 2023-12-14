@@ -11,7 +11,7 @@ cite_options(citation_format = "pandoc", max.names = 3, style = "html",
 ```
 
 ---
-title: 'DNA Methylation Analyses'
+title: 'DNA Methylation Assessment'
 subtitle: '*Yaamini Venkataraman*, *Sam White*, and *Steven Roberts*'
 bibliography: DRAFT_DNA_methylation/DNA-Methylation.bib
 ---
@@ -26,7 +26,8 @@ The purpose of this tutorial is to provide an example of aligning bisulfite-trea
 
 For a good review of epigenetic mechanisms including DNA methylation in marine organisms see @doi:10.1146/annurev-marine-010318-095114. @https://doi.org/10.1111/1755-0998.13542 offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). The tutorial below is based on WGBS, though the general workflow would be consistent.
 
-The tutorial will cover the following: - Sequence quality assessment\
+The tutorial will cover the following: \
+- Sequence quality assessment\
 - Read alignment\
 - Methylation quantification\
 - File conversions\
@@ -35,8 +36,6 @@ The tutorial will cover the following: - Sequence quality assessment\
 The tutorial below is based on WGBS from a species of marine intertebrate (*Montipora capitata* coral) examined in @https://doi.org/10.1111/1755-0998.13542, and all raw data can be accessed under NCBI Bioproject PRJNA691891 if you would like to follow the tutorial with this dataset. The general workflow would be consistent for other library preparation and sequencing methods that produce loci-level data. The tutorial indicates places where special analytical consideration should be given to other data types.
 
 # Sequence Quality
-
-An example of what raw data might look like from a marine invertebrate is shown. *Note that DNA methylation patters are diverse across taxa with most invertebrates demonstrating a mosiac pattern and global methylation at CpG loci is approximately 15%.*
 
 Following trimming one would expect to see FastQC per base sequencing content similar to the plot shown below. This particular data set was trimmed with the following parameters:
 
@@ -65,7 +64,6 @@ For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the begi
 # Read Alignment
 
 ## Considerations
-
 
 The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@http://dx.doi.org/10.1093/bioinformatics/btr167). As with any software it is best to be famililar with the [User Manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html). The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
 
@@ -96,7 +94,7 @@ ${genome_folder}
 
     -   **`${genome_folder}`**: Finally, this specifies the location of the genome files. The script uses the **`${genome_folder}`** variable, which holds the path to these files.
 
-Bismark will create two individual folders within this directory, one for a C->T converted genome and the other one for the G->A converted genome. After creating C->T and G->A versions of the genome they will be indexed in parallel usingthe indexer. Bismark will create the following subdirectories as outputs.
+Bismark will create two individual folders within this directory, one for a C-\>T converted genome and the other one for the G-\>A converted genome. After creating C-\>T and G-\>A versions of the genome they will be indexed in parallel usingthe indexer. Bismark will create the following subdirectories as outputs.
 
 ```         
 ./Bisulfite_Genome
@@ -167,6 +165,8 @@ DNA methylation at CpG locus can vary to 0-100%. Like wise methylation at the ge
 ```{r meth-ratio, echo = FALSE, out.width = "70%", fig.align = "center"}
 knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
 ```
+
+*Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue.* @10.7717/peerj.215
 
 Methylation levels are then extracted using the `bismark_methylation_extractor`. For example:
 
@@ -329,7 +329,7 @@ xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam
 ```
 
-# Potential downstream applications
+# Downstream applications
 
 -   Gene-level methylation analysis: people do this, but worth considering the utility of converting loci-level resolution data to gene-level resolution data
 -   methylKit

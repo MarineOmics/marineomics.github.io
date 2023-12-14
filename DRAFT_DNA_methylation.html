@@ -11,7 +11,7 @@
 
 
 
-<title>DNA Methylation Analyses</title>
+<title>DNA Methylation Assessment</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -442,9 +442,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">DNA Methylation Analyses</h1>
-<h3 class="subtitle"><em>Steven Roberts</em>, <em>Sam White</em>, and
-<em>Yaamini Venkataraman</em></h3>
+<h1 class="title toc-ignore">DNA Methylation Assessment</h1>
+<h3 class="subtitle"><em>Yaamini Venkataraman</em>, <em>Sam White</em>,
+and <em>Steven Roberts</em></h3>
 
 </div>
 
@@ -493,8 +493,8 @@ base-pair resolution using whole genome bisulfite sequencing (WGBS),
 reduced representation bisulfite sequencing (RRBS), and methyl-CpG
 binding domain bisulfite sequencing (MBDBS). The tutorial below is based
 on WGBS, though the general workflow would be consistent.</p>
-<p>The tutorial will cover the following: - Sequence quality
-assessment<br />
+<p>The tutorial will cover the following:<br />
+- Sequence quality assessment<br />
 - Read alignment<br />
 - Methylation quantification<br />
 - File conversions<br />
@@ -510,31 +510,9 @@ the tutorial with this dataset. The general workflow would be consistent
 for other library preparation and sequencing methods that produce
 loci-level data. The tutorial indicates places where special analytical
 consideration should be given to other data types.</p>
-<div id="what-to-expect" class="section level2">
-<h2>What to expect</h2>
-<p>DNA methylation at CpG locus can vary to 0-100%. Like wise
-methylation at the gene level can vary and is commonly established as
-mean methylation level of CpG across gene, assuming some majority degree
-of gene coverage. Similarly with considering the methylation level of a
-given loci often time some threshold might be set as seen in code below.
-From an taxa perspective it can vary WIDELY on what to expect. The
-figure below shows the mehthylation ratio of CpGs across the oyster
-genome. In some marine invertebrates we see ~15% methylation of CpGs
-(defined as &gt; 75% methylated) across the genome with most CpGs
-unmethylated. In these taxa methylation usually occurs in gene
-bodes.</p>
-<p><img src="DRAFT_DNA_methylation/meth_ratio.png" width="70%" style="display: block; margin: auto;" />
-<em>Frequency distribution of methylation ratios for CpG dinucleotides
-in oyster gill tissue.</em> DOI: <a
-href="https://doi.org/10.7717/peerj.215/fig-1">10.7717/peerj.215/fig-1</a></p>
-</div>
 </div>
 <div id="sequence-quality" class="section level1">
 <h1>Sequence Quality</h1>
-<p>An example of what raw data might look like from a marine
-invertebrate is shown. <em>Note that DNA methylation patters are diverse
-across taxa with most invertebrates demonstrating a mosiac pattern and
-global methylation at CpG loci is approximately 15%.</em></p>
 <p>Following trimming one would expect to see FastQC per base sequencing
 content similar to the plot shown below. This particular data set was
 trimmed with the following parameters:</p>
@@ -559,6 +537,8 @@ data often needs different trimming specifications</a>.</p>
 </div>
 <div id="read-alignment" class="section level1">
 <h1>Read Alignment</h1>
+<div id="considerations" class="section level2">
+<h2>Considerations</h2>
 <p>The software used as part of this tutorial is <strong>Bismark
 Bisulfite Mapper</strong> (<span
 class="citation">(<strong>http://dx.doi.org/10.1093/bioinformatics/btr167?</strong>)</span>).
@@ -579,8 +559,35 @@ ${bismark_dir}/bismark_genome_preparation \
 --parallel 28 \
 --path_to_aligner ${bowtie2_dir} \
 ${genome_folder}</code></pre>
-<p>You should expect to prepared genome with new directories
-including</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Bismark Genome Preparation Command</strong>:</p>
+<ul>
+<li><p><strong><code>${bismark_dir}/bismark_genome_preparation</code></strong>:
+This is the command to run the genome preparation part of Bismark. The
+<strong><code>${bismark_dir}</code></strong> variable is expanded to the
+path where Bismark is installed, so the script knows where to find the
+<strong><code>bismark_genome_preparation</code></strong>
+program.</p></li>
+<li><p><strong><code>--verbose</code></strong>: This flag makes the
+program output more detailed information about what it is doing, which
+is helpful for debugging or understanding the process.</p></li>
+<li><p><strong><code>--parallel 28</code></strong>: This option tells
+Bismark to use 28 threads in parallel to speed up the process.</p></li>
+<li><p><strong><code>--path_to_aligner ${bowtie2_dir}</code></strong>:
+This specifies the path to the aligner (Bowtie2) that Bismark will use.
+The <strong><code>${bowtie2_dir}</code></strong> variable is expanded to
+the path where Bowtie2 is installed.</p></li>
+<li><p><strong><code>${genome_folder}</code></strong>: Finally, this
+specifies the location of the genome files. The script uses the
+<strong><code>${genome_folder}</code></strong> variable, which holds the
+path to these files.</p></li>
+</ul></li>
+</ol>
+<p>Bismark will create two individual folders within this directory, one
+for a C-&gt;T converted genome and the other one for the G-&gt;A
+converted genome. After creating C-&gt;T and G-&gt;A versions of the
+genome they will be indexed in parallel usingthe indexer. Bismark will
+create the following subdirectories as outputs.</p>
 <pre><code>./Bisulfite_Genome
 ./Bisulfite_Genome/GA_conversion
 ./Bisulfite_Genome/CT_conversion</code></pre>
@@ -596,7 +603,57 @@ structure is used</p>
 -1 ${reads_dir}{}_R1_001_val_1.fq.gz \
 -2 ${reads_dir}{}_R2_001_val_2.fq.gz \
 -o Mcap_tg</code></pre>
-<p>This will create bam files (sequence alignment files)</p>
+<p>This will create BAM files (sequence alignment files)</p>
+<p>Specifically this is what the code chunk does:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Finding Files and Preparing Filenames</strong>:</p>
+<ul>
+<li><p><strong><code>find ${reads_dir}*_R1_001_val_1.fq.gz</code></strong>:
+This command uses the <strong><code>find</code></strong> utility to
+search for files in the directory specified by the variable
+<strong><code>reads_dir</code></strong>. The files it looks for have a
+naming pattern ending with
+<strong><code>_R1_001_val_1.fq.gz</code></strong>, which typically
+denotes the first file of a pair in paired-end sequencing data.</p></li>
+<li><p><strong><code>| xargs basename -s _R1_001_val_1.fq.gz</code></strong>:
+The <strong><code>xargs</code></strong> command takes the list of files
+found and passes them to <strong><code>basename</code></strong>, which
+strips the suffix <strong><code>_R1_001_val_1.fq.gz</code></strong> from
+each filename. This step extracts the base name of each file, which is
+used to pair the R1 and R2 files correctly in the following
+steps.</p></li>
+</ul></li>
+<li><p><strong>Running Bismark for Sequence Alignment</strong>:</p>
+<ul>
+<li><p><strong><code>| xargs -I{} ${bismark_dir}/bismark</code></strong>:
+The <strong><code>xargs</code></strong> command here is used to pass the
+base filenames to Bismark for alignment.
+<strong><code>{}</code></strong> is a placeholder for each base
+filename.</p></li>
+<li><p><strong><code>--path_to_bowtie ${bowtie2_dir}</code></strong>:
+This option specifies the path to the Bowtie2 aligner, which Bismark
+uses for the alignment process.</p></li>
+<li><p><strong><code>-genome ${genome_folder}</code></strong>: Specifies
+the directory where the genome files, prepared in advance, are
+located.</p></li>
+<li><p><strong><code>-p 4</code></strong>: Sets the number of processing
+threads to 4, allowing Bismark to perform the alignment in parallel,
+which can speed up the process.</p></li>
+<li><p><strong><code>-score_min L,0,-0.6</code></strong>: This sets the
+scoring threshold for alignments, impacting the sensitivity and
+specificity of the alignment.</p></li>
+<li><p><strong><code>--non_directional</code></strong>: This flag
+indicates the sequencing data is non-directional, which is important for
+correctly interpreting the methylation status in bisulfite
+sequencing.</p></li>
+<li><p><strong><code>-1 ${reads_dir}{}_R1_001_val_1.fq.gz -2 ${reads_dir}{}_R2_001_val_2.fq.gz</code></strong>:
+Specifies the files for paired-end reads. R1 and R2 files are paired
+based on their base filename.</p></li>
+<li><p><strong><code>-o Mcap_tg</code></strong>: Sets the output
+directory for the alignment results to
+<strong><code>Mcap_tg</code></strong>.</p></li>
+</ul></li>
+</ol>
 <p>Files are then deduplicated if they are whole genome bisulfite
 treated samples. This command will deduplicate the Bismark alignment BAM
 file and remove all reads that align to the the very same position and
@@ -613,8 +670,26 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 --paired \
 {}.bam</code></pre>
 </div>
+</div>
 <div id="methylation-quantification" class="section level1">
 <h1>Methylation Quantification</h1>
+<div id="what-to-expect" class="section level2">
+<h2>What to expect</h2>
+<p>DNA methylation at CpG locus can vary to 0-100%. Like wise
+methylation at the gene level can vary and is commonly established as
+mean methylation level of CpG across gene, assuming some majority degree
+of gene coverage. Similarly with considering the methylation level of a
+given loci often time some threshold might be set as seen in code below.
+From an taxa perspective it can vary WIDELY on what to expect. The
+figure below shows the mehthylation ratio of CpGs across the oyster
+genome. In some marine invertebrates we see ~15% methylation of CpGs
+(defined as &gt; 75% methylated) across the genome with most CpGs
+unmethylated. In these taxa methylation usually occurs in gene
+bodies.</p>
+<p><img src="DRAFT_DNA_methylation/meth_ratio.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><em>Frequency distribution of methylation ratios for CpG
+dinucleotides in oyster gill tissue.</em> <span class="citation">Gavery
+and Roberts (2013)</span></p>
 <p>Methylation levels are then extracted using the
 <code>bismark_methylation_extractor</code>. For example:</p>
 <pre><code>${bismark_dir}/bismark_methylation_extractor \
@@ -625,6 +700,40 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 --multicore 28 \
 --buffer_size 75% \
 *deduplicated.bam</code></pre>
+<p>This particular command is used to extract and process methylation
+data from BAM files (generated after sequencing data alignment). Let’s
+break down the options:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Options</strong>:</p>
+<ul>
+<li><p><strong><code>--bedGraph</code></strong>: Generates a BedGraph
+file output, which is a format that allows visualization of the
+methylation levels across the genome in genome browsers.</p></li>
+<li><p><strong><code>--counts</code></strong>: Outputs the count of
+methylated and unmethylated calls for each cytosine in the
+genome.</p></li>
+<li><p><strong><code>--comprehensive</code></strong>: This option makes
+the methylation extractor process all cytosines in the genome, not just
+those in a CpG context. It combines all three contexts (CpG, CHG, and
+CHH) into one output file.</p></li>
+<li><p><strong><code>--merge_non_CpG</code></strong>: Merges the
+methylation information for CHG and CHH contexts (non-CpG) into a single
+file.</p></li>
+<li><p><strong><code>--multicore 28</code></strong>: Specifies that the
+program should use 28 cores to process the data in parallel, which can
+significantly speed up the analysis.</p></li>
+<li><p><strong><code>--buffer_size 75%</code></strong>: This option sets
+the buffer size for reading in BAM files to 75% of the available system
+memory. It helps optimize the performance of the tool by adjusting how
+much memory is used for processing.</p></li>
+<li><p><strong><code>*deduplicated.bam</code></strong>: This is the
+input file pattern for the command. It indicates that the methylation
+extractor should process all BAM files in the current directory that
+have names ending with “deduplicated.bam”. These files are typically the
+output of a deduplication process applied to aligned bisulfite
+sequencing data.</p></li>
+</ul></li>
+</ol>
 <p>This will create a file with the suffix
 <code>deduplicated.bismark.cov.gz</code> (example shown below in
 uncompressed format). The resultant bedGraph file contains information
@@ -654,7 +763,64 @@ file), with this code as an example:</p>
 --merge_CpG \
 --zero_based \
 {}_trimmed_bismark_bt2.deduplicated.bismark.cov.gz</code></pre>
-<p>Generating a file <code>.CpG_report.merged_CpG_evidence.cov</code>
+<p>The script converts coverage files into a format that details
+cytosine methylation levels across the genome. Here’s a breakdown of
+each step:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Finding Files</strong>:</p>
+<ul>
+<li><strong><code>find *deduplicated.bismark.cov.gz</code></strong>:
+This command is used to search for all files in the current directory
+that end with <strong><code>deduplicated.bismark.cov.gz</code></strong>.
+These files are coverage files produced by Bismark, typically after
+aligning bisulfite-treated DNA sequences. They contain information about
+methylation at different sites in the genome.</li>
+</ul></li>
+<li><p><strong>Extracting Base File Names</strong>:</p>
+<ul>
+<li><strong><code>| xargs basename -s _trimmed_bismark_bt2.deduplicated.bismark.cov.gz</code></strong>:
+This pipeline uses <strong><code>xargs</code></strong> to pass each
+found file to <strong><code>basename</code></strong>, which strips the
+suffix
+<strong><code>_trimmed_bismark_bt2.deduplicated.bismark.cov.gz</code></strong>
+from each file name. This step extracts the base names of the files,
+which will be used to generate output filenames in the following
+steps.</li>
+</ul></li>
+<li><p><strong>Converting Coverage to Cytosine Methylation
+Levels</strong>:</p>
+<ul>
+<li><p><strong><code>| xargs -I{} ${bismark_dir}/coverage2cytosine</code></strong>:
+This pipeline uses <strong><code>xargs</code></strong> again to pass
+each base filename to the
+<strong><code>coverage2cytosine</code></strong> tool in the Bismark
+suite. The placeholder <strong><code>{}</code></strong> is replaced by
+the base filename.</p></li>
+<li><p><strong><code>--genome_folder ${genome_folder}</code></strong>:
+This option specifies the location of the genome folder. The
+<strong><code>${genome_folder}</code></strong> variable holds the path
+to this folder, which contains reference genome data necessary for the
+analysis.</p></li>
+<li><p><strong><code>-o {}</code></strong>: The
+<strong><code>-o</code></strong> option specifies the output file name,
+using the base filename <strong><code>{}</code></strong> obtained from
+the previous steps.</p></li>
+<li><p><strong><code>--merge_CpG</code></strong>: This flag instructs
+the program to merge the methylation information of cytosines in CpG
+context, providing a single methylation value for each CpG
+site.</p></li>
+<li><p><strong><code>--zero_based</code></strong>: This option indicates
+that the output file should use zero-based coordinates, which is a
+common format in bioinformatics where the first base of a sequence is
+numbered 0 instead of 1.</p></li>
+<li><p><strong><code>{}_trimmed_bismark_bt2.deduplicated.bismark.cov.gz</code></strong>:
+Finally, this specifies the input file for each iteration, where
+<strong><code>{}</code></strong> is replaced by the base filename
+obtained earlier. These are the coverage files previously identified by
+the <strong><code>find</code></strong> command.</p></li>
+</ul></li>
+</ol>
+<p>Output file format <code>.CpG_report.merged_CpG_evidence.cov</code>
 (merged bedGraph file)</p>
 <pre><code>NC_035785.1 217 219 100.000000  17  0
 NC_035785.1 523 525 87.500000   7   1
@@ -666,6 +832,7 @@ NC_035785.1 1494    1496    66.666667   2   1
 NC_035785.1 1747    1749    100.000000  8   0
 NC_035785.1 2024    2026    100.000000  24  0
 NC_035785.1 2054    2056    93.333333   14  1</code></pre>
+</div>
 </div>
 <div id="file-conversions" class="section level1">
 <h1>File Conversions</h1>
@@ -717,8 +884,8 @@ xargs basename -s .sorted.bam | \
 xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam</code></pre>
 </div>
-<div id="potential-downstream-applications" class="section level1">
-<h1>Potential downstream applications</h1>
+<div id="downstream-applications" class="section level1">
+<h1>Downstream applications</h1>
 <ul>
 <li>Gene-level methylation analysis: people do this, but worth
 considering the utility of converting loci-level resolution data to
@@ -737,6 +904,13 @@ Eirin-Lopez, Jose M., and Hollie M. Putnam. 2019. <span>“Marine
 Environmental Epigenetics.”</span> <em>Annual Review of Marine
 Science</em> 11 (1): 335–68. <a
 href="https://doi.org/10.1146/annurev-marine-010318-095114">https://doi.org/10.1146/annurev-marine-010318-095114</a>.
+</div>
+<div id="ref-10.7717/peerj.215" class="csl-entry">
+Gavery, Mackenzie R., and Steven B. Roberts. 2013. <span>“Predominant
+Intragenic Methylation Is Associated with Gene Expression
+Characteristics in a Bivalve Mollusc.”</span> <em>PeerJ</em> 1
+(November): e215. <a
+href="https://doi.org/10.7717/peerj.215">https://doi.org/10.7717/peerj.215</a>.
 </div>
 <div id="ref-https://doi.org/10.1111/1755-0998.13542" class="csl-entry">
 Trigg, Shelly A., Yaamini R. Venkataraman, Mackenzie R. Gavery, Steven
