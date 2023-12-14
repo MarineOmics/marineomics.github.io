@@ -66,14 +66,6 @@ For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the begi
 
 # Read Alignment
 
-## What to expect
-
-DNA methylation at CpG locus can vary to 0-100%. Like wise methylation at the gene level can vary and is commonly established as mean methylation level of CpG across gene, assuming some majority degree of gene coverage. Similarly with considering the methylation level of a given loci often time some threshold might be set as seen in code below. From an taxa perspective it can vary WIDELY on what to expect. The figure below shows the mehthylation ratio of CpGs across the oyster genome. In some marine invertebrates we see \~15% methylation of CpGs (defined as \> 75% methylated) across the genome with most CpGs unmethylated. In these taxa methylation usually occurs in gene bodies.
-
-```{r meth-ratio, echo = FALSE, out.width = "70%", fig.align = "center"}
-knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
-```
-
 The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@http://dx.doi.org/10.1093/bioinformatics/btr167). As with any software it is best to be famililar with the [User Manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html). The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
 
 The first step in the process in preparing the genome. Example code:
@@ -128,6 +120,32 @@ find ${reads_dir}*_R1_001_val_1.fq.gz \
 
 This will create bam files (sequence alignment files)
 
+Specifically this is what the code chunk does:
+
+1.  **Finding Files and Preparing Filenames**:
+
+    -   **`find ${reads_dir}*_R1_001_val_1.fq.gz`**: This command uses the **`find`** utility to search for files in the directory specified by the variable **`reads_dir`**. The files it looks for have a naming pattern ending with **`_R1_001_val_1.fq.gz`**, which typically denotes the first file of a pair in paired-end sequencing data.
+
+    -   **`| xargs basename -s _R1_001_val_1.fq.gz`**: The **`xargs`** command takes the list of files found and passes them to **`basename`**, which strips the suffix **`_R1_001_val_1.fq.gz`** from each filename. This step extracts the base name of each file, which is used to pair the R1 and R2 files correctly in the following steps.
+
+2.  **Running Bismark for Sequence Alignment**:
+
+    -   **`| xargs -I{} ${bismark_dir}/bismark`**: The **`xargs`** command here is used to pass the base filenames to Bismark for alignment. **`{}`** is a placeholder for each base filename.
+
+    -   **`--path_to_bowtie ${bowtie2_dir}`**: This option specifies the path to the Bowtie2 aligner, which Bismark uses for the alignment process.
+
+    -   **`-genome ${genome_folder}`**: Specifies the directory where the genome files, prepared in advance, are located.
+
+    -   **`-p 4`**: Sets the number of processing threads to 4, allowing Bismark to perform the alignment in parallel, which can speed up the process.
+
+    -   **`-score_min L,0,-0.6`**: This sets the scoring threshold for alignments, impacting the sensitivity and specificity of the alignment.
+
+    -   **`--non_directional`**: This flag indicates the sequencing data is non-directional, which is important for correctly interpreting the methylation status in bisulfite sequencing.
+
+    -   **`-1 ${reads_dir}{}_R1_001_val_1.fq.gz -2 ${reads_dir}{}_R2_001_val_2.fq.gz`**: Specifies the files for paired-end reads. R1 and R2 files are paired based on their base filename.
+
+    -   **`-o Mcap_tg`**: Sets the output directory for the alignment results to **`Mcap_tg`**.
+
 Files are then deduplicated if they are whole genome bisulfite treated samples. This command will deduplicate the Bismark alignment BAM file and remove all reads that align to the the very same position and in the same orientation except for one. This step is recommended for whole-genome bisulfite samples, but **should not** be used for reduced representation libraries such as RRBS, amplicon, or target enrichment libraries. The [`bismark` manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html#ix-notes-about-different-library-types-and-commercial-kits) provides additional information.
 
 ```         
@@ -141,6 +159,14 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 
 # Methylation Quantification
 
+## What to expect
+
+DNA methylation at CpG locus can vary to 0-100%. Like wise methylation at the gene level can vary and is commonly established as mean methylation level of CpG across gene, assuming some majority degree of gene coverage. Similarly with considering the methylation level of a given loci often time some threshold might be set as seen in code below. From an taxa perspective it can vary WIDELY on what to expect. The figure below shows the mehthylation ratio of CpGs across the oyster genome. In some marine invertebrates we see \~15% methylation of CpGs (defined as \> 75% methylated) across the genome with most CpGs unmethylated. In these taxa methylation usually occurs in gene bodies.
+
+```{r meth-ratio, echo = FALSE, out.width = "70%", fig.align = "center"}
+knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
+```
+
 Methylation levels are then extracted using the `bismark_methylation_extractor`. For example:
 
 ```         
@@ -153,6 +179,28 @@ ${bismark_dir}/bismark_methylation_extractor \
 --buffer_size 75% \
 *deduplicated.bam
 ```
+
+This particular command is used to extract and process methylation data from BAM files (generated after sequencing data alignment). Let's break down the command and its options:
+
+1.  **Command Base**:
+
+    -   **`${bismark_dir}/bismark_methylation_extractor`**: This specifies the path to the **`bismark_methylation_extractor`** executable within the Bismark software directory. The variable **`${bismark_dir}`** holds the path to the Bismark installation directory.
+
+2.  **Options**:
+
+    -   **`--bedGraph`**: Generates a BedGraph file output, which is a format that allows visualization of the methylation levels across the genome in genome browsers.
+
+    -   **`--counts`**: Outputs the count of methylated and unmethylated calls for each cytosine in the genome.
+
+    -   **`--comprehensive`**: This option makes the methylation extractor process all cytosines in the genome, not just those in a CpG context. It combines all three contexts (CpG, CHG, and CHH) into one output file.
+
+    -   **`--merge_non_CpG`**: Merges the methylation information for CHG and CHH contexts (non-CpG) into a single file.
+
+    -   **`--multicore 28`**: Specifies that the program should use 28 cores to process the data in parallel, which can significantly speed up the analysis.
+
+    -   **`--buffer_size 75%`**: This option sets the buffer size for reading in BAM files to 75% of the available system memory. It helps optimize the performance of the tool by adjusting how much memory is used for processing.
+
+    -   **`*deduplicated.bam`**: This is the input file pattern for the command. It indicates that the methylation extractor should process all BAM files in the current directory that have names ending with "deduplicated.bam". These files are typically the output of a deduplication process applied to aligned bisulfite sequencing data.
 
 This will create a file with the suffix `deduplicated.bismark.cov.gz` (example shown below in uncompressed format). The resultant bedGraph file contains information from *unmerged* strands, meaning reads aligning to forward and reverse strands in the same position are not combined. Later in this workflow, a bedGraph with *merged* information will be created.
 
@@ -188,7 +236,31 @@ find *deduplicated.bismark.cov.gz \
 {}_trimmed_bismark_bt2.deduplicated.bismark.cov.gz
 ```
 
-Generating a file `.CpG_report.merged_CpG_evidence.cov` (merged bedGraph file)
+The script converts coverage files into a format that details cytosine methylation levels across the genome. Here's a breakdown of each step:
+
+1.  **Finding Files**:
+
+    -   **`find *deduplicated.bismark.cov.gz`**: This command is used to search for all files in the current directory that end with **`deduplicated.bismark.cov.gz`**. These files are coverage files produced by Bismark, typically after aligning bisulfite-treated DNA sequences. They contain information about methylation at different sites in the genome.
+
+2.  **Extracting Base File Names**:
+
+    -   **`| xargs basename -s _trimmed_bismark_bt2.deduplicated.bismark.cov.gz`**: This pipeline uses **`xargs`** to pass each found file to **`basename`**, which strips the suffix **`_trimmed_bismark_bt2.deduplicated.bismark.cov.gz`** from each file name. This step extracts the base names of the files, which will be used to generate output filenames in the following steps.
+
+3.  **Converting Coverage to Cytosine Methylation Levels**:
+
+    -   **`| xargs -I{} ${bismark_dir}/coverage2cytosine`**: This pipeline uses **`xargs`** again to pass each base filename to the **`coverage2cytosine`** tool in the Bismark suite. The placeholder **`{}`** is replaced by the base filename.
+
+    -   **`--genome_folder ${genome_folder}`**: This option specifies the location of the genome folder. The **`${genome_folder}`** variable holds the path to this folder, which contains reference genome data necessary for the analysis.
+
+    -   **`-o {}`**: The **`-o`** option specifies the output file name, using the base filename **`{}`** obtained from the previous steps.
+
+    -   **`--merge_CpG`**: This flag instructs the program to merge the methylation information of cytosines in CpG context, providing a single methylation value for each CpG site.
+
+    -   **`--zero_based`**: This option indicates that the output file should use zero-based coordinates, which is a common format in bioinformatics where the first base of a sequence is numbered 0 instead of 1.
+
+    -   **`{}_trimmed_bismark_bt2.deduplicated.bismark.cov.gz`**: Finally, this specifies the input file for each iteration, where **`{}`** is replaced by the base filename obtained earlier. These are the coverage files previously identified by the **`find`** command.
+
+Output file format `.CpG_report.merged_CpG_evidence.cov` (merged bedGraph file)
 
 ```         
 NC_035785.1 217 219 100.000000  17  0
