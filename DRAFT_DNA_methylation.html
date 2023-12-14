@@ -453,16 +453,38 @@ div.tocify {
 href="https://marineomics.github.io/#How_to_Cite">How to cite</a></p>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>The purpose of this tutorial is to provide an example of identifying
-loci- and gene-level methylation in bisulfite-treated DNA sequence data.
-The principle behind creating bisulfite-treated DNA libraries is that
-when cytosines are not methylated, then they will be converted to
-uracil, which ultimately result in thymine nucleotides in the sequence
-data. When aligning to a reference genome the percent methylation at a
-given CpG loci is determined by examining the ratio of thymines to
-cytosines. For example if there is a given cytosine adjacent to a
-guanine (ie CpG locus) with 30% of the reads containing thymine, one
-would consider this cytosine loci (CpG) to be 70% methylated.</p>
+<p>Thanks to advances in sample preparation and sequencing methods,
+there is an influx of research examining epigenomics in non-model
+systems. Broadly, epigenetics can be defined as changes to gene
+expression that do not arise from changes in the DNA sequence. DNA
+methylation, or addition of a methyl (CH<sub>3</sub>) group to a
+cytosine base adjacent to a guanine (CpG) is one of the more commonly
+studies epigenetic mechanisms, partly because of its environmental
+sensitivity and potential role in phenotypic plasticity. For a good
+review of epigenetic mechanisms including DNA methylation in marine
+organisms see <span class="citation">Eirin-Lopez and Putnam
+(2019)</span>.</p>
+<p>The purpose of this tutorial is to provide an example of aligning
+bisulfite-treated and enzymatically converted DNA sequence data and
+discuss needs for potential downstream applications. The principle
+behind creating bisulfite-treated DNA libraries is that when cytosines
+are not methylated, then they will be converted to uracil, which
+ultimately result in thymine nucleotides in the sequence data. <span
+class="citation">Trigg et al. (2022)</span> offers a comparison of three
+methods for quantifying DNA methylation at single base-pair resolution
+using whole genome bisulfite sequencing (WGBS), reduced representation
+bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite
+sequencing (MBDBS). When aligning bisulfite-converted data to a
+reference genome the percent methylation at a given CpG loci is
+determined by examining the ratio of thymines to cytosines. For example
+if there is a given cytosine adjacent to a guanine (ie CpG locus) with
+30% of the reads containing thymine, one would consider this cytosine
+loci (CpG) to be 70% methylated. Since bisulfite treatment can damage
+DNA, newer library preparation and sequencing methods (ex. <a
+href="https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&amp;%20Usage">NEBNext®
+Enzymatic Methyl-seq Kit; EM-seq</a> are starting to gain popularity. As
+EM-Seq produces loci-level data, alignment of EM-Seq data is similar to
+WGBS.</p>
 <p>For a good review of epigenetic mechanisms including DNA methylation
 in marine organisms see <span class="citation">Eirin-Lopez and Putnam
 (2019)</span>. <span class="citation">Trigg et al. (2022)</span> offers
@@ -471,16 +493,51 @@ base-pair resolution using whole genome bisulfite sequencing (WGBS),
 reduced representation bisulfite sequencing (RRBS), and methyl-CpG
 binding domain bisulfite sequencing (MBDBS). The tutorial below is based
 on WGBS, though the general workflow would be consistent.</p>
+<p>The tutorial will cover the following: - Sequence quality
+assessment<br />
+- Read alignment<br />
+- Methylation quantification<br />
+- File conversions<br />
+- Potential downstream applications. Although this tutorial will not
+provide code for downstream applications such as differential
+methylation analysis, it will link to other open-access resources and
+examples.</p>
+<p>The tutorial below is based on WGBS from a species of marine
+intertebrate (<em>Montipora capitata</em> coral) examined in <span
+class="citation">Trigg et al. (2022)</span>, and all raw data can be
+accessed under NCBI Bioproject PRJNA691891 if you would like to follow
+the tutorial with this dataset. The general workflow would be consistent
+for other library preparation and sequencing methods that produce
+loci-level data. The tutorial indicates places where special analytical
+consideration should be given to other data types.</p>
+<div id="what-to-expect" class="section level2">
+<h2>What to expect</h2>
+<p>DNA methylation at CpG locus can vary to 0-100%. Like wise
+methylation at the gene level can vary and is commonly established as
+mean methylation level of CpG across gene, assuming some majority degree
+of gene coverage. Similarly with considering the methylation level of a
+given loci often time some threshold might be set as seen in code below.
+From an taxa perspective it can vary WIDELY on what to expect. The
+figure below shows the mehthylation ratio of CpGs across the oyster
+genome. In some marine invertebrates we see ~15% methylation of CpGs
+(defined as &gt; 75% methylated) across the genome with most CpGs
+unmethylated. In these taxa methylation usually occurs in gene
+bodes.</p>
+<p><img src="DRAFT_DNA_methylation/meth_ratio.png" width="70%" style="display: block; margin: auto;" />
+<em>Frequency distribution of methylation ratios for CpG dinucleotides
+in oyster gill tissue.</em> DOI: <a
+href="https://doi.org/10.7717/peerj.215/fig-1">10.7717/peerj.215/fig-1</a></p>
+</div>
 </div>
 <div id="sequence-quality" class="section level1">
 <h1>Sequence Quality</h1>
 <p>An example of what raw data might look like from a marine
 invertebrate is shown. <em>Note that DNA methylation patters are diverse
-across taxa with most marine invertebrates demonstrating a mosiac
-pattern and global methylation at CpG loci is approximately
-15%.</em></p>
-<p>Following trimming one would expect to see something similar to this.
-This particular data set was trimmed with the following parameters:</p>
+across taxa with most invertebrates demonstrating a mosiac pattern and
+global methylation at CpG loci is approximately 15%.</em></p>
+<p>Following trimming one would expect to see FastQC per base sequencing
+content similar to the plot shown below. This particular data set was
+trimmed with the following parameters:</p>
 <pre><code>/gscratch/srlab/programs/TrimGalore-0.4.5/trim_galore \
 --output_dir /gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD \
 --paired \
@@ -503,12 +560,13 @@ data often needs different trimming specifications</a>.</p>
 <div id="read-alignment" class="section level1">
 <h1>Read Alignment</h1>
 <p>The software used as part of this tutorial is <strong>Bismark
-Bisulfite Mapper</strong>. As with any software it is best to be
-famililar with the <a
+Bisulfite Mapper</strong> (<span
+class="citation">(<strong>http://dx.doi.org/10.1093/bioinformatics/btr167?</strong>)</span>).
+As with any software it is best to be famililar with the <a
 href="https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html">User
-Manual</a>. Thus content below will provided with the assumption that
-the reader has read the manual and is meant to serve as guidance based
-on experience working with marine invertebrates.</p>
+Manual</a>. The content below will provided with the assumption that the
+reader has read the manual and is meant to serve as guidance based on
+experience working with marine invertebrates.</p>
 <p>The first step in the process in preparing the genome. Example
 code:</p>
 <pre><code># Directories and programs
@@ -658,6 +716,17 @@ find *.sorted.bam | \
 xargs basename -s .sorted.bam | \
 xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam</code></pre>
+</div>
+<div id="potential-downstream-applications" class="section level1">
+<h1>Potential downstream applications</h1>
+<ul>
+<li>Gene-level methylation analysis: people do this, but worth
+considering the utility of converting loci-level resolution data to
+gene-level resolution data</li>
+<li>methylKit</li>
+<li>IGV</li>
+<li>Analysis with other datasets (ex. pop gen, RNA-Seq)</li>
+</ul>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>

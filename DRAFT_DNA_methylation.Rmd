@@ -27,10 +27,10 @@ The purpose of this tutorial is to provide an example of aligning bisulfite-trea
 For a good review of epigenetic mechanisms including DNA methylation in marine organisms see @doi:10.1146/annurev-marine-010318-095114. @https://doi.org/10.1111/1755-0998.13542 offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). The tutorial below is based on WGBS, though the general workflow would be consistent.
 
 The tutorial will cover the following:
-- Sequence quality assessment
-- Read alignment
-- Methylation quantification
-- File conversions
+- Sequence quality assessment    
+- Read alignment     
+- Methylation quantification    
+- File conversions     
 - Potential downstream applications. Although this tutorial will not provide code for downstream applications such as differential methylation analysis, it will link to other open-access resources and examples.
 
 The tutorial below is based on WGBS from a species of marine intertebrate (*Montipora capitata* coral) examined in @https://doi.org/10.1111/1755-0998.13542, and all raw data can be accessed under NCBI Bioproject PRJNA691891 if you would like to follow the tutorial with this dataset. The general workflow would be consistent for other library preparation and sequencing methods that produce loci-level data. The tutorial indicates places where special analytical consideration should be given to other data types. 
@@ -39,9 +39,12 @@ The tutorial below is based on WGBS from a species of marine intertebrate (*Mont
 
 DNA methylation at CpG locus can vary to 0-100%. Like wise methylation at the gene level can vary and is commonly established as mean methylation level of CpG across gene, assuming some majority degree of gene coverage. Similarly with considering the methylation level of a given loci often time some threshold might be set as seen in code below. From an taxa perspective it can vary WIDELY on what to expect. The figure below shows the mehthylation ratio of CpGs across the oyster genome. In some marine invertebrates we see ~15% methylation of CpGs (defined as > 75% methylated) across the genome with most CpGs unmethylated. In these taxa methylation usually occurs in gene bodes.
 
-```{r meth-bp, echo = FALSE, out.width = "70%", fig.align = "center"}
+```{r meth-ratio, echo = FALSE, out.width = "70%", fig.align = "center"}
 knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
 ```
+_Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue._ DOI: [10.7717/peerj.215/fig-1](https://doi.org/10.7717/peerj.215/fig-1)
+
+
 
 # Sequence Quality
 
