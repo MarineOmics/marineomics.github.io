@@ -168,6 +168,14 @@ knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
 
 *Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue.* @10.7717/peerj.215
 
+
+Location of methylation across the genome varies across taxa. Here is what you might expect to see in a marine invertebrate. 
+
+```{r meth-igv, echo = FALSE, out.width = "70%", fig.align = "center"}
+knitr::include_graphics("DRAFT_DNA_methylation/igv.png")
+```
+*Screenshot from IGV. Bedgraph files are displayed. See below for code to create these file (File Conversion)*
+
 Methylation levels are then extracted using the `bismark_methylation_extractor`. For example:
 
 ```         
@@ -275,6 +283,9 @@ NC_035785.1 2054    2056    93.333333   14  1
 # File Conversions
 
 From here it could be useful to do some simple file reorganizaion to obtain bedGraph or tab files for downstream analysis (eg bedtools, GLMs).
+
+
+
 
 Creating bedGraphs post-merge at a specific coverage threshold (ex. 10x or 5x):
 
