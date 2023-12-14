@@ -185,10 +185,6 @@ Specifically this is what the code chunk does:
 
     -   **`-o Mcap_tg`**: Sets the output directory for the alignment results to **`Mcap_tg`**.
 
-### Mapping reports
-
-EXAMPLE MAPPING REPORT FROM BISMARK AND HOW TO VISUALIZE IT
-
 ### Optimizing alignment sensitivity
 
 The code above uses `score_min L,0,-0.6` as the scoring threshold for alignment sensitivity and specificity. This is different than the Bismark default, `score_min L,0,-0.2`. Reducing the sensitivity of the alignment can increase the percentage of reads aligned to the reference genome, but of course the quality of the alignment may decrease. A good practice is to align a subset of your data to the reference genome using different `score_min` parameters, then comparing mapping efficiency from the mapping reports. Generally, you want to choose a parameter that maximizes percent alignment and specificity. Example code
@@ -358,7 +354,25 @@ column organization of the file
 <chromosome> <start position> <end position> <methylation percentage> <count methylated> <count unmethylated>
 ```
 
-# Summary report
+# Summary Report
+
+Many steps of the Bismark workflow produce reports (.txt files) with useful information (ex. mapping efficiency, percent cytosine methylation, etc.). These files can be collated into processing reports for each individual sample, which can then be further collated into an [HTML summary report](https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032120-fds/bismark_summary_report.html):
+
+```
+#HTML Processing Report
+
+${bismark_dir}/bismark2report
+
+#Summary Report
+
+${bismark_dir}/bismark2summary
+```
+
+These commands should be run in the same directory where all output files are stored.
+
+```{r meth-igv, echo = FALSE, out.width = "70%", fig.align = "center"}
+knitr::include_graphics("DRAFT_DNA_methylation/bismark-summary-report.png")
+```
 
 # File Conversions
 
