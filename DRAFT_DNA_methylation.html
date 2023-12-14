@@ -540,9 +540,9 @@ data often needs different trimming specifications</a>.</p>
 <div id="considerations" class="section level2">
 <h2>Considerations</h2>
 <p>The software used as part of this tutorial is <strong>Bismark
-Bisulfite Mapper</strong> (<span
-class="citation">(<strong>http://dx.doi.org/10.1093/bioinformatics/btr167?</strong>)</span>).
-As with any software it is best to be famililar with the <a
+Bisulfite Mapper</strong> <span class="citation">Krueger and Andrews
+(2011)</span>. As with any software it is best to be famililar with the
+<a
 href="https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html">User
 Manual</a>. The content below will provided with the assumption that the
 reader has read the manual and is meant to serve as guidance based on
@@ -690,6 +690,11 @@ bodies.</p>
 <p><em>Frequency distribution of methylation ratios for CpG
 dinucleotides in oyster gill tissue.</em> <span class="citation">Gavery
 and Roberts (2013)</span></p>
+<p>Location of methylation across the genome varies across taxa. Here is
+what you might expect to see in a marine invertebrate.</p>
+<p><img src="DRAFT_DNA_methylation/igv.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><em>Screenshot from IGV. Bedgraph files are displayed. See below for
+code to create these file (File Conversion)</em></p>
 <p>Methylation levels are then extracted using the
 <code>bismark_methylation_extractor</code>. For example:</p>
 <pre><code>${bismark_dir}/bismark_methylation_extractor \
@@ -911,6 +916,13 @@ Intragenic Methylation Is Associated with Gene Expression
 Characteristics in a Bivalve Mollusc.”</span> <em>PeerJ</em> 1
 (November): e215. <a
 href="https://doi.org/10.7717/peerj.215">https://doi.org/10.7717/peerj.215</a>.
+</div>
+<div id="ref-10.1093/bioinformatics/btr167" class="csl-entry">
+Krueger, Felix, and Simon R. Andrews. 2011. <span>“<span
+class="nocase">Bismark: a flexible aligner and methylation caller for
+Bisulfite-Seq applications</span>.”</span> <em>Bioinformatics</em> 27
+(11): 1571–72. <a
+href="https://doi.org/10.1093/bioinformatics/btr167">https://doi.org/10.1093/bioinformatics/btr167</a>.
 </div>
 <div id="ref-https://doi.org/10.1111/1755-0998.13542" class="csl-entry">
 Trigg, Shelly A., Yaamini R. Venkataraman, Mackenzie R. Gavery, Steven
