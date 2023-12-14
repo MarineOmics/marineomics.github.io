@@ -30,7 +30,13 @@ The purpose of this tutorial is to provide an example of aligning bisulfite-trea
 
 ### Sample Size
 
-something about samples size.
+Sample size is a critical factor when conducting DNA methylation analysis, particularly because of the significant variation in methylation patterns both between individuals and across different tissues. This variation, which is not yet fully understood, can significantly impact the outcomes and interpretations of methylation studies.
+
+When selecting samples for DNA methylation analysis, the key principle is that larger sample sizes generally provide more reliable and generalizable results. A larger number of samples allows for a more accurate representation of the population, accounting for individual and tissue-level differences. This is essential for identifying true biological patterns rather than artifacts of small, non-representative samples.
+
+However, the practicality of obtaining a large number of samples must be balanced with resource constraints. In this context, a sample size of around eight can be considered a decent starting point. This number is often sufficient to begin observing trends and patterns in methylation across individuals and tissues, providing a foundational understanding which can be built upon with further research.
+
+It's crucial to remember that while more samples can enhance the reliability of the results, the quality of the samples and the robustness of the methylation analysis techniques are equally important. Therefore, researchers must strive for a balance between quantity and quality in their sample selection to ensure meaningful and accurate insights into DNA methylation.
 
 ### Bisulfite Conversion Efficiency
 
