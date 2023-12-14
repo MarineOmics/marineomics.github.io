@@ -24,7 +24,7 @@ Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#
 
 Thanks to advances in sample preparation and sequencing methods, there is an influx of research examining epigenomics in non-model systems. Broadly, epigenetics can be defined as changes to gene expression that do not arise from changes in the DNA sequence. DNA methylation, or addition of a methyl (CH<sub>3</sub>) group to a cytosine base adjacent to a guanine (CpG) is one of the more commonly studies epigenetic mechanisms, partly because of its environmental sensitivity and potential role in phenotypic plasticity. For a good review of epigenetic mechanisms including DNA methylation in marine organisms see @doi:10.1146/annurev-marine-010318-095114.
 
-The purpose of this tutorial is to provide an example of aligning bisulfite-treated and enzymatically converted DNA sequence data and discuss needs for potential downstream applications. The principle behind creating bisulfite-treated DNA libraries is that when cytosines are not methylated, then they will be converted to uracil, which ultimately result in thymine nucleotides in the sequence data. @https://doi.org/10.1111/1755-0998.13542 offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). When aligning bisulfite-converted data to a reference genome the percent methylation at a given CpG loci is determined by examining the ratio of thymines to cytosines. For example if there is a given cytosine adjacent to a guanine (ie CpG locus) with 30% of the reads containing thymine, one would consider this cytosine loci (CpG) to be 70% methylated. Since bisulfite treatment can damage DNA, newer library preparation and sequencing methods (ex. [NEBNext® Enzymatic Methyl-seq Kit; EM-seq](https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&%20Usage) are starting to gain popularity. As EM-Seq produces loci-level data, alignment of EM-Seq data is similar to WGBS. Also, technologies like Nanopore and PacBio sequencing can directly detect DNA methylation without bisulfite conversion. As DNA passes through a nanopore or is sequenced by single-molecule real-time (SMRT) technology, changes in electrical current or fluorescence patterns can indicate the presence of methylated bases.
+The purpose of this tutorial is to provide an example of aligning bisulfite-treated and enzymatically converted DNA sequence data to an existing genome, and discuss needs for potential downstream applications. The principle behind creating bisulfite-treated DNA libraries is that when cytosines are not methylated, then they will be converted to uracil, which ultimately result in thymine nucleotides in the sequence data. @https://doi.org/10.1111/1755-0998.13542 offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). When aligning bisulfite-converted data to a reference genome the percent methylation at a given CpG loci is determined by examining the ratio of thymines to cytosines. For example if there is a given cytosine adjacent to a guanine (ie CpG locus) with 30% of the reads containing thymine, one would consider this cytosine loci (CpG) to be 70% methylated. Since bisulfite treatment can damage DNA, newer library preparation and sequencing methods (ex. [NEBNext® Enzymatic Methyl-seq Kit; EM-seq](https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&%20Usage) are starting to gain popularity. As EM-Seq produces loci-level data, alignment of EM-Seq data is similar to WGBS. Also, technologies like Nanopore and PacBio sequencing can directly detect DNA methylation without bisulfite conversion. As DNA passes through a nanopore or is sequenced by single-molecule real-time (SMRT) technology, changes in electrical current or fluorescence patterns can indicate the presence of methylated bases.
 
 ## Experimental Considerations
 
@@ -93,11 +93,17 @@ For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the begi
 
 # Read Alignment
 
-## Considerations
+## Software Considerations
 
-The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@10.1093/bioinformatics/btr167), which is one of the more widely-used alignment softwares for methylation data. Another commonly-used options include bwa-meth (@https://doi.org/10.48550/arXiv.1401.1129) and BSMAP (@https://doi.org/10.1186/1471-2105-10-232) (see @https://doi.org/10.1093/bib/bbab021 and @https://doi.org/10.1016/j.csbj.2022.08.051 for comparisons of these software for plant and mammal species, respectively). As with any software it is best to be famililar with the [User Manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html). The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
+The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@10.1093/bioinformatics/btr167), which is one of the more widely-used softwares to align methylation data to a reference genome. Another commonly-used options include bwa-meth (@https://doi.org/10.48550/arXiv.1401.1129) and BSMAP (@https://doi.org/10.1186/1471-2105-10-232) (see @https://doi.org/10.1093/bib/bbab021 and @https://doi.org/10.1016/j.csbj.2022.08.051 for comparisons of these software for plant and mammal species, respectively). As with any software it is best to be famililar with the [User Manual](https://felixkrueger.github.io/Bismark/).
 
-The first step in the process in preparing the genome. Example code:
+Within Bismark, the tutorial uses Bowtie 2 as the alignment software. 
+
+The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
+
+## Genome Preparation
+
+The first step in the process in preparing the reference genome by performing an in silico bisulfite conversion to allow Bowtie alignments. Example code:
 
 ```         
 # Directories and programs
@@ -118,7 +124,7 @@ ${genome_folder}
 
     -   **`--verbose`**: This flag makes the program output more detailed information about what it is doing, which is helpful for debugging or understanding the process.
 
-    -   **`--parallel 28`**: This option tells Bismark to use 28 threads in parallel to speed up the process.
+    -   **`--parallel 28`**: This option tells Bismark to use 28 threads in parallel to speed up the process. You can adjust this based on your computing power.
 
     -   **`--path_to_aligner ${bowtie2_dir}`**: This specifies the path to the aligner (Bowtie2) that Bismark will use. The **`${bowtie2_dir}`** variable is expanded to the path where Bowtie2 is installed.
 
@@ -131,6 +137,8 @@ Bismark will create two individual folders within this directory, one for a C-\>
 ./Bisulfite_Genome/GA_conversion
 ./Bisulfite_Genome/CT_conversion
 ```
+
+## Aligning reads
 
 For aligning the trimmed reads to the genome the following code structure is used
 
