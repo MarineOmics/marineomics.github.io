@@ -38,6 +38,8 @@ However, the practicality of obtaining a large number of samples must be balance
 
 It's crucial to remember that while more samples can enhance the reliability of the results, the quality of the samples and the robustness of the methylation analysis techniques are equally important. Therefore, researchers must strive for a balance between quantity and quality in their sample selection to ensure meaningful and accurate insights into DNA methylation.
 
+### Sequencing Depth
+
 ### Bisulfite Conversion Efficiency
 
 Bisulfite Conversion Efficiency is important to assess. One common step during library preparation us spiking library with Lambda phage DNA. Lambda phage DNA lacks cytosine methylation, making it an ideal control for bisulfite treatment. Here's how it works and why it's useful:
@@ -93,7 +95,7 @@ For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the begi
 
 ## Considerations
 
-The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@10.1093/bioinformatics/btr167). As with any software it is best to be famililar with the [User Manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html). The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
+The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@10.1093/bioinformatics/btr167), which is one of the more widely-used alignment softwares for methylation data. Another commonly-used options include bwa-meth (@https://doi.org/10.48550/arXiv.1401.1129) and BSMAP (@https://doi.org/10.1186/1471-2105-10-232) (see @https://doi.org/10.1093/bib/bbab021 and @https://doi.org/10.1016/j.csbj.2022.08.051 for comparisons of these software for plant and mammal species, respectively). As with any software it is best to be famililar with the [User Manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html). The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
 
 The first step in the process in preparing the genome. Example code:
 
