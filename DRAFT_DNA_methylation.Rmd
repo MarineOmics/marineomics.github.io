@@ -474,11 +474,16 @@ for(file in files) {
 }
 ```
 
-## Other application
 
--   Gene-level methylation analysis: people do this, but worth considering the utility of converting loci-level resolution data to gene-level resolution data
--   methylKit
--   IGV
--   Analysis with other datasets (ex. pop gen, RNA-Seq)
+
+
+
+## Downstream application
+
+-   Gene-level methylation analysis. It is worth considering the utility of converting loci-level resolution data to gene-level resolution data
+
+-   Differential loci or region analyses. methylKit is a popular package to conduct this analysis
+
+-   Feature overlap. Bedtools for quantitative assessment and IGV for visual assessment are valuable for thisl
 
 # References

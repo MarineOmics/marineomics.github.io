@@ -453,6 +453,8 @@ and <em>Steven Roberts</em></h3>
 href="https://marineomics.github.io/#How_to_Cite">How to cite</a></p>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
+<div id="background" class="section level2">
+<h2>Background</h2>
 <p>Thanks to advances in sample preparation and sequencing methods,
 there is an influx of research examining epigenomics in non-model
 systems. Broadly, epigenetics can be defined as changes to gene
@@ -484,7 +486,76 @@ DNA, newer library preparation and sequencing methods (ex. <a
 href="https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&amp;%20Usage">NEBNext®
 Enzymatic Methyl-seq Kit; EM-seq</a> are starting to gain popularity. As
 EM-Seq produces loci-level data, alignment of EM-Seq data is similar to
-WGBS.</p>
+WGBS. Also, technologies like Nanopore and PacBio sequencing can
+directly detect DNA methylation without bisulfite conversion. As DNA
+passes through a nanopore or is sequenced by single-molecule real-time
+(SMRT) technology, changes in electrical current or fluorescence
+patterns can indicate the presence of methylated bases.</p>
+</div>
+<div id="experimental-considerations" class="section level2">
+<h2>Experimental Considerations</h2>
+<div id="sample-size" class="section level3">
+<h3>Sample Size</h3>
+<p>Sample size is a critical factor when conducting DNA methylation
+analysis, particularly because of the significant variation in
+methylation patterns both between individuals and across different
+tissues. This variation, which is not yet fully understood, can
+significantly impact the outcomes and interpretations of methylation
+studies.</p>
+<p>When selecting samples for DNA methylation analysis, the key
+principle is that larger sample sizes generally provide more reliable
+and generalizable results. A larger number of samples allows for a more
+accurate representation of the population, accounting for individual and
+tissue-level differences. This is essential for identifying true
+biological patterns rather than artifacts of small, non-representative
+samples.</p>
+<p>However, the practicality of obtaining a large number of samples must
+be balanced with resource constraints. In this context, a sample size of
+around eight can be considered a decent starting point. This number is
+often sufficient to begin observing trends and patterns in methylation
+across individuals and tissues, providing a foundational understanding
+which can be built upon with further research.</p>
+<p>It’s crucial to remember that while more samples can enhance the
+reliability of the results, the quality of the samples and the
+robustness of the methylation analysis techniques are equally important.
+Therefore, researchers must strive for a balance between quantity and
+quality in their sample selection to ensure meaningful and accurate
+insights into DNA methylation.</p>
+</div>
+<div id="bisulfite-conversion-efficiency" class="section level3">
+<h3>Bisulfite Conversion Efficiency</h3>
+<p>Bisulfite Conversion Efficiency is important to assess. One common
+step during library preparation us spiking library with Lambda phage
+DNA. Lambda phage DNA lacks cytosine methylation, making it an ideal
+control for bisulfite treatment. Here’s how it works and why it’s
+useful:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Background on Lambda Phage DNA</strong>: Lambda phage DNA
+is a widely used control in bisulfite sequencing because it is naturally
+unmethylated. By including this DNA in your sample, you create a known
+unmethylated reference.</p></li>
+<li><p><strong>Preparation and Spiking</strong>: You prepare the lambda
+phage DNA and spike it into your DNA samples before bisulfite treatment.
+The proportion of lambda DNA added should be enough to be detected
+post-sequencing, but not so much that it overwhelms the sample. A
+typical proportion might be around 0.1% to 1% of the total DNA.</p></li>
+<li><p><strong>Bisulfite Treatment and Sequencing</strong>: After
+spiking, you proceed with bisulfite treatment and sequencing of the
+entire sample, which now includes your genomic DNA of interest and the
+spiked lambda DNA.</p></li>
+<li><p><strong>Assessing Conversion Efficiency</strong>: Once sequencing
+is complete, you analyze the lambda phage DNA sequences. Since this DNA
+is unmethylated, all cytosines should be converted to thymines after
+bisulfite treatment and subsequent PCR. By calculating the percentage of
+cytosines that were successfully converted to thymines in the lambda
+DNA, you can determine the bisulfite conversion efficiency. An efficient
+conversion typically results in over 99% of cytosines being
+converted.</p></li>
+</ol>
+</div>
+</div>
+<div id="tutorial-details" class="section level2">
+<h2>Tutorial Details</h2>
 <p>For a good review of epigenetic mechanisms including DNA methylation
 in marine organisms see <span class="citation">Eirin-Lopez and Putnam
 (2019)</span>. <span class="citation">Trigg et al. (2022)</span> offers
@@ -510,6 +581,7 @@ the tutorial with this dataset. The general workflow would be consistent
 for other library preparation and sequencing methods that produce
 loci-level data. The tutorial indicates places where special analytical
 consideration should be given to other data types.</p>
+</div>
 </div>
 <div id="sequence-quality" class="section level1">
 <h1>Sequence Quality</h1>
