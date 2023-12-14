@@ -226,7 +226,9 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 
 ## What to expect
 
-DNA methylation at CpG locus can vary to 0-100%. Like wise methylation at the gene level can vary and is commonly established as mean methylation level of CpG across gene, assuming some majority degree of gene coverage. Similarly with considering the methylation level of a given loci often time some threshold might be set as seen in code below. From an taxa perspective it can vary WIDELY on what to expect. The figure below shows the mehthylation ratio of CpGs across the oyster genome. In some marine invertebrates we see \~15% methylation of CpGs (defined as \> 75% methylated) across the genome with most CpGs unmethylated. In these taxa methylation usually occurs in gene bodies.
+DNA methylation at CpG locus can vary to 0-100%. How methylated CpGs are across a genome can vary WIDELY depending on your focal taxa. Generally, invertebrate genomes are predominantly unmethylated, with smaller regions of higher methylation in a mosaic pattern. In some marine invertebrates we see \~15% methylation of CpGs (defined as \> 75% methylated) across the genome with most CpGs unmethylated. In these taxa methylation usually occurs in gene bodies.
+
+The figure below shows the methylation ratio of CpGs across the Pacific oyster (*Crassostrea gigas*) genome, as well as the location of methylation across the genome:
 
 ```{r meth-ratio, echo = FALSE, out.width = "70%", fig.align = "center"}
 knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
@@ -234,13 +236,17 @@ knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
 
 *Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue.* @10.7717/peerj.215
 
-Location of methylation across the genome varies across taxa. Here is what you might expect to see in a marine invertebrate.
-
 ```{r meth-igv, echo = FALSE, out.width = "70%", fig.align = "center"}
 knitr::include_graphics("DRAFT_DNA_methylation/igv.png")
 ```
 
 *Screenshot from IGV. Bedgraph files are displayed. See below for code to create these file (File Conversion)*
+
+Vertebrate genomes, on the other hand, have higher overall levels of methylation, with methylation occuring in CpG islands. 
+
+[ placeholder for Kathryn to add some stuff! ]
+
+## Methylation extraction
 
 Methylation levels are then extracted using the `bismark_methylation_extractor`. For example:
 
