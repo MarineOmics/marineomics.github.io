@@ -97,7 +97,7 @@ For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the begi
 
 The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@10.1093/bioinformatics/btr167), which is one of the more widely-used softwares to align methylation data to a reference genome. Another commonly-used options include bwa-meth (@https://doi.org/10.48550/arXiv.1401.1129) and BSMAP (@https://doi.org/10.1186/1471-2105-10-232) (see @https://doi.org/10.1093/bib/bbab021 and @https://doi.org/10.1016/j.csbj.2022.08.051 for comparisons of these software for plant and mammal species, respectively). As with any software it is best to be famililar with the [User Manual](https://felixkrueger.github.io/Bismark/).
 
-Within Bismark, the tutorial uses Bowtie 2 as the alignment software. 
+Within Bismark, the tutorial uses Bowtie 2 (@https://doi.org/10.1038/nmeth.1923) as the alignment software. Although the Bismark user manual covers the necessary Bowtie 2 parameters, it may be useful to refer to the [Bowtie 2 manual](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml).
 
 The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
 
@@ -138,9 +138,11 @@ Bismark will create two individual folders within this directory, one for a C-\>
 ./Bisulfite_Genome/CT_conversion
 ```
 
+This preparation step only needs to happen once for a given genome. 
+
 ## Aligning reads
 
-For aligning the trimmed reads to the genome the following code structure is used
+Once the genome is prepared, reads can be aligned. For aligning the trimmed reads to the genome the following code structure is used:
 
 ```         
 find ${reads_dir}*_R1_001_val_1.fq.gz \
@@ -155,7 +157,7 @@ find ${reads_dir}*_R1_001_val_1.fq.gz \
 -o Mcap_tg
 ```
 
-This will create BAM files (sequence alignment files)
+This will create BAM files (sequence alignment files) and txt files (mapping reports). The reports contain information such as mapping efficiency.
 
 Specifically this is what the code chunk does:
 
@@ -169,19 +171,45 @@ Specifically this is what the code chunk does:
 
     -   **`| xargs -I{} ${bismark_dir}/bismark`**: The **`xargs`** command here is used to pass the base filenames to Bismark for alignment. **`{}`** is a placeholder for each base filename.
 
-    -   **`--path_to_bowtie ${bowtie2_dir}`**: This option specifies the path to the Bowtie2 aligner, which Bismark uses for the alignment process.
+    -   **`--path_to_bowtie ${bowtie2_dir}`**: This option specifies the path to the Bowtie 2 aligner, which Bismark uses for the alignment process.
 
     -   **`-genome ${genome_folder}`**: Specifies the directory where the genome files, prepared in advance, are located.
 
-    -   **`-p 4`**: Sets the number of processing threads to 4, allowing Bismark to perform the alignment in parallel, which can speed up the process.
+    -   **`-p 4`**: Sets the number of processing threads to 4, allowing Bismark to perform the alignment in parallel, which can speed up the process. This parameter can be changed based on your computing power.
 
-    -   **`-score_min L,0,-0.6`**: This sets the scoring threshold for alignments, impacting the sensitivity and specificity of the alignment.
+    -   **`-score_min L,0,-0.6`**: This sets the scoring threshold for alignments, impacting the sensitivity and specificity of the alignment. The default scoring threshold used by Bismark is L,0,-0.2.
 
     -   **`--non_directional`**: This flag indicates the sequencing data is non-directional, which is important for correctly interpreting the methylation status in bisulfite sequencing.
 
     -   **`-1 ${reads_dir}{}_R1_001_val_1.fq.gz -2 ${reads_dir}{}_R2_001_val_2.fq.gz`**: Specifies the files for paired-end reads. R1 and R2 files are paired based on their base filename.
 
     -   **`-o Mcap_tg`**: Sets the output directory for the alignment results to **`Mcap_tg`**.
+
+### Mapping reports
+
+EXAMPLE MAPPING REPORT FROM BISMARK AND HOW TO VISUALIZE IT
+
+### Optimizing alignment sensitivity
+
+The code above uses `score_min L,0,-0.6` as the scoring threshold for alignment sensitivity and specificity. This is different than the Bismark default, `score_min L,0,-0.2`. Reducing the sensitivity of the alignment can increase the percentage of reads aligned to the reference genome, but of course the quality of the alignment may decrease. A good practice is to align a subset of your data to the reference genome using different `score_min` parameters, then comparing mapping efficiency from the mapping reports. Generally, you want to choose a parameter that maximizes percent alignment and specificity. Example code
+
+```         
+find ${reads_dir}*_R1_001_val_1.fq.gz \
+| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
+--path_to_bowtie ${bowtie2_dir} \
+-genome ${genome_folder} \
+-p 4 \
+- u 10000 \
+-score_min L,0,-0.6 \
+--non_directional \
+-1 ${reads_dir}{}_R1_001_val_1.fq.gz \
+-2 ${reads_dir}{}_R2_001_val_2.fq.gz \
+-o Mcap_tg
+```
+
+This is the same code as above, except `-u 10000` is used to run the alignment on a 10,000 bp subset of the data in each input file.
+
+## Deduplication 
 
 Files are then deduplicated if they are whole genome bisulfite treated samples. This command will deduplicate the Bismark alignment BAM file and remove all reads that align to the the very same position and in the same orientation except for one. This step is recommended for whole-genome bisulfite samples, but **should not** be used for reduced representation libraries such as RRBS, amplicon, or target enrichment libraries. The [`bismark` manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html#ix-notes-about-different-library-types-and-commercial-kits) provides additional information.
 
