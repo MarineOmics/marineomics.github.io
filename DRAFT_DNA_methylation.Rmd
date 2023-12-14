@@ -12,7 +12,7 @@ cite_options(citation_format = "pandoc", max.names = 3, style = "html",
 
 ---
 title: 'DNA Methylation Assessment'
-subtitle: '*Yaamini Venkataraman*, *Sam White*, and *Steven Roberts*'
+subtitle: '*Yaamini Venkataraman*, *Kathryn Greiner-Ferris*, *Sam White*, and *Steven Roberts*'
 bibliography: DRAFT_DNA_methylation/DNA-Methylation.bib
 ---
 
@@ -273,13 +273,13 @@ This particular command is used to extract and process methylation data from BAM
 
     -   **`--merge_non_CpG`**: Merges the methylation information for CHG and CHH contexts (non-CpG) into a single file.
 
-    -   **`--multicore 28`**: Specifies that the program should use 28 cores to process the data in parallel, which can significantly speed up the analysis.
+    -   **`--multicore 28`**: Specifies that the program should use 28 cores to process the data in parallel, which can significantly speed up the analysis. This can be adjusted depending on your computing power.
 
-    -   **`--buffer_size 75%`**: This option sets the buffer size for reading in BAM files to 75% of the available system memory. It helps optimize the performance of the tool by adjusting how much memory is used for processing.
+    -   **`--buffer_size 75%`**: This option sets the buffer size for reading in BAM files to 75% of the available system memory. It helps optimize the performance of the tool by adjusting how much memory is used for processing. This can be adjusted depending on your computing power.
 
     -   **`*deduplicated.bam`**: This is the input file pattern for the command. It indicates that the methylation extractor should process all BAM files in the current directory that have names ending with "deduplicated.bam". These files are typically the output of a deduplication process applied to aligned bisulfite sequencing data.
 
-This will create a file with the suffix `deduplicated.bismark.cov.gz` (example shown below in uncompressed format). The resultant bedGraph file contains information from *unmerged* strands, meaning reads aligning to forward and reverse strands in the same position are not combined. Later in this workflow, a bedGraph with *merged* information will be created.
+This will create a file with the suffix `deduplicated.bismark.cov.gz` (example shown below in uncompressed format):
 
 ```         
 NC_035784.1 141 141 37.5    3   5
@@ -300,7 +300,7 @@ column organization of the file
 <chromosome> <start position> <end position> <methylation percentage> <count methylated> <count unmethylated>
 ```
 
-A genome-wide cytosine report is generated (including merged bedGraph file), with this code as an example:
+The resultant bedGraph file contains information from *unmerged* strands, meaning reads aligning to forward and reverse strands in the same position are not combined. It is important to merge the reads from the forward and reserve strands for more accurate methylation quantification. A genome-wide cytosine report and merged bedGraph file are generated (including merged bedGraph file) from the `deduplicated.bismark.cov.gz` generated above in this example code:
 
 ```         
 find *deduplicated.bismark.cov.gz \
@@ -352,20 +352,21 @@ NC_035785.1 2024    2026    100.000000  24  0
 NC_035785.1 2054    2056    93.333333   14  1
 ```
 
+column organization of the file
+
+```         
+<chromosome> <start position> <end position> <methylation percentage> <count methylated> <count unmethylated>
+```
+
+# Summary report
+
 # File Conversions
 
-From here it could be useful to do some simple file reorganizaion to obtain bedGraph or tab files for downstream analysis (eg bedtools, GLMs).
+From here it could be useful to do some file reorganizaion to obtain bedGraph or tab files for downstream analysis (eg `bedtools`, GLMs). Specifically, it may be important to filter the CpG methylation data to a specific coverage threshold (ex. 5x or 10x). The more read coverage a CpG has, the higher the confidence in methylation quantification.
 
 Creating bedGraphs post-merge at a specific coverage threshold (ex. 10x or 5x):
 
 ```         
-for f in *merged_CpG_evidence.cov
-do
-  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
-  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4}}' \
-  > "${STEM}"_10x.bedgraph
-done
-
 for f in *merged_CpG_evidence.cov
 do
   STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
@@ -377,13 +378,6 @@ done
 Creating tab files with raw count data for GLMs at 10x and 5x coverage:
 
 ```         
-for f in *merged_CpG_evidence.cov
-do
-  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
-  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4, $5, $6}}' \
-  > "${STEM}"_10x.tab
-done
-
 for f in *merged_CpG_evidence.cov
 do
   STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
@@ -409,29 +403,30 @@ xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam
 ```
 
-# Next Steps & Downstream applications
+# Next Steps
 
-## CT SNPs
+So you've aligned your trimmed reads to your reference genome and have methylation data for CpGs. Now what?
 
-Masking cytosine (C) to thymine (T) single nucleotide polymorphisms (SNPs) in bisulfite sequencing analysis could be something to considerfor a few reasons:
+## Removing C to T (C->T) SNPs
 
-1.  **Bisulfite Conversion Process**: In bisulfite sequencing, unmethylated cytosines are converted to uracil, which is then read as thymine in sequencing. This conversion is key to identifying methylated cytosines. However, if a genomic DNA sequence naturally has a C to T SNP, it can be falsely interpreted as a converted cytosine, leading to incorrect conclusions about methylation.
+Removing cytosine (C) to thymine (T) single nucleotide polymorphisms (SNPs) in bisulfite sequencing analysis could be something to consider for a few reasons:
 
-2.  **Reduction of False Positives**: By masking C to T SNPs, one can reduce false positives in methylation analysis. Without masking, these SNPs might be misinterpreted as unmethylated cytosines that have undergone conversion, skewing the data towards an apparent increase in methylation.
+1.  **Bisulfite Conversion Process**: In bisulfite sequencing, unmethylated cytosines are converted to uracil, which is then read as thymine in sequencing. This conversion is key to identifying methylated cytosines. However, if a genomic DNA sequence naturally has a C to T (C->T) SNP, it can be falsely interpreted as a converted cytosine, leading to incorrect conclusions about methylation.
 
-3.  **Accurate Methylation Mapping**: For precise mapping of methylation patterns, it's crucial to distinguish between true methylation signals and genetic variation (SNPs). Masking C to T SNPs allows for a more accurate representation of the methylation status of the genome.
+2.  **Reduction of False Positives**: By removing C->T SNPs, one can reduce false positives in methylation analysis. Without removal, these SNPs might be misinterpreted as unmethylated cytosines that have undergone conversion, skewing the data towards an apparent increase in methylation.
 
-4.  **Analysis Consistency**: In comparative studies, where multiple samples or conditions are analyzed, masking C to T SNPs ensures consistency across samples. This is especially important in cases where SNP profiles may vary between samples, which could otherwise lead to inconsistent methylation data.
+3.  **Accurate Methylation Mapping**: For precise mapping of methylation patterns, it's crucial to distinguish between true methylation signals and genetic variation (SNPs). Removing C->T SNPs allows for a more accurate representation of the methylation status of the genome.
 
-5.  **Enhanced Data Interpretation**: By eliminating these potential sources of error, researchers can have more confidence in their interpretation of the bisulfite sequencing data, leading to more reliable and valid conclusions about DNA methylation patterns.
+4.  **Analysis Consistency**: In comparative studies, where multiple samples or conditions are analyzed, removing C->T SNPs ensures consistency across samples. This is especially important in cases where SNP profiles may vary between samples, which could otherwise lead to inconsistent methylation data.
 
-One way to do this is using BS-Snper (@10.1093/bioinformatics/btv507). <https://github.com/hellbelly/BS-Snper>. In short one could merge all BAM files from experiment run BS-Snper, filter out CT SNPS then use this to remove loci.
+By eliminating these potential sources of error, researchers can have more confidence in their interpretation of the bisulfite sequencing data, leading to more reliable and valid conclusions about DNA methylation patterns.
+
+One way to do this is using BS-Snper (@10.1093/bioinformatics/btv507). <https://github.com/hellbelly/BS-Snper>. In short one could merge all BAM files from experiment run BS-Snper, filter out C->T SNPS then use this to remove loci.
 
 ```         
 samtools merge \
 Pg_merged.bam \
 *.sorted.bam
-
 
 perl /gscratch/srlab/programs/BS-Snper-master/BS-Snper.pl \
 Pg_merged.bam \
@@ -475,7 +470,7 @@ Let's break down the command and its arguments:
 
 9.  **`--mincover 10`, `--maxcover 1000`**: These set the minimum and maximum coverage (number of reads) for a position to be considered in the analysis.
 
-10. **`--minread2 2`**: The minimum number of reads required to support a SNP candidate.
+10. **`--minread2 2`**: The minimum number of reads required to support a SNP candidate. It could be useful to use the same values for the minimum read threshold for SNP identification and for minimum coverage in the methylation data.
 
 11. **`--errorate 0.02`**: Sets the error rate of sequencing (here, 2%).
 
@@ -517,10 +512,6 @@ for(file in files) {
   write.table(modified_data, file = output_file, sep = "\t", row.names = FALSE, quote = FALSE, col.names = FALSE)
 }
 ```
-
-
-
-
 
 ## Downstream application
 
