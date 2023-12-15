@@ -238,13 +238,13 @@ following steps: <br>
     initial ['r setup' chunk](#cite_options) above for the syntax of the
     'cite_options' command.
 
-After following these step, you can cite them in the RMarkdown document.
+After following these steps, you can cite them in the RMarkdown document.
 Let's say you have a paper you want to cite by LastName et al. 2023 and
 the paper's ID in your .bib file is 'LastName2023-xy'. We can reference
 this paper in-text by adding [\@LastName2023-xy] to the end of a
 sentence. This will produce a reference such as the one below for Tripp
-et al. 2017.
-
+et al. 2017. <br>
+<br>
 *syntax in .Rmd text **(not in a code chunk)***:
 
     RADseq can produce insightful analyses even in the absence of data, if missing values are handled properly [@Tripp2017-cp].
@@ -254,6 +254,14 @@ the absence of data, if missing values are handled properly
 [@Tripp2017-cp].
 
 <br>
+
+You can also add hyperlinks to each in text citation that direct to the References section at the bottom of the page. The in text citation keeps its normal format, but with brackets added around the parentheses. Directly after the citation (also in parentheses) is the '#' link to the References section: (#refs) in this case.<br>
+<br>
+**.Rmd**: [(\@Tripp2017-cp)]\(#refs) <br>
+**rendered html**: [(@Tripp2017-cp)](#refs) <br>
+<br>
+At the bottom of the .Rmd, where the '## References' heading is, we have a '{#refs}', which creates the target for all links with '(#refs)'. It looks like this on the .Rmd:<br>
+## References {#refs} 
 
 ### **installing & loading packages**
 
@@ -399,4 +407,4 @@ At any point in the process, disagreements on what content to include may arise.
 Disagreements will be discussed with all of those involved at the time that the disagreement arises. The first attempt at resolving the disagreement will be via discussion. If a resolution is not agreed upon by all parties through discussion, it will be put to a majority vote including all of those actively involved at the time, not including the content author. In case of a tie, a MarineOmics senior scientist will be assigned to break the tie.
 
 
-## References
+## References {#refs}
