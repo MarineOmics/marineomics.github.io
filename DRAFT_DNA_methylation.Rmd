@@ -138,7 +138,7 @@ Bismark will create two individual folders within this directory, one for a C-\>
 ./Bisulfite_Genome/CT_conversion
 ```
 
-This preparation step only needs to happen once for a given genome. 
+This preparation step only needs to happen once for a given genome.
 
 ## Aligning reads
 
@@ -205,7 +205,7 @@ find ${reads_dir}*_R1_001_val_1.fq.gz \
 
 This is the same code as above, except `-u 10000` is used to run the alignment on a 10,000 bp subset of the data in each input file.
 
-## Deduplication 
+## Deduplication
 
 Files are then deduplicated if they are whole genome bisulfite treated samples. This command will deduplicate the Bismark alignment BAM file and remove all reads that align to the the very same position and in the same orientation except for one. This step is recommended for whole-genome bisulfite samples, but **should not** be used for reduced representation libraries such as RRBS, amplicon, or target enrichment libraries. The [`bismark` manual](https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html#ix-notes-about-different-library-types-and-commercial-kits) provides additional information.
 
@@ -238,7 +238,7 @@ knitr::include_graphics("DRAFT_DNA_methylation/igv.png")
 
 *Screenshot from IGV. Bedgraph files are displayed. See below for code to create these file (File Conversion)*
 
-Vertebrate genomes, on the other hand, have higher overall levels of methylation, with methylation occuring in CpG islands. 
+Vertebrate genomes, on the other hand, have higher overall levels of methylation, with methylation occuring in CpG islands.
 
 [ placeholder for Kathryn to add some stuff! ]
 
@@ -358,7 +358,7 @@ column organization of the file
 
 Many steps of the Bismark workflow produce reports (.txt files) with useful information (ex. mapping efficiency, percent cytosine methylation, etc.). These files can be collated into processing reports for each individual sample, which can then be further collated into an [HTML summary report](https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032120-fds/bismark_summary_report.html):
 
-```
+```         
 #HTML Processing Report
 
 ${bismark_dir}/bismark2report
@@ -421,21 +421,21 @@ index -@ 28 {}.sorted.bam
 
 So you've aligned your trimmed reads to your reference genome and have methylation data for CpGs. Now what?
 
-## Removing C to T (C->T) SNPs
+## Removing C to T (C-\>T) SNPs
 
 Removing cytosine (C) to thymine (T) single nucleotide polymorphisms (SNPs) in bisulfite sequencing analysis could be something to consider for a few reasons:
 
-1.  **Bisulfite Conversion Process**: In bisulfite sequencing, unmethylated cytosines are converted to uracil, which is then read as thymine in sequencing. This conversion is key to identifying methylated cytosines. However, if a genomic DNA sequence naturally has a C to T (C->T) SNP, it can be falsely interpreted as a converted cytosine, leading to incorrect conclusions about methylation.
+1.  **Bisulfite Conversion Process**: In bisulfite sequencing, unmethylated cytosines are converted to uracil, which is then read as thymine in sequencing. This conversion is key to identifying methylated cytosines. However, if a genomic DNA sequence naturally has a C to T (C-\>T) SNP, it can be falsely interpreted as a converted cytosine, leading to incorrect conclusions about methylation.
 
-2.  **Reduction of False Positives**: By removing C->T SNPs, one can reduce false positives in methylation analysis. Without removal, these SNPs might be misinterpreted as unmethylated cytosines that have undergone conversion, skewing the data towards an apparent increase in methylation.
+2.  **Reduction of False Positives**: By removing C-\>T SNPs, one can reduce false positives in methylation analysis. Without removal, these SNPs might be misinterpreted as unmethylated cytosines that have undergone conversion, skewing the data towards an apparent increase in methylation.
 
-3.  **Accurate Methylation Mapping**: For precise mapping of methylation patterns, it's crucial to distinguish between true methylation signals and genetic variation (SNPs). Removing C->T SNPs allows for a more accurate representation of the methylation status of the genome.
+3.  **Accurate Methylation Mapping**: For precise mapping of methylation patterns, it's crucial to distinguish between true methylation signals and genetic variation (SNPs). Removing C-\>T SNPs allows for a more accurate representation of the methylation status of the genome.
 
-4.  **Analysis Consistency**: In comparative studies, where multiple samples or conditions are analyzed, removing C->T SNPs ensures consistency across samples. This is especially important in cases where SNP profiles may vary between samples, which could otherwise lead to inconsistent methylation data.
+4.  **Analysis Consistency**: In comparative studies, where multiple samples or conditions are analyzed, removing C-\>T SNPs ensures consistency across samples. This is especially important in cases where SNP profiles may vary between samples, which could otherwise lead to inconsistent methylation data.
 
 By eliminating these potential sources of error, researchers can have more confidence in their interpretation of the bisulfite sequencing data, leading to more reliable and valid conclusions about DNA methylation patterns.
 
-One way to do this is using BS-Snper (@10.1093/bioinformatics/btv507). <https://github.com/hellbelly/BS-Snper>. This program finds SNPs in Bisulfite treated alignment files. The bash code below represents steps to identify SNPS and create a list of all C->T SNPS.
+One way to do this is using BS-Snper (@10.1093/bioinformatics/btv507). <https://github.com/hellbelly/BS-Snper>. This program finds SNPs in Bisulfite treated alignment files. The bash code below represents steps to identify SNPS and create a list of all C-\>T SNPS.
 
 ```         
 samtools merge \
@@ -494,10 +494,7 @@ Let's break down the command and its arguments:
 
 14. **`2>SNP.log`**: Redirects the standard error output to a file named **`SNP.log`**. This file will contain error messages and possibly additional log information.
 
-
-The resulting could be used to mask the genome and the entire process described above could be repeated (ie Genome Preparation, Alignment, Quantification)
-
-If for example in downstream analysis you would might be using a \_5x.tab file described above the following is a means in R to remove these SNPs.
+The resulting could be used to mask the genome and the entire process described above could be repeated (ie Genome Preparation, Alignment, Quantification). An alternative and common practice is to remove cytosines from downstream analysis by removing loci in intermediate files (ie tab-delimited data files). Below is an example using `antijoin` to remove loci that correspond to CT SNPs from 5x coverage methyation quantification files.
 
 ```{r, eval=FALSE}
 # Read in CT SNP file
@@ -529,6 +526,40 @@ for(file in files) {
   write.table(modified_data, file = output_file, sep = "\t", row.names = FALSE, quote = FALSE, col.names = FALSE)
 }
 ```
+
+Let's break down what each part of the script does:
+
+1.  **Reading in a CT SNP file**:
+
+    -   **`ct <- read.csv("../output/CT-SNP.vcf", header = FALSE, sep = "\t")`**: This line reads a file named **`CT-SNP.vcf`** from the specified directory. The file is expected to be in a tab-separated format (**`sep = "\t"`**), and it doesn't have a header row (**`header = FALSE`**).
+
+    -   **`mutate(loci = paste0(V1, "_", V2))`**: The **`mutate`** function from the **`dplyr`** package is used to add a new column (**`loci`**) to the **`ct`** data frame. This column is created by concatenating the values in the first (**`V1`**) and second columns (**`V2`**) of each row, separated by an underscore.
+
+2.  **Listing files with a specific suffix**:
+
+    -   **`files <- list.files(path = "../data/", pattern = "_5x.tab$", full.names = TRUE)`**: This line generates a list of file paths in the **`../data/`** directory. It only includes files that end with **`_5x.tab`** (as indicated by the **`pattern`** argument).
+
+3.  **Processing each file**:
+
+    -   The **`for(file in files)`** loop iterates over each file found in the previous step.
+
+        -   **`base_name <- basename(file)`**: Extracts the file name without the directory path.
+
+        -   **`data <- read.csv(file, header = FALSE, sep = "\t")`**: Reads the current file in the loop. Similar to the first **`read.csv`** call, it expects a tab-separated file with no header row.
+
+        -   The **`mutate`** and **`anti_join`** functions are used to modify **`data`**:
+
+            -   **`mutate(loci = paste0(V1, "_", V2))`**: Adds a **`loci`** column similar to the **`ct`** data frame.
+
+            -   **`anti_join(ct, by = "loci")`**: Removes rows from **`data`** that have matching **`loci`** values in the **`ct`** data frame.
+
+            -   **`select(-loci)`**: Removes the **`loci`** column from the data.
+
+        -   The modified data is then written to an output file:
+
+            -   **`output_file <- paste0("../output/f", base_name)`**: Constructs the output file path.
+
+            -   **`write.table(modified_data, file = output_file, sep = "\t", row.names = FALSE, quote = FALSE, col.names = FALSE)`**: Writes the **`modified_data`** to the specified file. The output is tab-separated, and it doesn't include row names, quotes, or column names.
 
 ## Downstream application
 
