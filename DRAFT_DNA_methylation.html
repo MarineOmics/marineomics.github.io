@@ -465,24 +465,24 @@ cytosine base adjacent to a guanine (CpG) is one of the more commonly
 studies epigenetic mechanisms, partly because of its environmental
 sensitivity and potential role in phenotypic plasticity. For a good
 review of epigenetic mechanisms including DNA methylation in marine
-organisms see <span class="citation">Eirin-Lopez and Putnam
-(2019)</span>.</p>
+organisms see <a href="#refs"><span class="citation">Eirin-Lopez and
+Putnam (2019)</span></a>.</p>
 <p>The purpose of this tutorial is to provide an example of aligning
 bisulfite-treated and enzymatically converted DNA sequence data to an
 existing genome, and discuss needs for potential downstream
 applications. The principle behind creating bisulfite-treated DNA
 libraries is that when cytosines are not methylated, then they will be
 converted to uracil, which ultimately result in thymine nucleotides in
-the sequence data. <span class="citation">Trigg et al. (2022)</span>
-offers a comparison of three methods for quantifying DNA methylation at
-single base-pair resolution using whole genome bisulfite sequencing
-(WGBS), reduced representation bisulfite sequencing (RRBS), and
-methyl-CpG binding domain bisulfite sequencing (MBDBS). When aligning
-bisulfite-converted data to a reference genome the percent methylation
-at a given CpG loci is determined by examining the ratio of thymines to
-cytosines. For example if there is a given cytosine adjacent to a
-guanine (ie CpG locus) with 30% of the reads containing thymine, one
-would consider this cytosine loci (CpG) to be 70% methylated. Since
+the sequence data. <a href="#refs"><span class="citation">Trigg et al.
+(2022)</span></a> offers a comparison of three methods for quantifying
+DNA methylation at single base-pair resolution using whole genome
+bisulfite sequencing (WGBS), reduced representation bisulfite sequencing
+(RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). When
+aligning bisulfite-converted data to a reference genome the percent
+methylation at a given CpG loci is determined by examining the ratio of
+thymines to cytosines. For example if there is a given cytosine adjacent
+to a guanine (ie CpG locus) with 30% of the reads containing thymine,
+one would consider this cytosine loci (CpG) to be 70% methylated. Since
 bisulfite treatment can damage DNA, newer library preparation and
 sequencing methods (ex. <a
 href="https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&amp;%20Usage">NEBNext®
@@ -562,13 +562,15 @@ converted.</p></li>
 <div id="tutorial-details" class="section level2">
 <h2>Tutorial Details</h2>
 <p>For a good review of epigenetic mechanisms including DNA methylation
-in marine organisms see <span class="citation">Eirin-Lopez and Putnam
-(2019)</span>. <span class="citation">Trigg et al. (2022)</span> offers
-a comparison of three methods for quantifying DNA methylation at single
-base-pair resolution using whole genome bisulfite sequencing (WGBS),
-reduced representation bisulfite sequencing (RRBS), and methyl-CpG
-binding domain bisulfite sequencing (MBDBS). The tutorial below is based
-on WGBS, though the general workflow would be consistent.</p>
+in marine organisms see <a href="#refs"><span
+class="citation">Eirin-Lopez and Putnam (2019)</span></a>. <a
+href="#refs"><span class="citation">Trigg et al. (2022)</span></a>
+offers a comparison of three methods for quantifying DNA methylation at
+single base-pair resolution using whole genome bisulfite sequencing
+(WGBS), reduced representation bisulfite sequencing (RRBS), and
+methyl-CpG binding domain bisulfite sequencing (MBDBS). The tutorial
+below is based on WGBS, though the general workflow would be
+consistent.</p>
 <p>The tutorial will cover the following:<br />
 - Sequence quality assessment<br />
 - Read alignment<br />
@@ -579,13 +581,14 @@ provide code for downstream applications such as differential
 methylation analysis, it will link to other open-access resources and
 examples.</p>
 <p>The tutorial below is based on WGBS from a species of marine
-intertebrate (<em>Montipora capitata</em> coral) examined in <span
-class="citation">Trigg et al. (2022)</span>, and all raw data can be
-accessed under NCBI Bioproject PRJNA691891 if you would like to follow
-the tutorial with this dataset. The general workflow would be consistent
-for other library preparation and sequencing methods that produce
-loci-level data. The tutorial indicates places where special analytical
-consideration should be given to other data types.</p>
+intertebrate (<em>Montipora capitata</em> coral) examined in <a
+href="#refs"><span class="citation">Trigg et al. (2022)</span></a>, and
+all raw data can be accessed under NCBI Bioproject PRJNA691891 if you
+would like to follow the tutorial with this dataset. The general
+workflow would be consistent for other library preparation and
+sequencing methods that produce loci-level data. The tutorial indicates
+places where special analytical consideration should be given to other
+data types.</p>
 </div>
 </div>
 <div id="sequence-quality" class="section level1">
@@ -617,20 +620,21 @@ data often needs different trimming specifications</a>.</p>
 <div id="software-considerations" class="section level2">
 <h2>Software Considerations</h2>
 <p>The software used as part of this tutorial is <strong>Bismark
-Bisulfite Mapper</strong> <span class="citation">(Krueger and Andrews
-2011)</span>, which is one of the more widely-used softwares to align
-methylation data to a reference genome. Another commonly-used options
-include bwa-meth <span class="citation">(Pedersen et al. 2014)</span>
-and BSMAP <span class="citation">(Xi and Li 2009)</span> (see <span
-class="citation">(Nunn et al. 2021)</span> and <span
-class="citation">(Gong et al. 2022)</span> for comparisons of these
-software for plant and mammal species, respectively). As with any
+Bisulfite Mapper</strong> <a href="#refs"><span class="citation">Krueger
+and Andrews (2011)</span></a>, which is one of the more widely-used
+softwares to align methylation data to a reference genome. Another
+commonly-used options include bwa-meth <a href="#refs"><span
+class="citation">Pedersen et al. (2014)</span></a> and BSMAP <a
+href="#refs"><span class="citation">Xi and Li (2009)</span></a> (see <a
+href="#refs"><span class="citation">Nunn et al. (2021)</span></a> and
+<span class="citation">(Gong et al. 2022)</span> for comparisons of
+these software for plant and mammal species, respectively). As with any
 software it is best to be famililar with the <a
 href="https://felixkrueger.github.io/Bismark/">User Manual</a>.</p>
-<p>Within Bismark, the tutorial uses Bowtie 2 <span
-class="citation">(Langmead and Salzberg 2012)</span> as the alignment
-software. Although the Bismark user manual covers the necessary Bowtie 2
-parameters, it may be useful to refer to the <a
+<p>Within Bismark, the tutorial uses Bowtie 2 <a href="#refs"><span
+class="citation">Langmead and Salzberg (2012)</span></a> as the
+alignment software. Although the Bismark user manual covers the
+necessary Bowtie 2 parameters, it may be useful to refer to the <a
 href="https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml">Bowtie 2
 manual</a>.</p>
 <p>The content below will provided with the assumption that the reader
@@ -819,11 +823,11 @@ taxa methylation usually occurs in gene bodies.</p>
 Pacific oyster (<em>Crassostrea gigas</em>) genome, as well as the
 location of methylation across the genome:</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_DNA_methylation/meth_ratio.png" alt="Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue. @10.7717/peerj.215" width="70%" />
+<img src="DRAFT_DNA_methylation/meth_ratio.png" alt="Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue. [@10.7717/peerj.215](#refs)" width="70%" />
 <p class="caption">
 Frequency distribution of methylation ratios for CpG dinucleotides in
-oyster gill tissue. <span class="citation">Gavery and Roberts
-(2013)</span>
+oyster gill tissue. <a href="#refs"><span class="citation">Gavery and
+Roberts (2013)</span></a>
 </p>
 </div>
 <div class="figure" style="text-align: center">
@@ -1271,17 +1275,24 @@ quotes, or column names.</p></li>
 <div id="downstream-application" class="section level2">
 <h2>Downstream application</h2>
 <ul>
-<li><p>Gene-level methylation analysis. It is worth considering the
-utility of converting loci-level resolution data to gene-level
-resolution data</p></li>
-<li><p>Differential loci or region analyses. methylKit is a popular
-package to conduct this analysis</p></li>
-<li><p>Feature overlap. Bedtools for quantitative assessment and IGV for
-visual assessment are valuable for this.</p></li>
+<li><p>Integrating with population genetic data. example: <a
+href="#refs"><span class="citation">Silliman et al.
+(2023)</span></a></p></li>
+<li><p>Gene-level methylation analysis: see [@. It is worth considering
+the utility of converting loci-level resolution data to gene-level
+resolution data.</p></li>
+<li><p>Differential loci methylation and/or region analyses. see <a
+href="#refs"><span class="citation">Venkataraman, White, and Roberts
+(2022)</span></a>. methylKit is a popular package to conduct this
+analysis differential methylation anlaysis</p></li>
+<li><p>Feature overlap. see <a href="#refs"><span
+class="citation">Venkataraman, White, and Roberts (2022)</span></a>
+Bedtools for quantitative assessment and IGV for visual assessment are
+valuable for this.</p></li>
 </ul>
 </div>
 </div>
-<div id="references" class="section level1 unnumbered">
+<div id="refs" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-doi:10.1146/annurev-marine-010318-095114"
@@ -1338,6 +1349,13 @@ David A. Schwartz. 2014. <span>“Fast and Accurate Alignment of Long
 Bisulfite-Seq Reads.”</span> <a
 href="https://arxiv.org/abs/1401.1129">https://arxiv.org/abs/1401.1129</a>.
 </div>
+<div id="ref-10.1093/gbe/evad013" class="csl-entry">
+Silliman, K., L. H. Spencer, S. J. White, and S. B. Roberts. 2023.
+<span>“Epigenetic and Genetic Population Structure Is Coupled in a
+Marine Invertebrate.”</span> <em>Genome Biology and Evolution</em> 15.
+<a
+href="https://doi.org/10.1093/gbe/evad013">https://doi.org/10.1093/gbe/evad013</a>.
+</div>
 <div id="ref-https://doi.org/10.1111/1755-0998.13542" class="csl-entry">
 Trigg, Shelly A., Yaamini R. Venkataraman, Mackenzie R. Gavery, Steven
 B. Roberts, Debashish Bhattacharya, Alan Downey-Wall, Jose M.
@@ -1345,6 +1363,13 @@ Eirin-Lopez, et al. 2022. <span>“Invertebrate Methylomes Provide Insight
 into Mechanisms of Environmental Tolerance and Reveal Methodological
 Biases.”</span> <em>Molecular Ecology Resources</em> 22 (4): 1247–61. <a
 href="https://doi.org/10.1111/1755-0998.13542">https://doi.org/10.1111/1755-0998.13542</a>.
+</div>
+<div id="ref-10.1186/s12864-022-08781-5" class="csl-entry">
+Venkataraman, Y. R., S. J. White, and S. B. Roberts. 2022.
+<span>“Differential Dna Methylation in Pacific Oyster Reproductive
+Tissue in Response to Ocean Acidification.”</span> <em>BMC Genomics</em>
+23. <a
+href="https://doi.org/10.1186/s12864-022-08781-5">https://doi.org/10.1186/s12864-022-08781-5</a>.
 </div>
 <div id="ref-10.1186/1471-2105-10-232" class="csl-entry">
 Xi, Y., and W. Li. 2009. <span>“Bsmap: Whole Genome Bisulfite Sequence
