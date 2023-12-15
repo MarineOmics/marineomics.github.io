@@ -473,26 +473,28 @@ existing genome, and discuss needs for potential downstream
 applications. The principle behind creating bisulfite-treated DNA
 libraries is that when cytosines are not methylated, then they will be
 converted to uracil, which ultimately result in thymine nucleotides in
-the sequence data. <a href="#refs"><span class="citation">Trigg et al.
-(2022)</span></a> offers a comparison of three methods for quantifying
-DNA methylation at single base-pair resolution using whole genome
-bisulfite sequencing (WGBS), reduced representation bisulfite sequencing
-(RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). When
-aligning bisulfite-converted data to a reference genome the percent
-methylation at a given CpG loci is determined by examining the ratio of
-thymines to cytosines. For example if there is a given cytosine adjacent
-to a guanine (ie CpG locus) with 30% of the reads containing thymine,
-one would consider this cytosine loci (CpG) to be 70% methylated. Since
-bisulfite treatment can damage DNA, newer library preparation and
-sequencing methods (ex. <a
+the sequence data. <a href="#refs"><span class="citation">Wanamaker et
+al. (2022)</span></a> offers a comparison of three methods for
+quantifying DNA methylation at single base-pair resolution using whole
+genome bisulfite sequencing (WGBS), reduced representation bisulfite
+sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing
+(MBDBS). When aligning bisulfite-converted data to a reference genome
+the percent methylation at a given CpG loci is determined by examining
+the ratio of thymines to cytosines. For example if there is a given
+cytosine adjacent to a guanine (ie CpG locus) with 30% of the reads
+containing thymine, one would consider this cytosine loci (CpG) to be
+70% methylated. Since bisulfite treatment can damage DNA, newer library
+preparation and sequencing methods (ex. <a
 href="https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&amp;%20Usage">NEBNext®
 Enzymatic Methyl-seq Kit; EM-seq</a> are starting to gain popularity. As
 EM-Seq produces loci-level data, alignment of EM-Seq data is similar to
 WGBS. Also, technologies like Nanopore and PacBio sequencing can
-directly detect DNA methylation without bisulfite conversion. As DNA
-passes through a nanopore or is sequenced by single-molecule real-time
-(SMRT) technology, changes in electrical current or fluorescence
-patterns can indicate the presence of methylated bases.</p>
+directly detect DNA methylation without bisulfite conversion. See <a
+href="#refs"><span class="citation">Dimond, Nguyen, and Roberts
+(2021)</span></a> as example of using Nanopore sequencing. As DNA passes
+through a nanopore or is sequenced by single-molecule real-time (SMRT)
+technology, changes in electrical current or fluorescence patterns can
+indicate the presence of methylated bases.</p>
 </div>
 <div id="experimental-considerations" class="section level2">
 <h2>Experimental Considerations</h2>
@@ -564,7 +566,7 @@ converted.</p></li>
 <p>For a good review of epigenetic mechanisms including DNA methylation
 in marine organisms see <a href="#refs"><span
 class="citation">Eirin-Lopez and Putnam (2019)</span></a>. <a
-href="#refs"><span class="citation">Trigg et al. (2022)</span></a>
+href="#refs"><span class="citation">Wanamaker et al. (2022)</span></a>
 offers a comparison of three methods for quantifying DNA methylation at
 single base-pair resolution using whole genome bisulfite sequencing
 (WGBS), reduced representation bisulfite sequencing (RRBS), and
@@ -582,9 +584,9 @@ methylation analysis, it will link to other open-access resources and
 examples.</p>
 <p>The tutorial below is based on WGBS from a species of marine
 intertebrate (<em>Montipora capitata</em> coral) examined in <a
-href="#refs"><span class="citation">Trigg et al. (2022)</span></a>, and
-all raw data can be accessed under NCBI Bioproject PRJNA691891 if you
-would like to follow the tutorial with this dataset. The general
+href="#refs"><span class="citation">Wanamaker et al. (2022)</span></a>,
+and all raw data can be accessed under NCBI Bioproject PRJNA691891 if
+you would like to follow the tutorial with this dataset. The general
 workflow would be consistent for other library preparation and
 sequencing methods that produce loci-level data. The tutorial indicates
 places where special analytical consideration should be given to other
@@ -1278,10 +1280,11 @@ quotes, or column names.</p></li>
 <li><p>Integrating with population genetic data. example: <a
 href="#refs"><span class="citation">Silliman et al.
 (2023)</span></a></p></li>
-<li><p>Gene-level methylation analysis: see [@. It is worth considering
-the utility of converting loci-level resolution data to gene-level
-resolution data.</p></li>
-<li><p>Differential loci methylation and/or region analyses. see <a
+<li><p>Gene-level methylation analysis: example <a href="#refs"><span
+class="citation">Putnam et al. (2022)</span></a>. It is worth
+considering the utility of converting loci-level resolution data to
+gene-level resolution data.</p></li>
+<li><p>Differential loci methylation and/or region analyses. example: <a
 href="#refs"><span class="citation">Venkataraman, White, and Roberts
 (2022)</span></a>. methylKit is a popular package to conduct this
 analysis differential methylation anlaysis</p></li>
@@ -1295,6 +1298,12 @@ valuable for this.</p></li>
 <div id="refs" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-10.1093/g3journal/jkab148" class="csl-entry">
+Dimond, J. L., N. Nguyen, and S. J. Roberts. 2021. <span>“Dna
+Methylation Profiling of a Cnidarian-Algal Symbiosis Using Nanopore
+Sequencing.”</span> <em>G3 Genes|Genomes|Genetics</em> 11. <a
+href="https://doi.org/10.1093/g3journal/jkab148">https://doi.org/10.1093/g3journal/jkab148</a>.
+</div>
 <div id="ref-doi:10.1146/annurev-marine-010318-095114"
 class="csl-entry">
 Eirin-Lopez, Jose M., and Hollie M. Putnam. 2019. <span>“Marine
@@ -1349,6 +1358,13 @@ David A. Schwartz. 2014. <span>“Fast and Accurate Alignment of Long
 Bisulfite-Seq Reads.”</span> <a
 href="https://arxiv.org/abs/1401.1129">https://arxiv.org/abs/1401.1129</a>.
 </div>
+<div id="ref-10.1101/2022.06.24.497506" class="csl-entry">
+Putnam, H. M., S. A. Trigg, S. J. White, L. H. Spencer, B. Vadopalas, A.
+Natarajan, J. Hetzel, et al. 2022. <span>“Dynamic Dna Methylation
+Contributes to Carryover Effects and Beneficial Acclimatization in
+Geoduck Clams.”</span> <a
+href="https://doi.org/10.1101/2022.06.24.497506">https://doi.org/10.1101/2022.06.24.497506</a>.
+</div>
 <div id="ref-10.1093/gbe/evad013" class="csl-entry">
 Silliman, K., L. H. Spencer, S. J. White, and S. B. Roberts. 2023.
 <span>“Epigenetic and Genetic Population Structure Is Coupled in a
@@ -1356,20 +1372,20 @@ Marine Invertebrate.”</span> <em>Genome Biology and Evolution</em> 15.
 <a
 href="https://doi.org/10.1093/gbe/evad013">https://doi.org/10.1093/gbe/evad013</a>.
 </div>
-<div id="ref-https://doi.org/10.1111/1755-0998.13542" class="csl-entry">
-Trigg, Shelly A., Yaamini R. Venkataraman, Mackenzie R. Gavery, Steven
-B. Roberts, Debashish Bhattacharya, Alan Downey-Wall, Jose M.
-Eirin-Lopez, et al. 2022. <span>“Invertebrate Methylomes Provide Insight
-into Mechanisms of Environmental Tolerance and Reveal Methodological
-Biases.”</span> <em>Molecular Ecology Resources</em> 22 (4): 1247–61. <a
-href="https://doi.org/10.1111/1755-0998.13542">https://doi.org/10.1111/1755-0998.13542</a>.
-</div>
 <div id="ref-10.1186/s12864-022-08781-5" class="csl-entry">
 Venkataraman, Y. R., S. J. White, and S. B. Roberts. 2022.
 <span>“Differential Dna Methylation in Pacific Oyster Reproductive
 Tissue in Response to Ocean Acidification.”</span> <em>BMC Genomics</em>
 23. <a
 href="https://doi.org/10.1186/s12864-022-08781-5">https://doi.org/10.1186/s12864-022-08781-5</a>.
+</div>
+<div id="ref-https://doi.org/10.1111/1755-0998.13542" class="csl-entry">
+Wanamaker, Shelly A., Yaamini R. Venkataraman, Mackenzie R. Gavery,
+Steven B. Roberts, Debashish Bhattacharya, Alan Downey-Wall, Jose M.
+Eirin-Lopez, et al. 2022. <span>“Invertebrate Methylomes Provide Insight
+into Mechanisms of Environmental Tolerance and Reveal Methodological
+Biases.”</span> <em>Molecular Ecology Resources</em> 22 (4): 1247–61. <a
+href="https://doi.org/10.1111/1755-0998.13542">https://doi.org/10.1111/1755-0998.13542</a>.
 </div>
 <div id="ref-10.1186/1471-2105-10-232" class="csl-entry">
 Xi, Y., and W. Li. 2009. <span>“Bsmap: Whole Genome Bisulfite Sequence
