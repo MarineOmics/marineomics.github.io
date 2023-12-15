@@ -6,8 +6,7 @@ library(kableExtra)
 opts_chunk$set(fig.width = 10,
                fig.height = 5,
                cache = FALSE)
-cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
-             hyperlink = "to.doc")
+cite_options(citation_format = "pandoc", max.names = 3, style = "html", hyperlink = "to.html")
 ```
 
 ---
@@ -95,9 +94,9 @@ For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the begi
 
 ## Software Considerations
 
-The software used as part of this tutorial is **Bismark Bisulfite Mapper** (@10.1093/bioinformatics/btr167), which is one of the more widely-used softwares to align methylation data to a reference genome. Another commonly-used options include bwa-meth (@pedersen2014fast) and BSMAP (@10.1186/1471-2105-10-232) (see @10.1093/bib/bbab021 and @10.1016/j.csbj.2022.08.051) for comparisons of these software for plant and mammal species, respectively). As with any software it is best to be famililar with the [User Manual](https://felixkrueger.github.io/Bismark/).
+The software used as part of this tutorial is **Bismark Bisulfite Mapper** [@10.1093/bioinformatics/btr167], which is one of the more widely-used softwares to align methylation data to a reference genome. Another commonly-used options include bwa-meth [@pedersen2014fast] and BSMAP [@10.1186/1471-2105-10-232] (see [@10.1093/bib/bbab021] and [@10.1016/j.csbj.2022.08.051] for comparisons of these software for plant and mammal species, respectively). As with any software it is best to be famililar with the [User Manual](https://felixkrueger.github.io/Bismark/).
 
-Within Bismark, the tutorial uses Bowtie 2 (@10.1038/nmeth.1923) as the alignment software. Although the Bismark user manual covers the necessary Bowtie 2 parameters, it may be useful to refer to the [Bowtie 2 manual](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml).
+Within Bismark, the tutorial uses Bowtie 2 [@10.1038/nmeth.1923] as the alignment software. Although the Bismark user manual covers the necessary Bowtie 2 parameters, it may be useful to refer to the [Bowtie 2 manual](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml).
 
 The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
 
@@ -226,17 +225,18 @@ DNA methylation at CpG locus can vary to 0-100%. How methylated CpGs are across 
 
 The figure below shows the methylation ratio of CpGs across the Pacific oyster (*Crassostrea gigas*) genome, as well as the location of methylation across the genome:
 
-```{r meth-ratio, echo = FALSE, out.width = "70%", fig.align = "center"}
+```{r meth-ratio, echo = FALSE, out.width = "70%", fig.align = "center", fig.cap = "Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue. @10.7717/peerj.215"}
 knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
 ```
 
-*Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue.* @10.7717/peerj.215
 
-```{r meth-igv, echo = FALSE, out.width = "70%", fig.align = "center"}
+
+
+```{r meth-igv, echo = FALSE, out.width = "100%", fig.align = "center", fig.cap = "Screenshot from IGV. Bedgraph files are displayed. See below for code to create these file (File Conversion)"}
 knitr::include_graphics("DRAFT_DNA_methylation/igv.png")
 ```
 
-*Screenshot from IGV. Bedgraph files are displayed. See below for code to create these file (File Conversion)*
+---
 
 Vertebrate genomes, on the other hand, have higher overall levels of methylation, with methylation occuring in CpG islands.
 
@@ -370,7 +370,7 @@ ${bismark_dir}/bismark2summary
 
 These commands should be run in the same directory where all output files are stored.
 
-```{r meth-summary, echo = FALSE, out.width = "70%", fig.align = "center"}
+```{r meth-summary, echo = FALSE, out.width = "100%", fig.align = "center"}
 knitr::include_graphics("DRAFT_DNA_methylation/bismark-summary-report.png")
 ```
 

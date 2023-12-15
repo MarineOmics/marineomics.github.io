@@ -617,18 +617,18 @@ data often needs different trimming specifications</a>.</p>
 <div id="software-considerations" class="section level2">
 <h2>Software Considerations</h2>
 <p>The software used as part of this tutorial is <strong>Bismark
-Bisulfite Mapper</strong> (<span class="citation">Krueger and Andrews
-(2011)</span>), which is one of the more widely-used softwares to align
+Bisulfite Mapper</strong> <span class="citation">(Krueger and Andrews
+2011)</span>, which is one of the more widely-used softwares to align
 methylation data to a reference genome. Another commonly-used options
-include bwa-meth (<span class="citation">Pedersen et al. (2014)</span>)
-and BSMAP (<span class="citation">Xi and Li (2009)</span>) (see <span
-class="citation">Nunn et al. (2021)</span> and <span
-class="citation">Gong et al. (2022)</span>) for comparisons of these
+include bwa-meth <span class="citation">(Pedersen et al. 2014)</span>
+and BSMAP <span class="citation">(Xi and Li 2009)</span> (see <span
+class="citation">(Nunn et al. 2021)</span> and <span
+class="citation">(Gong et al. 2022)</span> for comparisons of these
 software for plant and mammal species, respectively). As with any
 software it is best to be famililar with the <a
 href="https://felixkrueger.github.io/Bismark/">User Manual</a>.</p>
-<p>Within Bismark, the tutorial uses Bowtie 2 (<span
-class="citation">Langmead and Salzberg (2012)</span>) as the alignment
+<p>Within Bismark, the tutorial uses Bowtie 2 <span
+class="citation">(Langmead and Salzberg 2012)</span> as the alignment
 software. Although the Bismark user manual covers the necessary Bowtie 2
 parameters, it may be useful to refer to the <a
 href="https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml">Bowtie 2
@@ -818,13 +818,22 @@ taxa methylation usually occurs in gene bodies.</p>
 <p>The figure below shows the methylation ratio of CpGs across the
 Pacific oyster (<em>Crassostrea gigas</em>) genome, as well as the
 location of methylation across the genome:</p>
-<p><img src="DRAFT_DNA_methylation/meth_ratio.png" width="70%" style="display: block; margin: auto;" /></p>
-<p><em>Frequency distribution of methylation ratios for CpG
-dinucleotides in oyster gill tissue.</em> <span class="citation">Gavery
-and Roberts (2013)</span></p>
-<p><img src="DRAFT_DNA_methylation/igv.png" width="70%" style="display: block; margin: auto;" /></p>
-<p><em>Screenshot from IGV. Bedgraph files are displayed. See below for
-code to create these file (File Conversion)</em></p>
+<div class="figure" style="text-align: center">
+<img src="DRAFT_DNA_methylation/meth_ratio.png" alt="Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue. @10.7717/peerj.215" width="70%" />
+<p class="caption">
+Frequency distribution of methylation ratios for CpG dinucleotides in
+oyster gill tissue. <span class="citation">Gavery and Roberts
+(2013)</span>
+</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="DRAFT_DNA_methylation/igv.png" alt="Screenshot from IGV. Bedgraph files are displayed. See below for code to create these file (File Conversion)" width="100%" />
+<p class="caption">
+Screenshot from IGV. Bedgraph files are displayed. See below for code to
+create these file (File Conversion)
+</p>
+</div>
+<hr />
 <p>Vertebrate genomes, on the other hand, have higher overall levels of
 methylation, with methylation occuring in CpG islands.</p>
 <p>[ placeholder for Kathryn to add some stuff! ]</p>
@@ -999,7 +1008,7 @@ ${bismark_dir}/bismark2report
 ${bismark_dir}/bismark2summary</code></pre>
 <p>These commands should be run in the same directory where all output
 files are stored.</p>
-<p><img src="DRAFT_DNA_methylation/bismark-summary-report.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="DRAFT_DNA_methylation/bismark-summary-report.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="file-conversions" class="section level1">
 <h1>File Conversions</h1>
