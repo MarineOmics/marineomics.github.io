@@ -1,0 +1,27 @@
+name: marineomics
+channels:
+  - conda-forge
+  - bioconda
+  - r
+  - defaults
+dependencies:
+  - r-base
+  - r-tidyverse
+  - r-knitcitations
+  - r-kableextra
+  - bioconductor-edger
+  - r-ape
+  - r-vegan
+  - r-ggally
+  - r-lmtest
+  - r-reshape2
+  - r-rmisc
+  - r-lmertest
+  - bioconductor-snprelate
+  - vcftools
+  - samtools
+  - gnuplot
+  - r-biocmanager
+  - bioconductor-lea
+  - r-devtools
+prefix: /Users/jason/miniconda3/envs/marineomics

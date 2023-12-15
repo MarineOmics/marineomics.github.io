@@ -674,19 +674,29 @@ bibliography: common-bib_01.bib
 initial <a href="#cite_options">‘r setup’ chunk</a> above for the syntax
 of the ‘cite_options’ command.</li>
 </ul>
-<p>After following these step, you can cite them in the RMarkdown
+<p>After following these steps, you can cite them in the RMarkdown
 document. Let’s say you have a paper you want to cite by LastName et
 al. 2023 and the paper’s ID in your .bib file is ‘LastName2023-xy’. We
 can reference this paper in-text by adding [@LastName2023-xy] to the end
 of a sentence. This will produce a reference such as the one below for
-Tripp et al. 2017.</p>
-<p><em>syntax in .Rmd text <strong>(not in a code
-chunk)</strong></em>:</p>
+Tripp et al. 2017. <br> <br> <em>syntax in .Rmd text <strong>(not in a
+code chunk)</strong></em>:</p>
 <pre><code>RADseq can produce insightful analyses even in the absence of data, if missing values are handled properly [@Tripp2017-cp].</code></pre>
 <p><em>knitted output</em>: <br> RADseq can produce insightful analyses
 even in the absence of data, if missing values are handled properly
 <span class="citation">(Tripp et al. 2017)</span>.</p>
 <p><br></p>
+<p>You can also add hyperlinks to each in text citation that direct to
+the References section at the bottom of the page. The in text citation
+keeps its normal format, but with brackets added around the parentheses.
+Directly after the citation (also in parentheses) is the ‘#’ link to the
+References section: (#refs) in this case.<br> <br>
+<strong>.Rmd</strong>: [(@Tripp2017-cp)](#refs) <br> <strong>rendered
+html</strong>: <a href="#refs">(<span class="citation">Tripp et al.
+(2017)</span>)</a> <br> <br> At the bottom of the .Rmd, where the ‘##
+References’ heading is, we have a ‘{#refs}’, which creates the target
+for all links with ‘(#refs)’. It looks like this on the .Rmd:<br> ##
+References {#refs}</p>
 </div>
 <div id="installing-loading-packages" class="section level3">
 <h3><strong>installing &amp; loading packages</strong></h3>
@@ -861,7 +871,7 @@ tie.</p>
 </div>
 </div>
 </div>
-<div id="references" class="section level2 unnumbered">
+<div id="refs" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Tripp2017-cp" class="csl-entry">
