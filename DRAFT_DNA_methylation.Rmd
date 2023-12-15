@@ -21,9 +21,9 @@ Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#
 
 ## Background
 
-Thanks to advances in sample preparation and sequencing methods, there is an influx of research examining epigenomics in non-model systems. Broadly, epigenetics can be defined as changes to gene expression that do not arise from changes in the DNA sequence. DNA methylation, or addition of a methyl (CH<sub>3</sub>) group to a cytosine base adjacent to a guanine (CpG) is one of the more commonly studies epigenetic mechanisms, partly because of its environmental sensitivity and potential role in phenotypic plasticity. For a good review of epigenetic mechanisms including DNA methylation in marine organisms see [@doi:10.1146/annurev-marine-010318-095114](#refs).
+Thanks to advances in sample preparation and sequencing methods, there is an influx of research examining epigenomics in non-model systems. Broadly, epigenetics can be defined as changes to gene expression that do not arise from changes in the DNA sequence. DNA methylation, or addition of a methyl (CH<sub>3</sub>) group to a cytosine base adjacent to a guanine (CpG) is one of the more commonly studies epigenetic mechanisms, partly because of its environmental sensitivity and potential role in phenotypic plasticity. For a good review of epigenetic mechanisms including DNA methylation in marine organisms see [\@doi:10.1146/annurev-marine-010318-095114](#refs).
 
-The purpose of this tutorial is to provide an example of aligning bisulfite-treated and enzymatically converted DNA sequence data to an existing genome, and discuss needs for potential downstream applications. The principle behind creating bisulfite-treated DNA libraries is that when cytosines are not methylated, then they will be converted to uracil, which ultimately result in thymine nucleotides in the sequence data. [@https://doi.org/10.1111/1755-0998.13542](#refs) offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). When aligning bisulfite-converted data to a reference genome the percent methylation at a given CpG loci is determined by examining the ratio of thymines to cytosines. For example if there is a given cytosine adjacent to a guanine (ie CpG locus) with 30% of the reads containing thymine, one would consider this cytosine loci (CpG) to be 70% methylated. Since bisulfite treatment can damage DNA, newer library preparation and sequencing methods (ex. [NEBNext® Enzymatic Methyl-seq Kit; EM-seq](https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&%20Usage) are starting to gain popularity. As EM-Seq produces loci-level data, alignment of EM-Seq data is similar to WGBS. Also, technologies like Nanopore and PacBio sequencing can directly detect DNA methylation without bisulfite conversion. See [@10.1093/g3journal/jkab148](#refs) as example of using Nanopore sequencing. As DNA passes through a nanopore or is sequenced by single-molecule real-time (SMRT) technology, changes in electrical current or fluorescence patterns can indicate the presence of methylated bases.
+The purpose of this tutorial is to provide an example of aligning bisulfite-treated and enzymatically converted DNA sequence data to an existing genome, and discuss needs for potential downstream applications. The principle behind creating bisulfite-treated DNA libraries is that when cytosines are not methylated, then they will be converted to uracil, which ultimately result in thymine nucleotides in the sequence data. [\@https://doi.org/10.1111/1755-0998.13542](#refs) offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). When aligning bisulfite-converted data to a reference genome the percent methylation at a given CpG loci is determined by examining the ratio of thymines to cytosines. For example if there is a given cytosine adjacent to a guanine (ie CpG locus) with 30% of the reads containing thymine, one would consider this cytosine loci (CpG) to be 70% methylated. Since bisulfite treatment can damage DNA, newer library preparation and sequencing methods (ex. [NEBNext® Enzymatic Methyl-seq Kit; EM-seq](https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&%20Usage) are starting to gain popularity. As EM-Seq produces loci-level data, alignment of EM-Seq data is similar to WGBS. Also, technologies like Nanopore and PacBio sequencing can directly detect DNA methylation without bisulfite conversion. See [\@10.1093/g3journal/jkab148](#refs) as example of using Nanopore sequencing. As DNA passes through a nanopore or is sequenced by single-molecule real-time (SMRT) technology, changes in electrical current or fluorescence patterns can indicate the presence of methylated bases.
 
 ## Experimental Considerations
 
@@ -53,7 +53,7 @@ Bisulfite Conversion Efficiency is important to assess. One common step during l
 
 ## Tutorial Details
 
-For a good review of epigenetic mechanisms including DNA methylation in marine organisms see [@doi:10.1146/annurev-marine-010318-095114](#refs). [@https://doi.org/10.1111/1755-0998.13542](#refs) offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). The tutorial below is based on WGBS, though the general workflow would be consistent.
+For a good review of epigenetic mechanisms including DNA methylation in marine organisms see [\@doi:10.1146/annurev-marine-010318-095114](#refs). [\@https://doi.org/10.1111/1755-0998.13542](#refs) offers a comparison of three methods for quantifying DNA methylation at single base-pair resolution using whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite sequencing (MBDBS). The tutorial below is based on WGBS, though the general workflow would be consistent.
 
 The tutorial will cover the following:\
 - Sequence quality assessment\
@@ -62,7 +62,7 @@ The tutorial will cover the following:\
 - File conversions\
 - Potential downstream applications. Although this tutorial will not provide code for downstream applications such as differential methylation analysis, it will link to other open-access resources and examples.
 
-The tutorial below is based on WGBS from a species of marine intertebrate (*Montipora capitata* coral) examined in [@https://doi.org/10.1111/1755-0998.13542](#refs), and all raw data can be accessed under NCBI Bioproject PRJNA691891 if you would like to follow the tutorial with this dataset. The general workflow would be consistent for other library preparation and sequencing methods that produce loci-level data. The tutorial indicates places where special analytical consideration should be given to other data types. Given the size of the data files and the computational resources necessary this is not developed to be actionable and reproducible. For context this process outlined below took weeks on a university HPC system.
+The tutorial below is based on WGBS from a species of marine intertebrate (*Montipora capitata* coral) examined in [\@https://doi.org/10.1111/1755-0998.13542](#refs), and all raw data can be accessed under NCBI Bioproject PRJNA691891 if you would like to follow the tutorial with this dataset. The general workflow would be consistent for other library preparation and sequencing methods that produce loci-level data. The tutorial indicates places where special analytical consideration should be given to other data types. Given the size of the data files and the computational resources necessary this is not developed to be actionable and reproducible. For context this process outlined below took weeks on a university HPC system.
 
 # Sequence Quality
 
@@ -94,9 +94,9 @@ For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the begi
 
 ## Software Considerations
 
-The software used as part of this tutorial is **Bismark Bisulfite Mapper** [@10.1093/bioinformatics/btr167](#refs), which is one of the more widely-used softwares to align methylation data to a reference genome. Another commonly-used options include bwa-meth [@pedersen2014fast](#refs) and BSMAP [@10.1186/1471-2105-10-232](#refs) (see [@10.1093/bib/bbab021](#refs) and [@10.1016/j.csbj.2022.08.051] for comparisons of these software for plant and mammal species, respectively). As with any software it is best to be famililar with the [User Manual](https://felixkrueger.github.io/Bismark/).
+The software used as part of this tutorial is **Bismark Bisulfite Mapper** [\@10.1093/bioinformatics/btr167](#refs), which is one of the more widely-used softwares to align methylation data to a reference genome. Another commonly-used options include bwa-meth [\@pedersen2014fast](#refs) and BSMAP [\@10.1186/1471-2105-10-232](#refs) (see [\@10.1093/bib/bbab021](#refs) and [@10.1016/j.csbj.2022.08.051] for comparisons of these software for plant and mammal species, respectively). As with any software it is best to be famililar with the [User Manual](https://felixkrueger.github.io/Bismark/).
 
-Within Bismark, the tutorial uses Bowtie 2 [@10.1038/nmeth.1923](#refs) as the alignment software. Although the Bismark user manual covers the necessary Bowtie 2 parameters, it may be useful to refer to the [Bowtie 2 manual](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml).
+Within Bismark, the tutorial uses Bowtie 2 [\@10.1038/nmeth.1923](#refs) as the alignment software. Although the Bismark user manual covers the necessary Bowtie 2 parameters, it may be useful to refer to the [Bowtie 2 manual](https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml).
 
 The content below will provided with the assumption that the reader has read the manual and is meant to serve as guidance based on experience working with marine invertebrates.
 
@@ -229,18 +229,15 @@ The figure below shows the methylation ratio of CpGs across the Pacific oyster (
 knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
 ```
 
-
-
-
 ```{r meth-igv, echo = FALSE, out.width = "100%", fig.align = "center", fig.cap = "Screenshot from IGV. Bedgraph files are displayed. See below for code to create these file (File Conversion)"}
 knitr::include_graphics("DRAFT_DNA_methylation/igv.png")
 ```
 
----
+------------------------------------------------------------------------
 
-Vertebrate genomes, on the other hand, have higher overall levels of methylation, with methylation occuring in CpG islands. An example analysis of methylation at individual CG dinucleotides in the elephant shark, mice, and zebra fish is shown, below.  Results reavel comparable levels of global methyaltion patterns with the majority of sites being highly methylated (≥ 80%), and fewer than one tenth being unmethylated (doi: 10.12688/f1000research.11281.1).
+Vertebrate genomes, on the other hand, have higher overall levels of methylation, with methylation occuring in CpG islands. An example analysis of methylation at individual CG dinucleotides in the elephant shark, mice, and zebra fish is shown, below. Results reavel comparable levels of global methyaltion patterns with the majority of sites being highly methylated (≥ 80%), and fewer than one tenth being unmethylated (doi: 10.12688/f1000research.11281.1).
 
-```{r meth-vert, echo = FALSE, out.width = "70%", fig.align = "center", fig,cap= "Genome screenshots of methylation quantified in 2kb running windows over the first 3Mb of chromosome 1 zebrafish and mouse, and of the largest scaffold (NW_006890054.1) in elephant shark (doi: 10.12688/f1000research.11281.1)"}
+```{r meth-vert, echo = FALSE, out.width = "70%", fig.align = "center", fig.cap= "Genome screenshots of methylation quantified in 2kb running windows over the first 3Mb of chromosome 1 zebrafish and mouse, and of the largest scaffold (NW_006890054.1) in elephant shark (doi: 10.12688/f1000research.11281.1)"}
 knitr::include_graphics("DRAFT_DNA_methylation/vert_methyl_distr.png")
 ```
 
@@ -565,12 +562,12 @@ Let's break down what each part of the script does:
 
 ## Downstream application
 
--   Integrating with population genetic data. example: [@10.1093/gbe/evad013](#refs)
+-   Integrating with population genetic data. example: [\@10.1093/gbe/evad013](#refs)
 
--   Gene-level methylation analysis: example [@10.1101/2022.06.24.497506](#refs). It is worth considering the utility of converting loci-level resolution data to gene-level resolution data. 
+-   Gene-level methylation analysis: example [\@10.1101/2022.06.24.497506](#refs). It is worth considering the utility of converting loci-level resolution data to gene-level resolution data.
 
--   Differential loci methylation and/or region analyses. example: [@10.1186/s12864-022-08781-5](#refs). methylKit is a popular package to conduct this analysis differential methylation anlaysis
+-   Differential loci methylation and/or region analyses. example: [\@10.1186/s12864-022-08781-5](#refs). methylKit is a popular package to conduct this analysis differential methylation anlaysis
 
--   Feature overlap. example: [@10.3389/fmars.2020.00225](#refs) Bedtools is excellent for quantitative assessment of feature overlap and IGV is good for visual assessment.
+-   Feature overlap. example: [\@10.3389/fmars.2020.00225](#refs) Bedtools is excellent for quantitative assessment of feature overlap and IGV is good for visual assessment.
 
 # References {#refs}
