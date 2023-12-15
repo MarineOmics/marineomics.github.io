@@ -40,8 +40,6 @@ mkdir ../output/lncRNA
 
 
 ```{r, engine='bash'}
-
-
 wget -r \
 --no-directories --no-parent \
 -P ../data/lncRNA \
@@ -60,11 +58,6 @@ cd ../data/lncRNA
 curl -O https://gannet.fish.washington.edu/seashell/bu-github/deep-dive/D-Apul/data/Amil/ncbi_dataset/data/GCF_013753865.1/GCF_013753865.1_Amil_v2.1_genomic.fna
 ```
 
-```{r, engine='bash'}
-cd ../data/lncRNA
-
-curl -O https://gannet.fish.washington.edu/seashell/bu-github/deep-dive/D-Apul/data/Amil/ncbi_dataset/data/GCF_013753865.1/genomic.gtf
-```
 
 ```{r, engine='bash'}
 cd ../data/lncRNA
@@ -127,13 +120,13 @@ done
 # Stringtie
 
 ```{r, engine='bash'}
-find ../output/05.33-lncRNA-discovery/*sorted.bam \
+find ../output/lncRNA/*sorted.bam \
 | xargs basename -s .sorted.bam | xargs -I{} \
 /home/shared/stringtie-2.2.1.Linux_x86_64/stringtie \
 -p 16 \
--G ../data/Amil/ncbi_dataset/data/GCF_013753865.1/genomic.gff \
--o ../output/05.33-lncRNA-discovery/{}.gtf \
-../output/05.33-lncRNA-discovery/{}.sorted.bam
+-G ../lncRNA/genomic.gff \
+-o ../output/lncRNA/{}.gtf \
+../output/lncRNA/{}.sorted.bam
 ```
 
 
