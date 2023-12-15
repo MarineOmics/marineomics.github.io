@@ -567,6 +567,6 @@ Let's break down what each part of the script does:
 
 -   Differential loci or region analyses. methylKit is a popular package to conduct this analysis
 
--   Feature overlap. Bedtools for quantitative assessment and IGV for visual assessment are valuable for thisl
+-   Feature overlap. Bedtools for quantitative assessment and IGV for visual assessment are valuable for this.
 
 # References

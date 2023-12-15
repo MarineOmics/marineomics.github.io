@@ -1165,10 +1165,11 @@ messages and possibly additional log information.</p></li>
 </ol>
 <p>The resulting could be used to mask the genome and the entire process
 described above could be repeated (ie Genome Preparation, Alignment,
-Quantification)</p>
-<p>If for example in downstream analysis you would might be using a
-_5x.tab file described above the following is a means in R to remove
-these SNPs.</p>
+Quantification). An alternative and common practice is to remove
+cytosines from downstream analysis by removing loci in intermediate
+files (ie tab-delimited data files). Below is an example using
+<code>antijoin</code> to remove loci that correspond to CT SNPs from 5x
+coverage methyation quantification files.</p>
 <pre class="r"><code># Read in CT SNP file
 ct &lt;- read.csv(&quot;../output/CT-SNP.vcf&quot;, header = FALSE, sep = &quot;\t&quot;) %&gt;%
   mutate(loci = paste0(V1, &quot;_&quot;, V2))
@@ -1197,6 +1198,70 @@ for(file in files) {
   output_file &lt;- paste0(&quot;../output/f&quot;, base_name)
   write.table(modified_data, file = output_file, sep = &quot;\t&quot;, row.names = FALSE, quote = FALSE, col.names = FALSE)
 }</code></pre>
+<p>Let’s break down what each part of the script does:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Reading in a CT SNP file</strong>:</p>
+<ul>
+<li><p><strong><code>ct &lt;- read.csv("../output/CT-SNP.vcf", header = FALSE, sep = "\t")</code></strong>:
+This line reads a file named <strong><code>CT-SNP.vcf</code></strong>
+from the specified directory. The file is expected to be in a
+tab-separated format (<strong><code>sep = "\t"</code></strong>), and it
+doesn’t have a header row
+(<strong><code>header = FALSE</code></strong>).</p></li>
+<li><p><strong><code>mutate(loci = paste0(V1, "_", V2))</code></strong>:
+The <strong><code>mutate</code></strong> function from the
+<strong><code>dplyr</code></strong> package is used to add a new column
+(<strong><code>loci</code></strong>) to the
+<strong><code>ct</code></strong> data frame. This column is created by
+concatenating the values in the first (<strong><code>V1</code></strong>)
+and second columns (<strong><code>V2</code></strong>) of each row,
+separated by an underscore.</p></li>
+</ul></li>
+<li><p><strong>Listing files with a specific suffix</strong>:</p>
+<ul>
+<li><strong><code>files &lt;- list.files(path = "../data/", pattern = "_5x.tab$", full.names = TRUE)</code></strong>:
+This line generates a list of file paths in the
+<strong><code>../data/</code></strong> directory. It only includes files
+that end with <strong><code>_5x.tab</code></strong> (as indicated by the
+<strong><code>pattern</code></strong> argument).</li>
+</ul></li>
+<li><p><strong>Processing each file</strong>:</p>
+<ul>
+<li><p>The <strong><code>for(file in files)</code></strong> loop
+iterates over each file found in the previous step.</p>
+<ul>
+<li><p><strong><code>base_name &lt;- basename(file)</code></strong>:
+Extracts the file name without the directory path.</p></li>
+<li><p><strong><code>data &lt;- read.csv(file, header = FALSE, sep = "\t")</code></strong>:
+Reads the current file in the loop. Similar to the first
+<strong><code>read.csv</code></strong> call, it expects a tab-separated
+file with no header row.</p></li>
+<li><p>The <strong><code>mutate</code></strong> and
+<strong><code>anti_join</code></strong> functions are used to modify
+<strong><code>data</code></strong>:</p>
+<ul>
+<li><p><strong><code>mutate(loci = paste0(V1, "_", V2))</code></strong>:
+Adds a <strong><code>loci</code></strong> column similar to the
+<strong><code>ct</code></strong> data frame.</p></li>
+<li><p><strong><code>anti_join(ct, by = "loci")</code></strong>: Removes
+rows from <strong><code>data</code></strong> that have matching
+<strong><code>loci</code></strong> values in the
+<strong><code>ct</code></strong> data frame.</p></li>
+<li><p><strong><code>select(-loci)</code></strong>: Removes the
+<strong><code>loci</code></strong> column from the data.</p></li>
+</ul></li>
+<li><p>The modified data is then written to an output file:</p>
+<ul>
+<li><p><strong><code>output_file &lt;- paste0("../output/f", base_name)</code></strong>:
+Constructs the output file path.</p></li>
+<li><p><strong><code>write.table(modified_data, file = output_file, sep = "\t", row.names = FALSE, quote = FALSE, col.names = FALSE)</code></strong>:
+Writes the <strong><code>modified_data</code></strong> to the specified
+file. The output is tab-separated, and it doesn’t include row names,
+quotes, or column names.</p></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ol>
 </div>
 <div id="downstream-application" class="section level2">
 <h2>Downstream application</h2>
@@ -1207,7 +1272,7 @@ resolution data</p></li>
 <li><p>Differential loci or region analyses. methylKit is a popular
 package to conduct this analysis</p></li>
 <li><p>Feature overlap. Bedtools for quantitative assessment and IGV for
-visual assessment are valuable for thisl</p></li>
+visual assessment are valuable for this.</p></li>
 </ul>
 </div>
 </div>
