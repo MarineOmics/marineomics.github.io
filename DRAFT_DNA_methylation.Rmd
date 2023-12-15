@@ -436,7 +436,7 @@ By eliminating these potential sources of error, researchers can have more confi
 
 One way to do this is using BS-Snper (@10.1093/bioinformatics/btv507). <https://github.com/hellbelly/BS-Snper>. This program finds SNPs in Bisulfite treated alignment files. The bash code below represents steps to identify SNPS and create a list of all C-\>T SNPS.
 
-```         
+```{r, engine='perl', eval=FALSE}         
 samtools merge \
 Pg_merged.bam \
 *.sorted.bam
