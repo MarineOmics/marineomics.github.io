@@ -572,6 +572,6 @@ Let's break down what each part of the script does:
 
 -   Differential loci methylation and/or region analyses. example: [@10.1186/s12864-022-08781-5](#refs). methylKit is a popular package to conduct this analysis differential methylation anlaysis
 
--   Feature overlap. see [@10.1186/s12864-022-08781-5](#refs) Bedtools for quantitative assessment and IGV for visual assessment are valuable for this.
+-   Feature overlap. example: [@10.3389/fmars.2020.00225](#refs) Bedtools is excellent for quantitative assessment of feature overlap and IGV is good for visual assessment.
 
 # References {#refs}

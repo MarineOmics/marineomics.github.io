@@ -613,9 +613,10 @@ trimmed with the following parameters:</p>
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R1_001.fastq.gz \</code></pre>
 <p><img src="DRAFT_DNA_methylation/meth-bp-chart.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>For WGBS and MBDBS data, it is general practice to hard-trim 10 bp
-from the beginning and end of each read. <a
-href="https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html#ix-notes-about-different-library-types-and-commercial-kits">RRBS
-data often needs different trimming specifications</a>.</p>
+from the beginning and end of each read. RRBS data often needs different
+trimming specifications <a
+href="https://felixkrueger.github.io/Bismark/">see Manual for
+details</a></p>
 </div>
 <div id="read-alignment" class="section level1">
 <h1>Read Alignment</h1>
@@ -842,7 +843,8 @@ create these file (File Conversion)
 <hr />
 <p>Vertebrate genomes, on the other hand, have higher overall levels of
 methylation, with methylation occuring in CpG islands.</p>
-<p>[ placeholder for Kathryn to add some stuff! ]</p>
+<p><img src="DRAFT_DNA_methylation/vert_methyl_distr.png" width="70%" style="display: block; margin: auto;" />
+[ placeholder for Kathryn to add some stuff! ]</p>
 </div>
 <div id="methylation-extraction" class="section level2">
 <h2>Methylation extraction</h2>
@@ -1288,10 +1290,10 @@ gene-level resolution data.</p></li>
 href="#refs"><span class="citation">Venkataraman, White, and Roberts
 (2022)</span></a>. methylKit is a popular package to conduct this
 analysis differential methylation anlaysis</p></li>
-<li><p>Feature overlap. see <a href="#refs"><span
-class="citation">Venkataraman, White, and Roberts (2022)</span></a>
-Bedtools for quantitative assessment and IGV for visual assessment are
-valuable for this.</p></li>
+<li><p>Feature overlap. example: <a href="#refs"><span
+class="citation">Venkataraman et al. (2020)</span></a> Bedtools for
+quantitative assessment and IGV for visual assessment are valuable for
+this.</p></li>
 </ul>
 </div>
 </div>
@@ -1371,6 +1373,14 @@ Silliman, K., L. H. Spencer, S. J. White, and S. B. Roberts. 2023.
 Marine Invertebrate.”</span> <em>Genome Biology and Evolution</em> 15.
 <a
 href="https://doi.org/10.1093/gbe/evad013">https://doi.org/10.1093/gbe/evad013</a>.
+</div>
+<div id="ref-10.3389/fmars.2020.00225" class="csl-entry">
+Venkataraman, Y. R., A. M. Downey-Wall, J. B. Ries, I. Westfield, S. J.
+White, S. B. Roberts, and K. E. Lotterhos. 2020. <span>“General Dna
+Methylation Patterns and Environmentally-Induced Differential
+Methylation in the Eastern Oyster (Crassostrea Virginica).”</span>
+<em>Frontiers in Marine Science</em> 7. <a
+href="https://doi.org/10.3389/fmars.2020.00225">https://doi.org/10.3389/fmars.2020.00225</a>.
 </div>
 <div id="ref-10.1186/s12864-022-08781-5" class="csl-entry">
 Venkataraman, Y. R., S. J. White, and S. B. Roberts. 2022.
