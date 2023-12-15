@@ -6,7 +6,9 @@ library(kableExtra)
 opts_chunk$set(fig.width = 10,
                eval = FALSE,         # Evaluate code chunks
                fig.height = 5,
-               cache = FALSE)
+               cache = FALSE,
+               message = FALSE,
+               warning = FALSE)
 cite_options(citation_format = "pandoc", max.names = 3, style = "html", hyperlink = "to.html")
 ```
 
@@ -22,7 +24,7 @@ Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#
 
 
 
-## Notes on running code. This workflow is written such that a user an fully reproduce the code. 
+Notes on running code. This workflow is written such that a user an fully reproduce the code. 
 
 
 
@@ -31,13 +33,107 @@ Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#
 The data used for this workflow is from Acropora pulcra, and part of the E5 (https://e5coral.org) project. see https://github.com/urol-e5/deep-dive for more details.
 
 ```{r, engine='bash'}
+# Make directories - these need to have a lot of space.
 mkdir ../data/lncRNA
+mkdir ../output/lncRNA
+```
+
+
+```{r, engine='bash'}
+
 
 wget -r \
 --no-directories --no-parent \
 -P ../data/lncRNA \
 -A "*fastq.gz" https://gannet.fish.washington.edu/Atumefaciens/20230519-E5_coral-fastqc-fastp-multiqc-RNAseq/A_pulchra/trimmed/
 
+```
+
+
+## Genome
+
+For this we will be using the closly related genome on Acropora millipora.
+
+```{r, engine='bash'}
+cd ../data/lncRNA
+
+curl -O https://gannet.fish.washington.edu/seashell/bu-github/deep-dive/D-Apul/data/Amil/ncbi_dataset/data/GCF_013753865.1/GCF_013753865.1_Amil_v2.1_genomic.fna
+```
+
+```{r, engine='bash'}
+cd ../data/lncRNA
+
+curl -O https://gannet.fish.washington.edu/seashell/bu-github/deep-dive/D-Apul/data/Amil/ncbi_dataset/data/GCF_013753865.1/genomic.gtf
+```
+
+```{r, engine='bash'}
+cd ../data/lncRNA
+
+curl -O https://gannet.fish.washington.edu/seashell/bu-github/deep-dive/D-Apul/data/Amil/ncbi_dataset/data/GCF_013753865.1/genomic.gff
+```
+
+
+# Alignment
+
+```{r, engine='bash'}
+/home/shared/hisat2-2.2.1/hisat2-build \
+../data/lncRNA/GCF_013753865.1_Amil_v2.1_genomic.fna \
+../output/lncRNA/GCF_013753865.1_Amil_v2.1.index \
+-p 48 \
+../data/lncRNA/genomic.gff \
+2> ../output/lncRNA/hisat2-build_stats.txt
+```
+
+```{r, engine='bash'}
+find ../data/lncRNA/*R2_001.fastp-trim.20230519.fastq.gz \
+| xargs basename -s -S1-TP2_R2_001.fastp-trim.20230519.fastq.gz | xargs -I{} \
+/home/shared/hisat2-2.2.1/hisat2 \
+-x ../output/lncRNA/GCF_013753865.1_Amil_v2.1.index \
+-p 48 \
+-1 ../data/lncRNA/{}-S1-TP2_R1_001.fastp-trim.20230519.fastq.gz \
+-2 ../data/lncRNA/{}-S1-TP2_R2_001.fastp-trim.20230519.fastq.gz \
+-S ../output/lncRNA/{}.sam \
+2> ../output/lncRNA/hisat.out
+```
+
+
+# Convert BAMs to SAMs
+
+```{r, engine='bash'}
+for samfile in ../output/lncRNA/*.sam; do
+  bamfile="${samfile%.sam}.bam"
+  sorted_bamfile="${samfile%.sam}.sorted.bam"
+  
+  # Convert SAM to BAM
+  /home/shared/samtools-1.12/samtools view -bS -@ 40 "$samfile" > "$bamfile"
+  
+  # Sort BAM
+  /home/shared/samtools-1.12/samtools sort -@ 40 "$bamfile" -o "$sorted_bamfile"
+  
+  # Index sorted BAM
+  /home/shared/samtools-1.12/samtools index -@ 40 "$sorted_bamfile"
+  
+  # remove sam files, no longer need
+  rm *.sam
+
+done
+
+
+
+```
+
+
+
+# Stringtie
+
+```{r, engine='bash'}
+find ../output/05.33-lncRNA-discovery/*sorted.bam \
+| xargs basename -s .sorted.bam | xargs -I{} \
+/home/shared/stringtie-2.2.1.Linux_x86_64/stringtie \
+-p 16 \
+-G ../data/Amil/ncbi_dataset/data/GCF_013753865.1/genomic.gff \
+-o ../output/05.33-lncRNA-discovery/{}.gtf \
+../output/05.33-lncRNA-discovery/{}.sorted.bam
 ```
 
 
