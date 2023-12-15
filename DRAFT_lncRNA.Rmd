@@ -4,6 +4,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(knitcitations)
 library(kableExtra)
 opts_chunk$set(fig.width = 10,
+               eval = FALSE,         # Evaluate code chunks
                fig.height = 5,
                cache = FALSE)
 cite_options(citation_format = "pandoc", max.names = 3, style = "html", hyperlink = "to.html")
@@ -20,6 +21,8 @@ Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#
 # Introduction
 
 
+
+## Notes on running code. This workflow is written such that a user an fully reproduce the code. Th
 
 
 # References {#refs}

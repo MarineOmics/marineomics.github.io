@@ -62,7 +62,7 @@ The tutorial will cover the following:\
 - File conversions\
 - Potential downstream applications. Although this tutorial will not provide code for downstream applications such as differential methylation analysis, it will link to other open-access resources and examples.
 
-The tutorial below is based on WGBS from a species of marine intertebrate (*Montipora capitata* coral) examined in [@https://doi.org/10.1111/1755-0998.13542](#refs), and all raw data can be accessed under NCBI Bioproject PRJNA691891 if you would like to follow the tutorial with this dataset. The general workflow would be consistent for other library preparation and sequencing methods that produce loci-level data. The tutorial indicates places where special analytical consideration should be given to other data types.
+The tutorial below is based on WGBS from a species of marine intertebrate (*Montipora capitata* coral) examined in [@https://doi.org/10.1111/1755-0998.13542](#refs), and all raw data can be accessed under NCBI Bioproject PRJNA691891 if you would like to follow the tutorial with this dataset. The general workflow would be consistent for other library preparation and sequencing methods that produce loci-level data. The tutorial indicates places where special analytical consideration should be given to other data types. Given the size of the data files and the computational resources necessary this is not developed to be actionable and reproducible. For context this process outlined below took weeks on a university HPC system.
 
 # Sequence Quality
 
