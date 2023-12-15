@@ -435,7 +435,7 @@ Removing cytosine (C) to thymine (T) single nucleotide polymorphisms (SNPs) in b
 
 By eliminating these potential sources of error, researchers can have more confidence in their interpretation of the bisulfite sequencing data, leading to more reliable and valid conclusions about DNA methylation patterns.
 
-One way to do this is using BS-Snper (@10.1093/bioinformatics/btv507). <https://github.com/hellbelly/BS-Snper>. In short one could merge all BAM files from experiment run BS-Snper, filter out C->T SNPS then use this to remove loci.
+One way to do this is using BS-Snper (@10.1093/bioinformatics/btv507). <https://github.com/hellbelly/BS-Snper>. This program finds SNPs in Bisulfite treated alignment files. The bash code below represents steps to identify SNPS and create a list of all C->T SNPS.
 
 ```         
 samtools merge \
@@ -493,6 +493,9 @@ Let's break down the command and its arguments:
 13. **`>SNP.vcf`**: Redirects the standard output to a file named **`SNP.vcf`**. This file will contain the SNP calls in VCF (Variant Call Format) format.
 
 14. **`2>SNP.log`**: Redirects the standard error output to a file named **`SNP.log`**. This file will contain error messages and possibly additional log information.
+
+
+The resulting could be used to mask the genome and the entire process described abo
 
 If for example in downstream analysis you would might be using a \_5x.tab file described above the following is a means in R to remove these SNPs.
 
