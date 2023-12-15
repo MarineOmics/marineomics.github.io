@@ -443,8 +443,9 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">DNA Methylation Assessment</h1>
-<h3 class="subtitle"><em>Yaamini Venkataraman</em>, <em>Sam White</em>,
-and <em>Steven Roberts</em></h3>
+<h3 class="subtitle"><em>Yaamini Venkataraman</em>, <em>Kathryn
+Greiner-Ferris</em>, <em>Sam White</em>, and <em>Steven
+Roberts</em></h3>
 
 </div>
 
@@ -467,22 +468,23 @@ review of epigenetic mechanisms including DNA methylation in marine
 organisms see <span class="citation">Eirin-Lopez and Putnam
 (2019)</span>.</p>
 <p>The purpose of this tutorial is to provide an example of aligning
-bisulfite-treated and enzymatically converted DNA sequence data and
-discuss needs for potential downstream applications. The principle
-behind creating bisulfite-treated DNA libraries is that when cytosines
-are not methylated, then they will be converted to uracil, which
-ultimately result in thymine nucleotides in the sequence data. <span
-class="citation">Trigg et al. (2022)</span> offers a comparison of three
-methods for quantifying DNA methylation at single base-pair resolution
-using whole genome bisulfite sequencing (WGBS), reduced representation
-bisulfite sequencing (RRBS), and methyl-CpG binding domain bisulfite
-sequencing (MBDBS). When aligning bisulfite-converted data to a
-reference genome the percent methylation at a given CpG loci is
-determined by examining the ratio of thymines to cytosines. For example
-if there is a given cytosine adjacent to a guanine (ie CpG locus) with
-30% of the reads containing thymine, one would consider this cytosine
-loci (CpG) to be 70% methylated. Since bisulfite treatment can damage
-DNA, newer library preparation and sequencing methods (ex. <a
+bisulfite-treated and enzymatically converted DNA sequence data to an
+existing genome, and discuss needs for potential downstream
+applications. The principle behind creating bisulfite-treated DNA
+libraries is that when cytosines are not methylated, then they will be
+converted to uracil, which ultimately result in thymine nucleotides in
+the sequence data. <span class="citation">Trigg et al. (2022)</span>
+offers a comparison of three methods for quantifying DNA methylation at
+single base-pair resolution using whole genome bisulfite sequencing
+(WGBS), reduced representation bisulfite sequencing (RRBS), and
+methyl-CpG binding domain bisulfite sequencing (MBDBS). When aligning
+bisulfite-converted data to a reference genome the percent methylation
+at a given CpG loci is determined by examining the ratio of thymines to
+cytosines. For example if there is a given cytosine adjacent to a
+guanine (ie CpG locus) with 30% of the reads containing thymine, one
+would consider this cytosine loci (CpG) to be 70% methylated. Since
+bisulfite treatment can damage DNA, newer library preparation and
+sequencing methods (ex. <a
 href="https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#Protocols,%20Manuals%20&amp;%20Usage">NEBNext®
 Enzymatic Methyl-seq Kit; EM-seq</a> are starting to gain popularity. As
 EM-Seq produces loci-level data, alignment of EM-Seq data is similar to
@@ -521,6 +523,9 @@ robustness of the methylation analysis techniques are equally important.
 Therefore, researchers must strive for a balance between quantity and
 quality in their sample selection to ensure meaningful and accurate
 insights into DNA methylation.</p>
+</div>
+<div id="sequencing-depth" class="section level3">
+<h3>Sequencing Depth</h3>
 </div>
 <div id="bisulfite-conversion-efficiency" class="section level3">
 <h3>Bisulfite Conversion Efficiency</h3>
@@ -609,18 +614,38 @@ data often needs different trimming specifications</a>.</p>
 </div>
 <div id="read-alignment" class="section level1">
 <h1>Read Alignment</h1>
-<div id="considerations" class="section level2">
-<h2>Considerations</h2>
+<div id="software-considerations" class="section level2">
+<h2>Software Considerations</h2>
 <p>The software used as part of this tutorial is <strong>Bismark
 Bisulfite Mapper</strong> (<span class="citation">Krueger and Andrews
-(2011)</span>). As with any software it is best to be famililar with the
-<a
-href="https://rawgit.com/FelixKrueger/Bismark/master/Docs/Bismark_User_Guide.html">User
-Manual</a>. The content below will provided with the assumption that the
-reader has read the manual and is meant to serve as guidance based on
+(2011)</span>), which is one of the more widely-used softwares to align
+methylation data to a reference genome. Another commonly-used options
+include bwa-meth (<span
+class="citation">(<strong>https://doi.org/10.48550/arXiv.1401.1129?</strong>)</span>)
+and BSMAP (<span
+class="citation">(<strong>https://doi.org/10.1186/1471-2105-10-232?</strong>)</span>)
+(see <span
+class="citation">(<strong>https://doi.org/10.1093/bib/bbab021?</strong>)</span>
+and <span
+class="citation">(<strong>https://doi.org/10.1016/j.csbj.2022.08.051?</strong>)</span>
+for comparisons of these software for plant and mammal species,
+respectively). As with any software it is best to be famililar with the
+<a href="https://felixkrueger.github.io/Bismark/">User Manual</a>.</p>
+<p>Within Bismark, the tutorial uses Bowtie 2 (<span
+class="citation">(<strong>https://doi.org/10.1038/nmeth.1923?</strong>)</span>)
+as the alignment software. Although the Bismark user manual covers the
+necessary Bowtie 2 parameters, it may be useful to refer to the <a
+href="https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml">Bowtie 2
+manual</a>.</p>
+<p>The content below will provided with the assumption that the reader
+has read the manual and is meant to serve as guidance based on
 experience working with marine invertebrates.</p>
-<p>The first step in the process in preparing the genome. Example
-code:</p>
+</div>
+<div id="genome-preparation" class="section level2">
+<h2>Genome Preparation</h2>
+<p>The first step in the process in preparing the reference genome by
+performing an in silico bisulfite conversion to allow Bowtie alignments.
+Example code:</p>
 <pre><code># Directories and programs
 bismark_dir=&quot;/programs/Bismark-0.21.0&quot;
 bowtie2_dir=&quot;/programs/bowtie2-2.3.4.1-linux-x86_64/&quot;
@@ -644,7 +669,8 @@ program.</p></li>
 program output more detailed information about what it is doing, which
 is helpful for debugging or understanding the process.</p></li>
 <li><p><strong><code>--parallel 28</code></strong>: This option tells
-Bismark to use 28 threads in parallel to speed up the process.</p></li>
+Bismark to use 28 threads in parallel to speed up the process. You can
+adjust this based on your computing power.</p></li>
 <li><p><strong><code>--path_to_aligner ${bowtie2_dir}</code></strong>:
 This specifies the path to the aligner (Bowtie2) that Bismark will use.
 The <strong><code>${bowtie2_dir}</code></strong> variable is expanded to
@@ -663,8 +689,13 @@ create the following subdirectories as outputs.</p>
 <pre><code>./Bisulfite_Genome
 ./Bisulfite_Genome/GA_conversion
 ./Bisulfite_Genome/CT_conversion</code></pre>
-<p>For aligning the trimmed reads to the genome the following code
-structure is used</p>
+<p>This preparation step only needs to happen once for a given
+genome.</p>
+</div>
+<div id="aligning-reads" class="section level2">
+<h2>Aligning reads</h2>
+<p>Once the genome is prepared, reads can be aligned. For aligning the
+trimmed reads to the genome the following code structure is used:</p>
 <pre><code>find ${reads_dir}*_R1_001_val_1.fq.gz \
 | xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
 --path_to_bowtie ${bowtie2_dir} \
@@ -675,7 +706,9 @@ structure is used</p>
 -1 ${reads_dir}{}_R1_001_val_1.fq.gz \
 -2 ${reads_dir}{}_R2_001_val_2.fq.gz \
 -o Mcap_tg</code></pre>
-<p>This will create BAM files (sequence alignment files)</p>
+<p>This will create BAM files (sequence alignment files) and txt files
+(mapping reports). The reports contain information such as mapping
+efficiency.</p>
 <p>Specifically this is what the code chunk does:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Finding Files and Preparing Filenames</strong>:</p>
@@ -703,17 +736,19 @@ base filenames to Bismark for alignment.
 <strong><code>{}</code></strong> is a placeholder for each base
 filename.</p></li>
 <li><p><strong><code>--path_to_bowtie ${bowtie2_dir}</code></strong>:
-This option specifies the path to the Bowtie2 aligner, which Bismark
+This option specifies the path to the Bowtie 2 aligner, which Bismark
 uses for the alignment process.</p></li>
 <li><p><strong><code>-genome ${genome_folder}</code></strong>: Specifies
 the directory where the genome files, prepared in advance, are
 located.</p></li>
 <li><p><strong><code>-p 4</code></strong>: Sets the number of processing
 threads to 4, allowing Bismark to perform the alignment in parallel,
-which can speed up the process.</p></li>
+which can speed up the process. This parameter can be changed based on
+your computing power.</p></li>
 <li><p><strong><code>-score_min L,0,-0.6</code></strong>: This sets the
 scoring threshold for alignments, impacting the sensitivity and
-specificity of the alignment.</p></li>
+specificity of the alignment. The default scoring threshold used by
+Bismark is L,0,-0.2.</p></li>
 <li><p><strong><code>--non_directional</code></strong>: This flag
 indicates the sequencing data is non-directional, which is important for
 correctly interpreting the methylation status in bisulfite
@@ -726,6 +761,36 @@ directory for the alignment results to
 <strong><code>Mcap_tg</code></strong>.</p></li>
 </ul></li>
 </ol>
+<div id="optimizing-alignment-sensitivity" class="section level3">
+<h3>Optimizing alignment sensitivity</h3>
+<p>The code above uses <code>score_min L,0,-0.6</code> as the scoring
+threshold for alignment sensitivity and specificity. This is different
+than the Bismark default, <code>score_min L,0,-0.2</code>. Reducing the
+sensitivity of the alignment can increase the percentage of reads
+aligned to the reference genome, but of course the quality of the
+alignment may decrease. A good practice is to align a subset of your
+data to the reference genome using different <code>score_min</code>
+parameters, then comparing mapping efficiency from the mapping reports.
+Generally, you want to choose a parameter that maximizes percent
+alignment and specificity. Example code</p>
+<pre><code>find ${reads_dir}*_R1_001_val_1.fq.gz \
+| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
+--path_to_bowtie ${bowtie2_dir} \
+-genome ${genome_folder} \
+-p 4 \
+- u 10000 \
+-score_min L,0,-0.6 \
+--non_directional \
+-1 ${reads_dir}{}_R1_001_val_1.fq.gz \
+-2 ${reads_dir}{}_R2_001_val_2.fq.gz \
+-o Mcap_tg</code></pre>
+<p>This is the same code as above, except <code>-u 10000</code> is used
+to run the alignment on a 10,000 bp subset of the data in each input
+file.</p>
+</div>
+</div>
+<div id="deduplication" class="section level2">
+<h2>Deduplication</h2>
 <p>Files are then deduplicated if they are whole genome bisulfite
 treated samples. This command will deduplicate the Bismark alignment BAM
 file and remove all reads that align to the the very same position and
@@ -747,26 +812,29 @@ xargs -I{} ${bismark_dir}/deduplicate_bismark \
 <h1>Methylation Quantification</h1>
 <div id="what-to-expect" class="section level2">
 <h2>What to expect</h2>
-<p>DNA methylation at CpG locus can vary to 0-100%. Like wise
-methylation at the gene level can vary and is commonly established as
-mean methylation level of CpG across gene, assuming some majority degree
-of gene coverage. Similarly with considering the methylation level of a
-given loci often time some threshold might be set as seen in code below.
-From an taxa perspective it can vary WIDELY on what to expect. The
-figure below shows the mehthylation ratio of CpGs across the oyster
-genome. In some marine invertebrates we see ~15% methylation of CpGs
-(defined as &gt; 75% methylated) across the genome with most CpGs
-unmethylated. In these taxa methylation usually occurs in gene
-bodies.</p>
+<p>DNA methylation at CpG locus can vary to 0-100%. How methylated CpGs
+are across a genome can vary WIDELY depending on your focal taxa.
+Generally, invertebrate genomes are predominantly unmethylated, with
+smaller regions of higher methylation in a mosaic pattern. In some
+marine invertebrates we see ~15% methylation of CpGs (defined as &gt;
+75% methylated) across the genome with most CpGs unmethylated. In these
+taxa methylation usually occurs in gene bodies.</p>
+<p>The figure below shows the methylation ratio of CpGs across the
+Pacific oyster (<em>Crassostrea gigas</em>) genome, as well as the
+location of methylation across the genome:</p>
 <p><img src="DRAFT_DNA_methylation/meth_ratio.png" width="70%" style="display: block; margin: auto;" /></p>
 <p><em>Frequency distribution of methylation ratios for CpG
 dinucleotides in oyster gill tissue.</em> <span class="citation">Gavery
 and Roberts (2013)</span></p>
-<p>Location of methylation across the genome varies across taxa. Here is
-what you might expect to see in a marine invertebrate.</p>
 <p><img src="DRAFT_DNA_methylation/igv.png" width="70%" style="display: block; margin: auto;" /></p>
 <p><em>Screenshot from IGV. Bedgraph files are displayed. See below for
 code to create these file (File Conversion)</em></p>
+<p>Vertebrate genomes, on the other hand, have higher overall levels of
+methylation, with methylation occuring in CpG islands.</p>
+<p>[ placeholder for Kathryn to add some stuff! ]</p>
+</div>
+<div id="methylation-extraction" class="section level2">
+<h2>Methylation extraction</h2>
 <p>Methylation levels are then extracted using the
 <code>bismark_methylation_extractor</code>. For example:</p>
 <pre><code>${bismark_dir}/bismark_methylation_extractor \
@@ -798,11 +866,13 @@ methylation information for CHG and CHH contexts (non-CpG) into a single
 file.</p></li>
 <li><p><strong><code>--multicore 28</code></strong>: Specifies that the
 program should use 28 cores to process the data in parallel, which can
-significantly speed up the analysis.</p></li>
+significantly speed up the analysis. This can be adjusted depending on
+your computing power.</p></li>
 <li><p><strong><code>--buffer_size 75%</code></strong>: This option sets
 the buffer size for reading in BAM files to 75% of the available system
 memory. It helps optimize the performance of the tool by adjusting how
-much memory is used for processing.</p></li>
+much memory is used for processing. This can be adjusted depending on
+your computing power.</p></li>
 <li><p><strong><code>*deduplicated.bam</code></strong>: This is the
 input file pattern for the command. It indicates that the methylation
 extractor should process all BAM files in the current directory that
@@ -813,11 +883,7 @@ sequencing data.</p></li>
 </ol>
 <p>This will create a file with the suffix
 <code>deduplicated.bismark.cov.gz</code> (example shown below in
-uncompressed format). The resultant bedGraph file contains information
-from <em>unmerged</em> strands, meaning reads aligning to forward and
-reverse strands in the same position are not combined. Later in this
-workflow, a bedGraph with <em>merged</em> information will be
-created.</p>
+uncompressed format):</p>
 <pre><code>NC_035784.1 141 141 37.5    3   5
 NC_035784.1 142 142 100 2   0
 NC_035784.1 155 155 70  7   3
@@ -830,8 +896,14 @@ NC_035784.1 470 470 66.6666666666667    4   2
 NC_035784.1 611 611 0   0   4</code></pre>
 <p>column organization of the file</p>
 <pre><code>&lt;chromosome&gt; &lt;start position&gt; &lt;end position&gt; &lt;methylation percentage&gt; &lt;count methylated&gt; &lt;count unmethylated&gt;</code></pre>
-<p>A genome-wide cytosine report is generated (including merged bedGraph
-file), with this code as an example:</p>
+<p>The resultant bedGraph file contains information from
+<em>unmerged</em> strands, meaning reads aligning to forward and reverse
+strands in the same position are not combined. It is important to merge
+the reads from the forward and reserve strands for more accurate
+methylation quantification. A genome-wide cytosine report and merged
+bedGraph file are generated (including merged bedGraph file) from the
+<code>deduplicated.bismark.cov.gz</code> generated above in this example
+code:</p>
 <pre><code>find *deduplicated.bismark.cov.gz \
 | xargs basename -s _trimmed_bismark_bt2.deduplicated.bismark.cov.gz \
 | xargs -I{} ${bismark_dir}/coverage2cytosine \
@@ -909,23 +981,41 @@ NC_035785.1 1494    1496    66.666667   2   1
 NC_035785.1 1747    1749    100.000000  8   0
 NC_035785.1 2024    2026    100.000000  24  0
 NC_035785.1 2054    2056    93.333333   14  1</code></pre>
+<p>column organization of the file</p>
+<pre><code>&lt;chromosome&gt; &lt;start position&gt; &lt;end position&gt; &lt;methylation percentage&gt; &lt;count methylated&gt; &lt;count unmethylated&gt;</code></pre>
 </div>
+</div>
+<div id="summary-report" class="section level1">
+<h1>Summary Report</h1>
+<p>Many steps of the Bismark workflow produce reports (.txt files) with
+useful information (ex. mapping efficiency, percent cytosine
+methylation, etc.). These files can be collated into processing reports
+for each individual sample, which can then be further collated into an
+<a
+href="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032120-fds/bismark_summary_report.html">HTML
+summary report</a>:</p>
+<pre><code>#HTML Processing Report
+
+${bismark_dir}/bismark2report
+
+#Summary Report
+
+${bismark_dir}/bismark2summary</code></pre>
+<p>These commands should be run in the same directory where all output
+files are stored.</p>
+<p><img src="DRAFT_DNA_methylation/bismark-summary-report.png" width="70%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="file-conversions" class="section level1">
 <h1>File Conversions</h1>
-<p>From here it could be useful to do some simple file reorganizaion to
-obtain bedGraph or tab files for downstream analysis (eg bedtools,
-GLMs).</p>
+<p>From here it could be useful to do some file reorganizaion to obtain
+bedGraph or tab files for downstream analysis (eg <code>bedtools</code>,
+GLMs). Specifically, it may be important to filter the CpG methylation
+data to a specific coverage threshold (ex. 5x or 10x). The more read
+coverage a CpG has, the higher the confidence in methylation
+quantification.</p>
 <p>Creating bedGraphs post-merge at a specific coverage threshold (ex.
 10x or 5x):</p>
 <pre><code>for f in *merged_CpG_evidence.cov
-do
-  STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
-  cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 10) {print $1, $2, $3, $4}}&#39; \
-  &gt; &quot;${STEM}&quot;_10x.bedgraph
-done
-
-for f in *merged_CpG_evidence.cov
 do
   STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
   cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 5) {print $1, $2, $3, $4}}&#39; \
@@ -934,13 +1024,6 @@ done</code></pre>
 <p>Creating tab files with raw count data for GLMs at 10x and 5x
 coverage:</p>
 <pre><code>for f in *merged_CpG_evidence.cov
-do
-  STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
-  cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 10) {print $1, $2, $3, $4, $5, $6}}&#39; \
-  &gt; &quot;${STEM}&quot;_10x.tab
-done
-
-for f in *merged_CpG_evidence.cov
 do
   STEM=$(basename &quot;${f}&quot; .CpG_report.merged_CpG_evidence.cov)
   cat &quot;${f}&quot; | awk -F $&#39;\t&#39; &#39;BEGIN {OFS = FS} {if ($5+$6 &gt;= 5) {print $1, $2, $3, $4, $5, $6}}&#39; \
@@ -961,50 +1044,52 @@ xargs basename -s .sorted.bam | \
 xargs -I{} ${samtools} \
 index -@ 28 {}.sorted.bam</code></pre>
 </div>
-<div id="next-steps-downstream-applications" class="section level1">
-<h1>Next Steps &amp; Downstream applications</h1>
-<div id="ct-snps" class="section level2">
-<h2>CT SNPs</h2>
-<p>Masking cytosine (C) to thymine (T) single nucleotide polymorphisms
-(SNPs) in bisulfite sequencing analysis could be something to
-considerfor a few reasons:</p>
+<div id="next-steps" class="section level1">
+<h1>Next Steps</h1>
+<p>So you’ve aligned your trimmed reads to your reference genome and
+have methylation data for CpGs. Now what?</p>
+<div id="removing-c-to-t-c-t-snps" class="section level2">
+<h2>Removing C to T (C-&gt;T) SNPs</h2>
+<p>Removing cytosine (C) to thymine (T) single nucleotide polymorphisms
+(SNPs) in bisulfite sequencing analysis could be something to consider
+for a few reasons:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Bisulfite Conversion Process</strong>: In bisulfite
 sequencing, unmethylated cytosines are converted to uracil, which is
 then read as thymine in sequencing. This conversion is key to
 identifying methylated cytosines. However, if a genomic DNA sequence
-naturally has a C to T SNP, it can be falsely interpreted as a converted
-cytosine, leading to incorrect conclusions about methylation.</p></li>
-<li><p><strong>Reduction of False Positives</strong>: By masking C to T
-SNPs, one can reduce false positives in methylation analysis. Without
-masking, these SNPs might be misinterpreted as unmethylated cytosines
-that have undergone conversion, skewing the data towards an apparent
-increase in methylation.</p></li>
+naturally has a C to T (C-&gt;T) SNP, it can be falsely interpreted as a
+converted cytosine, leading to incorrect conclusions about
+methylation.</p></li>
+<li><p><strong>Reduction of False Positives</strong>: By removing
+C-&gt;T SNPs, one can reduce false positives in methylation analysis.
+Without removal, these SNPs might be misinterpreted as unmethylated
+cytosines that have undergone conversion, skewing the data towards an
+apparent increase in methylation.</p></li>
 <li><p><strong>Accurate Methylation Mapping</strong>: For precise
 mapping of methylation patterns, it’s crucial to distinguish between
-true methylation signals and genetic variation (SNPs). Masking C to T
+true methylation signals and genetic variation (SNPs). Removing C-&gt;T
 SNPs allows for a more accurate representation of the methylation status
 of the genome.</p></li>
 <li><p><strong>Analysis Consistency</strong>: In comparative studies,
-where multiple samples or conditions are analyzed, masking C to T SNPs
+where multiple samples or conditions are analyzed, removing C-&gt;T SNPs
 ensures consistency across samples. This is especially important in
 cases where SNP profiles may vary between samples, which could otherwise
 lead to inconsistent methylation data.</p></li>
-<li><p><strong>Enhanced Data Interpretation</strong>: By eliminating
-these potential sources of error, researchers can have more confidence
-in their interpretation of the bisulfite sequencing data, leading to
-more reliable and valid conclusions about DNA methylation
-patterns.</p></li>
 </ol>
+<p>By eliminating these potential sources of error, researchers can have
+more confidence in their interpretation of the bisulfite sequencing
+data, leading to more reliable and valid conclusions about DNA
+methylation patterns.</p>
 <p>One way to do this is using BS-Snper (<span class="citation">Gao et
 al. (2015)</span>). <a href="https://github.com/hellbelly/BS-Snper"
-class="uri">https://github.com/hellbelly/BS-Snper</a>. In short one
-could merge all BAM files from experiment run BS-Snper, filter out CT
-SNPS then use this to remove loci.</p>
+class="uri">https://github.com/hellbelly/BS-Snper</a>. This program
+finds SNPs in Bisulfite treated alignment files. The bash code below
+represents steps to identify SNPS and create a list of all C-&gt;T
+SNPS.</p>
 <pre><code>samtools merge \
 Pg_merged.bam \
 *.sorted.bam
-
 
 perl /gscratch/srlab/programs/BS-Snper-master/BS-Snper.pl \
 Pg_merged.bam \
@@ -1062,7 +1147,9 @@ base quality score.</p></li>
 coverage (number of reads) for a position to be considered in the
 analysis.</p></li>
 <li><p><strong><code>--minread2 2</code></strong>: The minimum number of
-reads required to support a SNP candidate.</p></li>
+reads required to support a SNP candidate. It could be useful to use the
+same values for the minimum read threshold for SNP identification and
+for minimum coverage in the methylation data.</p></li>
 <li><p><strong><code>--errorate 0.02</code></strong>: Sets the error
 rate of sequencing (here, 2%).</p></li>
 <li><p><strong><code>--mapvalue 20</code></strong>: Specifies the
@@ -1076,6 +1163,9 @@ standard error output to a file named
 <strong><code>SNP.log</code></strong>. This file will contain error
 messages and possibly additional log information.</p></li>
 </ol>
+<p>The resulting could be used to mask the genome and the entire process
+described above could be repeated (ie Genome Preparation, Alignment,
+Quantification)</p>
 <p>If for example in downstream analysis you would might be using a
 _5x.tab file described above the following is a means in R to remove
 these SNPs.</p>
@@ -1108,15 +1198,16 @@ for(file in files) {
   write.table(modified_data, file = output_file, sep = &quot;\t&quot;, row.names = FALSE, quote = FALSE, col.names = FALSE)
 }</code></pre>
 </div>
-<div id="other-application" class="section level2">
-<h2>Other application</h2>
+<div id="downstream-application" class="section level2">
+<h2>Downstream application</h2>
 <ul>
-<li>Gene-level methylation analysis: people do this, but worth
-considering the utility of converting loci-level resolution data to
-gene-level resolution data</li>
-<li>methylKit</li>
-<li>IGV</li>
-<li>Analysis with other datasets (ex. pop gen, RNA-Seq)</li>
+<li><p>Gene-level methylation analysis. It is worth considering the
+utility of converting loci-level resolution data to gene-level
+resolution data</p></li>
+<li><p>Differential loci or region analyses. methylKit is a popular
+package to conduct this analysis</p></li>
+<li><p>Feature overlap. Bedtools for quantitative assessment and IGV for
+visual assessment are valuable for thisl</p></li>
 </ul>
 </div>
 </div>

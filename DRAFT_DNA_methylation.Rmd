@@ -370,7 +370,7 @@ ${bismark_dir}/bismark2summary
 
 These commands should be run in the same directory where all output files are stored.
 
-```{r meth-igv, echo = FALSE, out.width = "70%", fig.align = "center"}
+```{r meth-summary, echo = FALSE, out.width = "70%", fig.align = "center"}
 knitr::include_graphics("DRAFT_DNA_methylation/bismark-summary-report.png")
 ```
 
@@ -495,7 +495,7 @@ Let's break down the command and its arguments:
 14. **`2>SNP.log`**: Redirects the standard error output to a file named **`SNP.log`**. This file will contain error messages and possibly additional log information.
 
 
-The resulting could be used to mask the genome and the entire process described abo
+The resulting could be used to mask the genome and the entire process described above could be repeated (ie Genome Preparation, Alignment, Quantification)
 
 If for example in downstream analysis you would might be using a \_5x.tab file described above the following is a means in R to remove these SNPs.
 
