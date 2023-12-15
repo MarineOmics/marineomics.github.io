@@ -238,7 +238,7 @@ knitr::include_graphics("DRAFT_DNA_methylation/igv.png")
 
 ---
 
-Vertebrate genomes, on the other hand, have higher overall levels of methylation, with methylation occuring in CpG islands. An example analysis of methylation at individual CG dinucleotides in the elephant shark, mice, and zebra fish is shown, below.  Results reavel comparable levels of global methyaltion patterns with the majority of sites being highly methylated (≥ 80%), and fewer than one tenth being unmethylated (doi: 10.12688/f1000research.11281.1).
+Vertebrate genomes, on the other hand, have higher overall levels of methylation, with methylation occuring in CpG islands. An example analysis of methylation at individual CG dinucleotides in an elephant shark, mouse, and zebra fish is shown, below.  Results reavel comparable levels of global methyaltion patterns with the majority of sites being highly methylated (≥ 80%), and fewer than one tenth being unmethylated (doi: 10.12688/f1000research.11281.1).
 
 ```{r meth-vert, echo = FALSE, out.width = "70%", fig.align = "center", fig,cap= "Genome screenshots of methylation quantified in 2kb running windows over the first 3Mb of chromosome 1 zebrafish and mouse, and of the largest scaffold (NW_006890054.1) in elephant shark (doi: 10.12688/f1000research.11281.1)"}
 knitr::include_graphics("DRAFT_DNA_methylation/vert_methyl_distr.png")
