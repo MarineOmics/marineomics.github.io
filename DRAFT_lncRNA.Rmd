@@ -1,0 +1,25 @@
+```{r,message = FALSE,echo = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+library(knitcitations)
+library(kableExtra)
+opts_chunk$set(fig.width = 10,
+               fig.height = 5,
+               cache = FALSE)
+cite_options(citation_format = "pandoc", max.names = 3, style = "html", hyperlink = "to.html")
+```
+
+---
+title: 'Long non-coding RNA Discovery'
+subtitle: '*Steven Roberts* and  *Zach Bengston*'
+bibliography: DRAFT_lncRNA/DRAFT_lncRNA.bib
+---
+
+Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#How_to_Cite)
+
+# Introduction
+
+
+
+
+# References {#refs}
