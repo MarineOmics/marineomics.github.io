@@ -22,7 +22,25 @@ Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#
 
 
 
-## Notes on running code. This workflow is written such that a user an fully reproduce the code. Th
+## Notes on running code. This workflow is written such that a user an fully reproduce the code. 
+
+
+
+# Downloading data
+
+The data used for this workflow is from Acropora pulcra, and part of the E5 (https://e5coral.org) project. see https://github.com/urol-e5/deep-dive for more details.
+
+```{r, engine='bash'}
+mkdir ../data/lncRNA
+
+wget -r \
+--no-directories --no-parent \
+-P ../data/lncRNA \
+-A "*fastq.gz" https://gannet.fish.washington.edu/Atumefaciens/20230519-E5_coral-fastqc-fastp-multiqc-RNAseq/A_pulchra/trimmed/
+
+```
+
+
 
 
 # References {#refs}
