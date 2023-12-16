@@ -109,6 +109,7 @@ find ../data/lncRNA/*R2_001.fastp-trim.20230519.fastq.gz \
 /home/shared/hisat2-2.2.1/hisat2 \
 -x ../output/lncRNA/GCF_013753865.1_Amil_v2.1.index \
 -p 48 \
+--new-summary \
 -1 ../data/lncRNA/{}-S1-TP2_R1_001.fastp-trim.20230519.fastq.gz \
 -2 ../data/lncRNA/{}-S1-TP2_R2_001.fastp-trim.20230519.fastq.gz \
 -S ../output/lncRNA/{}.sam \
@@ -150,15 +151,38 @@ find ../output/lncRNA/*sorted.bam \
 | xargs basename -s .sorted.bam | xargs -I{} \
 /home/shared/stringtie-2.2.1.Linux_x86_64/stringtie \
 -p 16 \
--G ../lncRNA/genomic.gff \
+-G ../data/lncRNA/genomic.gff \
 -o ../output/lncRNA/{}.gtf \
 ../output/lncRNA/{}.sorted.bam
 ```
 
 
+
+```{r, engine='bash'}
+/home/shared/stringtie-2.2.1.Linux_x86_64/stringtie \
+--merge \
+-p 16 \
+-G ../data/lncRNA/genomic.gff \
+-o ../output/lncRNA/stringtie_merged.gtf \
+../output/lncRNA/*.gtf
+```
+
+
+# GFF compare
+
+```{r, engine='bash'}
+/home/shared/gffcompare-0.12.6.Linux_x86_64/gffcompare \
+-r ../data/lncRNA/genomic.gff \
+-o ../output/lncRNA/gffcompare_merged \
+../output/lncRNA/stringtie_merged.gtf
+```
+
+
+
 multiqc
 ```{r, engine='bash'}
-cd ../output/lncRNA 
+
+cd ../output/lncRNA
 
 eval "$(/opt/anaconda/anaconda3/bin/conda shell.bash hook)"
 conda activate
