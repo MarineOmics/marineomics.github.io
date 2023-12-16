@@ -27,6 +27,20 @@ Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#
 Notes on running code. This workflow is written such that a user an fully reproduce the code. 
 
 
+# Requirements to run code
+
+Need to following software / programs
+
+```
+wget
+curl
+HiSat
+samtools
+Stringtie
+```
+Hardware wise need at least 500 GB disk space, and multiple CPUs otherwise would take extrordinary amoutn of time. Code below was run on machine with 48 CPUs.
+
+
 
 # Downloading data
 
@@ -47,6 +61,18 @@ wget -r \
 
 ```
 
+
+Run fastqc
+
+```{r, engine='bash'}
+
+/home/shared/FastQC-0.12.1/fastqc \
+-t 40 \
+-o ../output/lncRNA \
+../data/lncRNA/*fastq.gz
+
+
+```
 
 ## Genome
 
@@ -130,6 +156,15 @@ find ../output/lncRNA/*sorted.bam \
 ```
 
 
+multiqc
+```{r, engine='bash'}
+cd ../output/lncRNA 
+
+eval "$(/opt/anaconda/anaconda3/bin/conda shell.bash hook)"
+conda activate
+which multiqc
+multiqc .
+```
 
 
 # References {#refs}

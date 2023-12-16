@@ -431,12 +431,20 @@ Bengston</em></h3>
 href="https://marineomics.github.io/#How_to_Cite">How to cite</a></p>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<div
-id="notes-on-running-code.-this-workflow-is-written-such-that-a-user-an-fully-reproduce-the-code."
-class="section level2">
-<h2>Notes on running code. This workflow is written such that a user an
-fully reproduce the code.</h2>
+<p>Notes on running code. This workflow is written such that a user an
+fully reproduce the code.</p>
 </div>
+<div id="requirements-to-run-code" class="section level1">
+<h1>Requirements to run code</h1>
+<p>Need to following software / programs</p>
+<pre><code>wget
+curl
+HiSat
+samtools
+Stringtie</code></pre>
+<p>Hardware wise need at least 500 GB disk space, and multiple CPUs
+otherwise would take extrordinary amoutn of time. Code below was run on
+machine with 48 CPUs.</p>
 </div>
 <div id="downloading-data" class="section level1">
 <h1>Downloading data</h1>
@@ -449,12 +457,17 @@ details.</p>
 <pre class="bash"><code># Make directories - these need to have a lot of space.
 mkdir ../data/lncRNA
 mkdir ../output/lncRNA</code></pre>
-<pre class="bash"><code>
-
-wget -r \
+<pre class="bash"><code>wget -r \
 --no-directories --no-parent \
 -P ../data/lncRNA \
 -A &quot;*fastq.gz&quot; https://gannet.fish.washington.edu/Atumefaciens/20230519-E5_coral-fastqc-fastp-multiqc-RNAseq/A_pulchra/trimmed/
+</code></pre>
+<p>Run fastqc</p>
+<pre class="bash"><code>
+/home/shared/FastQC-0.12.1/fastqc \
+-t 40 \
+-o ../output/lncRNA \
+../data/lncRNA/*fastq.gz
 </code></pre>
 <div id="genome" class="section level2">
 <h2>Genome</h2>
@@ -463,9 +476,6 @@ millipora.</p>
 <pre class="bash"><code>cd ../data/lncRNA
 
 curl -O https://gannet.fish.washington.edu/seashell/bu-github/deep-dive/D-Apul/data/Amil/ncbi_dataset/data/GCF_013753865.1/GCF_013753865.1_Amil_v2.1_genomic.fna</code></pre>
-<pre class="bash"><code>cd ../data/lncRNA
-
-curl -O https://gannet.fish.washington.edu/seashell/bu-github/deep-dive/D-Apul/data/Amil/ncbi_dataset/data/GCF_013753865.1/genomic.gtf</code></pre>
 <pre class="bash"><code>cd ../data/lncRNA
 
 curl -O https://gannet.fish.washington.edu/seashell/bu-github/deep-dive/D-Apul/data/Amil/ncbi_dataset/data/GCF_013753865.1/genomic.gff</code></pre>
@@ -512,13 +522,20 @@ done
 </div>
 <div id="stringtie" class="section level1">
 <h1>Stringtie</h1>
-<pre class="bash"><code>find ../output/05.33-lncRNA-discovery/*sorted.bam \
+<pre class="bash"><code>find ../output/lncRNA/*sorted.bam \
 | xargs basename -s .sorted.bam | xargs -I{} \
 /home/shared/stringtie-2.2.1.Linux_x86_64/stringtie \
 -p 16 \
--G ../data/Amil/ncbi_dataset/data/GCF_013753865.1/genomic.gff \
--o ../output/05.33-lncRNA-discovery/{}.gtf \
-../output/05.33-lncRNA-discovery/{}.sorted.bam</code></pre>
+-G ../lncRNA/genomic.gff \
+-o ../output/lncRNA/{}.gtf \
+../output/lncRNA/{}.sorted.bam</code></pre>
+<p>multiqc</p>
+<pre class="bash"><code>cd ../output/lncRNA 
+
+eval &quot;$(/opt/anaconda/anaconda3/bin/conda shell.bash hook)&quot;
+conda activate
+which multiqc
+multiqc .</code></pre>
 </div>
 <div id="refs" class="section level1">
 <h1>References</h1>
