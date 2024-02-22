@@ -12,7 +12,7 @@ cite_options(citation_format = "pandoc", max.names = 3, style = "html", hyperlin
 ---
 title: 'DNA Methylation Assessment'
 subtitle: '*Yaamini Venkataraman*, *Kathryn Greiner-Ferris*, *Sam White*, and *Steven Roberts*'
-bibliography: DRAFT_DNA_methylation/DNA-Methylation.bib
+bibliography: FUN_02_DNA_methylation/DNA-Methylation.bib
 ---
 
 Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#How_to_Cite)
@@ -85,7 +85,7 @@ Following trimming one would expect to see FastQC per base sequencing content si
 ```
 
 ```{r meth-bp, echo = FALSE, out.width = "70%", fig.align = "center"}
-knitr::include_graphics("DRAFT_DNA_methylation/meth-bp-chart.png")
+knitr::include_graphics("FUN_02_DNA_methylation/meth-bp-chart.png")
 ```
 
 For WGBS and MBDBS data, it is general practice to hard-trim 10 bp from the beginning and end of each read. RRBS data often needs different trimming specifications [see Manual for details](https://felixkrueger.github.io/Bismark/)
@@ -226,11 +226,11 @@ DNA methylation at CpG locus can vary to 0-100%. How methylated CpGs are across 
 The figure below shows the methylation ratio of CpGs across the Pacific oyster (*Crassostrea gigas*) genome, as well as the location of methylation across the genome:
 
 ```{r meth-ratio, echo = FALSE, out.width = "70%", fig.align = "center", fig.cap = "Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue. [@10.7717/peerj.215](#refs)"}
-knitr::include_graphics("DRAFT_DNA_methylation/meth_ratio.png")
+knitr::include_graphics("FUN_02_DNA_methylation/meth_ratio.png")
 ```
 
 ```{r meth-igv, echo = FALSE, out.width = "100%", fig.align = "center", fig.cap = "Screenshot from IGV. Bedgraph files are displayed. See below for code to create these file (File Conversion)"}
-knitr::include_graphics("DRAFT_DNA_methylation/igv.png")
+knitr::include_graphics("FUN_02_DNA_methylation/igv.png")
 ```
 
 ----------------------------------------------------------
@@ -238,7 +238,7 @@ Vertebrate genomes, on the other hand, have higher overall levels of methylation
 
 
 ```{r meth-vert, echo = FALSE, out.width = "70%", fig.align = "center", fig.cap= "Genome screenshots of methylation quantified in 2kb running windows over the first 3Mb of chromosome 1 zebrafish and mouse, and of the largest scaffold (NW_006890054.1) in elephant shark (doi: 10.12688/f1000research.11281.1)"}
-knitr::include_graphics("DRAFT_DNA_methylation/vert_methyl_distr.png")
+knitr::include_graphics("FUN_02_DNA_methylation/vert_methyl_distr.png")
 ```
 
 ## Methylation extraction
@@ -370,7 +370,7 @@ ${bismark_dir}/bismark2summary
 These commands should be run in the same directory where all output files are stored.
 
 ```{r meth-summary, echo = FALSE, out.width = "100%", fig.align = "center"}
-knitr::include_graphics("DRAFT_DNA_methylation/bismark-summary-report.png")
+knitr::include_graphics("FUN_02_DNA_methylation/bismark-summary-report.png")
 ```
 
 # File Conversions

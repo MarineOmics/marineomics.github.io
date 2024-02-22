@@ -13,7 +13,7 @@
 
 <title>DNA Methylation Assessment</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -402,6 +402,9 @@ div.tocify {
     <li>
       <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
     </li>
+    <li>
+      <a href="FUN_02_DNA_methylation.html">DNA Methylation Assessment</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -614,7 +617,7 @@ trimmed with the following parameters:</p>
 --three_prime_clip_R2 10 \
 --path_to_cutadapt /gscratch/srlab/programs/miniconda3/bin/cutadapt \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R1_001.fastq.gz \</code></pre>
-<p><img src="DRAFT_DNA_methylation/meth-bp-chart.png" width="70%" style="display: block; margin: auto;" /></p>
+<p><img src="FUN_02_DNA_methylation/meth-bp-chart.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>For WGBS and MBDBS data, it is general practice to hard-trim 10 bp
 from the beginning and end of each read. RRBS data often needs different
 trimming specifications <a
@@ -829,7 +832,7 @@ taxa methylation usually occurs in gene bodies.</p>
 Pacific oyster (<em>Crassostrea gigas</em>) genome, as well as the
 location of methylation across the genome:</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_DNA_methylation/meth_ratio.png" alt="Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue. [@10.7717/peerj.215](#refs)" width="70%" />
+<img src="FUN_02_DNA_methylation/meth_ratio.png" alt="Frequency distribution of methylation ratios for CpG dinucleotides in oyster gill tissue. [@10.7717/peerj.215](#refs)" width="70%" />
 <p class="caption">
 Frequency distribution of methylation ratios for CpG dinucleotides in
 oyster gill tissue. <a href="#refs"><span class="citation">Gavery and
@@ -837,7 +840,7 @@ Roberts (2013)</span></a>
 </p>
 </div>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_DNA_methylation/igv.png" alt="Screenshot from IGV. Bedgraph files are displayed. See below for code to create these file (File Conversion)" width="100%" />
+<img src="FUN_02_DNA_methylation/igv.png" alt="Screenshot from IGV. Bedgraph files are displayed. See below for code to create these file (File Conversion)" width="100%" />
 <p class="caption">
 Screenshot from IGV. Bedgraph files are displayed. See below for code to
 create these file (File Conversion)
@@ -852,7 +855,7 @@ levels of global methyaltion patterns with the majority of sites being
 highly methylated (≥ 80%), and fewer than one tenth being unmethylated
 (doi: 10.12688/f1000research.11281.1).</p>
 <div class="figure" style="text-align: center">
-<img src="DRAFT_DNA_methylation/vert_methyl_distr.png" alt="Genome screenshots of methylation quantified in 2kb running windows over the first 3Mb of chromosome 1 zebrafish and mouse, and of the largest scaffold (NW_006890054.1) in elephant shark (doi: 10.12688/f1000research.11281.1)" width="70%" />
+<img src="FUN_02_DNA_methylation/vert_methyl_distr.png" alt="Genome screenshots of methylation quantified in 2kb running windows over the first 3Mb of chromosome 1 zebrafish and mouse, and of the largest scaffold (NW_006890054.1) in elephant shark (doi: 10.12688/f1000research.11281.1)" width="70%" />
 <p class="caption">
 Genome screenshots of methylation quantified in 2kb running windows over
 the first 3Mb of chromosome 1 zebrafish and mouse, and of the largest
@@ -1031,7 +1034,7 @@ ${bismark_dir}/bismark2report
 ${bismark_dir}/bismark2summary</code></pre>
 <p>These commands should be run in the same directory where all output
 files are stored.</p>
-<p><img src="DRAFT_DNA_methylation/bismark-summary-report.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="FUN_02_DNA_methylation/bismark-summary-report.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="file-conversions" class="section level1">
 <h1>File Conversions</h1>
