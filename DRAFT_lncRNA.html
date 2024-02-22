@@ -13,7 +13,7 @@
 
 <title>Long non-coding RNA Discovery</title>
 
-<script src="site_libs/header-attrs-2.24/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -380,6 +380,9 @@ div.tocify {
     <li>
       <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
     </li>
+    <li>
+      <a href="FUN_02_DNA_methylation.html">DNA Methylation Assessment</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -494,6 +497,7 @@ curl -O https://gannet.fish.washington.edu/seashell/bu-github/deep-dive/D-Apul/d
 /home/shared/hisat2-2.2.1/hisat2 \
 -x ../output/lncRNA/GCF_013753865.1_Amil_v2.1.index \
 -p 48 \
+--new-summary \
 -1 ../data/lncRNA/{}-S1-TP2_R1_001.fastp-trim.20230519.fastq.gz \
 -2 ../data/lncRNA/{}-S1-TP2_R2_001.fastp-trim.20230519.fastq.gz \
 -S ../output/lncRNA/{}.sam \
@@ -526,11 +530,25 @@ done
 | xargs basename -s .sorted.bam | xargs -I{} \
 /home/shared/stringtie-2.2.1.Linux_x86_64/stringtie \
 -p 16 \
--G ../lncRNA/genomic.gff \
+-G ../data/lncRNA/genomic.gff \
 -o ../output/lncRNA/{}.gtf \
 ../output/lncRNA/{}.sorted.bam</code></pre>
+<pre class="bash"><code>/home/shared/stringtie-2.2.1.Linux_x86_64/stringtie \
+--merge \
+-p 16 \
+-G ../data/lncRNA/genomic.gff \
+-o ../output/lncRNA/stringtie_merged.gtf \
+../output/lncRNA/*.gtf</code></pre>
+</div>
+<div id="gff-compare" class="section level1">
+<h1>GFF compare</h1>
+<pre class="bash"><code>/home/shared/gffcompare-0.12.6.Linux_x86_64/gffcompare \
+-r ../data/lncRNA/genomic.gff \
+-o ../output/lncRNA/gffcompare_merged \
+../output/lncRNA/stringtie_merged.gtf</code></pre>
 <p>multiqc</p>
-<pre class="bash"><code>cd ../output/lncRNA 
+<pre class="bash"><code>
+cd ../output/lncRNA
 
 eval &quot;$(/opt/anaconda/anaconda3/bin/conda shell.bash hook)&quot;
 conda activate
