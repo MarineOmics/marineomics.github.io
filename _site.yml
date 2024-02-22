@@ -32,6 +32,8 @@ navbar:
       menu:
         - text: "Mutifactorial RNAseq"
           href: DGE_comparison_v2.html
+        - text: "DNA Methylation Assessment"
+          href: FUN_02_DNA_methylation.html
     - text: "Genome-Phenome"
       menu:
         - text: "coming soon!"

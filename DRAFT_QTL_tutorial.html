@@ -427,8 +427,6 @@ div.tocify {
 </div>
 
 
-<p>Initial publication year: 2023 <br> <a
-href="https://marineomics.github.io/#How_to_Cite">How to cite</a></p>
 <p>The purpose of this page is to give the reader a broad sense of how
 Quantitative Trait Locus (QTL) analysis can be used to connect phenotype
 to genotype. It is designed for those who have little to no experience
@@ -442,8 +440,9 @@ will strengthen and diversify its content. We invite any and all
 commentary on the <a
 href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion
 Forum</a>!</p>
-<p>*I owe most of this code and most of what I know about QTL analysis
-to Dr. Evangeline Ballerini.</p>
+<p>*All of this code and most of what I know about QTL analysis to <a
+href="https://www.ballerinilab.com/">Prof. Evangeline Ballerini</a>. Add
+something about Nathan. Any mistakes or lack of clarity are mine.</p>
 <p>For more technical details, there are many valuable resources,
 referenced throughout this document. In particular, Karl Broman and
 Śaunak Sen developed a widely used R package called R/qtl, and have
@@ -636,15 +635,21 @@ environmental variables</li>
 </div>
 </div>
 </div>
-<div id="tutorial" class="section level2">
-<h2>Tutorial</h2>
+<div id="tutorial" class="section level1">
+<h1>Tutorial</h1>
 <p>This tutorial will walk you through the essentials of the particular
 analysis that I did, but my hope is that it will be useful even for
 those who take different approaches. It is not written with reproducible
 data, but I have included all of the necessary code and outputs.</p>
-<p>I used whole genome skim sequencing due to the ease of a multiplex
-library prep, making costs and wet lab time comparable to reduced
-representation methods.</p>
+<div id="genetic-map-construction" class="section level2">
+<h2>Genetic map construction</h2>
+<p>The first step in QTL mapping is making a genetic map, where we have
+the determined the genotype of each F2 within recombination windows.</p>
+<p>There are many different approaches for doing this, but below I
+describe our lab’s method of using whole genome skim sequencing and
+custom scripts. I used a multiplexed library prep kit (formerly iGenomx,
+now Twist 96-plex kit), making costs and wet lab time comparable to
+reduced representation methods.</p>
 <div id="general-info-on-calling-variants" class="section level3">
 <h3>general info on calling variants</h3>
 <p>If you have a reference genome available, you can of course just call
@@ -672,11 +677,9 @@ genotypes across recombination bins. By useful, I mean only sites that
 were polymorphic between the parents, and within these, only sites where
 the F1 inherited different alleles from each parent (heterozygous).</p>
 </div>
-<div
-id="were-going-to-start-by-defining-all-of-our-filepaths-variable-names-and-tools"
+<div id="defining-all-of-our-filepaths-variable-names-and-tools"
 class="section level3">
-<h3>We’re going to start by defining all of our filepaths, variable
-names, and tools</h3>
+<h3>defining all of our filepaths, variable names, and tools</h3>
 <pre class="bash"><code># make variables for commonly used directories. as always, set your working directory wherever works for you
 workingdir=&quot;/Users/jason/qtl.tutorial&quot;
 mkdir $workingdir
@@ -694,18 +697,16 @@ mkdir $idallelesdir
 
 # file with the Aquilegia reference genome, and bams for the f1 and the parent I have sequence for (&#39;Pa&#39;)
 reference=&quot;/Volumes/HD/genomes.reference/Aquilegia/V3/sequences/Aquilegia_coerulea.main_genome.scaffolds.fasta&quot;
-f1bam=&quot;$bamdir/f2.merged.bam&quot;
+f1bam=&quot;$genodir/f2.merged.bam&quot;
 pabam=&quot;/Volumes/HD/projects/genomes.species/V3/alignments/jonesii.sorted.bam&quot;
 
 # on our lab computer we call samtools from it&#39;s location
 samtools=&quot;/Volumes/HD/tools/samtools-1.3/samtools&quot;
 </code></pre>
 </div>
-<div
-id="to-begin-our-genotyping-lets-determine-the-useful-sites-for-genotyping-the-f2s"
+<div id="determining-the-useful-sites-for-genotyping-the-f2s"
 class="section level3">
-<h3>To begin our genotyping, let’s determine the useful sites for
-genotyping the F2s</h3>
+<h3>determining the useful sites for genotyping the F2s</h3>
 <div id="generate-a-genotype-depth-sequence-file-for-the-f1"
 class="section level4">
 <h4>Generate a genotype depth sequence file for the F1</h4>
@@ -723,13 +724,13 @@ level sequence file of the F1!</li>
 cd $workingdir
 
 # make a list file with all of the file paths of our .bams for samtools to merge
-ls -d -1 $bamdir/*.* &gt; $bamdir/f2.paths.list
+ls -d -1 $bamdir/*.* | grep -v bai &gt; $infodir/f2.paths.list
 
 # merge bam files
-samtools merge $bamdir/f2.merged.bam -b $bamdir/f2.paths.list
+samtools merge $genodir/f2.merged.bam -b $genodir/f2.paths.list
 
 # index bam files
-samtools index $bamdir/f2.merged.bam</code></pre>
+samtools index $genodir/f2.merged.bam</code></pre>
 <p>We can view the merged, indexed .bam file of the F2s in IGV (link).
 Because I got ~1x coverage on ~350 individuals, this merged .bam file is
 (on average) a 350x coverage sequence file of the F1…plenty to call a
@@ -875,28 +876,74 @@ way.</p>
 </ul></li>
 <li>snp.list is our final list of usable SNPs, of which there were
 ~1,000,000 in this case</li>
-<li>Now we’ll call genotypes for both the F1 and Pa at these sites using
-a combination of <a
-href="http://www.htslib.org/doc/samtools-mpileup.html">samtools
+<li>Now we’ll call genotypes for Pa at these sites using a combination
+of <a href="http://www.htslib.org/doc/samtools-mpileup.html">samtools
 mpileup</a>, <a
 href="https://samtools.github.io/bcftools/bcftools.html#call">bcftools
 call</a>, and <a
 href="https://samtools.github.io/bcftools/bcftools.html#query">bcftools
 query</a>. This is a simple text file with 4 columns:
 <ul>
-<li>chromosome, position, reference allele, and the alternate
-allele:</li>
+<li>chromosome, position, reference allele (which is Pb’s allele), the
+alternate allele (which is Pa’s allele), and Pa’s genotype, which in
+this case will always be 1/1 for alternate/alternate:</li>
 </ul>
-<pre class="bash"><code>samtools mpileup -l snp.list -q 30 -u -B -f $reference $f1 $pabam | bcftools call -vm -f GQ | awk &#39; ($8 !~ /INDEL/) {print $0} &#39; | bcftools query -f        &#39;%CHROM\:%POS\t%REF\t%ALT[\t%GT]\n&#39; &gt; f1.pa.genotypes</code></pre></li>
-<li>Finally, we’ll print a file with the sites, the Pa allele, and the
-Pb allele</li>
+<pre class="bash"><code>samtools mpileup -l snp.list -q 30 -u -B -f $reference $f1 $pabam | bcftools call -vm -f GQ | awk &#39; ($8 !~ /INDEL/) {print $0} &#39; | bcftools query -f        &#39;%CHROM\:%POS\t%REF\t%ALT[\t%GT]\n&#39; &gt; pa.genotypes</code></pre></li>
+<li>Finally, we’ll print a file with the site, the Pa allele, and the Pb
+allele.</li>
 </ul>
-<pre class="bash"><code>awk &#39; { if ( $5 ~ /0\/0/ ) print $1 &quot;\t&quot; $2 &quot;\t&quot; $3; else print $1 &quot;\t&quot; $3 &quot;\t&quot; $2; } &#39; f1.pa.genotypes &gt; pos.pa.pb.txt    </code></pre></li>
+<pre class="bash"><code>awk &#39; { if ( $5 ~ /0\/0/ ) print $1 &quot;\t&quot; $2 &quot;\t&quot; $3; else print $1 &quot;\t&quot; $3 &quot;\t&quot; $2; } &#39; pa.genotypes &gt; pos.pa.pb.txt    </code></pre></li>
 </ul>
 </div>
 </div>
-<div id="now-we-can-actually-genotype-the-f2s" class="section level3">
-<h3>Now we can actually genotype the F2s</h3>
+<div id="genotyping-the-f2s" class="section level3">
+<h3>genotyping the F2s</h3>
+<p>The first step is to go through each F2 individual and count the
+number of reads of each allele. We’ll do this using a combination of
+samtools mpileup and a custom perl script written by Prof. Anji
+Ballerini (make sure true). The mpileup command goes through our F2 .bam
+files and counts alleles for each individual at our snp list. The output
+has 6 columns: * 1: chromosome/scaffold * 2: position * 3: reference
+allele * 4: read counts at that locus * 5: allele * . matches reference
+on forward strand * , matches reference on reverse strand * uppercase
+letter is identity of alternate allele read on forward strand and
+lowercase is the same but on the reverse strand * 6: ASCII base
+quality</p>
+<p>I won’t pretend to speak perl, but I know this script takes the
+mpileup as input and outputs a ‘counts’ file with 5 columns: * 1:
+chromosome/scaffold:position * 2: # A reads * 3: # T reads * 4: # C
+reads * 5: # G reads</p>
+<p>Below is the for loop that goes through each F2, calling on mpileup
+and the perl script to output count files.</p>
+<pre class="bash"><code># make the snp.list a variable that we can easily call
+snplist=&quot;$idallelesdir/snp.list&quot;
+
+# make the filepath to the perl script a variable
+MAYBE LINK TO A NEW HTML WITH THE FILE
+
+# make a list of the F2s from the .bamdir
+ls $bamdir | grep -v bai | awk &#39;{ gsub(/.nodup.bam/, &quot;&quot;) ; print $0 }&#39; &gt; $infodir/f2.list
+
+#define a list of variables that will be known as &quot;samples&quot; using our f2.list file
+samples=($(cat $infodir/f2.list))
+
+# make a for loop that will cycle through the list of F2 samples one at a time and genotype each sample at our SNP.list positions
+for (( k = 0 ; k &lt; ${#samples[@]} ; k++ ))
+do
+
+samtools mpileup -Q 30 -q 60 -B -f $reference -l $snplist $bamdir/${samples[$k]}.nodup.bam | perl $countscript | awk &#39; { print $1&quot;:&quot;$2 &quot;\t&quot; $3 &quot;\t&quot; $4 &quot;\t&quot; $5 &quot;\t&quot; $6 } &#39; | sort -k 1,1 &gt; ${samples[$k]}.counts
+
+done</code></pre>
+<p>Now that we have small and manageable counts files for each F2, we
+can leave the world of bash and head to R to finish up our genotyping
+and genetic map construction. Because we’re calling genotypes in
+recombination bins, we need to determine our bin sizes to accurately
+capture our recombination points. We used anywhere from 0.1 - 1Mb bins,
+depending on where on the chromosome we were. Generally we used 0.5Mb
+bins on the ends of chromosome arms and 1Mb bins to account for
+spatially differing recombination rates. 0.1Mb bins were used in regions
+that were known to have discordance between the genetic and physical
+maps based om previous studies in <em>Aquilegia</em>.</p>
 <ul>
 <li>determine useful window sizes depending on recombination rate
 <ul>
@@ -1012,6 +1059,7 @@ interest?</li>
 </ul>
 <p>graveyard fine mapping: recombinant inbred lines (RIL) see Takuno et
 al. 2012 near isogenic lines (NIL)</p>
+</div>
 </div>
 
 
