@@ -15,7 +15,7 @@ subtitle: '*Yaamini Venkataraman*, *Kathryn Greiner-Ferris*, *Sam White*, and *S
 bibliography: FUN_02_DNA_methylation/DNA-Methylation.bib
 ---
 
-Initial publication year: TBD <br> [How to cite](https://marineomics.github.io/#How_to_Cite)
+Initial publication year: 2024 <br> [How to cite](https://marineomics.github.io/#How_to_Cite)
 
 # Introduction
 
