@@ -23,7 +23,8 @@ The backbone underlying the content on the website comes from a general set of â
 
 # Functional Genomics  
 
-* [Multifactorial RNAseq analyses](DGE_comparison_v2.html)  
+* [Multifactorial RNAseq analyses](DGE_comparison_v2.html) 
+* [DNA Methylation Assessment](FUN_02_DNA_methylation.html) 
 * Align and count RNAseq reads (coming soon!)
     * De novo, reference-based, and Tag-seq methods
 
