@@ -25,7 +25,7 @@ navbar:
         - text: "Poolseq"
           href: POP_03_poolseq.html
         - text: "Redundancy Analysis (RDA) Trait Prediction"
-          href: POP_05_RDAtraitPredictionTutorial.html
+          href: RDAtraitPredictionTutorial.html
         - text: "PCA"
           href: POP_08_PCA.html
     - text: "Functional Genomics"

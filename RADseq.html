@@ -4,16 +4,6 @@
 
 <head>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-53GH9PV49T"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-53GH9PV49T');
-    </script>
-    
 <meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
@@ -23,7 +13,7 @@
 
 <title>RADseq</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.27/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -395,7 +385,7 @@ div.tocify {
       <a href="POP_03_poolseq.html">Poolseq</a>
     </li>
     <li>
-      <a href="POP_05_RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
+      <a href="RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
     </li>
     <li>
       <a href="POP_08_PCA.html">PCA</a>
@@ -1140,9 +1130,7 @@ pca.out = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, remove.mo
 ##     # of principal components: 32
 ## CPU capabilities:
 ## Sat Mar 18 13:57:03 2023    (internal increment: 40960)
-## 
-[..................................................]  0%, ETC: ---        
-[==================================================] 100%, completed, 0s
+## [..................................................]  0%, ETC: ---        [==================================================] 100%, completed, 0s
 ## Sat Mar 18 13:57:03 2023    Begin (eigenvalues and eigenvectors)
 ## Sat Mar 18 13:57:03 2023    Done.</code></pre>
 <pre class="r"><code>#close the gds file (saves memory)
@@ -1332,9 +1320,7 @@ SnpLoad &lt;- snpgdsPCASNPLoading(pca.out, gdsin)</code></pre>
 ##     using 1 thread
 ##     using the top 12 eigenvectors
 ## Sat Mar 18 13:57:04 2023    (internal increment: 65536)
-## 
-[..................................................]  0%, ETC: ---        
-[==================================================] 100%, completed, 0s
+## [..................................................]  0%, ETC: ---        [==================================================] 100%, completed, 0s
 ## Sat Mar 18 13:57:04 2023    Done.</code></pre>
 <pre class="r"><code>names(SnpLoad)</code></pre>
 <pre><code>## [1] &quot;sample.id&quot;  &quot;snp.id&quot;     &quot;eigenval&quot;   &quot;snploading&quot; &quot;TraceXTX&quot;  
@@ -1365,9 +1351,7 @@ pca.out.pcfilt = SNPRelate::snpgdsPCA(autosome.only = F, gdsin, num.thread=2, re
 ##     # of principal components: 32
 ## CPU capabilities:
 ## Sat Mar 18 13:57:04 2023    (internal increment: 40960)
-## 
-[..................................................]  0%, ETC: ---        
-[==================================================] 100%, completed, 0s
+## [..................................................]  0%, ETC: ---        [==================================================] 100%, completed, 0s
 ## Sat Mar 18 13:57:04 2023    Begin (eigenvalues and eigenvectors)
 ## Sat Mar 18 13:57:04 2023    Done.</code></pre>
 <pre class="r"><code>print(
@@ -1403,9 +1387,7 @@ seqGDS2VCF(gdsin, &quot;POP_02_RADseq_files/OL-miss-pc1-linkage-filt.vcf.gz&quot
 ##     INFO Field: NS, DP
 ##     FORMAT Field: DP, CATG
 ##     output to a general gzip file
-## 
-[..................................................]  0%, ETC: ---    
-[==================================================] 100%, completed, 1s
+## [..................................................]  0%, ETC: ---    [==================================================] 100%, completed, 1s
 ## Sat Mar 18 13:57:05 2023    Done.</code></pre>
 <pre class="r"><code>#close the gds file to save memory
 closefn.gds(gdsin)</code></pre>
