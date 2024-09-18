@@ -1,0 +1,256 @@
+---
+title: "Ancient and Degraded DNA"
+output: html_document
+bibliography: ../aDNA_Part1_ReviewDoc_Refs.bib
+---
+
+```{r setup, echo=F, warning=F}
+library(knitr)
+knitr::opts_chunk$set(
+	fig.height = 5,
+	fig.width = 10,
+	cache = TRUE
+)
+library(knitcitations)
+library(kableExtra)
+opts_chunk$set(fig.width = 10,
+               fig.height = 5,
+               cache = TRUE)
+cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
+             hyperlink = "to.doc", cite.style = "author")
+```
+
+Authors:  Madeline Eppley\*, Sara M. Schaal\*, John Whalen,  Shrushti Modi, Kristen Rayfield, Jem Baldisimo, Evan Ho, Stephen Gaughran   
+\* These authors contributed equally to this page.  
+Acknowledgements: Thank you to our two reviewers Ram&oacute;n Gallego, and Ally Swank for providing helpful feedback. Also to Jason Johns for helping to facilitate publication of our page. 
+
+
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
+## Introduction
+
+This page is an introduction to genomic analyses (sample preparation, DNA extractions, library prep, sequencing, and data analysis) of degraded or damaged DNA, including DNA from museum specimens, ancient samples, and poorly preserved modern samples. We assume that you have some experience in analyzing high-throughput sequencing data. If not, we suggest you review the [Population Genomics tab on the MarineOmics page](https://marineomics.github.io/#Population_Genomics) to become familiar with the basics of genome sequencing and data analysis pipelines. The information and tutorials on this page will focus on genomic analyses that are specific to ancient, historical, and/or museum DNA. Because many of the technical themes revolve around DNA degradation and damage inherent to ancient DNA, this page may also be useful to those working with highly degraded modern DNA. 
+
+
+### Ancient DNA  
+In the 1980s, scientists discovered that DNA was preserved in museum and ancient specimens, from which it could be extracted and sequenced. While this gave rise to Michael Crichton’s science fiction novel Jurassic Park, it also led to a flourishing field of evolutionary research. Marine biologists have lagged somewhat behind in this field, driven in part by the difficulty of recovering ancient marine samples compared to terrestrial taxa.  
+
+Ancient DNA (aDNA) refers to DNA extracted from non-modern samples. These specimens can range in age from a few decades to millions of years old. Sources of aDNA include teeth, bone, herbarium specimens, preserved or mummified tissue, paleofeces, dental calculus, and sediment, among others (@Hofman2019-ur). The context of these sources (ancient, historical, or museum DNA) are sometimes used interchangeably, and while distinct, share several characteristics and should be handled with the same laboratory procedures.  They are all affected by DNA degradation, damage, and contamination. The average aDNA fragment length is around 50 base pairs, but this can be highly variable depending on the age of the samples and preservation (see: @Heintzman2014-io). Samples generally contain low quantities of the original (endogenous) DNA, which are often contaminated with DNA from other sources (exogenous; @Hofman2019-ur). This page will focus on genomic analyses that take into account these challenges, which can also be used as a guide to processing highly degraded modern DNA. Throughout this page we will refer to all non-modern samples as “aDNA” while highlighting some of the complexities in sample preparation and extraction methods due to the source and/or context of the sample (i.e., museum curation impacts on biomolecular yields and downstream data interpretation).  
+
+
+### aDNA Study Design  
+
+For the last several decades, developments have been made in extracting and sequencing DNA from degraded samples. In recent years, high-throughput and short-read sequencing technologies have especially advanced the aDNA field. These advances have made it possible to explore the genetics of populations in the recent and distant past. Although there are still many obstacles to aDNA projects, we are now at a point where population-level ancient sequencing projects are feasible for non-model and marine organisms. Some questions that museum and ancient samples can address are:  
+
+ - What were past baselines of genetic diversity and how do they compare to modern counterparts?  
+ - How have historical events (e.g., environmental change, anthropogenic impacts, admixture, or selection events) affected changes in genetic diversity and allele frequency?  
+ - How are extinct species or populations related to extant ones?  
+ - What were past migratory routes, range expansions, or range contractions?  
+ - What did past ecosystems look like (e.g., aDNA + stable isotope analysis)?  
+ - How well do simulations capture past genetic changes, and can we validate them with empirical aDNA data?  
+ - What was genetic load like in the past?  
+ - What pathogens existed in ancient populations, and how did they evolve?  
+ - What is the genetic basis of ancient traits or diseases?  
+ - What were established levels of genetic diversity pre-environmental degradation or pre-exploitation?  
+ - What were the effects of prior range expansions or contractions during periods of climatic change?  
+ - Can populations show evidence of rapid adaptation to environmental stress (abiotic or biotic) over short periods of time?  
+
+Designing a study incorporating ancient or historical specimens allows you to ask many new questions but also requires several important considerations. Below are examples of how to form those questions while considering the limitations of your sample quantity and quality.    
+
+
+#### Sampling design: statistical power vs limited availability of specimens  
+
+Often, ancient and historical samples are extremely limited in number. When used for genomic analysis, a portion or all of a given sample is completely destroyed. Because of this, researchers need to think critically about their sampling design and the resulting statistical power in their analyses before beginning an aDNA study. Without this consideration, aDNA studies may face power issues when detecting demographic events or changes with population genetic analyses. Ideally, temporal genomics studies will sample individuals serially across multiple points in time over the study period, which adds significant power to analyses of selection, demography, and migration (@Clark2023-vc). However, when samples do not permit serial sampling, two sampling periods - a baseline “historic” genotype, and a more recent “post-event” - can still be informative about change over time (@Clark2023-vc) and have been effective for detecting selective sweeps (@Whitehouse2023-ue).  
+
+Depending on the analysis, even single samples can provide enough data for drawing conclusions. For example, genome-wide heterozygosity and runs of homozygosity can be estimated from single samples and can reflect population-level phenomena (e.g., @Beichman2023-eg). In addition, analyses such as the Pairwise Sequentially Markovian Coalescent can take single-sample input to reconstruct demographic history of the distant past (e.g., @Sharko2021-jo). Phylogenetic and phylogeographic reconstructions can also be performed using single samples per population or species (e.g., @Scarsbrook2022-sq).  
+
+
+#### Unequal sample sizes  
+
+In most cases, modern DNA samples are more easily obtained than aDNA samples. In the case of temporal comparisons between past and present populations, inclusion of modern samples may need to be scaled down to match the available aDNA sample sizes. In a study of sea otter demographic history, (@Beichman2023-eg) analyzed three aDNA samples from ~1500 and ~200 years ago with seascape population genomic data of 107 contemporary samples from five distinct populations across the species’ range. Modern populations were downsampled to three representative individuals to equal the sample size of the three historical samples for principal components analysis (PCA) and ADMIXTURE analyses. On the other hand, large numbers of modern samples can be leveraged to impute genotypes in low-coverage ancient genomes (@Ausmees2022-fa).  
+
+
+#### Potential downstream population genetics and genomics analyses  
+
+In some species, the number of available aDNA samples may be large enough to allow researchers to carry out population genetics and in some cases genomics studies (@Parks2015-nk). In the past, technological limitations have hindered researchers' ability to analyze a large number of markers across the genome and across many samples due to limitations such as quantity of isolated target DNA (see below in challenges with aDNA: exogenous DNA), cost of sequencing to a great enough depth, and a lack of methods that facilitate the evaluation of genomic level marker sets. However, these limitations have recently been alleviated with better extraction methods, reduced costs of sequencing, and the availability of whole-genome sequence capture (@Carpenter2013-py), thus providing genomic level data for aDNA studies. These advances have opened the door for researchers to evaluate evolutionary changes over time and conduct population genomic analyses. Similarly to a contemporary population genomics approach, aDNA can be processed for potential downstream analyses such as PCA to evaluate population genetic structure (@Louis2023-la), effective population size (*N~e~*) to assess demographic changes over time (@Fournier2022-cd), the fixation index (*F*~ST~) to identify regions in the genome with signatures of selection, or allele frequency changes over time. Uniquely, aDNA can also be used for reconstructing ancient genomes, provide context for phylogenetic relationships, reveal the effects of past selection events, or detail historic levels of genetic variation in populations. Additionally, temporal sampling of populations allows direct analysis of past populations rather than relying on population genetic models to infer past states. This adds significant power to evolutionary analyses of selection, demography, and migration.  
+
+
+#### Conservation genetics applications  
+
+aDNA can be useful for understanding how past organism-environment interactions proceeded. Faced with anthropogenic climate change, forecasting how biodiversity may respond to future environments is a key conservation challenge (@Hofman2015-ct). Genomic studies using aDNA can provide unique insight for successful conservation and management approaches (@Nakahama2021-su; @Leonard2008-bt). Notably, the following informative metrics can be generated from aDNA studies:  
+
+- Estimates of temporal changes in *N~e~* (e.g., @Bolton2018-ip).  
+- Recent and historical connectivity of populations (e.g., @Pinsky2010-qa).  
+- Changes in allele frequencies due to natural selection from environmental change, disease outbreaks, or natural disasters (e.g., @Lonsinger2018-ws).  
+- Changes in allele frequencies due to population collapses or bottlenecks (i.e., genetic drift and relaxed natural selection) (e.g., @Weber2004-ba; @Garcia-Navas2015-rm).  
+- Temporal levels of genetic diversity or inbreeding in populations and the timescales on which diversity is lost or gained (e.g., @Baillie2016-kh).   
+- Temporal relatedness of isolated populations for genetic rescue applications (e.g., @Hogg2006-jv; @Miller2012-cp).   
+- Determining if small populations of genetically distinct individuals or rare haplotypes differ from historic populations to delineate species management units (e.g., @Perrine2007-fd; @Goldstein2003-tf).    
+
+
+### Select Case Studies of aDNA in Conservation and Environment  
+
+
+#### i. Steller’s sea cow:   
+Nuclear de novo assembly of Steller's sea cow using museum samples determined that population declines began considerably earlier than the arrival of Western Europeans in the North Pacific, contrary to the previous estimate. The study shows a considerable drop in population thousands of years prior to European description, emphasizing the importance of environmental changes in their extinction (@Sharko2021-jo). Another study demonstrated convergent evolution between Steller's sea cow and cetaceans, highlighting genes involved with cold aquatic adaptation (@Duc2022-dx). These studies highlight the importance of aDNA as a tool for historical reconstruction, providing insights into the impact of anthropogenic activity and environmental shifts on species extinction, such as the Steller’s sea cow.  
+
+
+#### ii. Corals:   
+Coral holobiont evolution was  studied from the fragments of millenia-old *Acropora palmata* coral (@Scott2022-xz). In this  study, the authors sequenced aDNA and discovered a  closely related yet distinct genetic relationship between ancient and modern *A. palmata*. Metagenome assemblies showed the stability of millennia-old holobionts that can be used for studying the impacts of environmental stress and evolutionary constraints over time (@Scott2022-xz). The use of aDNA in marine cnidarians can prove instrumental in studying long-term reef evolution, demographic trends, and the impact of anthropogenic disturbances on reef ecosystems.
+
+
+#### iii. Baltic herring:  
+Historic whole-genome sequences from 40 archaeological samples of Atlantic and Baltic herring were used to reveal human impacts on fishery stocks over the past 800 years. In this study, four stocks of herring were analyzed for population structure and temporal fluctuations in Ne over 200 generations. This research illustrates the value aDNA can contribute to modern fisheries management of an economically-important species in a time of anthropogenic impacts on fisheries (@Atmore2022-aj).  
+
+
+#### iv. Sea otter:  
+@Wellman2020-pt address the complex historical ecology of sea otters (*Enhydra lutris*) and their failed reintroduction to coastal Oregon in the 1970s. Integrating archaeological and historical museum specimens, they compare the mitochondrial genomes of pre-extirpation Oregon sea otters to extant and historical populations. Complete ancient mitochondrial genomes were sequenced from archaeological Oregon sea otters (*Enhydra lutris*) dentine (n=20) and historical sea otter dental calculus (n=21; @Wellman2020-pt). From their analysis they reveal northern extant populations to be an appropriate population for future reintroduction efforts. Of importance, this study highlights the promising use of dental calculus for ancient population studies as an alternative sample source for research questions of conservation interest. 
+
+
+#### v. Ancient Environmental DNA (eDNA): 
+Ancient eDNA can be used as a direct survey of organisms that occurred in  past environments as well as a proxy for ecosystem change. Generally, there are three different types of ancient eDNA: Sedimentary DNA (sedaDNA), ice cores, and cave deposits. sedaDNA refers to DNA from environmental and sedimentary core–samples. Sediment layers contain DNA from organisms that lived in the water or sediment during the time that the layer was deposited. Much of the recovered DNA is microbial, but studies have successfully recovered animal and plant DNA as well (@De_Schepper2019-cy; @Armbrecht2019-be). Ice cores can contain well-preserved DNA from organisms buried deep in the fossil record covered by ice sheets, providing valuable information about past ecosystems (@Willerslev2007-bn; @Reiss2006-pt; @Hansen2002-to; @Zhong2021-cl). Cave deposits are accumulated DNA from organisms that inhabited or passed through caves. These include cave sediments from ancient humans (@Vernot2021-hy; @Sarhan2021-eh), speleothems (@Marchesini2023-ny; @Lipar2020-as), and guano (@Bogdanowicz2020-ak; @McFarlane2024-kq; @Massilani2022-al; @Jenkins2013-ga; @Haidau2022-wl). Taken together, all of these sources of ancient eDNA provide a valuable tool in reconstructing and understanding past environments for assessing global environmental change.   
+
+
+### Challenges with aDNA
+#### i. DNA damage:
+
+DNA damage and degradation is the uniting theme of this page, and perhaps the most significant challenge in working with historical, ancient, or poorly preserved samples. DNA damage comes in two main flavors: DNA fragmentation and chemical modifications. **Fragmentation** results from the breaking of chemical bonds between bases, which can cause double-strand breaks, missing bases (“nicks”), and single-strandedness (@Briggs2007-kw). Fragmentation is expected to accumulate over time, resulting in older DNA being more degraded. However, environmental factors also affect degradation rates, including temperature, humidity, local environment/substrate, and storage conditions (e.g., Formalin-Fixed, Paraffin-Embedded). **Cytosine deamination** is the primary chemical modification in aDNA, in which cytosine is chemically converted to uracil. During library prep, standard polymerases will incorporate adenine (instead of guanine) across from the uracil, resulting in erroneous C-to-T or G-to-A transitions (@Sawyer2012-pq). Although they are sources of error, these predictable patterns of DNA damage and degradation can be used to verify that genuine aDNA was sequenced. 
+
+#### ii. Exogenous DNA contamination: 
+
+When working with ancient or historical DNA samples, contamination of DNA from organisms and/or species that are not the target (exogenous DNA) is expected. Exogenous DNA contamination includes modern DNA (typically human DNA from handling samples or from other modern species) and microbial DNA (typically from environmental contamination where the samples were collected). Since modern DNA is a common source of exogenous DNA contamination, it is critical to work in a lab space designed for only working with ancient DNA. This should be a clean room where no modern DNA work has previously been done. There should be contamination control workflows including protective clothing (e.g., tyvek suits, double layered gloves), sterilization requirements (e.g., bleach, UV-sterilization), and HEPA-filtered laminar flow hoods. In addition to working in a lab specifically set up for working with ancient DNA, there are steps that can be taken in laboratory protocols to try to reduce the amount of exogenous DNA contamination during sample preparation, DNA extraction, and library preparation. Although mitigation strategies can help to reduce the amount of exogenous DNA contamination in laboratory protocols, some amount of exogenous DNA will still be present in the sample and therefore in the sequencing data. There are a number of ways that researchers can deal with this bioinformatically. 
+
+#### iii. Chemical contaminants/PCR inhibitors:  
+
+Historic museum samples are often chemically treated to enhance preservation with chemicals (e.g., ethanol, isopropyl alcohol, formaldehyde, formalin, paraffin). These chemical methods of preservation inherently damage and degrade DNA. Due to contamination from environmental preservation, various chemical methods often need to be used to decontaminate ancient samples (e.g., remove physical surface contaminants or exogenous DNA) before extracting DNA (@Llamas2017-zo). These decontamination treatments can damage endogenous DNA and result in additional sample degradation (@Orlando2021-zd). After DNA extraction of either historic or ancient samples, polymerase chain reaction (PCR) can be used to amplify small amounts of DNA to a quantity suitable for sequencing. However, PCR inhibitors that are co-extracted alongside DNA are common and may make PCR amplification impossible (@Kemp2014-qf).  
+
+#### iv. Limited sample availability:  
+
+The availability and preservation of samples for aDNA research can be difficult and frequently results in sample size limitations, particularly when the species being studied is not well-represented in the archaeological or paleoecological record (@Schwarz2009-df). This makes it harder to get a thorough understanding of past migrations and demographics. Geographic limitations may also exist for aDNA studies in regions with a low concentration of sites or poorly conserved remnants. It might be difficult to extract high-quality DNA from samples because of variables like temperature and humidity that cause sample degradation. Ethical and legal issues, such as regulations pertaining to excavation and examination, further hinder access to historical materials (@Licata2020-ap). Because aDNA research involves the destruction of valuable materials, ethical handling of the limited resources is imperative (see [aDNA Ethics] section below).  
+
+#### v. Data analysis and interpretation difficulties:  
+
+Even when specialized methods are used to address the above challenges at the stages of DNA extraction and sequencing, ancient and degraded DNA inevitably produces lower quality data and less-than-ideal sample sets compared to most modern DNA projects. Fortunately, since the patterns produced from DNA damage and degradation are somewhat predictable, special analytical tools have been developed that reduce the noise that comes from low-quality data. These include short-read mapping approaches that are especially sensitive to mapping reads that are < 50 bp (@Oliva2021-yi; @Xu2021-iv), methods for genotype imputation from extremely low-coverage data (@Rubinacci2021-wv; @Howie2009-uv; @Rubinacci2020-ux; @Davies2016-hk), and variant callers that explicitly account for patterns of DNA damage (@Prufer2018-ki; @Kawash2018-og).  
+
+
+### Sample Acquisition   
+
+
+#### Traits Affecting Sample Quality  
+
+Given recent advances in aDNA sequencing and analysis, the greatest challenge to aDNA projects may now be finding appropriate samples to sequence. Unlike fresh tissue samples collected for genomic analyses, samples used in an aDNA project were likely not preserved with the intention of future DNA extraction and sequencing. Many samples are prehistoric or archaeological, and were exposed to the elements for hundreds of thousands of years. Other samples may have been prepared for museum collections but treated with preservative chemicals that degrade DNA. No matter how good the preservation conditions, DNA will degrade at room temperature in dead tissue, resulting in low quality and quantity DNA in any museum or ancient samples. For these reasons, aDNA projects must often be designed in an iterative process, with the available samples dictating the questions that can be asked, and the initial sequencing results dictating which samples are usable, which determines the power of downstream analyses. Some traits that may be correlated with sample quality are:  
+
+##### i. Age  
+
+Just like radioactive elements, DNA degrades in a clock-like way. Unlike elemental degradation, however, the rate of decay depends on many factors besides age. Still, age can generally be used as a first order proxy to estimate the quality of a sample. Most degradation happens rapidly, within the first days and weeks after tissue death. Still, degradation continues after, with older (i.e., prehistoric) samples generally yielding lower quantity and quality DNA than younger (i.e., historic) samples. However, post-mortem alterations due to the environment, climate, or museum preservation efforts can challenge this assumption (@Austin2019-nc).  
+
+@Allentoft2012-om calculated an average DNA half-life of fossil samples from the extinct New Zealand moa to be 521 years for a 242 bp mtDNA sequence, which corresponds to a per nucleotide fragmentation rate (*k*) of 5.5010 - 6 per year. The authors also identified that nuclear DNA degraded at least twice as fast as mtDNA based on Illumina HiSeq data. They argue that Equation 1 represents the best available approximation of the rate of mtDNA decay in fossil bone, in which (*k*) is the average decay rate per site per year for mtDNA in moa bone and (*T*) is temperature.  
+
+
+$$ln \space k = 41.2 - 15267.6 \times \frac{1}{T} \space \space \space \space \space	\mathrm{Eq.1}  $$
+
+##### ii. Climate  
+
+The immediate environmental conditions where a specimen has been for most of its post-mortem existence is a strong factor in DNA quality and state of degradation. In general, cold and static environments (e.g., permafrost) will preserve DNA best; hot, variable environments (e.g., tropics) will accelerate DNA degradation. Likewise, stable museum cabinets also provide relatively good preservation of DNA. Even so, new methods are working to improve DNA sequencing from ancient specimens in the tropics.  
+
+##### iii. Exposure/environment  
+
+In addition to climate factors like temperature and humidity, the microclimate and exposure of a specimen also affects DNA quality. For example, a bone in a tropical cave may yield better quality DNA than a bone exposed to the sun just outside the cave for an equal amount of time. These factors can also be complex: buried specimens may have better preserved DNA but also more contamination from soil microbes invading the tissue matrix.  
+
+##### iv. Tissue type  
+
+Just as with modern DNA, different types of tissue can yield different amounts of DNA. Unlike modern tissue, though, the type of tissue also factors into DNA degradation rates. For example, soft tissues may yield more DNA in some circumstances, but bone and teeth in vertebrates often preserve DNA better than softer tissue. Even within a tissue type, there can be variability. In general, dense bones (i.e., mammalian petrosal bone) preserve DNA much better than spongy, porous bones.   
+
+##### v. Species  
+
+The species itself interacts with all of the above factors: the climatic range of the species, the type of tissue making up that organism, the density of its bone (if it has any). For example, it is possible to predict specimen quality for ancient marine mammals depending on some species-specific characteristics, see @Keighley2021-jh.    
+
+##### vi. Chance!  
+
+Most importantly, there seems to be a huge amount of chance in specimen quality when it comes to aDNA. This is true both because of inherent qualities related to the species of interest and because of the specimens that may be available. Although we advocate for careful consideration of whether there are enough samples and then which samples to use before attempting a study, there may sometimes be situations where you will not know the quality of the sample until you evaluate DNA quantity and quality.  If sample size is limited, a pilot study evaluating these characteristics may be needed before attempting destructive analysis on all available specimens. Otherwise, researchers risk destroying precious samples and then having no or limited usable data from the samples. 
+
+
+#### Locating Specimens in Museum Collections and Repositories  
+
+Specimens suitable for DNA extraction and analysis can be located in many different museums, collections, and repositories. Below are links to collections that are available to be browsed online.
+
+##### i. Collection Databases  
+
+- [Symbiota](https://symbiota.org/)  
+- [Integrated Digitized Biocollections (iDigBio)](https://www.idigbio.org/)  
+- [Smithsonian Institution](https://collections.si.edu/search/)  
+- [VertNet](http://www.vertnet.org/index.html)  
+
+##### ii. Tissue Repositories  
+
+- [NEON Biorepository Data Portal](https://biorepo.neonscience.org/portal/)  
+- [Global Biodiversity Information Facility (GBIF)](https://www.gbif.org/)  
+- [Arctos Collaborative Collection Management Solution](https://arctos.database.museum/home.cfm)  
+- [Ocean Genome Legacy at Northeastern University](https://ogl.northeastern.edu/)  
+
+##### iii. Sequence and Metadata Repositories 
+
+- [NCBI](https://www.ncbi.nlm.nih.gov/)  
+- [BOLD](https://boldsystems.org/index.php/IDS_OpenIdEngine)  
+- [NEON](https://www.neonscience.org/data-samples/data-collection/observational-sampling/observation-types/dna-sequences)  
+- [Genomic Observatories MetaDatabase (GEOME)](https://geome-db.org/)  
+- [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home)  
+- [Diversity of the Indo-Pacific Network](http://diversityindopacific.net/)  
+- [Ocean Biodiversity Information System](https://obis.org/)  
+- [SRA-Explorer](https://sra-explorer.info/)  
+
+
+#### A Note on Sampling Bias in Museum Collections  
+
+It’s important to note that preserved specimens in natural history museums probably do not represent the full diversity of wild genotypes. Natural history museums often preserve specimens of unique phenotypic interest, for a particular comparative project, or in a localized area, resulting in substantial sampling bias. For example, bird collections in large natural history museums were found to have an overall sex bias (only 40% female; @Cooper2019-nn). This bias was more distinct in species with sexual dimorphism and showy male traits (e.g., colorful plumage), and even more distinct in type specimens (only 25% female; @Cooper2019-nn). More generally, collection biases are apparent in the overrepresentation of mammals and birds in natural history museums, the preference for collecting larger specimens (e.g., of antlers, skulls, horns, tusks etc.) where possible, and the geographic limits from where specimens are able to be collected (@Cooper2019-nn; @Dehasque2020-tp). Of course, the most ideal collection of specimens would be serially sampled over regular intervals, collected from the same geographic locations at each sampling point, and collected without bias to phenotype, but rarely are all of these conditions met. Given this, when designing temporal genomics studies using preserved specimens, be sure to evaluate the collection for sampling bias and be aware of how sex, phenotype, or geographic sampling bias could impact your analysis. 
+
+
+### aDNA Ethics  
+
+While every field has their own guidelines and standards for ethical research, we highlight the ongoing discussions of ethics involved in aDNA. Most prominently these discussions have revolved around human aDNA, focusing on sample collection, collaborative and inclusive research that ensures sensitivity to diverse stakeholders, data sovereignty, minimizing the misuse of research results, and respect for the remains and those connected to ancient individuals (@Alpaslan-Roodenberg2021-cg; @Claw2018-da; @Carroll2020-xj; @Wagner2020-xb; @Tsosie2021-mn). Given the scope of this page, here we focus on the importance of extending these discussions of aDNA ethical research to study marine systems and some of the ways it has been implemented.  
+
+Ethical issues were first addressed by Article 15 of *The Convention on Biological Diversity*, published in 1992. It established the foundational principles regarding access to genetic resources and the fair and equitable sharing of benefits arising from their utilization. It emphasizes the sovereign rights of states over their natural resources, which extends to genetic resources.  
+
+The 2010 *Nagoya Protocol* further elaborated on these principles by aiming to ensure the benefits arising from the use of genetic resources, including aDNA, are shared fairly and equitably with the country of origin. This is particularly significant for aDNA studies, where genetic material may come from indigenous territory or developing nations. The protocol calls for clear agreements on the terms of access and the specific nature of benefit-sharing, which can include sharing of research results, joint ventures, the development of local research capabilities, and monetary compensation. @Lin2023-da exemplify inclusive and integrated research by working with the Coast Salish community and incorporating Coast Salish Indigenous knowledge in their study, which sequenced the only known ancient specimen of the Coast Salish Woolly dog.  
+
+The paper *Who Owns the Ocean? Policy Issues Surrounding Marine Genetic Resources* (@Vierros2016-as) addresses the complex regulatory and ethical issues related to the ownership and use of marine genetic resources. The study discusses the debate over the governance of international waters and the genetic materials they contain, highlighting the lack of clear international legal frameworks to address the rights of these resources. @Vierros2016-as examine the implications of the *Convention on Biological Diversity* and the *Nagoya Protocol* on marine biodiversity and how these agreements could be extended or adapted to cover areas beyond national jurisdiction. This serves as a crucial resource for researchers and policymakers about the challenges of ensuring the fair and sustainable use of marine genetic resources.  
+
+In addition, national and international laws govern the use of many ancient specimens. For example, many countries require certificates or permits for museum and archaeological specimens that are listed under the Convention on International Trade in Endangered Species (CITES). In the United States of America, the Native American Graves Protection and Repatriation Act (NAGPRA) applies to any items of cultural significance to Native Americans, including archaeological and anthropological specimens of non-human origin. Cultural significance is determined by members of the Tribe or descendant community, and cannot be presumed by non-members based on archaeological context (e.g., discovery of an item in a midden). If you are working with cultural or archaeological specimens–even those accessioned into a museum–be sure to follow all applicable laws and seek guidance on best ethical practices.  
+
+We have listed a few questions to consider in acknowledgement of ancient sampling ethics, and separated them into the following categories:  
+
+#### i. Sampling  
+
+- How are samples collected without disturbing natural/preserved environments?  
+- Does the research imply the destruction of preserved or historical specimens, such as museum samples, archaeological specimens, or holobiont cores?  
+- Will unused DNA be preserved for future studies in ways that other researchers can access? Will there be leftover material that can be returned to the museum and community?   
+- Will there be 3D or high resolution images taken of samples before destruction?   
+
+#### ii. Data Sharing  
+
+- To what extent is the research reproducible?  
+- Are all scripts publicly available?  
+- Can future collaborators contact your research team for questions/further analyses?  
+
+#### iii. Community Participation  
+
+- What is the opinion of the local community in terms of the research? Does the project have potential cultural implications?  
+- What communities are impacted, both short and long term, by the findings of the research? Were the project and potential impacts discussed in clear terms with members of the community?   
+- How does the research benefit local communities, especially those that are often marginalized? How will the researchers share findings and engage with the community about the findings?  
+- If local community knowledge was used, was the opportunity for authorship extended?  
+
+### aDNA Research Societies 
+
+Modern advances in DNA sequencing techniques have expanded our capacity to analyze degraded and low quantity DNA. This has incredible implications for practically any field involving genomic work, but especially for analyzing ancient DNA. Because this field is still relatively new, many communities have formed to discuss best principles when analyzing aDNA. Here you will find a brief, nonexhaustive list of communities, beyond our MarineOmics group, that are undergoing the challenging (yet exciting!) task of establishing sustainable protocols and guidelines.  
+
+- [SPAAM](https://www.spaam-community.org/) – Standards, Precautions, and Advances in Ancient Metagenomics. Mission statements are to provide scientific advancement through community-driven projects, training and support, and networking for the ancient metagenomics community.  
+- [sedaDNA Scientific Society](https://sedadna.github.io/) – Their mission is to transmit information about current sedaDNA research, promote best practices, and increase collaborations between research groups. They have numerous ongoing collaborative projects, including a fish sedaDNA working group that is developing methods to analyze eDNA preserved in aquatic sediments.  
+- [Southern eDNA Society](https://sednasociety.com/) – Based in Australia and New Zealand, this society aims to establish eDNA best practices across government, private, and community sectors. They have released several guidelines and manuals ranging from biomonitoring, DNA test validations, and biodiversity assessments.  
+- [Japanese eDNA Society](https://ednasociety.org/en/) – This society aims to foster and develop eDNA science as a discipline. They hold annual meetings, eDNA technical seminars, and public symposia each year.  
+- [Animal aDNA Research Community](https://animal-adna-research-community.github.io/AaRC.github.io/) - An international and open community of animal ancient DNA researchers.   
+
+
+### References
+
+
+

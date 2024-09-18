@@ -28,6 +28,8 @@ navbar:
           href: RDAtraitPredictionTutorial.html
         - text: "PCA"
           href: POP_08_PCA.html
+        - text: "Ancient & Degraded DNA"
+          href: POP_09_aDNA.html
     - text: "Functional Genomics"
       menu:
         - text: "Mutifactorial RNAseq"
