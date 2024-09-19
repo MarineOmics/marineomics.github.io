@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Ancient and Degraded DNA</title>
+
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="tutorial.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MarineOmics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="ADMIN_04_best_principles.html">Best Principles</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Contributions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ADMIN_01_submissions_instructions.html">Guide for Building a Page</a>
+    </li>
+    <li>
+      <a href="ADMIN_02_contributions.html">Past and Current Contributors</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Population Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="POP_01_choosing_population_genetics.html">Choosing a Population Genomics Approach</a>
+    </li>
+    <li>
+      <a href="POP_04_WGS_intro.html">Whole Genome Resequencing</a>
+    </li>
+    <li>
+      <a href="RADseq.html">Reduced Representation Sequencing</a>
+    </li>
+    <li>
+      <a href="POP_03_poolseq.html">Poolseq</a>
+    </li>
+    <li>
+      <a href="RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
+    </li>
+    <li>
+      <a href="POP_08_PCA.html">PCA</a>
+    </li>
+    <li>
+      <a href="POP_09_aDNA.html">Ancient &amp; Degraded DNA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Functional Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
+    </li>
+    <li>
+      <a href="FUN_02_DNA_methylation.html">DNA Methylation Assessment</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Genome-Phenome
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">coming soon!</li>
+  </ul>
+</li>
+<li>
+  <a href="ADMIN_03_panels.html">Panel Seminars</a>
+</li>
+<li>
+  <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'G-53GH9PV49T', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Ancient and Degraded DNA</h1>
+
+</div>
+
+
+<p>Authors: Madeline Eppley*, Sara M. Schaal*, John Whalen, Shrushti
+Modi, Kristen Rayfield, Jem Baldisimo, Evan Ho, Stephen Gaughran<br />
+* These authors contributed equally to this page.<br />
+Acknowledgements: Thank you to our two reviewers Ramón Gallego, and Ally
+Swank for providing helpful feedback. Also to Jason Johns for helping to
+facilitate publication of our page.</p>
+<p><a href="https://marineomics.github.io/#How_to_Cite">How to
+cite</a></p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This page is an introduction to genomic analyses (sample preparation,
+DNA extractions, library prep, sequencing, and data analysis) of
+degraded or damaged DNA, including DNA from museum specimens, ancient
+samples, and poorly preserved modern samples. We assume that you have
+some experience in analyzing high-throughput sequencing data. If not, we
+suggest you review the <a
+href="https://marineomics.github.io/#Population_Genomics">Population
+Genomics tab on the MarineOmics page</a> to become familiar with the
+basics of genome sequencing and data analysis pipelines. The information
+and tutorials on this page will focus on genomic analyses that are
+specific to ancient, historical, and/or museum DNA. Because many of the
+technical themes revolve around DNA degradation and damage inherent to
+ancient DNA, this page may also be useful to those working with highly
+degraded modern DNA.</p>
+<div id="ancient-dna" class="section level3">
+<h3>Ancient DNA</h3>
+<p>In the 1980s, scientists discovered that DNA was preserved in museum
+and ancient specimens, from which it could be extracted and sequenced.
+While this gave rise to Michael Crichton’s science fiction novel
+Jurassic Park, it also led to a flourishing field of evolutionary
+research. Marine biologists have lagged somewhat behind in this field,
+driven in part by the difficulty of recovering ancient marine samples
+compared to terrestrial taxa.</p>
+<p>Ancient DNA (aDNA) refers to DNA extracted from non-modern samples.
+These specimens can range in age from a few decades to millions of years
+old. Sources of aDNA include teeth, bone, herbarium specimens, preserved
+or mummified tissue, paleofeces, dental calculus, and sediment, among
+others (<span class="citation">C. Hofman and Warinner (2019)</span>).
+The context of these sources (ancient, historical, or museum DNA) are
+sometimes used interchangeably, and while distinct, share several
+characteristics and should be handled with the same laboratory
+procedures. They are all affected by DNA degradation, damage, and
+contamination. The average aDNA fragment length is around 50 base pairs,
+but this can be highly variable depending on the age of the samples and
+preservation (see: <span class="citation">Heintzman et al.
+(2014)</span>). Samples generally contain low quantities of the original
+(endogenous) DNA, which are often contaminated with DNA from other
+sources (exogenous; <span class="citation">C. Hofman and Warinner
+(2019)</span>). This page will focus on genomic analyses that take into
+account these challenges, which can also be used as a guide to
+processing highly degraded modern DNA. Throughout this page we will
+refer to all non-modern samples as “aDNA” while highlighting some of the
+complexities in sample preparation and extraction methods due to the
+source and/or context of the sample (i.e., museum curation impacts on
+biomolecular yields and downstream data interpretation).</p>
+</div>
+<div id="adna-study-design" class="section level3">
+<h3>aDNA Study Design</h3>
+<p>For the last several decades, developments have been made in
+extracting and sequencing DNA from degraded samples. In recent years,
+high-throughput and short-read sequencing technologies have especially
+advanced the aDNA field. These advances have made it possible to explore
+the genetics of populations in the recent and distant past. Although
+there are still many obstacles to aDNA projects, we are now at a point
+where population-level ancient sequencing projects are feasible for
+non-model and marine organisms. Some questions that museum and ancient
+samples can address are:</p>
+<ul>
+<li>What were past baselines of genetic diversity and how do they
+compare to modern counterparts?<br />
+</li>
+<li>How have historical events (e.g., environmental change,
+anthropogenic impacts, admixture, or selection events) affected changes
+in genetic diversity and allele frequency?<br />
+</li>
+<li>How are extinct species or populations related to extant ones?<br />
+</li>
+<li>What were past migratory routes, range expansions, or range
+contractions?<br />
+</li>
+<li>What did past ecosystems look like (e.g., aDNA + stable isotope
+analysis)?<br />
+</li>
+<li>How well do simulations capture past genetic changes, and can we
+validate them with empirical aDNA data?<br />
+</li>
+<li>What was genetic load like in the past?<br />
+</li>
+<li>What pathogens existed in ancient populations, and how did they
+evolve?<br />
+</li>
+<li>What is the genetic basis of ancient traits or diseases?<br />
+</li>
+<li>What were established levels of genetic diversity pre-environmental
+degradation or pre-exploitation?<br />
+</li>
+<li>What were the effects of prior range expansions or contractions
+during periods of climatic change?<br />
+</li>
+<li>Can populations show evidence of rapid adaptation to environmental
+stress (abiotic or biotic) over short periods of time?</li>
+</ul>
+<p>Designing a study incorporating ancient or historical specimens
+allows you to ask many new questions but also requires several important
+considerations. Below are examples of how to form those questions while
+considering the limitations of your sample quantity and quality.</p>
+<div
+id="sampling-design-statistical-power-vs-limited-availability-of-specimens"
+class="section level4">
+<h4>Sampling design: statistical power vs limited availability of
+specimens</h4>
+<p>Often, ancient and historical samples are extremely limited in
+number. When used for genomic analysis, a portion or all of a given
+sample is completely destroyed. Because of this, researchers need to
+think critically about their sampling design and the resulting
+statistical power in their analyses before beginning an aDNA study.
+Without this consideration, aDNA studies may face power issues when
+detecting demographic events or changes with population genetic
+analyses. Ideally, temporal genomics studies will sample individuals
+serially across multiple points in time over the study period, which
+adds significant power to analyses of selection, demography, and
+migration (<span class="citation">Clark et al. (2023)</span>). However,
+when samples do not permit serial sampling, two sampling periods - a
+baseline “historic” genotype, and a more recent “post-event” - can still
+be informative about change over time (<span class="citation">Clark et
+al. (2023)</span>) and have been effective for detecting selective
+sweeps (<span class="citation">Whitehouse and Schrider
+(2023)</span>).</p>
+<p>Depending on the analysis, even single samples can provide enough
+data for drawing conclusions. For example, genome-wide heterozygosity
+and runs of homozygosity can be estimated from single samples and can
+reflect population-level phenomena (e.g., <span
+class="citation">Beichman et al. (2023)</span>). In addition, analyses
+such as the Pairwise Sequentially Markovian Coalescent can take
+single-sample input to reconstruct demographic history of the distant
+past (e.g., <span class="citation">Sharko et al. (2021)</span>).
+Phylogenetic and phylogeographic reconstructions can also be performed
+using single samples per population or species (e.g., <span
+class="citation">Scarsbrook et al. (2022)</span>).</p>
+</div>
+<div id="unequal-sample-sizes" class="section level4">
+<h4>Unequal sample sizes</h4>
+<p>In most cases, modern DNA samples are more easily obtained than aDNA
+samples. In the case of temporal comparisons between past and present
+populations, inclusion of modern samples may need to be scaled down to
+match the available aDNA sample sizes. In a study of sea otter
+demographic history, (<span class="citation">Beichman et al.
+(2023)</span>) analyzed three aDNA samples from ~1500 and ~200 years ago
+with seascape population genomic data of 107 contemporary samples from
+five distinct populations across the species’ range. Modern populations
+were downsampled to three representative individuals to equal the sample
+size of the three historical samples for principal components analysis
+(PCA) and ADMIXTURE analyses. On the other hand, large numbers of modern
+samples can be leveraged to impute genotypes in low-coverage ancient
+genomes (<span class="citation">Ausmees et al. (2022)</span>).</p>
+</div>
+<div id="potential-downstream-population-genetics-and-genomics-analyses"
+class="section level4">
+<h4>Potential downstream population genetics and genomics analyses</h4>
+<p>In some species, the number of available aDNA samples may be large
+enough to allow researchers to carry out population genetics and in some
+cases genomics studies (<span class="citation">Parks et al.
+(2015)</span>). In the past, technological limitations have hindered
+researchers’ ability to analyze a large number of markers across the
+genome and across many samples due to limitations such as quantity of
+isolated target DNA (see below in challenges with aDNA: exogenous DNA),
+cost of sequencing to a great enough depth, and a lack of methods that
+facilitate the evaluation of genomic level marker sets. However, these
+limitations have recently been alleviated with better extraction
+methods, reduced costs of sequencing, and the availability of
+whole-genome sequence capture (<span class="citation">Carpenter et al.
+(2013)</span>), thus providing genomic level data for aDNA studies.
+These advances have opened the door for researchers to evaluate
+evolutionary changes over time and conduct population genomic analyses.
+Similarly to a contemporary population genomics approach, aDNA can be
+processed for potential downstream analyses such as PCA to evaluate
+population genetic structure (<span class="citation">Louis et al.
+(2023)</span>), effective population size (<em>N<sub>e</sub></em>) to
+assess demographic changes over time (<span class="citation">Fournier,
+Reich, and Palamara (2022)</span>), the fixation index
+(<em>F</em><sub>ST</sub>) to identify regions in the genome with
+signatures of selection, or allele frequency changes over time.
+Uniquely, aDNA can also be used for reconstructing ancient genomes,
+provide context for phylogenetic relationships, reveal the effects of
+past selection events, or detail historic levels of genetic variation in
+populations. Additionally, temporal sampling of populations allows
+direct analysis of past populations rather than relying on population
+genetic models to infer past states. This adds significant power to
+evolutionary analyses of selection, demography, and migration.</p>
+</div>
+<div id="conservation-genetics-applications" class="section level4">
+<h4>Conservation genetics applications</h4>
+<p>aDNA can be useful for understanding how past organism-environment
+interactions proceeded. Faced with anthropogenic climate change,
+forecasting how biodiversity may respond to future environments is a key
+conservation challenge (<span class="citation">C. A. Hofman et al.
+(2015)</span>). Genomic studies using aDNA can provide unique insight
+for successful conservation and management approaches (<span
+class="citation">Nakahama (2021)</span>; <span class="citation">Leonard
+(2008)</span>). Notably, the following informative metrics can be
+generated from aDNA studies:</p>
+<ul>
+<li>Estimates of temporal changes in <em>N<sub>e</sub></em> (e.g., <span
+class="citation">Bolton et al. (2018)</span>).<br />
+</li>
+<li>Recent and historical connectivity of populations (e.g., <span
+class="citation">Pinsky et al. (2010)</span>).<br />
+</li>
+<li>Changes in allele frequencies due to natural selection from
+environmental change, disease outbreaks, or natural disasters (e.g.,
+<span class="citation">Lonsinger, Adams, and Waits (2018)</span>).<br />
+</li>
+<li>Changes in allele frequencies due to population collapses or
+bottlenecks (i.e., genetic drift and relaxed natural selection) (e.g.,
+<span class="citation">Weber, Stewart, and Lehman (2004)</span>; <span
+class="citation">Garcı́a-Navas et al. (2015)</span>).<br />
+</li>
+<li>Temporal levels of genetic diversity or inbreeding in populations
+and the timescales on which diversity is lost or gained (e.g., <span
+class="citation">Baillie et al. (2016)</span>).<br />
+</li>
+<li>Temporal relatedness of isolated populations for genetic rescue
+applications (e.g., <span class="citation">Hogg et al. (2006)</span>;
+<span class="citation">Miller et al. (2012)</span>).<br />
+</li>
+<li>Determining if small populations of genetically distinct individuals
+or rare haplotypes differ from historic populations to delineate species
+management units (e.g., <span class="citation">Perrine et al.
+(2007)</span>; <span class="citation">Goldstein and Desalle
+(2003)</span>).</li>
+</ul>
+</div>
+</div>
+<div id="select-case-studies-of-adna-in-conservation-and-environment"
+class="section level3">
+<h3>Select Case Studies of aDNA in Conservation and Environment</h3>
+<div id="i.-stellers-sea-cow" class="section level4">
+<h4>i. Steller’s sea cow:</h4>
+<p>Nuclear de novo assembly of Steller’s sea cow using museum samples
+determined that population declines began considerably earlier than the
+arrival of Western Europeans in the North Pacific, contrary to the
+previous estimate. The study shows a considerable drop in population
+thousands of years prior to European description, emphasizing the
+importance of environmental changes in their extinction (<span
+class="citation">Sharko et al. (2021)</span>). Another study
+demonstrated convergent evolution between Steller’s sea cow and
+cetaceans, highlighting genes involved with cold aquatic adaptation
+(<span class="citation">Duc et al. (2022)</span>). These studies
+highlight the importance of aDNA as a tool for historical
+reconstruction, providing insights into the impact of anthropogenic
+activity and environmental shifts on species extinction, such as the
+Steller’s sea cow.</p>
+</div>
+<div id="ii.-corals" class="section level4">
+<h4>ii. Corals:</h4>
+<p>Coral holobiont evolution was studied from the fragments of
+millenia-old <em>Acropora palmata</em> coral (<span
+class="citation">Scott et al. (2022)</span>). In this study, the authors
+sequenced aDNA and discovered a closely related yet distinct genetic
+relationship between ancient and modern <em>A. palmata</em>. Metagenome
+assemblies showed the stability of millennia-old holobionts that can be
+used for studying the impacts of environmental stress and evolutionary
+constraints over time (<span class="citation">Scott et al.
+(2022)</span>). The use of aDNA in marine cnidarians can prove
+instrumental in studying long-term reef evolution, demographic trends,
+and the impact of anthropogenic disturbances on reef ecosystems.</p>
+</div>
+<div id="iii.-baltic-herring" class="section level4">
+<h4>iii. Baltic herring:</h4>
+<p>Historic whole-genome sequences from 40 archaeological samples of
+Atlantic and Baltic herring were used to reveal human impacts on fishery
+stocks over the past 800 years. In this study, four stocks of herring
+were analyzed for population structure and temporal fluctuations in Ne
+over 200 generations. This research illustrates the value aDNA can
+contribute to modern fisheries management of an economically-important
+species in a time of anthropogenic impacts on fisheries (<span
+class="citation">Atmore et al. (2022)</span>).</p>
+</div>
+<div id="iv.-sea-otter" class="section level4">
+<h4>iv. Sea otter:</h4>
+<p><span class="citation">Wellman et al. (2020)</span> address the
+complex historical ecology of sea otters (<em>Enhydra lutris</em>) and
+their failed reintroduction to coastal Oregon in the 1970s. Integrating
+archaeological and historical museum specimens, they compare the
+mitochondrial genomes of pre-extirpation Oregon sea otters to extant and
+historical populations. Complete ancient mitochondrial genomes were
+sequenced from archaeological Oregon sea otters (<em>Enhydra
+lutris</em>) dentine (n=20) and historical sea otter dental calculus
+(n=21; <span class="citation">Wellman et al. (2020)</span>). From their
+analysis they reveal northern extant populations to be an appropriate
+population for future reintroduction efforts. Of importance, this study
+highlights the promising use of dental calculus for ancient population
+studies as an alternative sample source for research questions of
+conservation interest.</p>
+</div>
+<div id="v.-ancient-environmental-dna-edna" class="section level4">
+<h4>v. Ancient Environmental DNA (eDNA):</h4>
+<p>Ancient eDNA can be used as a direct survey of organisms that
+occurred in past environments as well as a proxy for ecosystem change.
+Generally, there are three different types of ancient eDNA: Sedimentary
+DNA (sedaDNA), ice cores, and cave deposits. sedaDNA refers to DNA from
+environmental and sedimentary core–samples. Sediment layers contain DNA
+from organisms that lived in the water or sediment during the time that
+the layer was deposited. Much of the recovered DNA is microbial, but
+studies have successfully recovered animal and plant DNA as well (<span
+class="citation">De Schepper et al. (2019)</span>; <span
+class="citation">Armbrecht et al. (2019)</span>). Ice cores can contain
+well-preserved DNA from organisms buried deep in the fossil record
+covered by ice sheets, providing valuable information about past
+ecosystems (<span class="citation">Willerslev et al. (2007)</span>;
+<span class="citation">Reiss (2006)</span>; <span
+class="citation">Hansen and Willerslev (2002)</span>; <span
+class="citation">Zhong et al. (2021)</span>). Cave deposits are
+accumulated DNA from organisms that inhabited or passed through caves.
+These include cave sediments from ancient humans (<span
+class="citation">Vernot et al. (2021)</span>; <span
+class="citation">Sarhan et al. (2021)</span>), speleothems (<span
+class="citation">Marchesini et al. (2023)</span>; <span
+class="citation">Lipar et al. (2020)</span>), and guano (<span
+class="citation">Bogdanowicz et al. (2020)</span>; <span
+class="citation">McFarlane and Lundberg (2024)</span>; <span
+class="citation">Massilani et al. (2022)</span>; <span
+class="citation">Jenkins et al. (2013)</span>; <span
+class="citation">Haidau et al. (2022)</span>). Taken together, all of
+these sources of ancient eDNA provide a valuable tool in reconstructing
+and understanding past environments for assessing global environmental
+change.</p>
+</div>
+</div>
+<div id="challenges-with-adna" class="section level3">
+<h3>Challenges with aDNA</h3>
+<div id="i.-dna-damage" class="section level4">
+<h4>i. DNA damage:</h4>
+<p>DNA damage and degradation is the uniting theme of this page, and
+perhaps the most significant challenge in working with historical,
+ancient, or poorly preserved samples. DNA damage comes in two main
+flavors: DNA fragmentation and chemical modifications.
+<strong>Fragmentation</strong> results from the breaking of chemical
+bonds between bases, which can cause double-strand breaks, missing bases
+(“nicks”), and single-strandedness (<span class="citation">Briggs et al.
+(2007)</span>). Fragmentation is expected to accumulate over time,
+resulting in older DNA being more degraded. However, environmental
+factors also affect degradation rates, including temperature, humidity,
+local environment/substrate, and storage conditions (e.g.,
+Formalin-Fixed, Paraffin-Embedded). <strong>Cytosine
+deamination</strong> is the primary chemical modification in aDNA, in
+which cytosine is chemically converted to uracil. During library prep,
+standard polymerases will incorporate adenine (instead of guanine)
+across from the uracil, resulting in erroneous C-to-T or G-to-A
+transitions (<span class="citation">Sawyer et al. (2012)</span>).
+Although they are sources of error, these predictable patterns of DNA
+damage and degradation can be used to verify that genuine aDNA was
+sequenced.</p>
+</div>
+<div id="ii.-exogenous-dna-contamination" class="section level4">
+<h4>ii. Exogenous DNA contamination:</h4>
+<p>When working with ancient or historical DNA samples, contamination of
+DNA from organisms and/or species that are not the target (exogenous
+DNA) is expected. Exogenous DNA contamination includes modern DNA
+(typically human DNA from handling samples or from other modern species)
+and microbial DNA (typically from environmental contamination where the
+samples were collected). Since modern DNA is a common source of
+exogenous DNA contamination, it is critical to work in a lab space
+designed for only working with ancient DNA. This should be a clean room
+where no modern DNA work has previously been done. There should be
+contamination control workflows including protective clothing (e.g.,
+tyvek suits, double layered gloves), sterilization requirements (e.g.,
+bleach, UV-sterilization), and HEPA-filtered laminar flow hoods. In
+addition to working in a lab specifically set up for working with
+ancient DNA, there are steps that can be taken in laboratory protocols
+to try to reduce the amount of exogenous DNA contamination during sample
+preparation, DNA extraction, and library preparation. Although
+mitigation strategies can help to reduce the amount of exogenous DNA
+contamination in laboratory protocols, some amount of exogenous DNA will
+still be present in the sample and therefore in the sequencing data.
+There are a number of ways that researchers can deal with this
+bioinformatically.</p>
+</div>
+<div id="iii.-chemical-contaminantspcr-inhibitors"
+class="section level4">
+<h4>iii. Chemical contaminants/PCR inhibitors:</h4>
+<p>Historic museum samples are often chemically treated to enhance
+preservation with chemicals (e.g., ethanol, isopropyl alcohol,
+formaldehyde, formalin, paraffin). These chemical methods of
+preservation inherently damage and degrade DNA. Due to contamination
+from environmental preservation, various chemical methods often need to
+be used to decontaminate ancient samples (e.g., remove physical surface
+contaminants or exogenous DNA) before extracting DNA (<span
+class="citation">Llamas et al. (2017)</span>). These decontamination
+treatments can damage endogenous DNA and result in additional sample
+degradation (<span class="citation">Orlando et al. (2021)</span>). After
+DNA extraction of either historic or ancient samples, polymerase chain
+reaction (PCR) can be used to amplify small amounts of DNA to a quantity
+suitable for sequencing. However, PCR inhibitors that are co-extracted
+alongside DNA are common and may make PCR amplification impossible
+(<span class="citation">Kemp et al. (2014)</span>).</p>
+</div>
+<div id="iv.-limited-sample-availability" class="section level4">
+<h4>iv. Limited sample availability:</h4>
+<p>The availability and preservation of samples for aDNA research can be
+difficult and frequently results in sample size limitations,
+particularly when the species being studied is not well-represented in
+the archaeological or paleoecological record (<span
+class="citation">Schwarz et al. (2009)</span>). This makes it harder to
+get a thorough understanding of past migrations and demographics.
+Geographic limitations may also exist for aDNA studies in regions with a
+low concentration of sites or poorly conserved remnants. It might be
+difficult to extract high-quality DNA from samples because of variables
+like temperature and humidity that cause sample degradation. Ethical and
+legal issues, such as regulations pertaining to excavation and
+examination, further hinder access to historical materials (<span
+class="citation">Licata et al. (2020)</span>). Because aDNA research
+involves the destruction of valuable materials, ethical handling of the
+limited resources is imperative (see <a href="#adna-ethics">aDNA
+Ethics</a> section below).</p>
+</div>
+<div id="v.-data-analysis-and-interpretation-difficulties"
+class="section level4">
+<h4>v. Data analysis and interpretation difficulties:</h4>
+<p>Even when specialized methods are used to address the above
+challenges at the stages of DNA extraction and sequencing, ancient and
+degraded DNA inevitably produces lower quality data and less-than-ideal
+sample sets compared to most modern DNA projects. Fortunately, since the
+patterns produced from DNA damage and degradation are somewhat
+predictable, special analytical tools have been developed that reduce
+the noise that comes from low-quality data. These include short-read
+mapping approaches that are especially sensitive to mapping reads that
+are &lt; 50 bp (<span class="citation">Oliva et al. (2021)</span>; <span
+class="citation">Xu et al. (2021)</span>), methods for genotype
+imputation from extremely low-coverage data (<span
+class="citation">Rubinacci et al. (2021)</span>; <span
+class="citation">Howie, Donnelly, and Marchini (2009)</span>; <span
+class="citation">Rubinacci, Delaneau, and Marchini (2020)</span>; <span
+class="citation">Davies et al. (2016)</span>), and variant callers that
+explicitly account for patterns of DNA damage (<span
+class="citation">Prüfer (2018)</span>; <span class="citation">Kawash et
+al. (2018)</span>).</p>
+</div>
+</div>
+<div id="sample-acquisition" class="section level3">
+<h3>Sample Acquisition</h3>
+<div id="traits-affecting-sample-quality" class="section level4">
+<h4>Traits Affecting Sample Quality</h4>
+<p>Given recent advances in aDNA sequencing and analysis, the greatest
+challenge to aDNA projects may now be finding appropriate samples to
+sequence. Unlike fresh tissue samples collected for genomic analyses,
+samples used in an aDNA project were likely not preserved with the
+intention of future DNA extraction and sequencing. Many samples are
+prehistoric or archaeological, and were exposed to the elements for
+hundreds of thousands of years. Other samples may have been prepared for
+museum collections but treated with preservative chemicals that degrade
+DNA. No matter how good the preservation conditions, DNA will degrade at
+room temperature in dead tissue, resulting in low quality and quantity
+DNA in any museum or ancient samples. For these reasons, aDNA projects
+must often be designed in an iterative process, with the available
+samples dictating the questions that can be asked, and the initial
+sequencing results dictating which samples are usable, which determines
+the power of downstream analyses. Some traits that may be correlated
+with sample quality are:</p>
+<div id="i.-age" class="section level5">
+<h5>i. Age</h5>
+<p>Just like radioactive elements, DNA degrades in a clock-like way.
+Unlike elemental degradation, however, the rate of decay depends on many
+factors besides age. Still, age can generally be used as a first order
+proxy to estimate the quality of a sample. Most degradation happens
+rapidly, within the first days and weeks after tissue death. Still,
+degradation continues after, with older (i.e., prehistoric) samples
+generally yielding lower quantity and quality DNA than younger (i.e.,
+historic) samples. However, post-mortem alterations due to the
+environment, climate, or museum preservation efforts can challenge this
+assumption (<span class="citation">Austin et al. (2019)</span>).</p>
+<p><span class="citation">Allentoft et al. (2012)</span> calculated an
+average DNA half-life of fossil samples from the extinct New Zealand moa
+to be 521 years for a 242 bp mtDNA sequence, which corresponds to a per
+nucleotide fragmentation rate (<em>k</em>) of 5.5010 - 6 per year. The
+authors also identified that nuclear DNA degraded at least twice as fast
+as mtDNA based on Illumina HiSeq data. They argue that Equation 1
+represents the best available approximation of the rate of mtDNA decay
+in fossil bone, in which (<em>k</em>) is the average decay rate per site
+per year for mtDNA in moa bone and (<em>T</em>) is temperature.</p>
+<p><span class="math display">\[ln \space k = 41.2 - 15267.6 \times
+\frac{1}{T} \space \space \space \space
+\space    \mathrm{Eq.1}  \]</span></p>
+</div>
+<div id="ii.-climate" class="section level5">
+<h5>ii. Climate</h5>
+<p>The immediate environmental conditions where a specimen has been for
+most of its post-mortem existence is a strong factor in DNA quality and
+state of degradation. In general, cold and static environments (e.g.,
+permafrost) will preserve DNA best; hot, variable environments (e.g.,
+tropics) will accelerate DNA degradation. Likewise, stable museum
+cabinets also provide relatively good preservation of DNA. Even so, new
+methods are working to improve DNA sequencing from ancient specimens in
+the tropics.</p>
+</div>
+<div id="iii.-exposureenvironment" class="section level5">
+<h5>iii. Exposure/environment</h5>
+<p>In addition to climate factors like temperature and humidity, the
+microclimate and exposure of a specimen also affects DNA quality. For
+example, a bone in a tropical cave may yield better quality DNA than a
+bone exposed to the sun just outside the cave for an equal amount of
+time. These factors can also be complex: buried specimens may have
+better preserved DNA but also more contamination from soil microbes
+invading the tissue matrix.</p>
+</div>
+<div id="iv.-tissue-type" class="section level5">
+<h5>iv. Tissue type</h5>
+<p>Just as with modern DNA, different types of tissue can yield
+different amounts of DNA. Unlike modern tissue, though, the type of
+tissue also factors into DNA degradation rates. For example, soft
+tissues may yield more DNA in some circumstances, but bone and teeth in
+vertebrates often preserve DNA better than softer tissue. Even within a
+tissue type, there can be variability. In general, dense bones (i.e.,
+mammalian petrosal bone) preserve DNA much better than spongy, porous
+bones.</p>
+</div>
+<div id="v.-species" class="section level5">
+<h5>v. Species</h5>
+<p>The species itself interacts with all of the above factors: the
+climatic range of the species, the type of tissue making up that
+organism, the density of its bone (if it has any). For example, it is
+possible to predict specimen quality for ancient marine mammals
+depending on some species-specific characteristics, see <span
+class="citation">Keighley et al. (2021)</span>.</p>
+</div>
+<div id="vi.-chance" class="section level5">
+<h5>vi. Chance!</h5>
+<p>Most importantly, there seems to be a huge amount of chance in
+specimen quality when it comes to aDNA. This is true both because of
+inherent qualities related to the species of interest and because of the
+specimens that may be available. Although we advocate for careful
+consideration of whether there are enough samples and then which samples
+to use before attempting a study, there may sometimes be situations
+where you will not know the quality of the sample until you evaluate DNA
+quantity and quality. If sample size is limited, a pilot study
+evaluating these characteristics may be needed before attempting
+destructive analysis on all available specimens. Otherwise, researchers
+risk destroying precious samples and then having no or limited usable
+data from the samples.</p>
+</div>
+</div>
+<div id="locating-specimens-in-museum-collections-and-repositories"
+class="section level4">
+<h4>Locating Specimens in Museum Collections and Repositories</h4>
+<p>Specimens suitable for DNA extraction and analysis can be located in
+many different museums, collections, and repositories. Below are links
+to collections that are available to be browsed online.</p>
+<div id="i.-collection-databases" class="section level5">
+<h5>i. Collection Databases</h5>
+<ul>
+<li><a href="https://symbiota.org/">Symbiota</a><br />
+</li>
+<li><a href="https://www.idigbio.org/">Integrated Digitized
+Biocollections (iDigBio)</a><br />
+</li>
+<li><a href="https://collections.si.edu/search/">Smithsonian
+Institution</a><br />
+</li>
+<li><a href="http://www.vertnet.org/index.html">VertNet</a></li>
+</ul>
+</div>
+<div id="ii.-tissue-repositories" class="section level5">
+<h5>ii. Tissue Repositories</h5>
+<ul>
+<li><a href="https://biorepo.neonscience.org/portal/">NEON Biorepository
+Data Portal</a><br />
+</li>
+<li><a href="https://www.gbif.org/">Global Biodiversity Information
+Facility (GBIF)</a><br />
+</li>
+<li><a href="https://arctos.database.museum/home.cfm">Arctos
+Collaborative Collection Management Solution</a><br />
+</li>
+<li><a href="https://ogl.northeastern.edu/">Ocean Genome Legacy at
+Northeastern University</a></li>
+</ul>
+</div>
+<div id="iii.-sequence-and-metadata-repositories"
+class="section level5">
+<h5>iii. Sequence and Metadata Repositories</h5>
+<ul>
+<li><a href="https://www.ncbi.nlm.nih.gov/">NCBI</a><br />
+</li>
+<li><a
+href="https://boldsystems.org/index.php/IDS_OpenIdEngine">BOLD</a><br />
+</li>
+<li><a
+href="https://www.neonscience.org/data-samples/data-collection/observational-sampling/observation-types/dna-sequences">NEON</a><br />
+</li>
+<li><a href="https://geome-db.org/">Genomic Observatories MetaDatabase
+(GEOME)</a><br />
+</li>
+<li><a href="https://www.ebi.ac.uk/ena/browser/home">European Nucleotide
+Archive</a><br />
+</li>
+<li><a href="http://diversityindopacific.net/">Diversity of the
+Indo-Pacific Network</a><br />
+</li>
+<li><a href="https://obis.org/">Ocean Biodiversity Information
+System</a><br />
+</li>
+<li><a href="https://sra-explorer.info/">SRA-Explorer</a></li>
+</ul>
+</div>
+</div>
+<div id="a-note-on-sampling-bias-in-museum-collections"
+class="section level4">
+<h4>A Note on Sampling Bias in Museum Collections</h4>
+<p>It’s important to note that preserved specimens in natural history
+museums probably do not represent the full diversity of wild genotypes.
+Natural history museums often preserve specimens of unique phenotypic
+interest, for a particular comparative project, or in a localized area,
+resulting in substantial sampling bias. For example, bird collections in
+large natural history museums were found to have an overall sex bias
+(only 40% female; <span class="citation">Cooper et al. (2019)</span>).
+This bias was more distinct in species with sexual dimorphism and showy
+male traits (e.g., colorful plumage), and even more distinct in type
+specimens (only 25% female; <span class="citation">Cooper et al.
+(2019)</span>). More generally, collection biases are apparent in the
+overrepresentation of mammals and birds in natural history museums, the
+preference for collecting larger specimens (e.g., of antlers, skulls,
+horns, tusks etc.) where possible, and the geographic limits from where
+specimens are able to be collected (<span class="citation">Cooper et al.
+(2019)</span>; <span class="citation">Dehasque et al. (2020)</span>). Of
+course, the most ideal collection of specimens would be serially sampled
+over regular intervals, collected from the same geographic locations at
+each sampling point, and collected without bias to phenotype, but rarely
+are all of these conditions met. Given this, when designing temporal
+genomics studies using preserved specimens, be sure to evaluate the
+collection for sampling bias and be aware of how sex, phenotype, or
+geographic sampling bias could impact your analysis.</p>
+</div>
+</div>
+<div id="adna-ethics" class="section level3">
+<h3>aDNA Ethics</h3>
+<p>While every field has their own guidelines and standards for ethical
+research, we highlight the ongoing discussions of ethics involved in
+aDNA. Most prominently these discussions have revolved around human
+aDNA, focusing on sample collection, collaborative and inclusive
+research that ensures sensitivity to diverse stakeholders, data
+sovereignty, minimizing the misuse of research results, and respect for
+the remains and those connected to ancient individuals (<span
+class="citation">Alpaslan-Roodenberg et al. (2021)</span>; <span
+class="citation">Claw et al. (2018)</span>; <span
+class="citation">Carroll et al. (2020)</span>; <span
+class="citation">Wagner et al. (2020)</span>; <span
+class="citation">Tsosie et al. (2021)</span>). Given the scope of this
+page, here we focus on the importance of extending these discussions of
+aDNA ethical research to study marine systems and some of the ways it
+has been implemented.</p>
+<p>Ethical issues were first addressed by Article 15 of <em>The
+Convention on Biological Diversity</em>, published in 1992. It
+established the foundational principles regarding access to genetic
+resources and the fair and equitable sharing of benefits arising from
+their utilization. It emphasizes the sovereign rights of states over
+their natural resources, which extends to genetic resources.</p>
+<p>The 2010 <em>Nagoya Protocol</em> further elaborated on these
+principles by aiming to ensure the benefits arising from the use of
+genetic resources, including aDNA, are shared fairly and equitably with
+the country of origin. This is particularly significant for aDNA
+studies, where genetic material may come from indigenous territory or
+developing nations. The protocol calls for clear agreements on the terms
+of access and the specific nature of benefit-sharing, which can include
+sharing of research results, joint ventures, the development of local
+research capabilities, and monetary compensation. <span
+class="citation">Lin et al. (2023)</span> exemplify inclusive and
+integrated research by working with the Coast Salish community and
+incorporating Coast Salish Indigenous knowledge in their study, which
+sequenced the only known ancient specimen of the Coast Salish Woolly
+dog.</p>
+<p>The paper <em>Who Owns the Ocean? Policy Issues Surrounding Marine
+Genetic Resources</em> (<span class="citation">Vierros et al.
+(2016)</span>) addresses the complex regulatory and ethical issues
+related to the ownership and use of marine genetic resources. The study
+discusses the debate over the governance of international waters and the
+genetic materials they contain, highlighting the lack of clear
+international legal frameworks to address the rights of these resources.
+<span class="citation">Vierros et al. (2016)</span> examine the
+implications of the <em>Convention on Biological Diversity</em> and the
+<em>Nagoya Protocol</em> on marine biodiversity and how these agreements
+could be extended or adapted to cover areas beyond national
+jurisdiction. This serves as a crucial resource for researchers and
+policymakers about the challenges of ensuring the fair and sustainable
+use of marine genetic resources.</p>
+<p>In addition, national and international laws govern the use of many
+ancient specimens. For example, many countries require certificates or
+permits for museum and archaeological specimens that are listed under
+the Convention on International Trade in Endangered Species (CITES). In
+the United States of America, the Native American Graves Protection and
+Repatriation Act (NAGPRA) applies to any items of cultural significance
+to Native Americans, including archaeological and anthropological
+specimens of non-human origin. Cultural significance is determined by
+members of the Tribe or descendant community, and cannot be presumed by
+non-members based on archaeological context (e.g., discovery of an item
+in a midden). If you are working with cultural or archaeological
+specimens–even those accessioned into a museum–be sure to follow all
+applicable laws and seek guidance on best ethical practices.</p>
+<p>We have listed a few questions to consider in acknowledgement of
+ancient sampling ethics, and separated them into the following
+categories:</p>
+<div id="i.-sampling" class="section level4">
+<h4>i. Sampling</h4>
+<ul>
+<li>How are samples collected without disturbing natural/preserved
+environments?<br />
+</li>
+<li>Does the research imply the destruction of preserved or historical
+specimens, such as museum samples, archaeological specimens, or
+holobiont cores?<br />
+</li>
+<li>Will unused DNA be preserved for future studies in ways that other
+researchers can access? Will there be leftover material that can be
+returned to the museum and community?<br />
+</li>
+<li>Will there be 3D or high resolution images taken of samples before
+destruction?</li>
+</ul>
+</div>
+<div id="ii.-data-sharing" class="section level4">
+<h4>ii. Data Sharing</h4>
+<ul>
+<li>To what extent is the research reproducible?<br />
+</li>
+<li>Are all scripts publicly available?<br />
+</li>
+<li>Can future collaborators contact your research team for
+questions/further analyses?</li>
+</ul>
+</div>
+<div id="iii.-community-participation" class="section level4">
+<h4>iii. Community Participation</h4>
+<ul>
+<li>What is the opinion of the local community in terms of the research?
+Does the project have potential cultural implications?<br />
+</li>
+<li>What communities are impacted, both short and long term, by the
+findings of the research? Were the project and potential impacts
+discussed in clear terms with members of the community?<br />
+</li>
+<li>How does the research benefit local communities, especially those
+that are often marginalized? How will the researchers share findings and
+engage with the community about the findings?<br />
+</li>
+<li>If local community knowledge was used, was the opportunity for
+authorship extended?</li>
+</ul>
+</div>
+</div>
+<div id="adna-research-societies" class="section level3">
+<h3>aDNA Research Societies</h3>
+<p>Modern advances in DNA sequencing techniques have expanded our
+capacity to analyze degraded and low quantity DNA. This has incredible
+implications for practically any field involving genomic work, but
+especially for analyzing ancient DNA. Because this field is still
+relatively new, many communities have formed to discuss best principles
+when analyzing aDNA. Here you will find a brief, nonexhaustive list of
+communities, beyond our MarineOmics group, that are undergoing the
+challenging (yet exciting!) task of establishing sustainable protocols
+and guidelines.</p>
+<ul>
+<li><a href="https://www.spaam-community.org/">SPAAM</a> – Standards,
+Precautions, and Advances in Ancient Metagenomics. Mission statements
+are to provide scientific advancement through community-driven projects,
+training and support, and networking for the ancient metagenomics
+community.<br />
+</li>
+<li><a href="https://sedadna.github.io/">sedaDNA Scientific Society</a>
+– Their mission is to transmit information about current sedaDNA
+research, promote best practices, and increase collaborations between
+research groups. They have numerous ongoing collaborative projects,
+including a fish sedaDNA working group that is developing methods to
+analyze eDNA preserved in aquatic sediments.<br />
+</li>
+<li><a href="https://sednasociety.com/">Southern eDNA Society</a> –
+Based in Australia and New Zealand, this society aims to establish eDNA
+best practices across government, private, and community sectors. They
+have released several guidelines and manuals ranging from biomonitoring,
+DNA test validations, and biodiversity assessments.<br />
+</li>
+<li><a href="https://ednasociety.org/en/">Japanese eDNA Society</a> –
+This society aims to foster and develop eDNA science as a discipline.
+They hold annual meetings, eDNA technical seminars, and public symposia
+each year.<br />
+</li>
+<li><a
+href="https://animal-adna-research-community.github.io/AaRC.github.io/">Animal
+aDNA Research Community</a> - An international and open community of
+animal ancient DNA researchers.</li>
+</ul>
+</div>
+<div id="references" class="section level3 unnumbered">
+<h3 class="unnumbered">References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
+<div id="ref-Allentoft2012-om" class="csl-entry">
+Allentoft, Morten E, Matthew Collins, David Harker, James Haile,
+Charlotte L Oskam, Marie L Hale, Paula F Campos, et al. 2012. <span>“The
+Half-Life of <span>DNA</span> in Bone: Measuring Decay Kinetics in 158
+Dated Fossils.”</span> <em>Proc. Biol. Sci.</em> 279 (1748): 4724–33.
+</div>
+<div id="ref-Alpaslan-Roodenberg2021-cg" class="csl-entry">
+Alpaslan-Roodenberg, Songül, David Anthony, Hiba Babiker, Eszter Bánffy,
+Thomas Booth, Patricia Capone, Arati Deshpande-Mukherjee, et al. 2021.
+<span>“Ethics of <span>DNA</span> Research on Human Remains: Five
+Globally Applicable Guidelines.”</span> <em>Nature</em> 599 (7883):
+41–46.
+</div>
+<div id="ref-Armbrecht2019-be" class="csl-entry">
+Armbrecht, Linda H, Marco J L Coolen, Franck Lejzerowicz, Simon C
+George, Karita Negandhi, Yohey Suzuki, Jennifer Young, et al. 2019.
+<span>“Ancient <span>DNA</span> from Marine Sediments: Precautions and
+Considerations for Seafloor Coring, Sample Handling and Data
+Generation.”</span> <em>Earth-Sci. Rev.</em> 196 (September): 102887.
+</div>
+<div id="ref-Atmore2022-aj" class="csl-entry">
+Atmore, Lane M, Lourdes Martı́nez-Garcı́a, Daniel Makowiecki, Carl André,
+Lembi Lõugas, James H Barrett, and Bastiaan Star. 2022.
+<span>“Population Dynamics of Baltic Herring Since the Viking Age
+Revealed by Ancient <span>DNA</span> and Genomics.”</span> <em>Proc.
+Natl. Acad. Sci. U. S. A.</em> 119 (45): e2208703119.
+</div>
+<div id="ref-Ausmees2022-fa" class="csl-entry">
+Ausmees, Kristiina, Federico Sanchez-Quinto, Mattias Jakobsson, and Carl
+Nettelblad. 2022. <span>“An Empirical Evaluation of Genotype Imputation
+of Ancient <span>DNA</span>.”</span> <em>G3</em> 12 (6).
+</div>
+<div id="ref-Austin2019-nc" class="csl-entry">
+Austin, Rita M, Sabrina B Sholts, Lashanda Williams, Logan Kistler, and
+Courtney A Hofman. 2019. <span>“To Curate the Molecular Past, Museums
+Need a Carefully Considered Set of Best Practices.”</span>
+<em>Proceedings of the National Academy of Sciences</em> 116 (5):
+1471–74.
+</div>
+<div id="ref-Baillie2016-kh" class="csl-entry">
+Baillie, Shauna M, Andrew M Muir, Kim Scribner, Paul Bentzen, and
+Charles C Krueger. 2016. <span>“Loss of Genetic Diversity and Reduction
+of Genetic Distance Among Lake Trout Salvelinus Namaycush Ecomorphs,
+Lake Superior 1959 to 2013.”</span> <em>J. Great Lakes Res.</em> 42 (2):
+204–16.
+</div>
+<div id="ref-Beichman2023-eg" class="csl-entry">
+Beichman, Annabel C, Pooneh Kalhori, Christopher C Kyriazis, Amber A
+DeVries, Sergio Nigenda-Morales, Gisela Heckel, Yolanda Schramm, et al.
+2023. <span>“Genomic Analyses Reveal Range-Wide Devastation of Sea Otter
+Populations.”</span> <em>Mol. Ecol.</em> 32 (2): 281–98.
+</div>
+<div id="ref-Bogdanowicz2020-ak" class="csl-entry">
+Bogdanowicz, W, Elżbieta Worobiec, C Grooms, L E Kimpe, J P Smol, R S
+Stewart, E Suchecka, et al. 2020. <span>“Pollen Assemblage and
+Environmental <span>DNA</span> Changes: A 4300-Year-Old Bat Guano
+Deposit from Jamaica.”</span> <em>Quat. Int.</em> 558 (August): 47–58.
+</div>
+<div id="ref-Bolton2018-ip" class="csl-entry">
+Bolton, Peri E, Lee A Rollins, James Brazill-Boast, Kimberley L Maute,
+Sarah Legge, Jeremy J Austin, and Simon C Griffith. 2018. <span>“Genetic
+Diversity Through Time and Space: Diversity and Demographic History from
+Natural History Specimens and Serially Sampled Contemporary Populations
+of the Threatened Gouldian Finch (Erythrura Gouldiae).”</span>
+<em>Conserv. Genet.</em> 19 (3): 737–54.
+</div>
+<div id="ref-Briggs2007-kw" class="csl-entry">
+Briggs, Adrian W, Udo Stenzel, Philip L F Johnson, Richard E Green,
+Janet Kelso, Kay Prüfer, Matthias Meyer, et al. 2007. <span>“Patterns of
+Damage in Genomic <span>DNA</span> Sequences from a Neandertal.”</span>
+<em>Proc. Natl. Acad. Sci. U. S. A.</em> 104 (37): 14616–21.
+</div>
+<div id="ref-Carpenter2013-py" class="csl-entry">
+Carpenter, Meredith L, Jason D Buenrostro, Cristina Valdiosera, Hannes
+Schroeder, Morten E Allentoft, Martin Sikora, Morten Rasmussen, et al.
+2013. <span>“Pulling Out the 1%: Whole-Genome Capture for the Targeted
+Enrichment of Ancient <span>DNA</span> Sequencing Libraries.”</span>
+<em>Am. J. Hum. Genet.</em> 93 (5): 852–64.
+</div>
+<div id="ref-Carroll2020-xj" class="csl-entry">
+Carroll, Stephanie Russo, Ibrahim Garba, Oscar L Figueroa-Rodrı́guez,
+Jarita Holbrook, Raymond Lovett, Simeon Materechera, Mark Parsons, et
+al. 2020. <span>“The <span>CARE</span> Principles for Indigenous Data
+Governance.”</span> <em>Data Sci. J.</em> 19 (November).
+</div>
+<div id="ref-Clark2023-vc" class="csl-entry">
+Clark, René D, Katrina A Catalano, Kyra S Fitz, Eric Garcia, Kyle E
+Jaynes, Brendan N Reid, Allyson Sawkins, Anthony A Snead, John C Whalen,
+and Malin L Pinsky. 2023. <span>“The Practice and Promise of Temporal
+Genomics for Measuring Evolutionary Responses to Global Change.”</span>
+<em>Mol. Ecol. Resour.</em>, March.
+</div>
+<div id="ref-Claw2018-da" class="csl-entry">
+Claw, Katrina G, Matthew Z Anderson, Rene L Begay, Krystal S Tsosie,
+Keolu Fox, Nanibaa’ A Garrison, and Summer internship for INdigenous
+peoples in Genomics (SING) Consortium. 2018. <span>“A Framework for
+Enhancing Ethical Genomic Research with Indigenous Communities.”</span>
+<em>Nat. Commun.</em> 9 (1): 2957.
+</div>
+<div id="ref-Cooper2019-nn" class="csl-entry">
+Cooper, Natalie, Alexander L Bond, Joshua L Davis, Roberto Portela
+Miguez, Louise Tomsett, and Kristofer M Helgen. 2019. <span>“Sex Biases
+in Bird and Mammal Natural History Collections.”</span> <em>Proc. Biol.
+Sci.</em> 286 (1913): 20192025.
+</div>
+<div id="ref-Davies2016-hk" class="csl-entry">
+Davies, Robert W, Jonathan Flint, Simon Myers, and Richard Mott. 2016.
+<span>“Rapid Genotype Imputation from Sequence Without Reference
+Panels.”</span> <em>Nat. Genet.</em> 48 (8): 965–69.
+</div>
+<div id="ref-De_Schepper2019-cy" class="csl-entry">
+De Schepper, Stijn, Jessica L Ray, Katrine Sandnes Skaar, Henrik
+Sadatzki, Umer Z Ijaz, Ruediger Stein, and Aud Larsen. 2019. <span>“The
+Potential of Sedimentary Ancient <span>DNA</span> for Reconstructing
+Past Sea Ice Evolution.”</span> <em>ISME J.</em> 13 (10): 2566–77.
+</div>
+<div id="ref-Dehasque2020-tp" class="csl-entry">
+Dehasque, Marianne, Marı́a C Ávila-Arcos, David Dı́ez-Del-Molino, Matteo
+Fumagalli, Katerina Guschanski, Eline D Lorenzen, Anna-Sapfo Malaspinas,
+et al. 2020. <span>“Inference of Natural Selection from Ancient
+<span>DNA</span>.”</span> <em>Evol Lett</em> 4 (2): 94–108.
+</div>
+<div id="ref-Duc2022-dx" class="csl-entry">
+Duc, Diana Le, Akhil Velluva, Molly Cassatt-Johnstone, Remi-Andre Olsen,
+Sina Baleka, Chen-Ching Lin, Johannes R Lemke, et al. 2022.
+<span>“Genomic Basis for Skin Phenotype and Cold Adaptation in the
+Extinct Steller’s Sea Cow.”</span> <em>Science Advances</em> 8 (5):
+eabl6496.
+</div>
+<div id="ref-Fournier2022-cd" class="csl-entry">
+Fournier, Romain, David Reich, and Pier Francesco Palamara. 2022.
+<span>“Haplotype-Based Inference of Recent Effective Population Size in
+Modern and Ancient <span>DNA</span> Samples.”</span> <em>bioRxiv</em>.
+</div>
+<div id="ref-Garcia-Navas2015-rm" class="csl-entry">
+Garcı́a-Navas, Vicente, Timothée Bonnet, Dominique Waldvogel, Peter
+Wandeler, Glauco Camenisch, and Erik Postma. 2015. <span>“Gene Flow
+Counteracts the Effect of Drift in a Swiss Population of Snow Voles
+Fluctuating in Size.”</span> <em>Biol. Conserv.</em> 191 (November):
+168–77.
+</div>
+<div id="ref-Goldstein2003-tf" class="csl-entry">
+Goldstein, Paul Z, and Rob Desalle. 2003. <span>“Calibrating
+Phylogenetic Species Formation in a Threatened Insect Using
+<span>DNA</span> from Historical Specimens.”</span> <em>Mol. Ecol.</em>
+12 (7): 1993–98.
+</div>
+<div id="ref-Haidau2022-wl" class="csl-entry">
+Haidau, Catalina, Ruxandra Nastase-Bucur, Paul Bulzu, Ionut Mirea,
+Luchiana Faur, Silviu Constantin, and Oana Moldovan. 2022. <span>“The
+Microbiome of Phosphate-Rich Deposits in Muierilor Cave,
+<span>South-Western</span> Carpathians.”</span> <em>ARPHA Conference
+Abstracts</em> 5 (July).
+</div>
+<div id="ref-Hansen2002-to" class="csl-entry">
+Hansen, Anders J, and Eske Willerslev. 2002. <span>“Perspectives for
+<span>DNA</span> Studies on Polar Ice Cores.”</span> In <em>The
+Patagonian Icefields: A Unique Natural Laboratory for Environmental and
+Climate Change Studies</em>, edited by Gino Casassa, Francisco V
+Sepúlveda, and Rolf M Sinclair, 17–27. Boston, MA: Springer US.
+</div>
+<div id="ref-Heintzman2014-io" class="csl-entry">
+Heintzman, Peter D, Scott A Elias, Karen Moore, Konrad Paszkiewicz, and
+Ian Barnes. 2014. <span>“Characterizing <span>DNA</span> Preservation in
+Degraded Specimens of Amara Alpina (Carabidae: Coleoptera).”</span>
+<em>Mol. Ecol. Resour.</em> 14 (3): 606–15.
+</div>
+<div id="ref-Hofman2015-ct" class="csl-entry">
+Hofman, Courtney A, Torben C Rick, Robert C Fleischer, and Jesús E
+Maldonado. 2015. <span>“Conservation Archaeogenomics: Ancient
+<span>DNA</span> and Biodiversity in the Anthropocene.”</span>
+<em>Trends Ecol. Evol.</em> 30 (9): 540–49.
+</div>
+<div id="ref-Hofman2019-ur" class="csl-entry">
+Hofman, Courtney, and Christina Warinner. 2019. <span>“Ancient
+<span>DNA</span> 101: An Introductory Guide in the Era of
+High-Throughput Sequencing.”</span> <em>SAA Record</em> 19 (1): 18–25.
+</div>
+<div id="ref-Hogg2006-jv" class="csl-entry">
+Hogg, John T, Stephen H Forbes, Brian M Steele, and Gordon Luikart.
+2006. <span>“Genetic Rescue of an Insular Population of Large
+Mammals.”</span> <em>Proc. Biol. Sci.</em> 273 (1593): 1491–99.
+</div>
+<div id="ref-Howie2009-uv" class="csl-entry">
+Howie, Bryan N, Peter Donnelly, and Jonathan Marchini. 2009. <span>“A
+Flexible and Accurate Genotype Imputation Method for the Next Generation
+of Genome-Wide Association Studies.”</span> <em>PLoS Genet.</em> 5 (6):
+e1000529.
+</div>
+<div id="ref-Jenkins2013-ga" class="csl-entry">
+Jenkins, Dennis L, Loren G Davis, Thomas W Stafford, Paula F Campos,
+Thomas J Connolly, Linda Scott Cummings, Michael Hofreiter, et al. 2013.
+<span>“Geochronology, Archaeological Context, and <span>DNA</span> at
+the Paisley Caves.”</span> <em>Paleoamerican Odyssey</em> 32: 485–510.
+</div>
+<div id="ref-Kawash2018-og" class="csl-entry">
+Kawash, Joseph K, Sean D Smith, Spyros Karaiskos, and Andrey Grigoriev.
+2018. <span>“<span>ARIADNA</span>: Machine Learning Method for Ancient
+<span>DNA</span> Variant Discovery.”</span> <em>DNA Res.</em> 25 (6):
+619–27.
+</div>
+<div id="ref-Keighley2021-jh" class="csl-entry">
+Keighley, Xénia, Maiken Hemme Bro-Jørgensen, Hans Ahlgren, Paul Szpak,
+Marta Maria Ciucani, Fátima Sánchez Barreiro, Lesley Howse, et al. 2021.
+<span>“Predicting Sample Success for Large-Scale Ancient
+<span>DNA</span> Studies on Marine Mammals.”</span> <em>Mol. Ecol.
+Resour.</em> 21 (4): 1149–66.
+</div>
+<div id="ref-Kemp2014-qf" class="csl-entry">
+Kemp, Brian M, Cara Monroe, Kathleen G Judd, Erin Reams, and Colin
+Grier. 2014. <span>“Evaluation of Methods That Subdue the Effects of
+Polymerase Chain Reaction Inhibitors in the Study of Ancient and
+Degraded <span>DNA</span>.”</span> <em>J. Archaeol. Sci.</em> 42
+(February): 373–80.
+</div>
+<div id="ref-Leonard2008-bt" class="csl-entry">
+Leonard, Jennifer A. 2008. <span>“Ancient <span>DNA</span> Applications
+for Wildlife Conservation.”</span> <em>Mol. Ecol.</em> 17 (19): 4186–96.
+</div>
+<div id="ref-Licata2020-ap" class="csl-entry">
+Licata, Marta, Alessandro Bonsignore, Rosa Boano, Francesca Monza, Ezio
+Fulcheri, and Rosagemma Ciliberti. 2020. <span>“Study, Conservation and
+Exhibition of Human Remains: The Need of a Bioethical
+Perspective.”</span> <em>Acta Biomed.</em> 91 (4): e2020110.
+</div>
+<div id="ref-Lin2023-da" class="csl-entry">
+Lin, Audrey T, Liz Hammond-Kaarremaa, Hsiao-Lei Liu, Chris Stantis, Iain
+McKechnie, Michael Pavel, Susan Sa’hla Mitsa Pavel, et al. 2023.
+<span>“The History of Coast Salish <span>‘Woolly Dogs’</span> Revealed
+by Ancient Genomics and Indigenous Knowledge.”</span> <em>Science</em>
+382 (6676): 1303–8.
+</div>
+<div id="ref-Lipar2020-as" class="csl-entry">
+Lipar, Matej, Irena Zupanič Pajnič, Marko Cotman, Jelka Zabavnik Piano,
+Jian-Xin Zgao, Dean Pekarovič, and Tamara Leskovar. 2020.
+<span>“<span>DNA</span>, Spectroscopic and Geochemical Analyses of Bone
+Fragments and Associated Speleothems in Postojna Cave, Slovenia.”</span>
+<em>Acta Carsol.</em> 49 (2-3).
+</div>
+<div id="ref-Llamas2017-zo" class="csl-entry">
+Llamas, Bastien, Guido Valverde, Lars Fehren-Schmitz, Laura S Weyrich,
+Alan Cooper, and Wolfgang Haak. 2017. <span>“From the Field to the
+Laboratory: Controlling <span>DNA</span> Contamination in Human Ancient
+<span>DNA</span> Research in the High-Throughput Sequencing Era.”</span>
+<em>STAR: Science &amp; Technology of Archaeological Research</em> 3
+(1): 1–14.
+</div>
+<div id="ref-Lonsinger2018-ws" class="csl-entry">
+Lonsinger, Robert C, Jennifer R Adams, and Lisette P Waits. 2018.
+<span>“Evaluating Effective Population Size and Genetic Diversity of a
+Declining Kit Fox Population Using Contemporary and Historical
+Specimens.”</span> <em>Ecol. Evol.</em> 8 (23): 12011–21.
+</div>
+<div id="ref-Louis2023-la" class="csl-entry">
+Louis, Marie, Petra Korlević, Milaja Nykänen, Frederick Archer, Simon
+Berrow, Andrew Brownlow, Eline D Lorenzen, et al. 2023. <span>“Ancient
+Dolphin Genomes Reveal Rapid Repeated Adaptation to Coastal
+Waters.”</span> <em>Nat. Commun.</em> 14 (1): 4020.
+</div>
+<div id="ref-Marchesini2023-ny" class="csl-entry">
+Marchesini, Alexis, Daniela Festi, Matteo Girardi, Diego Micheletti,
+Cristiano Vernesi, and Marc Luetscher. 2023. <span>“Ancient
+<span>DNA</span> from Speleothems: Opportunity or Challenge?”</span>
+<em>Quat. Res.</em> 112 (March): 180–88.
+</div>
+<div id="ref-Massilani2022-al" class="csl-entry">
+Massilani, Diyendo, Mike W Morley, Susan M Mentzer, Vera Aldeias,
+Benjamin Vernot, Christopher Miller, Mareike Stahlschmidt, et al. 2022.
+<span>“Microstratigraphic Preservation of Ancient Faunal and Hominin
+<span>DNA</span> in Pleistocene Cave Sediments.”</span> <em>Proc. Natl.
+Acad. Sci. U. S. A.</em> 119 (1).
+</div>
+<div id="ref-McFarlane2024-kq" class="csl-entry">
+McFarlane, Donald A, and Joyce Lundberg. 2024. <span>“Rates of
+Diagenesis of Tropical Insectivorous Bat Guano Accumulations:
+Implications for Potential Paleoenvironmental Reconstruction.”</span>
+<em>Int. J. Speleol.</em> 53 (1): 5.
+</div>
+<div id="ref-Miller2012-cp" class="csl-entry">
+Miller, J M, J Poissant, J T Hogg, and D W Coltman. 2012. <span>“Genomic
+Consequences of Genetic Rescue in an Insular Population of Bighorn Sheep
+(Ovis Canadensis).”</span> <em>Mol. Ecol.</em> 21 (7): 1583–96.
+</div>
+<div id="ref-Nakahama2021-su" class="csl-entry">
+Nakahama, Naoyuki. 2021. <span>“Museum Specimens: An Overlooked and
+Valuable Material for Conservation Genetics.”</span> <em>Ecol. Res.</em>
+36 (1): 13–23.
+</div>
+<div id="ref-Oliva2021-yi" class="csl-entry">
+Oliva, Adrien, Raymond Tobler, Alan Cooper, Bastien Llamas, and Yassine
+Souilmi. 2021. <span>“Systematic Benchmark of Ancient <span>DNA</span>
+Read Mapping.”</span> <em>Brief. Bioinform.</em> 22 (5).
+</div>
+<div id="ref-Orlando2021-zd" class="csl-entry">
+Orlando, Ludovic, Robin Allaby, Pontus Skoglund, Clio Der Sarkissian,
+Philipp W Stockhammer, Marı́a C Ávila-Arcos, Qiaomei Fu, et al. 2021.
+<span>“Ancient <span>DNA</span> Analysis.”</span> <em>Nature Reviews
+Methods Primers</em> 1 (1): 1–26.
+</div>
+<div id="ref-Parks2015-nk" class="csl-entry">
+Parks, M, S Subramanian, C Baroni, M C Salvatore, G Zhang, C D Millar,
+and D M Lambert. 2015. <span>“Ancient Population Genomics and the Study
+of Evolution.”</span> <em>Philos. Trans. R. Soc. Lond. B Biol. Sci.</em>
+370 (1660): 20130381.
+</div>
+<div id="ref-Perrine2007-fd" class="csl-entry">
+Perrine, John D, John P Pollinger, Benjamin N Sacks, Reginald H Barrett,
+and Robert K Wayne. 2007. <span>“Genetic Evidence for the Persistence of
+the Critically Endangered Sierra Nevada Red Fox in California.”</span>
+<em>Conserv. Genet.</em> 8 (5): 1083–95.
+</div>
+<div id="ref-Pinsky2010-qa" class="csl-entry">
+Pinsky, M L, S D Newsome, B R Dickerson, Y Fang, M Van Tuinen, D J
+Kennett, R R Ream, and E A Hadly. 2010. <span>“Dispersal Provided
+Resilience to Range Collapse in a Marine Mammal: Insights from the Past
+to Inform Conservation Biology.”</span> <em>Mol. Ecol.</em> 19 (12):
+2418–29.
+</div>
+<div id="ref-Prufer2018-ki" class="csl-entry">
+Prüfer, Kay. 2018. <span>“<span class="nocase">snpAD</span>: An Ancient
+<span>DNA</span> Genotype Caller.”</span> <em>Bioinformatics</em> 34
+(24): 4165–71.
+</div>
+<div id="ref-Reiss2006-pt" class="csl-entry">
+Reiss, Rebecca A. 2006. <span>“Ancient <span>DNA</span> from Ice Age
+Insects: Proceed with Caution.”</span> <em>Quat. Sci. Rev.</em> 25 (15):
+1877–93.
+</div>
+<div id="ref-Rubinacci2020-ux" class="csl-entry">
+Rubinacci, Simone, Olivier Delaneau, and Jonathan Marchini. 2020.
+<span>“Genotype Imputation Using the Positional Burrows Wheeler
+Transform.”</span> <em>PLoS Genet.</em> 16 (11): e1009049.
+</div>
+<div id="ref-Rubinacci2021-wv" class="csl-entry">
+Rubinacci, Simone, Diogo M Ribeiro, Robin J Hofmeister, and Olivier
+Delaneau. 2021. <span>“Efficient Phasing and Imputation of Low-Coverage
+Sequencing Data Using Large Reference Panels.”</span> <em>Nat.
+Genet.</em> 53 (1): 120–26.
+</div>
+<div id="ref-Sarhan2021-eh" class="csl-entry">
+Sarhan, Mohamed S, Achim Lehmkuhl, Rainer Straub, Adrian Tett, Günther
+Wieland, Michael Francken, Albert Zink, and Frank Maixner. 2021.
+<span>“Ancient <span>DNA</span> Diffuses from Human Bones to Cave
+Stones.”</span> <em>iScience</em> 24 (12): 103397.
+</div>
+<div id="ref-Sawyer2012-pq" class="csl-entry">
+Sawyer, Susanna, Johannes Krause, Katerina Guschanski, Vincent
+Savolainen, and Svante Pääbo. 2012. <span>“Temporal Patterns of
+Nucleotide Misincorporations and <span>DNA</span> Fragmentation in
+Ancient <span>DNA</span>.”</span> <em>PLoS One</em> 7 (3): e34131.
+</div>
+<div id="ref-Scarsbrook2022-sq" class="csl-entry">
+Scarsbrook, Lachie, Kieren J Mitchell, Matthew D McGee, Gerard P Closs,
+and Nicolas J Rawlence. 2022. <span>“Ancient <span>DNA</span> from the
+Extinct New Zealand Grayling (Prototroctes Oxyrhynchus) Reveals Evidence
+for Miocene Marine Dispersal.”</span> <em>bioRxiv</em>.
+</div>
+<div id="ref-Schwarz2009-df" class="csl-entry">
+Schwarz, Carsten, Regis Debruyne, Melanie Kuch, Elizabeth McNally, Henry
+Schwarcz, Andrew D Aubrey, Jeffrey Bada, and Hendrik Poinar. 2009.
+<span>“New Insights from Old Bones: <span>DNA</span> Preservation and
+Degradation in Permafrost Preserved Mammoth Remains.”</span> <em>Nucleic
+Acids Res.</em> 37 (10): 3215–29.
+</div>
+<div id="ref-Scott2022-xz" class="csl-entry">
+Scott, Carly B, Anny Cárdenas, Matthew Mah, Vagheesh M Narasimhan, Nadin
+Rohland, Lauren T Toth, Christian R Voolstra, David Reich, and Mikhail V
+Matz. 2022. <span>“Millennia-Old Coral Holobiont <span>DNA</span>
+Provides Insight into Future Adaptive Trajectories.”</span> <em>Mol.
+Ecol.</em> 31 (19): 4979–90.
+</div>
+<div id="ref-Sharko2021-jo" class="csl-entry">
+Sharko, Fedor S, Eugenia S Boulygina, Svetlana V Tsygankova, Natalia V
+Slobodova, Dmitry A Alekseev, Anna A Krasivskaya, Sergey M Rastorguev,
+Alexei N Tikhonov, and Artem V Nedoluzhko. 2021. <span>“Steller’s Sea
+Cow Genome Suggests This Species Began Going Extinct Before the Arrival
+of Paleolithic Humans.”</span> <em>Nat. Commun.</em> 12 (1): 2215.
+</div>
+<div id="ref-Tsosie2021-mn" class="csl-entry">
+Tsosie, Krystal S, Joseph M Yracheta, Jessica A Kolopenuk, and Janis
+Geary. 2021. <span>“We Have <span>‘Gifted’</span> Enough: Indigenous
+Genomic Data Sovereignty in Precision Medicine.”</span> <em>Am. J.
+Bioeth.</em> 21 (4): 72–75.
+</div>
+<div id="ref-Vernot2021-hy" class="csl-entry">
+Vernot, Benjamin, Elena I Zavala, Asier Gómez-Olivencia, Zenobia Jacobs,
+Viviane Slon, Fabrizio Mafessoni, Frédéric Romagné, et al. 2021.
+<span>“Unearthing Neanderthal Population History Using Nuclear and
+Mitochondrial <span>DNA</span> from Cave Sediments.”</span>
+<em>Science</em> 372 (6542).
+</div>
+<div id="ref-Vierros2016-as" class="csl-entry">
+Vierros, Marjo, Curtis A Suttle, Harriet Harden-Davies, and Geoff
+Burton. 2016. <span>“Who Owns the Ocean? Policy Issues Surrounding
+Marine Genetic Resources.”</span> <em>Limnol. Oceanog. Bull.</em>,
+April.
+</div>
+<div id="ref-Wagner2020-xb" class="csl-entry">
+Wagner, Jennifer K, Chip Colwell, Katrina G Claw, Anne C Stone, Deborah
+A Bolnick, John Hawks, Kyle B Brothers, and Nanibaa’ A Garrison. 2020.
+<span>“Fostering Responsible Research on Ancient
+<span>DNA</span>.”</span> <em>Am. J. Hum. Genet.</em> 107 (2): 183–95.
+</div>
+<div id="ref-Weber2004-ba" class="csl-entry">
+Weber, D S, B S Stewart, and N Lehman. 2004. <span>“Genetic Consequences
+of a Severe Population Bottleneck in the Guadalupe Fur Seal
+(Arctocephalus Townsendi).”</span> <em>J. Hered.</em> 95 (2): 144–53.
+</div>
+<div id="ref-Wellman2020-pt" class="csl-entry">
+Wellman, Hannah P, Rita M Austin, Nihan D Dagtas, Madonna L Moss, Torben
+C Rick, and Courtney A Hofman. 2020. <span>“Archaeological Mitogenomes
+Illuminate the Historical Ecology of Sea Otters (Enhydra Lutris) and the
+Viability of Reintroduction.”</span> <em>Proc. Biol. Sci.</em> 287
+(1940): 20202343.
+</div>
+<div id="ref-Whitehouse2023-ue" class="csl-entry">
+Whitehouse, Logan S, and Daniel R Schrider. 2023. <span>“Timesweeper:
+Accurately Identifying Selective Sweeps Using Population Genomic Time
+Series.”</span> <em>Genetics</em> 224 (3).
+</div>
+<div id="ref-Willerslev2007-bn" class="csl-entry">
+Willerslev, Eske, Enrico Cappellini, Wouter Boomsma, Rasmus Nielsen,
+Martin B Hebsgaard, Tina B Brand, Michael Hofreiter, et al. 2007.
+<span>“Ancient Biomolecules from Deep Ice Cores Reveal a Forested
+Southern Greenland.”</span> <em>Science</em> 317 (5834): 111–14.
+</div>
+<div id="ref-Xu2021-iv" class="csl-entry">
+Xu, Wenhao, Yu Lin, Keliang Zhao, Haimeng Li, Yinping Tian, Jacob
+Njaramba Ngatia, Yue Ma, et al. 2021. <span>“An Efficient Pipeline for
+Ancient <span>DNA</span> Mapping and Recovery of Endogenous Ancient
+<span>DNA</span> from Whole-Genome Sequencing Data.”</span> <em>Ecol.
+Evol.</em> 11 (1): 390–401.
+</div>
+<div id="ref-Zhong2021-cl" class="csl-entry">
+Zhong, Zhi-Ping, Funing Tian, Simon Roux, M Consuelo Gazitúa, Natalie E
+Solonenko, Yueh-Fen Li, Mary E Davis, et al. 2021. <span>“Glacier Ice
+Archives Nearly 15,000-Year-Old Microbes and Phages.”</span>
+<em>Microbiome</em> 9 (1): 160.
+</div>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 ---
 title: "Ancient and Degraded DNA"
 output: html_document
-bibliography: ../aDNA_Part1_ReviewDoc_Refs.bib
+bibliography: POP_09_aDNA_files/aDNA_Part1_ReviewDoc_Refs.bib
 ---
 
 ```{r setup, echo=F, warning=F}
