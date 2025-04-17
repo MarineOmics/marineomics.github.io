@@ -21,6 +21,7 @@ The backbone underlying the content on the website comes from a general set of â
 * [Redundancy Analysis (RDA) Trait Prediction](RDAtraitPredictionTutorial.html)
 * [PCA](POP_08_PCA.html)
 * [Ancient & Degraded DNA](POP_09_aDNA.html)
+* [Methods to detect signatures of selection](POP_10_Signatures_of_Selection.html)
 
 # Functional Genomics  
 

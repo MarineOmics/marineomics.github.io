@@ -30,6 +30,8 @@ navbar:
           href: POP_08_PCA.html
         - text: "Ancient & Degraded DNA"
           href: POP_09_aDNA.html
+        - text: "Methods to detect signatures of selection"
+          href: POP_10_Signatures_of_Selection.html
     - text: "Functional Genomics"
       menu:
         - text: "Mutifactorial RNAseq"

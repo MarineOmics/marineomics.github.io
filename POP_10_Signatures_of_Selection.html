@@ -1,0 +1,2580 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Joanna Griffiths, Danielle Davenport, Madison Armstrong, Camille Rumberger" />
+
+<meta name="date" content="2025-02-24" />
+
+<title>A MarineOmics overview of methods to detect signatures of selection</title>
+
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="tutorial.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MarineOmics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="ADMIN_04_best_principles.html">Best Principles</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Contributions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ADMIN_01_submissions_instructions.html">Guide for Building a Page</a>
+    </li>
+    <li>
+      <a href="ADMIN_02_contributions.html">Past and Current Contributors</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Population Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="POP_01_choosing_population_genetics.html">Choosing a Population Genomics Approach</a>
+    </li>
+    <li>
+      <a href="POP_04_WGS_intro.html">Whole Genome Resequencing</a>
+    </li>
+    <li>
+      <a href="RADseq.html">Reduced Representation Sequencing</a>
+    </li>
+    <li>
+      <a href="POP_03_poolseq.html">Poolseq</a>
+    </li>
+    <li>
+      <a href="RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
+    </li>
+    <li>
+      <a href="POP_08_PCA.html">PCA</a>
+    </li>
+    <li>
+      <a href="POP_09_aDNA.html">Ancient &amp; Degraded DNA</a>
+    </li>
+    <li>
+      <a href="POP_10_Signatures_of_Selection.html">Methods to detect signatures of selection</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Functional Genomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
+    </li>
+    <li>
+      <a href="FUN_02_DNA_methylation.html">DNA Methylation Assessment</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Genome-Phenome
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">coming soon!</li>
+  </ul>
+</li>
+<li>
+  <a href="ADMIN_03_panels.html">Panel Seminars</a>
+</li>
+<li>
+  <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'G-53GH9PV49T', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">A MarineOmics overview of methods to detect
+signatures of selection</h1>
+<h4 class="author">Joanna Griffiths, Danielle Davenport, Madison
+Armstrong, Camille Rumberger</h4>
+<h4 class="date">2025-02-24</h4>
+
+</div>
+
+
+<p><em>Created using <a href="https://hackmd.io/">HackMD</a> and <a
+href="https://www.tablesgenerator.com/markdown_tables">tablesgenerator</a></em></p>
+<div id="target-audience" class="section level2">
+<h2>Target audience</h2>
+<p>This page is designed for beginners (with some basic
+undergraduate-level of understanding of evolutionary biology) and
+provides a broad introduction to different methods commonly used to
+study natural selection in wild populations at a microevolutionary
+scale. On this page we will explore how techniques like outlier
+analyses, genotype-environment analysis (GEA) and genome-wide
+association studies (GWAS) can help us study natural selection. To learn
+more about specific methods, read through the suggested readings in each
+section and visit the tutorials where links are provided.</p>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This page provides an overview of different methods for detecting
+microevolutionary change, specifically identifying genetic loci that may
+be subject to selection. Natural selection is the differential survival
+and reproduction of individuals based on their inherited traits.
+Selection acts on observable characteristics (phenotypes), changing the
+prevalence of different gene variants (alleles) within a population over
+time. This leads to changes in allele frequencies over time
+(generations) and adaptation to spatially heterogeneous environments
+which may help a population better survive and reproduce in a specific
+environment. This is particularly relevant in the field of marine
+’omics, where understanding a population’s ability to adapt to changing
+environments, such as climate change or habitat loss, is crucial for
+preventing extinction.</p>
+<p>The methods discussed on this page focus on the microevolutionary
+scale and examine changes that occur within populations over a
+relatively short period. This is in contrast to the study of
+macroevolution, which examines large-scale evolutionary patterns over
+much longer timescales (i.e. variation in conservation or non-synonymous
+mutations). The methods described here are used to identify loci which
+may be subject to selection and are typically applicable to use for any
+type of population or individual genomic data (e.g. Whole Genome
+Sequencing, RADseq, etc). Some of the methods can be applied to datasets
+where you have phenotypic or fitness data (i.e. GWAS for growth,
+survival, phenotype, etc.), while other methods do not require any data
+related to either the environment or phenotypes at all!</p>
+<p>Please note, if temporal samples are available, other approaches can
+be used to track allele frequency changes over time. For instance, <a
+href="#refs">(<span class="citation">Buffalo and Coop (2020)</span>)</a>
+describe methods for estimating the genome-wide contribution of
+selection to temporal allele frequency change, providing a framework for
+leveraging time-series data to detect selection more directly. These
+temporal methods allow for a more explicit examination of how selection
+shapes genetic variation across generations, which is not possible with
+single-time point datasets <a href="#refs">(<span
+class="citation">Brennan et al. (2022)</span>)</a>.</p>
+<ins>
+On this page we describe three classes of methods to identify loci under
+selection at a microevolutionary scale using samples collected from a
+single time point across space/environments. .
+</ins>
+<ol style="list-style-type: decimal">
+<li><strong>Outlier Analyses</strong> identify extreme deviations from
+what would be expected under neutral evolution.</li>
+<li><strong>Genotype-Environment-Analysis (GEA)</strong> links genomic
+variation to environmental gradients.</li>
+<li><strong>Genome-Wide Association Studies (GWAS)</strong> examine
+genetic variants and identify those statistically associated with a
+particular trait. When a specific phenotype shows a significant
+association with a particular loci, gene or region, it suggests that
+this genetic variation may be under selection.</li>
+</ol>
+</div>
+<div id="which-method-should-i-use-to-find-loci-under-selection"
+class="section level2">
+<h2>Which method should I use to find loci under selection?</h2>
+<p>The method you choose will partly depend on the data that you have
+available: Outlier analyses require only genetic data, but GEA requires
+environmental data across sampled populations, and GWAS requires trait
+data for each genotyped individual. Addtionally, the biology of your
+system is always important to consider before conducting specific
+analyses, and no matter which method(s) you use, it is recommended that
+comparisons of outlier vs non-outliers (neutral loci) are performed <a
+href="#refs">(<span class="citation">Riginos et al. (2016)</span>)</a>
+as a kind-of “validation” step, where we would expect loci under
+selection (i.e. outliers) to demonstrate a stronger signal of
+environmental dependence than non-outliers. However, a common but
+conservative approach taken by researchers performing outlier detection
+is to apply multiple test methods and identify outlier SNPs that are
+overlapping across them. For example, some studies perform a
+differentiation outlier test first (see <a
+href="#outlier-analyses">Outlier Analyses Section</a>) and then use only
+the resulting outliers as input for the Genome-Environment Associations
+<a href="#refs">(<span class="citation">Rellstab et al.
+(2015)</span>)</a>.</p>
+<p>Importantly, to conduct outlier analyses you do not necessarily need
+to have neutral genetic differentiation (genetic variation among
+populations primarily driven by random processes like genetic drift and
+migration) in your data. For example, marine invertebrates with pelagic
+larval dispersal and high gene flow which show very low to no detectable
+population structure at neutral alleles across their range (i.e using
+STRUCTURE, ADMIXTURE, PCA) still show signals of adaptation. Other
+examples include Pacific purple sea urchins (<a href="#refs">(<span
+class="citation">(<strong>petak2023whole-cp?</strong>)</span>)</a>;<a
+href="#refs">(<span class="citation">Rumberger et al.
+(2023)</span>)</a>) or scallops <a href="#refs">(<span
+class="citation">Van Wyngaarden et al. (2017)</span>)</a>.</p>
+</div>
+<div id="outlier-analyses" class="section level1">
+<h1>Outlier Analyses</h1>
+<div id="what-are-outlier-analyses" class="section level2">
+<h2>What are Outlier Analyses?</h2>
+<p>Genetic differences among groups may be driven by a combination of
+genetic drift, demography and/ or selection. Each of these processes can
+directly change the allele frequency of a population. However, alleles
+that are under selection and influence fitness are expected to occur at
+frequencies different to those affected only by neutral processes. For
+example, loci under divergent selection (and those physically linked to
+them) exhibit stronger differentiation than neutral regions and so we
+might expect these loci to be more differentiated between
+populations/groups. We can identify these differences in allele
+frequencies among different populations/environments using outlier
+tests. Outlier tests for selection assume a null model of neutrality,
+where allele frequencies drift randomly without selection pressures.
+Loci with significantly higher or lower differentiation (i.e. Fst)
+between populations/groups than expected under a neutral model are
+flagged as potential targets of selection. Specifically, while
+selectively neutral loci are expected to form a normal frequency
+distribution, when alleles increase fitness (positive selection) they
+can be expected to be observed at higher frequencies and where they
+decrease fitness (negative selection) they can be expected to be
+observed at at lower frequencies <a href="#refs">(<span
+class="citation">Hoban et al. (2021)</span>)</a>. These are “outliers”
+or “putatively adaptive loci” which may be candidates of selection.</p>
+<p>There are two commonly applied approaches to outlier analysis;
+Fst-based analysis (Figure 1) and PCA-based analysis (Figure 2). Both
+are used to identify loci under selection, but they differ in their
+underlying methods. Fst is a standardized measure of the variance of
+allele frequencies among populations <a href="#refs">(<span
+class="citation">Wright (1949)</span>)</a>. By directly comparing
+genetic differentiation between populations/groups to neutral
+expectations, Fst outlier tests can identify loci which may be under
+selection (Figure 1). In contrast, PCA-based methods use Principal
+Component Analysis (PCA) to capture population structure and can
+identify loci with extreme loadings on principal components as potential
+outliers (Figure 2).</p>
+<div class="figure" style="text-align: center">
+<img src="POP_10_Signatures_Selection/images/Fig1.png" alt="Figure 1: Example of an Fst-based analysis using [OutFLANK](https://rstudio-pubs-static.s3.amazonaws.com/305384_9aee1c1046394fb9bd8e449453d72847.html). In this dataset, 1000 individuals were collected from across 39 populations  spanning an environmental gradient. Each dot is a SNP and its location in the genome plotted on the X-axis. The Y-axis is the Fst for each SNP. Higher Fst values are indicative of larger genetic differentiation and candidate SNPs under selection are highlighted in pink. [Source](https://htmlpreview.github.io/?https://github.com/whitlock/OutFLANK/blob/master/inst/doc/OutFLANKAnalysis.html)" width="75%" />
+<p class="caption">
+Figure 1: Example of an Fst-based analysis using <a
+href="https://rstudio-pubs-static.s3.amazonaws.com/305384_9aee1c1046394fb9bd8e449453d72847.html">OutFLANK</a>.
+In this dataset, 1000 individuals were collected from across 39
+populations spanning an environmental gradient. Each dot is a SNP and
+its location in the genome plotted on the X-axis. The Y-axis is the Fst
+for each SNP. Higher Fst values are indicative of larger genetic
+differentiation and candidate SNPs under selection are highlighted in
+pink. <a
+href="https://htmlpreview.github.io/?https://github.com/whitlock/OutFLANK/blob/master/inst/doc/OutFLANKAnalysis.html">Source</a>
+</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="POP_10_Signatures_Selection/images/Fig2.png" alt="Figure 2: Example of a PCA-based analysis using [pcadapt](https://bcm-uga.github.io/pcadapt/articles/pcadapt.html). In this dataset, a total of 150 individuals from three different populations were genotyped at 1,500 markers. Population structure was identified for three discrete groups of individuals, matching population assignment expectations (A). SNPs that are significantly associated with PC1 and PC2 are given higher weightings and are used as input for a Manhattan plot, where the SNP location in the genome is plotted on the X-axis and the weightings (or -log pvalue) are plotted on the Y-axis. SNPs that have higher weightings will have higher -log pvalues and are candidate SNPs under selection among populations (B). [Source](https://bcm-uga.github.io/pcadapt/articles/pcadapt.html)" width="75%" />
+<p class="caption">
+Figure 2: Example of a PCA-based analysis using <a
+href="https://bcm-uga.github.io/pcadapt/articles/pcadapt.html">pcadapt</a>.
+In this dataset, a total of 150 individuals from three different
+populations were genotyped at 1,500 markers. Population structure was
+identified for three discrete groups of individuals, matching population
+assignment expectations (A). SNPs that are significantly associated with
+PC1 and PC2 are given higher weightings and are used as input for a
+Manhattan plot, where the SNP location in the genome is plotted on the
+X-axis and the weightings (or -log pvalue) are plotted on the Y-axis.
+SNPs that have higher weightings will have higher -log pvalues and are
+candidate SNPs under selection among populations (B). <a
+href="https://bcm-uga.github.io/pcadapt/articles/pcadapt.html">Source</a>
+</p>
+</div>
+</div>
+<div id="general-method-overview" class="section level2">
+<h2>General Method Overview:</h2>
+<div id="step-1---filtering-your-dataset" class="section level3">
+<h3>Step 1 - Filtering your dataset</h3>
+<p>Non-selective evolutionary forces can affect the distribution of
+outlier loci from loci across a genome <a href="#refs">(<span
+class="citation">Lotterhos and Whitlock (2014)</span>)</a>, therefore,
+the first step is to identify the underlying distribution that is
+expected under neutral processes by answering the question; how much
+variation in among loci would be expected (i.e. the null distribution of
+Fst) in the absence of selection? One must first create a null
+distribution using a set of SNPs (single nucleotide polymorphisms) that
+accurately model the distribution expected under neutrality. An accurate
+null distribution typically requires some filtering of a set of SNPs,
+and in many cases, the best set of SNPs for neutral parameterization is
+not the entire set of SNPs that you want to evaluate for outliers.
+Common filtering steps could include a minor allele frequency/count,
+removing missing data and related individuals, genotype depth and
+quality, and removing SNPs in linkage disequilibrium (LD). As a general
+guide, we recommend the following <a
+href="https://ddocent.com//filtering/">SNP filtering tutorial</a>.
+Deciding on how much filtering is required can be tricky and can feel
+subjective. We recommend visualizing the filtering steps using a PCA,
+which will elucidate many common biases in the dataset (see the <a
+href="https://marineomics.github.io/POP_08_PCA.html">MarineOmics page on
+PCAs</a>). We recommend using the same set of SNPs that you use for
+estimating population structure for neutral parameterization (which is
+often a set of SNPs not in LD). Once neutral parameterization is
+performed on one set of SNPs, for most programs that model can be
+applied to the larger filtered SNP dataset.</p>
+</div>
+<div
+id="step-2---choose-an-outlier-method-based-on-the-biology-of-your-system"
+class="section level3">
+<h3>Step 2 - choose an outlier method based on the biology of your
+system!</h3>
+<p>When choosing an outlier method, it is important to understand what
+biological assumptions are being ignored/violated and whether the model
+accounts for the demographic history when estimating divergence among
+populations (see <a href="#Table1">Table 1</a>). For example, early
+models such as fdist and fdist2 <a href="#refs">(<span
+class="citation">Beaumont and Nichols (1996)</span>)</a> assume
+populations are all equal in size and there is equal probability of
+migration and gene flow among all populations (even if some populations
+are located further away than others). This method produced a lot of
+false positive outliers because more realistic scenarios violated these
+simple assumptions <a href="#refs">(<span class="citation">Lotterhos and
+Whitlock (2014)</span>)</a>. An improvement over this approach was
+implemented in the program BayeScan where each population has its own
+neutral model <a href="#refs">(<span class="citation">Foll and Gaggiotti
+(2008)</span>)</a>, but like fdist/fdist2, BayeScan also suffers from a
+large false positive rate due to its violated assumptions of
+non-independence among populations. Newer outlier methods attempt to
+account for population demographic history and independence in different
+ways. For example, pcadapt uses PC loadings (insead of Fst
+distributions) which are meant to be less reliant on assumptions about
+the underlying demography <a href="#refs">(<span
+class="citation">Duforet-Frebourg et al. (2015)</span>)</a>. However, PC
+loadings can be influenced by recombination variation, so it is
+important to use a set of SNPs thinned for linkage disequilibrium for
+neutral parameterization <a href="#refs">(<span
+class="citation">Lotterhos (2019)</span>)</a>. These estimates of
+population structure are included as covariates in the final Outlier
+Analysis model. See <a href="#Table1">Table 1</a> for more information
+on how each method accounts for population demographic history.</p>
+<p>Population structure is also important to consider. For example, if
+you discover only one genetic cluster (K=1 in STRUCTURE or Admixture
+plot), perhaps any of the methods in <a href="#Table1">Table 1</a> would
+work well for your data. On the other hand, if there is a lot of
+population structure (i.e., K&gt;1), then a method that accounts for
+demographic history should be chosen. Additionally, consider what
+assumptions are made in the tutorials that you use as a resource. Does
+the tutorial you are using assume that your data is normally
+distributed? Multiple tutorials have been added below to help with
+comparing between different assumptions made for different kinds of
+data.</p>
+<p>Many researchers will identify outliers using two or three of these
+methods and look for overlap between them <a href="#refs">(<span
+class="citation">Silliman (2019)</span>)</a>. This is a conservative
+approach, and researchers should keep in mind that they may not find
+much overlap among different analyses because of the different
+assumptions made by each method.</p>
+<ins>
+Further Recommended Reading:
+</ins>
+<ul>
+<li><a href="#refs">(<span class="citation">Whitlock and Lotterhos
+(2015)</span>)</a> (Outflank)–method comparison</li>
+<li><a href="#refs">(<span class="citation">Silliman (2019)</span>)</a>
+–empirical study with method comparisons</li>
+<li><a href="#refs">(<span class="citation">Lotterhos and Whitlock
+(2014)</span>)</a>(Fst outlier methods)–method comparison</li>
+<li><a href="#refs">(<span class="citation">Lotterhos
+(2019)</span>)</a>(pcadapt, Outflank, Baypass)–method comparison</li>
+<li><a href="#refs">(<span class="citation">Lotterhos, Fitzpatrick, and
+Blackmon (2022)</span>)</a>–method validation</li>
+<li><a href="#refs">(<span class="citation">Capblancq et al.
+(2018)</span>)</a> (GEA &amp; pcadapt)–method comparison</li>
+<li><a href="#refs">(<span class="citation">Luu, Bazin, and Blum
+(2017)</span>)</a> (pcadapt)–method details</li>
+<li><a href="#refs">(<span class="citation">Hoban et al.
+(2016)</span>)</a>–helpful review and suggested best practices for
+statistical analyses</li>
+<li><a href="#refs">(<span class="citation">Robertson (1975)</span>)</a>
+– theory</li>
+<li><a href="#refs">(<span class="citation">Ahrens et al.
+(2018)</span>)</a> –review, summary of findings from outlier scans, and
+suggested best practices for experimental design</li>
+</ul>
+</div>
+<div id="Table1" class="section level3">
+<h3>TABLE 1. Common methods for identifying outliers</h3>
+<p>Common methods for identifying outliers and the associated approach
+for calculating divergence, the biological assumptions, and how
+demographic history is accounted for in the model. We also provide a
+link to public tutorials for each method.</p>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="19%" />
+<col width="26%" />
+<col width="20%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model &amp; Approach</th>
+<th>Demographic History</th>
+<th>Assumptions / Known issues</th>
+<th>False Positive Rate</th>
+<th>Tutorial</th>
+<th>Citation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>fdist &amp; fdist2 (Fst; using Arlequin software)</td>
+<td>* accounts for loci with different heterozygosities and with finite
+sample sizes per subpopulation</td>
+<td>* assumes populations are equal in size and migration rates <br>*
+non-independence among populations</td>
+<td>High <a href="#refs">(<span class="citation">Lotterhos and Whitlock
+(2014)</span>)</a> <a href="#refs">(<span class="citation">Narum and
+Hess (2011)</span>)</a> <a href="#refs">(<span
+class="citation">Pérez-Figueroa et al. (2010)</span>)</a>, <a
+href="#refs">(<span class="citation">Whitlock and Lotterhos
+(2015)</span>)</a></td>
+<td>Outdated due to high false positive rates</td>
+<td><a href="#refs">(<span class="citation">Beaumont and Nichols
+(1996)</span>)</a></td>
+</tr>
+<tr class="even">
+<td>Bayescan (Fst)</td>
+<td>* populations defined ahead of time <br>* Dirichlet-multinomial
+distribution: each population has its own parameter for neutral
+model</td>
+<td>* does not allow for the non-random correlations among pairs of
+populations that cause the non-independence of sampling <br>* slow run
+time <a href="#refs">(<span class="citation">Luu, Bazin, and Blum
+(2017)</span>)</a></td>
+<td>Low to high depending on the demography</td>
+<td><a href="https://rpubs.com/lbenestan/outlier">Benestan tutorial
+(2020)</a></td>
+<td><a href="#refs">(<span class="citation">Foll and Gaggiotti
+(2008)</span>)</a></td>
+</tr>
+<tr class="odd">
+<td>PCAdapt (PC loadings)</td>
+<td>* Latent factors to estimate values of K <br>* uses PC loadings
+(less reliant on assumptions about the underlying demography) <a
+href="#refs">(<span class="citation">Duforet-Frebourg et al.
+(2015)</span>)</a> <br>* Important to use a set of SNPs thinned for
+linkage disequilibrium for neutral parameterization <a
+href="#refs">(<span class="citation">Lotterhos (2019)</span>)</a></td>
+<td>* individuals not sorted into populations ahead of time <br>*
+Performs well in populations with high admixture</td>
+<td>Low to medium <a href="#refs">(<span class="citation">Capblancq et
+al. (2018)</span>)</a>, <a href="#refs">(<span class="citation">Luu,
+Bazin, and Blum (2017)</span>)</a> Might not be suitable for populations
+with complex demographic histories.</td>
+<td><a
+href="https://bcm-uga.github.io/pcadapt/articles/pcadapt.html">Luu,
+Privé and Blum tutorial</a>, <a
+href="https://baylab.github.io/MarineGenomics/week-7--fst-and-outlier-analysis.html#finding-outliers-using-pcadapt">UC
+Davis Marine Genomics course tutorial</a></td>
+<td><a href="#refs">(<span class="citation">Duforet-Frebourg et al.
+(2015)</span>)</a> <a href="#refs">(<span class="citation">Silliman
+(2019)</span>)</a></td>
+</tr>
+<tr class="even">
+<td>Outflank (Weir and Cockerham’s Fst)</td>
+<td>* populations defined ahead of time</td>
+<td>* Estimates the number of K genetic clusters to inform a null model
+of Fst distributions <br>* Performs poorly in populations with admixture
+and PoolSeq samples <br>* Affected by finite sample sizes</td>
+<td>Low, but suffers from low power</td>
+<td><a
+href="https://github.com/whitlock/OutFLANK/blob/master/inst/doc/OutFLANKAnalysis.html">Lotterhos
+Tutorial</a> (2018), <a
+href="https://baylab.github.io/MarineGenomics/week-7--fst-and-outlier-analysis.html#using-fst-to-find-outliers">UC
+Davis Marine Genomics course tutorial</a></td>
+<td><a href="#refs">(<span class="citation">Lotterhos and Whitlock
+(2014)</span>)</a>, <a href="#refs">(<span class="citation">Schlötterer
+et al. (2014)</span>)</a></td>
+</tr>
+<tr class="odd">
+<td>FLK TF-LK</td>
+<td>Sensitive to complex patterns of migration and sharp differences in
+the migration rate among populations <a href="#refs">(<span
+class="citation">Bonhomme et al. (2010)</span>)</a></td>
+<td>* The program FLK uses a population tree (without migration) to
+describe the covariance among populations and build a null model of Fst
+distributions.</td>
+<td>Low <a href="#refs">(<span class="citation">Bonhomme et al.
+(2010)</span>)</a></td>
+<td><a
+href="https://uofabioinformaticshub.github.io/GumCreek2012/scripts/S1_FLK">UoF
+Bioinformatics Hub Tutorial</a></td>
+<td>See supplementary file 1 from <a href="#refs">(<span
+class="citation">Bonhomme et al. (2010)</span>)</a></td>
+</tr>
+<tr class="even">
+<td>BayPass XTX statistics</td>
+<td>Assumes HWE for PoolSeq data <a href="#refs">(<span
+class="citation">Gautier (2015)</span>)</a></td>
+<td>* Uses a covariance matrix of allele frequencies among populations
+<a href="#refs">(<span class="citation">Pickrell and Pritchard
+(2012)</span>)</a> <br> * Can be used with or without environmental
+data</td>
+<td>Low</td>
+<td><a
+href="https://eead-csic-compbio.github.io/barley-agroclimatic-association/HOWTOXtX_BAYPASS.html">Barley-Agroclimatic-Association
+Tutorial</a>, <a
+href="https://esnielsen.github.io/post/pool-seq-analyses-poolfstat-baypass/">Erica
+Nielson Tutorial</a></td>
+<td><a href="#refs">(<span class="citation">Gautier
+(2015)</span>)</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="19%" />
+<col width="26%" />
+<col width="20%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model &amp; Approach</th>
+<th>Demographic History</th>
+<th>Assumptions / Known issues</th>
+<th>False Positive Rate</th>
+<th>Tutorial</th>
+<th>Citation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>fdist &amp; fdist2 (Fst; using Arlequin software)</td>
+<td>* Accounts for loci with different heterozygosities and with finite
+sample sizes per subpopulation</td>
+<td>* Assumes populations are equal in size and migration rates <br> *
+Non-independence among populations</td>
+<td>High <a href="#refs"><span class="citation">Lotterhos and Whitlock
+(2014)</span></a>; <a href="#refs"><span class="citation">Narum and Hess
+(2011)</span></a>; <a href="#refs"><span class="citation">Pérez-Figueroa
+et al. (2010)</span></a>; <a href="#refs"><span
+class="citation">Whitlock and Lotterhos (2015)</span></a></td>
+<td>Outdated due to high false positive rates</td>
+<td><a href="#refs"><span class="citation">Beaumont and Nichols
+(1996)</span></a></td>
+</tr>
+<tr class="even">
+<td>Bayescan (Fst)</td>
+<td>* Populations defined ahead of time <br> * Dirichlet-multinomial
+distribution: each population has its own parameter for neutral
+model</td>
+<td>* Does not allow for non-random correlations among pairs of
+populations <br> * Slow run time <a href="#refs"><span
+class="citation">Luu, Bazin, and Blum (2017)</span></a></td>
+<td>Low to high depending on the demography</td>
+<td><a href="https://rpubs.com/lbenestan/outlier">Benestan tutorial
+(2020)</a></td>
+<td><a href="#refs"><span class="citation">Foll and Gaggiotti
+(2008)</span></a></td>
+</tr>
+<tr class="odd">
+<td>PCAdapt (PC loadings)</td>
+<td>* Latent factors estimate values of K <br> * Uses PC loadings; less
+reliant on assumptions about the underlying demography <a
+href="#refs"><span class="citation">Duforet-Frebourg et al.
+(2015)</span></a> <br> * Important to use a set of SNPs thinned for
+linkage disequilibrium <a href="#refs"><span class="citation">Lotterhos
+(2019)</span></a></td>
+<td>* Individuals not sorted into populations ahead of time <br> *
+Performs well in populations with high admixture</td>
+<td>Low to medium <a href="#refs"><span class="citation">Capblancq et
+al. (2018)</span></a>; <a href="#refs"><span class="citation">Luu,
+Bazin, and Blum (2017)</span></a> <br> Might not be suitable for
+populations with complex demographic histories</td>
+<td><a
+href="https://bcm-uga.github.io/pcadapt/articles/pcadapt.html">Luu,
+Privé and Blum tutorial</a>, <a
+href="https://baylab.github.io/MarineGenomics/week-7--fst-and-outlier-analysis.html#finding-outliers-using-pcadapt">UC
+Davis Marine Genomics tutorial</a></td>
+<td><a href="#refs"><span class="citation">Duforet-Frebourg et al.
+(2015)</span></a>; <a href="#refs"><span class="citation">Silliman
+(2019)</span></a></td>
+</tr>
+<tr class="even">
+<td>Outflank (Weir &amp; Cockerham’s Fst)</td>
+<td>* Populations defined ahead of time</td>
+<td>* Estimates the number of K clusters to inform a null Fst model <br>
+* Performs poorly in populations with admixture and PoolSeq <br> *
+Affected by finite sample sizes</td>
+<td>Low, but suffers from low power</td>
+<td><a
+href="https://github.com/whitlock/OutFLANK/blob/master/inst/doc/OutFLANKAnalysis.html">Lotterhos
+Tutorial</a>, <a
+href="https://baylab.github.io/MarineGenomics/week-7--fst-and-outlier-analysis.html#using-fst-to-find-outliers">UC
+Davis tutorial</a></td>
+<td><a href="#refs"><span class="citation">Lotterhos and Whitlock
+(2014)</span></a>; <a href="#refs"><span class="citation">Schlötterer et
+al. (2014)</span></a></td>
+</tr>
+<tr class="odd">
+<td>FLK / TF-LK</td>
+<td>* Sensitive to complex migration patterns and sharp differences in
+migration rates <a href="#refs"><span class="citation">Bonhomme et al.
+(2010)</span></a></td>
+<td>* Uses a population tree (without migration) to describe the
+covariance among populations to build a null Fst model</td>
+<td>Low <a href="#refs"><span class="citation">Bonhomme et al.
+(2010)</span></a></td>
+<td><a
+href="https://uofabioinformaticshub.github.io/GumCreek2012/scripts/S1_FLK">UoF
+Bioinformatics Hub Tutorial</a></td>
+<td>See Supplementary File 1 from <a href="#refs"><span
+class="citation">Bonhomme et al. (2010)</span></a></td>
+</tr>
+<tr class="even">
+<td>BayPass (XTX statistics)</td>
+<td>* Assumes HWE for PoolSeq data <a href="#refs"><span
+class="citation">Gautier (2015)</span></a></td>
+<td>* Uses a covariance matrix of allele frequencies among populations
+<a href="#refs"><span class="citation">Pickrell and Pritchard
+(2012)</span></a> <br> * Can be used with or without environmental
+data</td>
+<td>Low</td>
+<td><a
+href="https://eead-csic-compbio.github.io/barley-agroclimatic-association/HOWTOXtX_BAYPASS.html">Barley
+Agroclimatic Tutorial</a>, <a
+href="https://esnielsen.github.io/post/pool-seq-analyses-poolfstat-baypass/">Erica
+Nielsen Tutorial</a></td>
+<td><a href="#refs"><span class="citation">Gautier
+(2015)</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="genome-environment-association-gea" class="section level1">
+<h1>Genome Environment Association (GEA)</h1>
+<div id="what-is-a-genome-environment-association"
+class="section level2">
+<h2>What is a Genome-Environment Association?</h2>
+<p>The distribution of genetic diversity within natural populations is
+significantly influenced by environmental conditions. Along
+environmental gradients, many marine species demonstrate genetic
+variation for adaptive traits <a href="#refs">(<span
+class="citation">Pinsky (2021)</span>)</a>. Genotype environment
+association (GEA) analysis is a statistical framework that allows us to
+investigate these genotype-environment relationships and identify
+specific genetic markers (loci) associated with environmental variation
+across populations <a href="#refs">(<span class="citation">Rellstab et
+al. (2015)</span>)</a>. In a heterogeneous environment, environmental
+factors may act as selective pressure for local adaptation. In this
+case, allele frequencies at loci underlying adaptive phenotypic traits
+should be associated with environmental factors that act as proxies for
+the unobserved selective pressures <a href="#refs">(<span
+class="citation">Frichot and François (2015)</span>)</a>. GEAs are
+distinct from outlier detection methods previously described as they do
+not rely on an allele frequency distribution, but instead use the
+correlation between genotypes and environment for identifying both loci
+under selection and key climatic factors driving local adaptation. GEA
+analyses usually control for isolation by distance in addition to
+demography (i.e. ensuring that associations between genotype and
+environment are not driven by physical distance between
+environments).</p>
+</div>
+<div id="general-method-overview-gea-methods" class="section level2">
+<h2>General Method Overview: GEA Methods</h2>
+<p>GEA broadly refers to any methodology that assesses the association
+between allele frequencies and environmental variables. Therefore, you
+will need four things before getting into GEAs - a good sampling regime,
+genetic data, geo-referenced environmental variables (see <a
+href="#env-data">Section 4. Environmental data</a>). GEA methods
+commonly cited in the literature include: Redundancy Analysis (RDA),
+Gradient Forest (GF), Bayesian methods (i.e. Bayenv), and Latent Factor
+Mixed Models (LFMM).</p>
+<p><strong>Redundancy Analysis (RDA)</strong> is a multivariate
+statistical technique used to explain the variation in a response
+variable (e.g., genotype) by a set of explanatory variables (e.g.,
+environmental factors). RDA is an extension of Principal Component
+Analysis (PCA) that relates two data matrices. It identifies linear
+relationships between the response variable and explanatory variables
+(Figure 3).</p>
+<div class="figure" style="text-align: center">
+<img src="POP_10_Signatures_Selection/images/Fig3.png" alt="Figure 3: Example of a RDA plot. The blue vectors are the environmental predictors. Individuals are color coded by location and plotted in the ordination space based on their relationship with the axes (which are linear combinations of the predictor variables). SNPs are plotted gray in the center of the plot. Note that individual genotypes from wet and temperate British Columbia (green) are positively related to high annual precipitation (AP) and low temperature seasonality (sdT). Based on RDA results, SNPs are strongly correlated with these two precipitation values and these candidate SNPs are plotted along the AP vector out from the center of the plot. [Source](https://popgen.nescent.org/2018-03-27_RDA_GEA.html)" width="75%" />
+<p class="caption">
+Figure 3: Example of a RDA plot. The blue vectors are the environmental
+predictors. Individuals are color coded by location and plotted in the
+ordination space based on their relationship with the axes (which are
+linear combinations of the predictor variables). SNPs are plotted gray
+in the center of the plot. Note that individual genotypes from wet and
+temperate British Columbia (green) are positively related to high annual
+precipitation (AP) and low temperature seasonality (sdT). Based on RDA
+results, SNPs are strongly correlated with these two precipitation
+values and these candidate SNPs are plotted along the AP vector out from
+the center of the plot. <a
+href="https://popgen.nescent.org/2018-03-27_RDA_GEA.html">Source</a>
+</p>
+</div>
+<p><strong>Gradient forest (GF)</strong> <a href="#refs">(<span
+class="citation">Ellis, Smith, and Pitcher (2012)</span>)</a> is a
+machine learning method that is a multidimensional extension of the
+random forest algorithm <a href="#refs">(<span class="citation">Breiman
+(2001)</span>)</a>. GF uses cross-validation to identify loci under
+selection, compute the importance of predictors and can identify
+important thresholds or change points in genetic variation along the
+environmental variable (Figure 4). GF can also handle non-linear
+relationships and correlated predictors.</p>
+<div class="figure" style="text-align: center">
+<img src="POP_10_Signatures_Selection/images/Fig4.png" alt="Figure 4. In a study by [(@nielsen2021distinct)](#refs), GF modeling was used to infer genomic variation–environment relationships. Models were fitted to the allele frequencies of putatively neutral and outlier SNP datasets (detected with other methods) for three rocky shore species and environmental data from WorldClim and principal coordinates of neighbor matrices (PCNMs) were used as predictors in the model to account for spatial autocorrelation and unmeasured environmental variation. The figure shows cumulative importance curves based on the turnover functions for each environmental variable for the urchin (left) where the curve shape indicates the rate of change in allele frequencies along the environmental gradient, and the maximum height indicates the total turnover in allele frequencies. The authors then used the turnover functions from the GF models to transform the environmental variables into a common biological importance scale (i.e [(@fitzpatrick2015ecological)](#refs) (left). We can see neutral (a, c, e) or outlier (b, d, f) loci where the coloured map cells indicate similar allele frequencies and show that the genomic turnover patterns of putative neutral and outlier loci generally followed the biogeographical breaks of the marine environment in the region." width="75%" />
+<p class="caption">
+Figure 4. In a study by <a href="#refs">(<span class="citation">Nielsen
+et al. (2021)</span>)</a>, GF modeling was used to infer genomic
+variation–environment relationships. Models were fitted to the allele
+frequencies of putatively neutral and outlier SNP datasets (detected
+with other methods) for three rocky shore species and environmental data
+from WorldClim and principal coordinates of neighbor matrices (PCNMs)
+were used as predictors in the model to account for spatial
+autocorrelation and unmeasured environmental variation. The figure shows
+cumulative importance curves based on the turnover functions for each
+environmental variable for the urchin (left) where the curve shape
+indicates the rate of change in allele frequencies along the
+environmental gradient, and the maximum height indicates the total
+turnover in allele frequencies. The authors then used the turnover
+functions from the GF models to transform the environmental variables
+into a common biological importance scale (i.e <a href="#refs">(<span
+class="citation">Fitzpatrick and Keller (2015)</span>)</a> (left). We
+can see neutral (a, c, e) or outlier (b, d, f) loci where the coloured
+map cells indicate similar allele frequencies and show that the genomic
+turnover patterns of putative neutral and outlier loci generally
+followed the biogeographical breaks of the marine environment in the
+region.
+</p>
+</div>
+<p><strong>Bayenv</strong> is a Bayesian hierarchical model that
+estimates the posterior probability of a locus being under selection. It
+models allele frequencies as random variables and estimates the
+probability of selection for each locus (Figure 5).</p>
+<div class="figure" style="text-align: center">
+<img src="POP_10_Signatures_Selection/images/Fig5.png" alt="Figure 5:  An example of a SNP where a lower allele frequency was found to be significantly associated with warmer minimum winter temperatures using Bayenv. This SNP was characterized by a high Bayes factors and extreme allele frequencies. (A) Allele frequencies and standardized minimum winter temperatures of the SNP, rs6001912 (B) shows the geographical distribution of SNP rs6001912 [(@fitzpatrick2021experimental)](#refs)" width="75%" />
+<p class="caption">
+Figure 5: An example of a SNP where a lower allele frequency was found
+to be significantly associated with warmer minimum winter temperatures
+using Bayenv. This SNP was characterized by a high Bayes factors and
+extreme allele frequencies. (A) Allele frequencies and standardized
+minimum winter temperatures of the SNP, rs6001912 (B) shows the
+geographical distribution of SNP rs6001912 <a href="#refs">(<span
+class="citation">Fitzpatrick et al. (2021)</span>)</a>
+</p>
+</div>
+<p><strong>Latent factor mixed models</strong> (LFMM) is a univariate
+regression model that includes unobserved variables (latent factors)
+that act to correct the model for confounding effects (i.e.population
+structure), which can improve power of the model when environment and
+demography are correlated (Figure 6) (<a href="#refs">(<span
+class="citation">Frichot et al. (2013)</span>)</a>; <a
+href="#refs">(<span class="citation">Frichot and François
+(2015)</span>)</a>).</p>
+<div class="figure" style="text-align: center">
+<img src="POP_10_Signatures_Selection/images/Fig6.png" alt="Figure 6: In a study on red abalone population genomics by [(@griffiths2025seascape)](#refs), lfmm2 modeling was used to infer genomic variation–environment relationships with maximum sea surface temperature (SST) (A), Coastal Upwelling Transport Index (CUTI) (B), Biologically Effective Upwelling Transport Index (BEUTI) (C) and range BEUTI (D). The horizontal line on the manhattan plots represents the significance threshold after Bonferroni correction of 0.05 (red). Very few SNPs passed the significance threshold and they are spread across multiple scaffolds, suggesting there is weak evidence for local adaptation to these environmental gradients." width="75%" />
+<p class="caption">
+Figure 6: In a study on red abalone population genomics by <a
+href="#refs">(<span class="citation">Griffiths, Smith, and Whitehead
+(2025)</span>)</a>, lfmm2 modeling was used to infer genomic
+variation–environment relationships with maximum sea surface temperature
+(SST) (A), Coastal Upwelling Transport Index (CUTI) (B), Biologically
+Effective Upwelling Transport Index (BEUTI) (C) and range BEUTI (D). The
+horizontal line on the manhattan plots represents the significance
+threshold after Bonferroni correction of 0.05 (red). Very few SNPs
+passed the significance threshold and they are spread across multiple
+scaffolds, suggesting there is weak evidence for local adaptation to
+these environmental gradients.
+</p>
+</div>
+</div>
+<div id="so-you-want-to-do-a-gea" class="section level2">
+<h2>So you want to do a GEA?</h2>
+<p>So you want to perform GEA? You will need four things before getting
+started…</p>
+<ol style="list-style-type: decimal">
+<li>A good sampling regime</li>
+<li>Genetic data</li>
+<li>An understanding of population structure/ and/or isolation by
+distance (IBD) in your system</li>
+<li>Geo-referenced environmental variables and a GEA method (or
+two)!</li>
+</ol>
+</div>
+<div id="experimental-design-conditions-for-gea" class="section level2">
+<h2>Experimental Design Conditions for GEA</h2>
+<div id="a-good-sampling-regime" class="section level3">
+<h3>1. A good sampling regime</h3>
+<p>Sampling design has implications for minimizing false-discoveries and
+for detecting true positives (statistical power) in relation to
+environmental selection. Compared with random or opportunistic sampling
+approaches, informed sampling designs based on the characteristics of
+the study area and species life history tend to improve the power of
+GEAs <a href="#refs">(<span class="citation">Whitlock and Lotterhos
+(2015)</span>)</a> . The general consensus suggests “stratified
+sampling” <a href="#refs">(<span class="citation">Dauphin et al.
+(2023)</span>)</a> - a sampling regime that is informed by a priori
+knowledge of neutral genetic differentiation (or geographic variation)
+and/or environmental representativeness to capture genetic diversity and
+population structure. To conduct a stratified sampling method you would
+collect an equal number of samples from each group, where each group is
+identified from environmental and population structure information (<a
+href="#refs">(<span class="citation">Dauphin et al. (2023)</span>)</a>,
+Figure 7). If you are unsure of the genetic structure of your species,
+it is recommended that you conduct a PCA or build a map of the
+environmental variables across your potential study area, with the aim
+to visualize the environmental variation across geographical sites
+before sampling (see <a href="#env-data">section 4 on Environmental
+data</a>). In this case, sampling locations that are environmentally
+different, but replicated within environments can help distinguish
+selection from neutral population structure. A key problem in this field
+is when unobserved variables correlate with both the primary
+environmental variables and the genomic data. For example, GEAs tend to
+have low power and high rates of false positives when environmental
+gradients are correlated with neutral population structure (<a
+href="#refs">(<span class="citation">Whitlock and Lotterhos
+(2015)</span>)</a>; <a href="#refs">(<span class="citation">Caye et al.
+(2019)</span>)</a>). Several methods have been specifically developed to
+account for this issue (see <a href="#Table2">Table 2</a>).</p>
+<div class="figure" style="text-align: center">
+<img src="POP_10_Signatures_Selection/images/Fig7.jpg" alt="Figure 7 (adapted from Figure 1 from [(@dauphin2023re)](#refs)): The green boundary represents the species regional range limit and the colors reflect topography. There are three main sampling design strategies that can be used in landscape genetic studies: (A) a sampling design that doesn’t rely on environmental or genetic data, (B) a sampling design that considers environmental data only, and (C) a sampling design that takes into account genetic and environmental information (Circles in box C represent sampling locations, with shadings referring to a priori known neutral genetic differences)." width="75%" />
+<p class="caption">
+Figure 7 (adapted from Figure 1 from <a href="#refs">(<span
+class="citation">Dauphin et al. (2023)</span>)</a>): The green boundary
+represents the species regional range limit and the colors reflect
+topography. There are three main sampling design strategies that can be
+used in landscape genetic studies: (A) a sampling design that doesn’t
+rely on environmental or genetic data, (B) a sampling design that
+considers environmental data only, and (C) a sampling design that takes
+into account genetic and environmental information (Circles in box C
+represent sampling locations, with shadings referring to a priori known
+neutral genetic differences).
+</p>
+</div>
+</div>
+<div id="genetic-data" class="section level3">
+<h3>2. Genetic data</h3>
+<p>Any type of genetic data can be used for GEA. Whole genome data (WGS)
+is typical in GEA studies, though reduced representation data
+(i.e. RADSeq, <a href="#refs">(<span class="citation">Xuereb et al.
+(2018)</span>)</a> is also commonly used. It is important that the
+genetic dataset is filtered for potential biases, such as applying minor
+allele frequency/count cut-offs, removing missing data and related
+individuals, and minimum genotype depth and quality. The same set of
+filtering guidelines we recommended above for Outlier Analyses, also
+applies here to GEA (please see Step 1 in the <a
+href="#outlier-analyses">Outlier Analyses Section</a> more details and
+recommended tutorials).</p>
+<ins>
+Some examples of different genomic data applying GEA methods available
+in the literature include:
+</ins>
+<ul>
+<li><a href="#refs">(<span class="citation">Xuereb et al.
+(2018)</span>)</a>–RadSeq</li>
+<li><a href="#refs">(<span class="citation">Griffiths, Smith, and
+Whitehead (2025)</span>)</a>; <a href="#refs">(<span
+class="citation">Rumberger et al. (2023)</span>)</a>; <a
+href="#refs">(<span class="citation">Wooldridge et al.
+(2024)</span>)</a>– WGS</li>
+<li><a href="#refs">(<span class="citation">Forester et al.
+(2025)</span>)</a>–Exome Capture</li>
+</ul>
+</div>
+<div id="understanding-population-structure-in-your-data"
+class="section level3">
+<h3>3. Understanding population structure in your data</h3>
+<p>Just like the outlier methods previously described, understanding
+<em>Isolation by Distance (IBD)</em> and/or <em>population
+structure</em> is critical before performing GEA analysis. IBD refers to
+segments of the genome shared by individuals due to common ancestry, and
+the degree of relatedness which can vary with distance whereby genetic
+similarities might be influenced by shared ancestry rather than true
+genotype-environment associations. Population structure, which reflects
+how genetic variation is distributed across different groups, can also
+confound results by creating artificial associations between genotypes
+and phenotypes. Correcting for IBD and population structure ensures that
+the identified associations in GEA studies are reflective of actual
+biological relationships, improving the reliability and validity of the
+findings.</p>
+<ins>
+Some common approaches for controlling for IBD or population structure
+in GEA include:
+</ins>
+<p><strong>Principal Component Analysis (PCA)</strong>: PCA is often
+used to detect and account for population structure. It reduces the
+dimensionality of genetic data and captures the main sources of
+variation. The first few principal components (PCs) usually correspond
+to major population substructures. By including these PCs as covariates
+in statistical models (such as GEA or GWAS), researchers can control for
+population structure and avoid spurious associations due to genetic
+differentiation between subpopulations.</p>
+<p><strong>Ancestry</strong>: Ancestry scores (like outputs from
+NGSadmix, STRUCTURE, ADMIXTURE) can quantify the proportion of an
+individual’s ancestry from different populations. These scores can be
+used to adjust for population structure in association analyses by
+including them as covariates, helping to differentiate genetic
+associations that arise from population demography vs actual
+genotype-environment relationships.</p>
+<p><strong>Geographical Coordinates (Latitude/Longitude)</strong>: In
+some studies, particularly those involving environmental associations,
+researchers may use the geographical location of individuals
+(latitude/longitude) as a covariate. This helps to account for
+geographic gradients in environmental variables that may correlate with
+genetic variation.</p>
+<p><strong>Distance-Based Moran’s Eigenvector Maps (dbMEM)</strong>:
+Distance-Based Moran’s Eigenvector Maps (dbMEMS) are derived from
+distance matrices, which reflect genetic or geographical distances
+between individuals. dbMEMs can be used to model spatial structure by
+decomposing distance matrices into eigenvectors that represent the
+underlying spatial patterns in genetic data. These eigenvectors are then
+incorporated into the model to control for spatial autocorrelation.</p>
+</div>
+<div id="env-data" class="section level3">
+<h3>4. Environmental data</h3>
+<p>Lastly, you will need geo-referenced environmental data (see <a
+href="#Table3A">Table 3A</a> and <a href="#Table3B">Table 3B</a>). There
+are two key types of environmental data that are used; in situ or
+spatially interpolated data:</p>
+<ol style="list-style-type: decimal">
+<li>In situ data, are on-site measurements of environmental conditions
+usually collected directly from the field or from remote sensing
+devices.</li>
+<li>Spatially interpolated data (e.g. oceanographic models) using
+different models and processes to remove missing data and errors, extend
+the evaluation of environmental conditions to periods and locations not
+covered by in-situ measurements.</li>
+</ol>
+<p>Spatially interpolated data are commonly derived from the
+assimilation of atmospheric and oceanographic data from models,
+satellites and in situ observations. These ocean models usually provide
+accurate estimates of the state of the system, and are commonly used for
+GEAs because they have broad spatial and temporal resolution, and are
+usually publicly available and accessible. Some of the useful databases
+hosting past, present and future climate information can be found in <a
+href="#Table3A">Table 3A</a>, <a href="#Table3B">Table 3B</a>, and <a
+href="#Table3C">Table 3C</a>.</p>
+<p>The most important consideration when selecting a database is the
+resolution and grain of the environmental dataset. For example, due to
+the small spatial scale of some key regionally specific processes
+(e.g. coastal processes), you should aim to identify and use an ocean
+model with a sufficiently high spatial and temporal resolution to
+resolve those processes (e.g. upwelling) which may be important for
+selection/adaptation in your system. In this case, you might choose to
+use a regional model (downscaled model) which uses data from a global
+climate model as input into a fine-scale, regional atmospheric model
+with detailed bathymetry, coastal boundaries, etc.</p>
+<ins>
+Resources for Environmental Data:
+</ins>
+<p>There are plenty of existing resources for processing this
+environmental data</p>
+<ul>
+<li><p><a href="https://ropensci.org/blog/2019/11/05/tidync/">Data
+extraction from the NetCDF databases</a></p></li>
+<li><p><a href="https://ouicodedata.com//posts/worldclim-with-r/">How to
+extract and plot data from Worldclim</a></p></li>
+<li><p><a
+href="https://jorgemfa.medium.com/easy-to-use-marine-climate-layers-for-ecological-modelling-83950cd7a75f">Data
+extraction from the Bio-ORACLE databse</a></p></li>
+<li><p><a href="https://github.com/bio-oracle/biooracler">Another data
+extraction method from the Bio-ORACLE database</a></p></li>
+</ul>
+<ins>
+Further recommended reading:
+</ins>
+<ul>
+<li><a href="#refs">(<span class="citation">Rellstab et al.
+(2015)</span>)</a> –method comparison</li>
+<li><a href="#refs">(<span class="citation">Lotterhos and Whitlock
+(2015)</span>)</a>–method comparison</li>
+<li><a href="#refs">(<span class="citation">François et al.
+(2016)</span>)</a>–method comparison for false discovery rates</li>
+<li><a href="#refs">(<span class="citation">Forester et al.
+(2016)</span>)</a> (GEA)– method comparison</li>
+<li><a href="#refs">(<span class="citation">Dauphin et al.
+(2023)</span>)</a>–discussion of how different types/scales of of
+environmental data can be used to answer different questions</li>
+<li><a href="#refs">(<span class="citation">Capblancq et al.
+(2018)</span>)</a> – method comparison (GEA &amp; pcadapt)</li>
+<li><a href="#refs">(<span class="citation">Alvarado et al.
+(2022)</span>)</a> - example paper that uses gradientForest</li>
+<li><a href="#refs">(<span class="citation">Riginos et al.
+(2016)</span>)</a> – spatial scale in landscape genomics</li>
+<li><a href="#refs">(<span class="citation">Capblancq and Forester
+(2021)</span>)</a> –RDA</li>
+<li><a href="#refs">(<span class="citation">Selmoni et al.
+(2020)</span>)</a>– example landscape genomics study</li>
+<li><a href="#refs">(<span class="citation">Assis et al.
+(2018)</span>)</a>– paper on bioclimatic modelling</li>
+</ul>
+</div>
+<div id="Table2" class="section level3">
+<h3>TABLE 2: Common methods for identifying candidate SNPs associated
+with environmental data (GEA)</h3>
+<p>Common methods for identifying candidate SNPs associated with
+environmental data (GEA), the associated approach for calculating
+divergence, the biological assumptions, and how demographic history is
+accounted for in the model. We also provide a link to public tutorials
+for each method.</p>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="21%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model &amp; Package</th>
+<th>Approach / Statistics</th>
+<th>Demographic History</th>
+<th>False Positive Rate</th>
+<th>Tutorial / Citation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bayenv / Bayenv2 (Command Line)</td>
+<td>XtX statistics; Univariate correlation between environment and
+allele frequencies</td>
+<td>Covariance matrix from genome-wide data controls for demography</td>
+<td>Inflated; use PCs or Bonferroni correction</td>
+<td><a
+href="https://www.mountainmanmaier.com/software/pop_genom/#search-for-outliers-with-bayenv2">Maier
+2017 Tutorial</a> <a href="#refs">(<span class="citation">Coop et al.
+(2010)</span>)</a></td>
+</tr>
+<tr class="even">
+<td><a
+href="https://www1.montpellier.inrae.fr/CBGP/software/baypass/index.html">BayPass
+(Command Line)</a></td>
+<td>XtX statistics</td>
+<td>Pairwise covariance matrix controls for demography</td>
+<td>Similar to Bayenv; adjust for multiple testing</td>
+<td><a
+href="https://eead-csic-compbio.github.io/barley-agroclimatic-association/HOWTOXtX_BAYPASS.html">XtX
+only</a>, <a
+href="https://esnielsen.github.io/post/pool-seq-analyses-poolfstat-baypass/">With
+env data</a>, <a href="#refs">(<span class="citation">Gautier
+(2015)</span>)</a></td>
+</tr>
+<tr class="odd">
+<td>BayeScEnv (Command Line)</td>
+<td>Bayesian Fst; like BayeScan, populations defined a priori</td>
+<td>Dirichlet-multinomial model with pop-specific parameters</td>
+<td>Not well documented</td>
+<td><a href="https://github.com/devillemereuil/bayescenv/wiki">GitHub
+Tutorial</a>, <a
+href="http://evomics.org/wp-content/uploads/2016/01/BayeScan_BayeScEnv_exercises.pdf">BayeScan
+PDF</a>, <a href="#refs">(<span class="citation">De Villemereuil and
+Gaggiotti (2015)</span>)</a></td>
+</tr>
+<tr class="even">
+<td>RDA (R, Vegan Package)</td>
+<td>Multiple regression + PCA; Mahalanobis distance (Q-values)</td>
+<td>Partial RDA includes demographic covariates</td>
+<td>Generally low; may be sensitive to multicollinearity</td>
+<td><a
+href="https://marineomics.github.io/POP_05_RDAtraitPredictionTutorial.html">KE
+Lotterhos Tutorial</a>, <a
+href="https://r.qcbs.ca/workshop10/book-en/partial-redundancy-analysis.html">Partial
+RDA</a>, <a
+href="https://popgen.nescent.org/2018-03-27_RDA_GEA.html">RDA GEA</a>,
+<a href="#refs">(<span class="citation">Capblancq and Forester
+(2021)</span>)</a></td>
+</tr>
+<tr class="odd">
+<td>LFMM / LFMM2 (R, LEA Package)</td>
+<td>Univariate LFMM (MCMC or least-squares)</td>
+<td>Latent factors (K) estimate neutral structure</td>
+<td>Low, but higher in complex population structure; use FDR or
+Bonferroni</td>
+<td><a
+href="https://baylab.github.io/MarineGenomicsSemester/genome-environment-association.html">Bay
+Lab Tutorial</a> <a href="#refs">(<span class="citation">Frichot et al.
+(2013)</span>)</a></td>
+</tr>
+<tr class="even">
+<td>Gradient Forest (GF)</td>
+<td>Random forest; multivariate machine learning</td>
+<td>Requires prior filtering (e.g., Bayenv) or spatial predictors
+(MEMs)</td>
+<td>Thought to be lower; avoids multiple testing directly</td>
+<td><a
+href="https://github.com/pgugger/LandscapeGenomics/blob/master/2018_China/Exercise3.md">GF
+Tutorial</a> <a href="#refs">(<span class="citation">Ellis, Smith, and
+Pitcher (2012)</span>)</a></td>
+</tr>
+<tr class="odd">
+<td>Generalized Dissimilarity Modeling (GDM)</td>
+<td>Distance-based multivariate; nonlinear relationships</td>
+<td>Can include population structure if provided</td>
+<td>Fewer assumptions; less affected by marker independence</td>
+<td><a href="#refs">(<span class="citation">Ferrier et al.
+(2007)</span>)</a> <a href="#refs">(<span class="citation">Fitzpatrick
+and Keller (2015)</span></a></td>
+</tr>
+<tr class="even">
+<td>Weighted-Z Analysis (WZA)</td>
+<td>Window-based GEA; aggregated signal across SNPs</td>
+<td>Does not explicitly model structure; looks at patterns across
+windows</td>
+<td>Reported lower than BayPass and LFMM</td>
+<td><a href="https://github.com/CoAdapTree/WZA">WZA GitHub Tutorial</a>,
+<a href="#refs">(<span class="citation">Booker et al.
+(2024)</span>)</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="Table3A" class="section level3">
+<h3>TABLE 3A. Oceanographic databases</h3>
+<p>A summary (not an exhaustive list) of freely available oceanographic
+databases to find environmental data for your GEAs</p>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="62%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Database</th>
+<th>Description</th>
+<th>Link/ Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>WorldClim</td>
+<td>A set of global climate layers (gridded climate data in GeoTiff
+format) that can be used for mapping and spatial modeling.</td>
+<td><a href="https://www.worldclim.org/">WorldClim Website</a></td>
+</tr>
+<tr class="even">
+<td>World Ocean Database (WOD)</td>
+<td>Includes temperature, salinity, sea surface topography,
+chemistry/biology optics</td>
+<td><a href="www.nodc.noaa.gov/OC5/WOD/pr_wod.html">WOD Website</a></td>
+</tr>
+<tr class="odd">
+<td>NASA’s Earth Observing System Data and Information System
+(EOSDIS)</td>
+<td>Includes temperature, salinity, sea surface topography,
+chemistry/biology optics</td>
+<td><a href="https://earthdata.nasa.gov/discipline/ocean">EOSDIS
+Website</a></td>
+</tr>
+<tr class="even">
+<td>Australian Ocean Data Network (AODN)</td>
+<td>Online network of marine and climate data resources, includes a wide
+range of parameters in different ocean environments collected from
+ocean-going ships, autonomous vehicles, moorings and other
+platforms.</td>
+<td><a href="https://imos.org.au/facilities/aodn">AODN Website</a></td>
+</tr>
+<tr class="odd">
+<td>NOAA Data Buoy Center (NDBC)</td>
+<td>National Oceanic and Atmospheric Administration’s (NOAA) National
+Weather Service (NWS) which operates, and maintains a network of data
+collecting buoys and coastal stations. Can be accessed using R package
+rnoaa</td>
+<td><a href="www.ndbc.noaa.gov">NDBC Website</a></td>
+</tr>
+<tr class="even">
+<td>ICES Data Centre - Ocean (North Atlantic)</td>
+<td>Oceanographic data which includes includes temperature, salinity,
+oxygen, chlorophyll a, and nutrients</td>
+<td><a
+href="http://ices.dk/marine-data/data-portals/Pages/ocean.aspx">ICES
+Website</a></td>
+</tr>
+<tr class="odd">
+<td>Baltic Environmental Database (BED) (Baltic Sea)</td>
+<td>Bathymetry, hydrography, nutrients, sediment data, atmospheric
+nutrient input, and runoff data for the Baltic Sea.</td>
+<td><a href="www.balticnest.org/bed">BED Website</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="Table3B" class="section level3">
+<h3>TABLE 3B: Environmental data reanalyses</h3>
+<p>Climate reanalyses combine past observations with models and so they
+tend to have wide coverage and can provide data for variables and
+locations where we don’t have observations (i.e <a
+href="https://www.youtube.com/watch?v=FAGobvUGl24">here</a>)</p>
+<table>
+<colgroup>
+<col width="7%" />
+<col width="82%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Database</th>
+<th>Description</th>
+<th>Link/ Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Copernicus Marine</td>
+<td>A database hosting various re-analysis products. Includes For
+example Global Ocean Physics Reanalysis (GLORYS12V1 <a
+href="#refs">(<span class="citation">Lellouche et al.
+(2018)</span>)</a>) includes GLOBAL_MULTIYEAR_PHY_001_030 which
+specifically provides an eddy resolving (1/12°) global ocean simulation,
+covering the recent period, at 1/12 degree (approx. 8km) and on 50
+standard levels, in four dimensions. ERA5 provides a snapshot of the
+atmosphere, land surface and ocean waves for each hour from 1940 onwards
+(i.e reanalysis ERA5) Many code examples for accessing data using your
+fave language (R, python, Julia) here.</td>
+<td><a href="https://data.marine.copernicus.eu/products">Copernicus
+Link</a> <a href="#refs">(<span class="citation">Jean-Michel et al.
+(2021)</span>)</a></td>
+</tr>
+<tr class="even">
+<td>Bluelink ReANalysis (BRAN) (Australsia region)</td>
+<td>A series of ocean reanalyses; the most recent being BRAN2020 <a
+href="#refs">(<span class="citation">Chamberlain et al.
+(2021)</span>)</a> BRAN is closely related to OceanMAPS, an operational
+ocean reanalysis system used by the Australian Bureau of Meteorology <a
+href="#refs">(<span class="citation">Brassington et al.
+(2007)</span>)</a></td>
+<td><a href="#refs">(<span class="citation">Chamberlain et al.
+(2021)</span>)</a></td>
+</tr>
+<tr class="odd">
+<td>European Centre for Medium-Range Weather Forecasts</td>
+<td>ERA5 provides a snapshot of the atmosphere, land surface and ocean
+waves for each hour from 1940 onwards (i.e reanalysis ERA5)</td>
+<td><a href="https://www.ecmwf.int/en/research/climate-reanalysis">ECMWF
+Link</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="Table3C" class="section level3">
+<h3>TABLE 3C: Regional projections/ Future Climate Scenarios</h3>
+<p>Examples of some present and future climate change predictions
+(regional, typically modeled with reanalysis products).</p>
+<table>
+<colgroup>
+<col width="14%" />
+<col width="69%" />
+<col width="15%" />
+<col width="0%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Database</th>
+<th>Description</th>
+<th>Link/ Reference</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bedford Institute of Oceanography North Atlantic Model (BNAM)</td>
+<td>An eddy-resolving, Nucleus for European Modelling of the Ocean
+(NEMO) based ice–ocean coupled model. Includes past, present day and
+future projections.</td>
+<td><a href="#refs">(<span class="citation">Wang et al.
+(2021)</span>)</a>, Contact the authors for the data, .nc files.</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>The Gulf of Maine (GoM) Projections</td>
+<td>Includes two high resolution numerical ocean models used to
+downscale global climate projections to produce four estimates of ocean
+physical properties in the GoM in 2050 for the “business as usual”
+carbon emission scenario.</td>
+<td><a href="#refs">(<span class="citation">Brickman et al.
+(2021)</span>)</a> model outputs are available upon request as .nc
+files.</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Northeastern Pacific Canadian Ocean Ecosystem Model (NEP36-CanOE)
+Climate Projections</td>
+<td>Three simulations from the Northeastern Pacific Canadian Ocean
+Ecosystem Model (NEP36-CanOE), a configuration of the Nucleus for
+European Modelling of the Ocean (NEMO) V3.6. Includes a historical
+simulation of the 1986-2005 mean climate and two future simulations
+project the 2046-2065 mean climate for representative concentration
+pathways (RCP) 4.5 (moderate mitigation scenario) and 8.5 (no mitigation
+scenario).</td>
+<td>Contact authors</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="genome-wide-association-study-gwas" class="section level1">
+<h1>Genome-Wide Association Study (GWAS)</h1>
+<div id="what-is-a-genome-wide-association-study"
+class="section level2">
+<h2>What is a Genome-Wide Association Study?</h2>
+<p>A GWAS is used to associate some phenotypic trait with putatively
+causative loci/SNPs. The methods used are similar to GEA, but instead of
+environmental data as the explanatory variable, phenotypic traits are
+used. Importantly, the phenotypic and genotypic data must be tied to
+each individual in the study. This has primarily been used in humans to
+identify genetic variants associated with disease <a href="#refs">(<span
+class="citation">Uffelmann et al. (2021)</span>)</a>, but it is becoming
+more prominent for use in non-model organisms for how a particular trait
+related to climate adaptation (e.g., physiological, morphological, and
+life history) is under selection. For example, identifying loci
+associated with coral bleaching (Figure 8) <a href="#refs">(<span
+class="citation">Fuller et al. (2020)</span>)</a> and beak
+size/morphology in Galapagos finches <a href="#refs">(<span
+class="citation">Enbody et al. (2023)</span>)</a>. Effect sizes of loci
+can also be determined based on how strongly associated variants are
+with phenotypic variation.</p>
+<p>In contrast to GEA, GWAS often requires a much larger sample size
+(and even more so for polygenic traits). This is why many GWAS studies
+are now emerging that employ a low-coverage sequencing approach combined
+with genotype imputation (<a href="#refs">(<span class="citation">Lou et
+al. (2021)</span>)</a>; <a href="#refs">(<span class="citation">Jørsboe
+and Albrechtsen (2022)</span>)</a>),where a larger number of individuals
+are sequenced, increasing the power to detect significant associations.
+Additionally, the inclusion of a larger sampling strategy will encompass
+a wide range of genomic diversity to identify all of the SNPs associated
+with the trait, such as rare SNPs.</p>
+<p>Similar to outlier and GEA studies, GWAS are also subject to
+genotyping bias issues and false positives resulting from demographic
+history <a href="#refs">(<span class="citation">Tam et al.
+(2019)</span>)</a>. We recommend the researcher perform some combination
+of filtering on their dataset, which could include removing rare SNPs,
+SNPs not in Hardy-Weinberg equilibrium, and SNPs that are missing from a
+fraction of the individuals genotypes. Go back to our “Outlier Analyses”
+section for more details and recommended tutorials for filtering.</p>
+<div class="figure" style="text-align: center">
+<img src="POP_10_Signatures_Selection/images/Fig8.png" alt="Figure 8: Example of GWAS implemented using a linear regression in the program PLINK. 237 coral samples were collected across 12 reefs from the Great Barrier reef. Low-coverage WGS was performed and bleaching susceptibility was measured in each individual. Each dot is a SNP and it is plotted by its location in the genome on the X-axis. The Y-axis is the -log p value for the linear regression of each SNP and its association with bleaching susceptibility. Larger values demonstrate stronger associations. The authors identified two genes with significant loci that were associated with bleaching susceptibility. Source: [(@fuller2020population)](#refs)" width="75%" />
+<p class="caption">
+Figure 8: Example of GWAS implemented using a linear regression in the
+program PLINK. 237 coral samples were collected across 12 reefs from the
+Great Barrier reef. Low-coverage WGS was performed and bleaching
+susceptibility was measured in each individual. Each dot is a SNP and it
+is plotted by its location in the genome on the X-axis. The Y-axis is
+the -log p value for the linear regression of each SNP and its
+association with bleaching susceptibility. Larger values demonstrate
+stronger associations. The authors identified two genes with significant
+loci that were associated with bleaching susceptibility. Source: <a
+href="#refs">(<span class="citation">Fuller et al. (2020)</span>)</a>
+</p>
+</div>
+</div>
+<div
+id="different-gwas-sampling-strategies-will-require-different-statistical-model-designs"
+class="section level2">
+<h2>Different GWAS Sampling Strategies Will Require Different
+Statistical Model Designs</h2>
+<p>GWAS studies could take two approaches where traits and genotype
+information are collected from wild, unrelated, individuals (a
+population-based GWAS), or from related individuals (a family-based
+GWAS). In addition, these two types of GWAS could include a GxE
+interaction where traits are measured under different experimental
+treatment exposures and genotype information is collected at the end of
+the study. While both approaches employ similar statistical analyses,
+such as a linear or logistic regression depending on whether the trait
+is continuous (e.g., body size), or binary (alive/dead) (See <a
+href="#Table4">Table 4</a>), the model matrix design may require a
+different set up. For example, if sampling spans across a large and
+variable landscape, significant genotype-phenotype associations may
+actually be false positives due to population structure <a
+href="#refs">(<span class="citation">Tam et al. (2019)</span>)</a>.
+Demographic history should be accounted for as a covariate in the model.
+Different methods outlined in <a href="#Table4">Table 4</a> will
+estimate population structure differently and the reader may want to
+choose a method that is best suited to the biology of their system.</p>
+<p>Accounting for sample relatedness and ancestry is incredibly
+important for family-based GWAS approaches and may otherwise result in
+over-estimates of SNP-based heritability for the trait. In outlier and
+GEA, you may want to remove related individuals from the analysis, but
+for GWAS approaches, related individuals may increase your power to
+detect significant and heritable SNPs! Some GWAS designs specifically
+use a breeding or pedigree based approach for this reason, but related
+individuals must be identified first and pedigree information provided
+as a covariate in the model design to GWAS.</p>
+<p>Other model matrix designs may include the addition of a fixed effect
+based on treatment exposures, specficially if it’s a part of the
+experimental design. There may be other important covariates to include
+in the model as random effect terms, such as the age or sex of
+individuals depending on the biology of the system, or independent
+replicant treatment exposures depending on the experimental design.</p>
+</div>
+<div id="general-method-overview-1" class="section level2">
+<h2>General Method Overview:</h2>
+<p>There are a variety of methods for GWAS, many that vary based on the
+type of sequencing or experimental design. For example, ANGSD-asso and
+SNPTEST are designed to work well with genotype probabilities from
+low-coverage data or data that has been imputed first. PLINK/PLINK2 is a
+widely used tool with lots of documentation. Other methods differ on the
+types of statistical associations employed. For example, the programs
+GEMMA and fastGWA were designed to efficiently (and quickly) test for
+associations for large numbers of individuals using linear mixed models.
+Methods also differ widely for how they estimate population structure
+and genetic relatedness among individuals. Some methods use a PCA based
+approach for estimating population structure (GEMMA, fastGWA, and
+SNPTEST). In a slightly similar approach, PLINK/PLINK2 uses classical
+Multidimensional scaling (MDS) and LEA uses latent factors to estimate
+values of K. Other programs, such as ANGSD-asso, require external
+programs for estimating population structure, but accept multiple inputs
+from PCAngsd, ADMIXTURE, or NGSadmix. For genetic relatedness, some
+approaches, EMMAX and GEMMA generate a kinship matrix or genetic matrix
+that is used as a covariate in the GWAS model. Tutorials for ANGSD-asso,
+PLINK/PLINK2, LEA, and SNPTEST don’t specifically touch on whether
+genetic relatedness is accounted for, thus these methods are not
+recommended for family-based GWAS approaches. Even if researchers were
+to use this method for population-based GWAS, we recommend researchers
+use external programs to estimate genetic relatedness (i.e., COLONY,
+CERVUS, AlpaAssign, King’s relatedness matrix) to identify related
+individuals to remove them from the dataset before proceeding with GWAS.
+For more details, see <a href="#Table4">Table 4</a> and our further
+recommended reading below.</p>
+<ins>
+Further recommended reading:
+</ins>
+<ul>
+<li><a href="#refs">(<span class="citation">Uffelmann et al.
+(2021)</span>)</a>–overview of different programs available</li>
+<li><a href="#refs">(<span class="citation">Fuller et al.
+(2020)</span>)</a>– GWAS example study</li>
+<li><a href="#refs">(<span class="citation">Enbody et al.
+(2023)</span>)</a>–GWAS example study</li>
+<li><a href="#refs">(<span class="citation">Tam et al.
+(2019)</span>)</a>–benefits and limitations of GWAS</li>
+<li><a href="#refs">(<span class="citation">Yanez et al.
+(2023)</span>)</a>–Applied uses of GWAS</li>
+<li><a href="#refs">(<span class="citation">Kijas et al.
+(2018)</span>)</a>–example study</li>
+</ul>
+<div id="Table4" class="section level3">
+<h3>TABLE 4: Common methods for identifying candidate SNPs associated
+with phenotypic data (GWAS)</h3>
+<p>Common methods for identifying candidate SNPs associated with
+phenotypic data (GWAS), the associated approach for calculating
+divergence, the biological assumptions, and how demographic history is
+accounted for in the model. We also provide a link to public tutorials
+for each method.</p>
+<table>
+<colgroup>
+<col width="4%" />
+<col width="27%" />
+<col width="33%" />
+<col width="22%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Program</th>
+<th>Approach/ Method</th>
+<th>Demographic History</th>
+<th>Tutorial</th>
+<th>Citation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BEAGLE + ANGSD-asso</td>
+<td>Impute missing genotypes with Beagle, and use beagle output as input
+for ANGSD -latent model (using GLM framework) that can account for
+genotype probabilities for low depth seq data</td>
+<td>* Pop. structure detected with NGSadmix or ADMIXTURE or PCAngsd
+programs -changes allele freq prior if pop structure is present <br>*
+does not account for closely related individuals–our suggestion would be
+to remove these individuals from the dataset</td>
+<td><a
+href="https://baylab.github.io/MarineGenomicsSemester/week-10-genome-wide-association-study-gwas.html">Bay
+Lab Tutorial</a> <br><a
+href="https://www.popgen.dk/angsd/index.php/Association">ANGSD
+Tutorial</a></td>
+<td><a href="#refs">(<span class="citation">Jørsboe and Albrechtsen
+(2022)</span>)</a></td>
+</tr>
+<tr class="even">
+<td>GEMMA (command line)</td>
+<td>Univariate and multivariate Linear mixed models (LMMs)</td>
+<td>* user accounts for pop structure independently by calculating
+eigenvalues from user-generated PCA as covariate option <br>*
+relatedness matrices calculated using either the centered or
+standardized genotype methods</td>
+<td><a href="https://github.com/rcc-uchicago/genetic-data-analysis-2">U
+of Chicago Workshop Tutorial</a> <br><a
+href="http://htmlpreview.github.io/?https://github.com/northeastern-rc/training_GEMMA/blob/main/GWAS_2023.html">Northwestern
+Tutorial</a></td>
+<td><a href="#refs">(<span class="citation">Zhou and Stephens
+(2012)</span>)</a> <a href="#refs">(<span class="citation">Zhou and
+Stephens (2014)</span>)</a></td>
+</tr>
+<tr class="odd">
+<td>PLINK/PLINK2</td>
+<td>Multiple methods: Cochran-Armitage trend test, Fisher’s exact test,
+genotypic tests (general, dominant, and recessive models), and
+Cochran-Mantel-Haenszeltests for stratified tables and standard linear
+regressions for quantitative traits</td>
+<td>* Calculates identity by descent; calculates complete-linkage
+hierarchical clustering to assess population stratification, OR can use
+a data-reduction technique of classical MDS to produce a k-dimensional
+representation of any substructure. <br>* You need to remove closely
+related individuals</td>
+<td><a href="https://www.cog-genomics.org/plink/1.9/assoc">Plink
+Tutorial</a> <br><a
+href="https://www.cog-genomics.org/plink/2.0/assoc">Plink2
+Tutorial</a></td>
+<td><a href="#refs">(<span class="citation">Purcell et al.
+(2007)</span>)</a></td>
+</tr>
+<tr class="even">
+<td>LEA (R package)</td>
+<td>Latent factor mixed model Lfmm: MCMC Lfmm2: least-squares estimates
+(for large SNP datasets)</td>
+<td>* Uses latent factors to estimate values of K <br>* does not account
+for closely related individuals–our suggestion would be to remove these
+individuals from the dataset</td>
+<td><a
+href="https://baylab.github.io/MarineGenomicsSemester/genome-environment-association.html">Bay
+Lab Tutorial</a> <br>*Note that phenotypic traits must be in the env
+format (substitute environmental data for phenotypic traits)</td>
+<td><a href="#refs">(<span class="citation">Frichot et al.
+(2013)</span>)</a> <a href="#refs">(<span class="citation">Frichot and
+François (2015)</span>)</a> <a href="#refs">(<span
+class="citation">François et al. (2016)</span>)</a></td>
+</tr>
+<tr class="odd">
+<td>fastGWA</td>
+<td>mixed linear model</td>
+<td>* uses SNP-derived PCs to correct for the effect due to population
+stratification <br>* estimates relatedness using a genetic relationship
+matrix (GRM) between pairs of individuals from a set of SNPs</td>
+<td><a
+href="https://yanglab.westlake.edu.cn/software/gcta/#fastGWA">Yang Lab
+Tutorial</a></td>
+<td><a href="#refs">(<span class="citation">Jiang et al.
+(2019)</span>)</a></td>
+</tr>
+<tr class="even">
+<td>SNPTEST (improved imputation method)</td>
+<td>Options for both frequentist linear models or bayesian models</td>
+<td>* uses eigenvectors from a PCA analysis to code for unobserved
+population structure and included as a covariate in the model <br>* does
+not account for closely related individuals–our suggestion would be to
+remove these individuals from the dataset</td>
+<td><a
+href="https://www.chg.ox.ac.uk/~gav/snptest/#introduction">SNPTest
+Tutorial</a></td>
+<td><a href="#refs">(<span class="citation">Marchini et al.
+(2007)</span>)</a></td>
+</tr>
+<tr class="odd">
+<td>EMMAX</td>
+<td>restricted maximum likelihoods (REML)</td>
+<td>* generates kinship matrix (IBS or BN, BN is preferred) using
+emmax-kin flag <br>* used for both population stratification and closely
+related individuals</td>
+<td><a href="https://genome.sph.umich.edu/wiki/EMMAX">EMMAX
+Tutorial</a></td>
+<td><a href="#refs">(<span class="citation">Kang et al.
+(2010)</span>)</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="so-you-found-some-candidate-snpswhat-next"
+class="section level1">
+<h1>So you found some candidate SNPs…What next?</h1>
+<p>Great! There are many possible follow-up steps and post-hoc
+validation to choose from!</p>
+<p>You might want to investigate whether loci under selection overlap
+any genes or are in linkage disequilibrium (LD) with genes, consider
+using the program LDannot if you have adequate genomic resources <a
+href="#refs">(<span class="citation">Prunier et al. (2019)</span>)</a>.
+You need an annotated genome, but hot tip: If you don’t have an
+annotated genome, you can email NCBI to annotate it for you, or you can
+do it yourself with a program such as <a
+href="https://github.com/agshumate/Liftoff">Liftoff</a> (more details in
+see <a href="#Table5">Table 5</a>). The program calculates linkage
+disequilibrium information in your VCF file using known gene regions
+from your annotation file to identify which loci under selection are in
+LD with genes.</p>
+<p>If you have identified a long list of candidate SNPs that overlap
+with genes, you can perform a functional enrichment test using Gene
+Ontology terms (GO; a standardized database of the biological process,
+molecular function and cellular component of a gene) using R packages
+such as REVIGO or TopGO. Alternatively, if you have identified a small
+number of SNPs that overlap with genes (&gt;10 or less; note that this
+exact number will be subjective), you can look at the functions of just
+those set of genes, either from the annotated genome itself, or blasting
+the sequence on NCBI.</p>
+<p>Other types of questions that can be answered are the rate of genetic
+load in candidate SNPs. This can be explored by investigating the
+occurrence of nonsynonymous SNPs (a variant that changes amino acid in
+the protein) and the ratio of nonsynonymous vs synonymous substitutions
+(dN/dS). The increased ratio of dN/dS substitutions are hypothesized to
+be increased evidence for their relevance to adaptation <a
+href="#refs">(<span class="citation">Rellstab et al.
+(2015)</span>)</a>.</p>
+<p>Another growing area of research is to investigate the genomic
+vulnerability of the species, which uses identified outlier loci to
+estimate the magnitude of adaptation required to keep up with predicted
+changes in climate <a href="#refs">(<span class="citation">Capblancq et
+al. (2020)</span>)</a>. The R package LEA can compute values of genetic
+offset statistics based on new or predicted environments (see the
+functions genetic.gap, genetic.offset).</p>
+<div id="Table5" class="section level3">
+<h3>TABLE 5: Annotating your candidate SNPs under selection</h3>
+<p>A short list of a few resources for annotating your candidate SNPs
+under selection. This is not an exhaustive list!. We also provide a link
+to public tutorials for each method.</p>
+<table>
+<colgroup>
+<col width="8%" />
+<col width="14%" />
+<col width="62%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Program</th>
+<th>Program Function</th>
+<th>Tutorial</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>topGO</td>
+<td>Functional enrichment</td>
+<td><a
+href="https://datacatz.wordpress.com/2018/01/19/gene-set-enrichment-analysis-with-topgo-part-1/">TopGO
+Tutorial</a></td>
+<td><a href="#refs"><span class="citation">Sayols (2023)</span></a></td>
+</tr>
+<tr class="even">
+<td>REVIGO / rrvgo</td>
+<td>Functional enrichment</td>
+<td><a href="http://revigo.irb.hr/">GUI Web App</a>, <a
+href="https://www.bioconductor.org/packages/release/bioc/vignettes/rrvgo/inst/doc/rrvgo.html">rrvgo
+Manual</a></td>
+<td><a href="#refs"><span class="citation">Supek et al.
+(2011)</span></a></td>
+</tr>
+<tr class="odd">
+<td>LD-annot</td>
+<td>Find overlap of SNPs with genes</td>
+<td><a href="https://github.com/ArnaudDroitLab/LD-annot">GitHub
+Repository</a></td>
+<td><a href="#refs"><span class="citation">Prunier et al.
+(2019)</span></a></td>
+</tr>
+<tr class="even">
+<td>Liftoff</td>
+<td>Annotate your genome</td>
+<td><a href="https://github.com/agshumate/Liftoff">GitHub
+Repository</a></td>
+<td><a href="#refs"><span class="citation">Shumate and Salzberg
+(2021)</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="refs" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
+<div id="ref-ahrens2018search" class="csl-entry">
+Ahrens, Collin W, Paul D Rymer, Adam Stow, Jason Bragg, Shannon Dillon,
+Kate DL Umbers, and Rachael Y Dudaniec. 2018. <span>“The Search for Loci
+Under Selection: Trends, Biases and Progress.”</span> <em>Molecular
+Ecology</em> 27 (6): 1342–56.
+</div>
+<div id="ref-alvarado2022genotype" class="csl-entry">
+Alvarado, Allison H, Christen M Bossu, Ryan J Harrigan, Rachael A Bay,
+Allison RP Nelson, Thomas B Smith, and Kristen C Ruegg. 2022.
+<span>“Genotype–Environment Associations Across Spatial Scales Reveal
+the Importance of Putative Adaptive Genetic Variation in
+Divergence.”</span> <em>Evolutionary Applications</em> 15 (9):
+1390–1407.
+</div>
+<div id="ref-assis2018bio" class="csl-entry">
+Assis, Jorge, Lennert Tyberghein, Samuel Bosch, Heroen Verbruggen, Ester
+A Serrão, and Olivier De Clerck. 2018. <span>“Bio-ORACLE V2. 0:
+Extending Marine Data Layers for Bioclimatic Modelling.”</span>
+<em>Global Ecology and Biogeography</em> 27 (3): 277–84.
+</div>
+<div id="ref-beaumont1996evaluating" class="csl-entry">
+Beaumont, Mark A, and Richard A Nichols. 1996. <span>“Evaluating Loci
+for Use in the Genetic Analysis of Population Structure.”</span>
+<em>Proceedings of the Royal Society of London. Series B: Biological
+Sciences</em> 263 (1377): 1619–26.
+</div>
+<div id="ref-bonhomme2010detecting" class="csl-entry">
+Bonhomme, Maxime, Claude Chevalet, Bertrand Servin, Simon Boitard, Jihad
+Abdallah, Sarah Blott, and Magali SanCristobal. 2010. <span>“Detecting
+Selection in Population Trees: The Lewontin and Krakauer Test
+Extended.”</span> <em>Genetics</em> 186 (1): 241–62.
+</div>
+<div id="ref-booker2024wza" class="csl-entry">
+Booker, Tom R, Sam Yeaman, James R Whiting, and Michael C Whitlock.
+2024. <span>“The WZA: A Window-Based Method for Characterizing
+Genotype–Environment Associations.”</span> <em>Molecular Ecology
+Resources</em> 24 (2): e13768.
+</div>
+<div id="ref-brassington2007bluelink" class="csl-entry">
+Brassington, Gary B, Tim Pugh, Claire Spillman, Eric Schulz, Helen
+Beggs, Andreas Schiller, and Peter R Oke. 2007. <span>“BLUElink&gt;
+Development of Operational Oceanography and Servicing in
+Australia.”</span> <em>Journal of Research and Practice in Information
+Technology</em> 39 (2): 151–64.
+</div>
+<div id="ref-breiman2001random" class="csl-entry">
+Breiman, Leo. 2001. <span>“Random Forests.”</span> <em>Machine
+Learning</em> 45: 5–32.
+</div>
+<div id="ref-brennan2022experimental" class="csl-entry">
+Brennan, Reid S, James A DeMayo, Hans G Dam, Michael Finiguerra, Hannes
+Baumann, Vince Buffalo, and Melissa H Pespeni. 2022. <span>“Experimental
+Evolution Reveals the Synergistic Genomic Mechanisms of Adaptation to
+Ocean Warming and Acidification in a Marine Copepod.”</span>
+<em>Proceedings of the National Academy of Sciences</em> 119 (38):
+e2201521119.
+</div>
+<div id="ref-brickman2021projections" class="csl-entry">
+Brickman, Dave, Michael A Alexander, Andrew Pershing, James D Scott, and
+Zeliang Wang. 2021. <span>“Projections of Physical Conditions in the
+Gulf of Maine in 2050.”</span> <em>Elem Sci Anth</em> 9 (1): 00055.
+</div>
+<div id="ref-buffalo2020estimating" class="csl-entry">
+Buffalo, Vince, and Graham Coop. 2020. <span>“Estimating the Genome-Wide
+Contribution of Selection to Temporal Allele Frequency Change.”</span>
+<em>Proceedings of the National Academy of Sciences</em> 117 (34):
+20672–80.
+</div>
+<div id="ref-capblancq2020genomic" class="csl-entry">
+Capblancq, Thibaut, Matthew C Fitzpatrick, Rachael A Bay, Moises
+Exposito-Alonso, and Stephen R Keller. 2020. <span>“Genomic Prediction
+of (Mal) Adaptation Across Current and Future Climatic
+Landscapes.”</span> <em>Annual Review of Ecology, Evolution, and
+Systematics</em> 51: 245–69.
+</div>
+<div id="ref-capblancq2021redundancy" class="csl-entry">
+Capblancq, Thibaut, and Brenna R Forester. 2021. <span>“Redundancy
+Analysis: A Swiss Army Knife for Landscape Genomics.”</span> <em>Methods
+in Ecology and Evolution</em> 12 (12): 2298–2309.
+</div>
+<div id="ref-capblancq2018evaluation" class="csl-entry">
+Capblancq, Thibaut, Keurcien Luu, Michael GB Blum, and Eric Bazin. 2018.
+<span>“Evaluation of Redundancy Analysis to Identify Signatures of Local
+Adaptation.”</span> <em>Molecular Ecology Resources</em> 18 (6):
+1223–33.
+</div>
+<div id="ref-caye2019lfmm" class="csl-entry">
+Caye, Kevin, Basile Jumentier, Johanna Lepeule, and Olivier François.
+2019. <span>“LFMM 2: Fast and Accurate Inference of Gene-Environment
+Associations in Genome-Wide Studies.”</span> <em>Molecular Biology and
+Evolution</em> 36 (4): 852–60.
+</div>
+<div id="ref-chamberlain2021multiscale" class="csl-entry">
+Chamberlain, MA, PR Oke, GB Brassington, P Sandery, P Divakaran, and RAS
+Fiedler. 2021. <span>“Multiscale Data Assimilation in the Bluelink Ocean
+Reanalysis (BRAN).”</span> <em>Ocean Modelling</em> 166: 101849.
+</div>
+<div id="ref-coop2010using" class="csl-entry">
+Coop, Graham, David Witonsky, Anna Di Rienzo, and Jonathan K Pritchard.
+2010. <span>“Using Environmental Correlations to Identify Loci
+Underlying Local Adaptation.”</span> <em>Genetics</em> 185 (4): 1411–23.
+</div>
+<div id="ref-dauphin2023re" class="csl-entry">
+Dauphin, Benjamin, Christian Rellstab, Rafael O Wüest, Dirk N Karger,
+Rolf Holderegger, Felix Gugerli, and Stéphanie Manel. 2023.
+<span>“Re-Thinking the Environment in Landscape Genomics.”</span>
+<em>Trends in Ecology &amp; Evolution</em> 38 (3): 261–74.
+</div>
+<div id="ref-de2015new" class="csl-entry">
+De Villemereuil, Pierre, and Oscar E Gaggiotti. 2015. <span>“A New
+FST-Based Method to Uncover Local Adaptation Using Environmental
+Variables.”</span> <em>Methods in Ecology and Evolution</em> 6 (11):
+1248–58.
+</div>
+<div id="ref-duforet2015haplopop" class="csl-entry">
+Duforet-Frebourg, Nicolas, Lucie M Gattepaille, Michael GB Blum, and
+Mattias Jakobsson. 2015. <span>“HaploPOP: A Software That Improves
+Population Assignment by Combining Markers into Haplotypes.”</span>
+<em>BMC Bioinformatics</em> 16: 1–8.
+</div>
+<div id="ref-ellis2012gradient" class="csl-entry">
+Ellis, Nick, Stephen J Smith, and C Roland Pitcher. 2012.
+<span>“Gradient Forests: Calculating Importance Gradients on Physical
+Predictors.”</span> <em>Ecology</em> 93 (1): 156–68.
+</div>
+<div id="ref-enbody2023community" class="csl-entry">
+Enbody, Erik D, Ashley T Sendell-Price, C Grace Sprehn, Carl-Johan
+Rubin, Peter M Visscher, B Rosemary Grant, Peter R Grant, and Leif
+Andersson. 2023. <span>“Community-Wide Genome Sequencing Reveals 30
+Years of Darwin’s Finch Evolution.”</span> <em>Science</em> 381 (6665):
+eadf6218.
+</div>
+<div id="ref-ferrier2007using" class="csl-entry">
+Ferrier, Simon, Glenn Manion, Jane Elith, and Karen Richardson. 2007.
+<span>“Using Generalized Dissimilarity Modelling to Analyse and Predict
+Patterns of Beta Diversity in Regional Biodiversity Assessment.”</span>
+<em>Diversity and Distributions</em> 13 (3): 252–64.
+</div>
+<div id="ref-fitzpatrick2021experimental" class="csl-entry">
+Fitzpatrick, Matthew C, Vikram E Chhatre, Raju Y Soolanayakanahally, and
+Stephen R Keller. 2021. <span>“Experimental Support for Genomic
+Prediction of Climate Maladaptation Using the Machine Learning Approach
+Gradient Forests.”</span> <em>Molecular Ecology Resources</em> 21 (8):
+2749–65.
+</div>
+<div id="ref-fitzpatrick2015ecological" class="csl-entry">
+Fitzpatrick, Matthew C, and Stephen R Keller. 2015. <span>“Ecological
+Genomics Meets Community-Level Modelling of Biodiversity: Mapping the
+Genomic Landscape of Current and Future Environmental
+Adaptation.”</span> <em>Ecology Letters</em> 18 (1): 1–16.
+</div>
+<div id="ref-foll2008genome" class="csl-entry">
+Foll, Matthieu, and Oscar Gaggiotti. 2008. <span>“A Genome-Scan Method
+to Identify Selected Loci Appropriate for Both Dominant and Codominant
+Markers: A Bayesian Perspective.”</span> <em>Genetics</em> 180 (2):
+977–93.
+</div>
+<div id="ref-forester2025population" class="csl-entry">
+Forester, Brenna R, Amanda S Cicchino, Alisha A Shah, Austin B Mudd,
+Eric C Anderson, Jessen V Bredeson, Andrew J Crawford, et al. 2025.
+<span>“Population Genomics Reveals Local Adaptation Related to
+Temperature Variation in Two Stream Frog Species: Implications for
+Vulnerability to Climate Warming.”</span> <em>Molecular Ecology</em>,
+e17651.
+</div>
+<div id="ref-forester2016detecting" class="csl-entry">
+Forester, Brenna R, Matthew R Jones, Stéphane Joost, Erin L Landguth,
+and Jesse R Lasky. 2016. <span>“Detecting Spatial Genetic Signatures of
+Local Adaptation in Heterogeneous Landscapes.”</span> <em>Molecular
+Ecology</em> 25 (1): 104–20.
+</div>
+<div id="ref-franccois2016controlling" class="csl-entry">
+François, Olivier, Helena Martins, Kevin Caye, and Sean D Schoville.
+2016. <span>“Controlling False Discoveries in Genome Scans for
+Selection.”</span> <em>Molecular Ecology</em> 25 (2): 454–69.
+</div>
+<div id="ref-frichot2015lea" class="csl-entry">
+Frichot, Eric, and Olivier François. 2015. <span>“LEA: An r Package for
+Landscape and Ecological Association Studies.”</span> <em>Methods in
+Ecology and Evolution</em> 6 (8): 925–29.
+</div>
+<div id="ref-frichot2013testing" class="csl-entry">
+Frichot, Eric, Sean D Schoville, Guillaume Bouchard, and Olivier
+François. 2013. <span>“Testing for Associations Between Loci and
+Environmental Gradients Using Latent Factor Mixed Models.”</span>
+<em>Molecular Biology and Evolution</em> 30 (7): 1687–99.
+</div>
+<div id="ref-fuller2020population" class="csl-entry">
+Fuller, Zachary L, Veronique JL Mocellin, Luke A Morris, Neal Cantin,
+Jihanne Shepherd, Luke Sarre, Julie Peng, et al. 2020. <span>“Population
+Genetics of the Coral Acropora Millepora: Toward Genomic Prediction of
+Bleaching.”</span> <em>Science</em> 369 (6501): eaba4674.
+</div>
+<div id="ref-gautier2015genome" class="csl-entry">
+Gautier, Mathieu. 2015. <span>“Genome-Wide Scan for Adaptive Divergence
+and Association with Population-Specific Covariates.”</span>
+<em>Genetics</em> 201 (4): 1555–79.
+</div>
+<div id="ref-griffiths2025seascape" class="csl-entry">
+Griffiths, Joanna S, Kendall Smith, and Andrew Whitehead. 2025.
+<span>“Seascape Genomics of Red Abalone: Limited Range-Wide Population
+Structure and Evidence for Local Adaptation.”</span> <em>Molecular
+Ecology</em>, e17650.
+</div>
+<div id="ref-hoban2021genetic" class="csl-entry">
+Hoban, Sean, Catriona D Campbell, Jessica M da Silva, Robert Ekblom, W
+Chris Funk, Brittany A Garner, José A Godoy, Francine Kershaw, Anna J
+MacDonald, and Joachim Mergeay. 2021. <span>“Genetic Diversity Is
+Considered Important but Interpreted Narrowly in Country Reports to the
+Convention on Biological Diversity: Current Actions and Indicators Are
+Insufficient.”</span> <em>Biological Conservation</em> 261: 109233.
+</div>
+<div id="ref-hoban2016finding" class="csl-entry">
+Hoban, Sean, Joanna L Kelley, Katie E Lotterhos, Michael F Antolin,
+Gideon Bradburd, David B Lowry, Mary L Poss, Laura K Reed, Andrew
+Storfer, and Michael C Whitlock. 2016. <span>“Finding the Genomic Basis
+of Local Adaptation: Pitfalls, Practical Solutions, and Future
+Directions.”</span> <em>The American Naturalist</em> 188 (4): 379–97.
+</div>
+<div id="ref-jean2021copernicus" class="csl-entry">
+Jean-Michel, Lellouche, Greiner Eric, Bourdallé-Badie Romain, Garric
+Gilles, Melet Angélique, Drévillon Marie, Bricaud Clément, et al. 2021.
+<span>“The Copernicus Global 1/12 Oceanic and Sea Ice GLORYS12
+Reanalysis.”</span> <em>Frontiers in Earth Science</em> 9: 698876.
+</div>
+<div id="ref-jiang2019resource" class="csl-entry">
+Jiang, Longda, Zhili Zheng, Ting Qi, Kathryn E Kemper, Naomi R Wray,
+Peter M Visscher, and Jian Yang. 2019. <span>“A Resource-Efficient Tool
+for Mixed Model Association Analysis of Large-Scale Data.”</span>
+<em>Nature Genetics</em> 51 (12): 1749–55.
+</div>
+<div id="ref-jorsboe2022efficient" class="csl-entry">
+Jørsboe, Emil, and Anders Albrechtsen. 2022. <span>“Efficient Approaches
+for Large-Scale GWAS with Genotype Uncertainty.”</span> <em>G3</em> 12
+(1): jkab385.
+</div>
+<div id="ref-kang2010variance" class="csl-entry">
+Kang, Hyun Min, Jae Hoon Sul, Susan K Service, Noah A Zaitlen, Sit-yee
+Kong, Nelson B Freimer, Chiara Sabatti, and Eleazar Eskin. 2010.
+<span>“Variance Component Model to Account for Sample Structure in
+Genome-Wide Association Studies.”</span> <em>Nature Genetics</em> 42
+(4): 348–54.
+</div>
+<div id="ref-kijas2018evolution" class="csl-entry">
+Kijas, James, Sean McWilliam, Marina Naval Sanchez, Peter Kube, Harry
+King, Bradley Evans, Torfinn Nome, Sigbjørn Lien, and Klara Verbyla.
+2018. <span>“Evolution of Sex Determination Loci in Atlantic
+Salmon.”</span> <em>Scientific Reports</em> 8 (1): 5664.
+</div>
+<div id="ref-lellouche2018recent" class="csl-entry">
+Lellouche, Jean-Michel, Eric Greiner, Olivier Le Galloudec, Gilles
+Garric, Charly Regnier, Marie Drevillon, Mounir Benkiran, et al. 2018.
+<span>“Recent Updates to the Copernicus Marine Service Global Ocean
+Monitoring and Forecasting Real-Time 1/12∘ High-Resolution
+System.”</span> <em>Ocean Science</em> 14 (5): 1093–1126.
+</div>
+<div id="ref-lotterhos2019effect" class="csl-entry">
+Lotterhos, Katie E. 2019. <span>“The Effect of Neutral Recombination
+Variation on Genome Scans for Selection.”</span> <em>G3: Genes, Genomes,
+Genetics</em> 9 (6): 1851–67.
+</div>
+<div id="ref-lotterhos2022simulation" class="csl-entry">
+Lotterhos, Katie E, Matthew C Fitzpatrick, and Heath Blackmon. 2022.
+<span>“Simulation Tests of Methods in Evolution, Ecology, and
+Systematics: Pitfalls, Progress, and Principles.”</span> <em>Annual
+Review of Ecology, Evolution, and Systematics</em> 53: 113–36.
+</div>
+<div id="ref-lotterhos2014evaluation" class="csl-entry">
+Lotterhos, Katie E, and Michael C Whitlock. 2014. <span>“Evaluation of
+Demographic History and Neutral Parameterization on the Performance of
+FST Outlier Tests.”</span> <em>Molecular Ecology</em> 23 (9): 2178–92.
+</div>
+<div id="ref-lotterhos2015relative" class="csl-entry">
+———. 2015. <span>“The Relative Power of Genome Scans to Detect Local
+Adaptation Depends on Sampling Design and Statistical Method.”</span>
+<em>Molecular Ecology</em> 24 (5): 1031–46.
+</div>
+<div id="ref-lou2021beginner" class="csl-entry">
+Lou, Runyang Nicolas, Arne Jacobs, Aryn P Wilder, and Nina Overgaard
+Therkildsen. 2021. <span>“A Beginner’s Guide to Low-Coverage Whole
+Genome Sequencing for Population Genomics.”</span> <em>Molecular
+Ecology</em> 30 (23): 5966–93.
+</div>
+<div id="ref-luu2017pcadapt" class="csl-entry">
+Luu, Keurcien, Eric Bazin, and Michael GB Blum. 2017. <span>“Pcadapt: An
+r Package to Perform Genome Scans for Selection Based on Principal
+Component Analysis.”</span> <em>Molecular Ecology Resources</em> 17 (1):
+67–77.
+</div>
+<div id="ref-marchini2007new" class="csl-entry">
+Marchini, Jonathan, Bryan Howie, Simon Myers, Gil McVean, and Peter
+Donnelly. 2007. <span>“A New Multipoint Method for Genome-Wide
+Association Studies by Imputation of Genotypes.”</span> <em>Nature
+Genetics</em> 39 (7): 906–13.
+</div>
+<div id="ref-narum2011comparison" class="csl-entry">
+Narum, Shawn R, and Jon E Hess. 2011. <span>“Comparison of FST Outlier
+Tests for SNP Loci Under Selection.”</span> <em>Molecular Ecology
+Resources</em> 11: 184–94.
+</div>
+<div id="ref-nielsen2021distinct" class="csl-entry">
+Nielsen, Erica S, Romina Henriques, Maria Beger, and Sophie von der
+Heyden. 2021. <span>“Distinct Interspecific and Intraspecific
+Vulnerability of Coastal Species to Global Change.”</span> <em>Global
+Change Biology</em> 27 (15): 3415–31.
+</div>
+<div id="ref-perez2010comparing" class="csl-entry">
+Pérez-Figueroa, A, MJ Garcı́a-Pereira, M Saura, E Rolán-Alvarez, and A
+Caballero. 2010. <span>“Comparing Three Different Methods to Detect
+Selective Loci Using Dominant Markers.”</span> <em>Journal of
+Evolutionary Biology</em> 23 (10): 2267–76.
+</div>
+<div id="ref-pickrell2012inference" class="csl-entry">
+Pickrell, Joseph, and Jonathan Pritchard. 2012. <span>“Inference of
+Population Splits and Mixtures from Genome-Wide Allele Frequency
+Data.”</span> <em>Nature Precedings</em>, 1–1.
+</div>
+<div id="ref-pinsky2021diversification" class="csl-entry">
+Pinsky, Malin L. 2021. <span>“Diversification Spins a Heatwave Safety
+Net for Fisheries.”</span> <em>Proceedings of the National Academy of
+Sciences</em> 118 (3): e2024412118.
+</div>
+<div id="ref-prunier2019ld" class="csl-entry">
+Prunier, Julien, Audrey Lemaçon, Alexandre Bastien, Mohsen Jafarikia,
+Ilga Porth, Claude Robert, and Arnaud Droit. 2019. <span>“LD-Annot: A
+Bioinformatics Tool to Automatically Provide Candidate SNPs with
+Annotations for Genetically Linked Genes.”</span> <em>Frontiers in
+Genetics</em> 10: 1192.
+</div>
+<div id="ref-purcell2007plink" class="csl-entry">
+Purcell, Shaun, Benjamin Neale, Kathe Todd-Brown, Lori Thomas, Manuel AR
+Ferreira, David Bender, Julian Maller, et al. 2007. <span>“PLINK: A Tool
+Set for Whole-Genome Association and Population-Based Linkage
+Analyses.”</span> <em>The American Journal of Human Genetics</em> 81
+(3): 559–75.
+</div>
+<div id="ref-rellstab2015practical" class="csl-entry">
+Rellstab, Christian, Felix Gugerli, Andrew J Eckert, Angela M Hancock,
+and Rolf Holderegger. 2015. <span>“A Practical Guide to Environmental
+Association Analysis in Landscape Genomics.”</span> <em>Molecular
+Ecology</em> 24 (17): 4348–70.
+</div>
+<div id="ref-riginos2016navigating" class="csl-entry">
+Riginos, Cynthia, Eric D Crandall, Libby Liggins, Pim Bongaerts, and
+Eric A Treml. 2016. <span>“Navigating the Currents of Seascape Genomics:
+How Spatial Analyses Can Augment Population Genomic Studies.”</span>
+<em>Current Zoology</em> 62 (6): 581–601.
+</div>
+<div id="ref-robertson1975gene" class="csl-entry">
+Robertson, Alan. 1975. <span>“Gene Frequency Distributions as a Test of
+Selective Neutrality.”</span> <em>Genetics</em> 81 (4): 775–85.
+</div>
+<div id="ref-rumberger2023selection" class="csl-entry">
+Rumberger, Camille, Madison Armstrong, Martin Kim, Josue Melendez,
+Raquel Ponce, Melissa DeBiasse, Serena Caplins, and Rachael Bay. 2023.
+<span>“Selection over Small and Large Spatial Scales in the Face of High
+Gene Flow.”</span> <em>Authorea Preprints</em>.
+</div>
+<div id="ref-sayols2023rrvgo" class="csl-entry">
+Sayols, Sergi. 2023. <span>“Rrvgo: A Bioconductor Package for
+Interpreting Lists of Gene Ontology Terms.”</span> <em>Micropublication
+Biology</em> 2023.
+</div>
+<div id="ref-schlotterer2014sequencing" class="csl-entry">
+Schlötterer, Christian, Raymond Tobler, Robert Kofler, and Viola Nolte.
+2014. <span>“Sequencing Pools of Individuals—Mining Genome-Wide
+Polymorphism Data Without Big Funding.”</span> <em>Nature Reviews
+Genetics</em> 15 (11): 749–63.
+</div>
+<div id="ref-selmoni2020seascape" class="csl-entry">
+Selmoni, Oliver, Estelle Rochat, Gael Lecellier, Veronique
+Berteaux-Lecellier, and Stéphane Joost. 2020. <span>“Seascape Genomics
+as a New Tool to Empower Coral Reef Conservation Strategies: An Example
+on North-Western Pacific Acropora Digitifera.”</span> <em>Evolutionary
+Applications</em> 13 (8): 1923–38.
+</div>
+<div id="ref-shumate2021liftoff" class="csl-entry">
+Shumate, Alaina, and Steven L Salzberg. 2021. <span>“Liftoff: Accurate
+Mapping of Gene Annotations.”</span> <em>Bioinformatics</em> 37 (12):
+1639–43.
+</div>
+<div id="ref-silliman2019population" class="csl-entry">
+Silliman, Katherine. 2019. <span>“Population Structure, Genetic
+Connectivity, and Adaptation in the Olympia Oyster (Ostrea Lurida) Along
+the West Coast of North America.”</span> <em>Evolutionary
+Applications</em> 12 (5): 923–39.
+</div>
+<div id="ref-supek2011revigo" class="csl-entry">
+Supek, Fran, Matko Bošnjak, Nives Škunca, and Tomislav Šmuc. 2011.
+<span>“REVIGO Summarizes and Visualizes Long Lists of Gene Ontology
+Terms.”</span> <em>PloS One</em> 6 (7): e21800.
+</div>
+<div id="ref-tam2019benefits" class="csl-entry">
+Tam, Vivian, Nikunj Patel, Michelle Turcotte, Yohan Bossé, Guillaume
+Paré, and David Meyre. 2019. <span>“Benefits and Limitations of
+Genome-Wide Association Studies.”</span> <em>Nature Reviews
+Genetics</em> 20 (8): 467–84.
+</div>
+<div id="ref-uffelmann2021genome" class="csl-entry">
+Uffelmann, Emil, Qin Qin Huang, Nchangwi Syntia Munung, Jantina De
+Vries, Yukinori Okada, Alicia R Martin, Hilary C Martin, Tuuli
+Lappalainen, and Danielle Posthuma. 2021. <span>“Genome-Wide Association
+Studies.”</span> <em>Nature Reviews Methods Primers</em> 1 (1): 59.
+</div>
+<div id="ref-van2017identifying" class="csl-entry">
+Van Wyngaarden, Mallory, Paul VR Snelgrove, Claudio DiBacco, Lorraine C
+Hamilton, Naiara Rodrı́guez-Ezpeleta, Nicholas W Jeffery, Ryan RE
+Stanley, and Ian R Bradbury. 2017. <span>“Identifying Patterns of
+Dispersal, Connectivity and Selection in the Sea Scallop, Placopecten
+Magellanicus, Using RAD Seq-Derived SNP s.”</span> <em>Evolutionary
+Applications</em> 10 (1): 102–17.
+</div>
+<div id="ref-wang2021life" class="csl-entry">
+Wang, Shuangqiang, Ellen Kenchington, Zeliang Wang, and Andrew J Davies.
+2021. <span>“Life in the Fast Lane: Modeling the Fate of Glass Sponge
+Larvae in the Gulf Stream.”</span> <em>Frontiers in Marine Science</em>
+8: 701218.
+</div>
+<div id="ref-whitlock2015reliable" class="csl-entry">
+Whitlock, Michael C, and Katie E Lotterhos. 2015. <span>“Reliable
+Detection of Loci Responsible for Local Adaptation: Inference of a Null
+Model Through Trimming the Distribution of f ST.”</span> <em>The
+American Naturalist</em> 186 (S1): S24–36.
+</div>
+<div id="ref-wooldridge2024limited" class="csl-entry">
+Wooldridge, Brock, Chloé Orland, Erik Enbody, Merly Escalona, Cade
+Mirchandani, Russell Corbett-Detig, Joshua D Kapp, et al. 2024.
+<span>“Limited Genomic Signatures of Population Collapse in the
+Critically Endangered Black Abalone (Haliotis Cracherodii).”</span>
+<em>Molecular Ecology</em>, e17362.
+</div>
+<div id="ref-wright1949population" class="csl-entry">
+Wright, Sewall. 1949. <span>“Population Structure in Evolution.”</span>
+<em>Proceedings of the American Philosophical Society</em> 93 (6):
+471–78.
+</div>
+<div id="ref-xuereb2018asymmetric" class="csl-entry">
+Xuereb, Amanda, Laura Benestan, Éric Normandeau, Rémi M Daigle, Janelle
+MR Curtis, Louis Bernatchez, and Marie-Josée Fortin. 2018.
+<span>“Asymmetric Oceanographic Processes Mediate Connectivity and
+Population Genetic Structure, as Revealed by RAD Seq, in a Highly
+Dispersive Marine Invertebrate (Parastichopus Californicus).”</span>
+<em>Molecular Ecology</em> 27 (10): 2347–64.
+</div>
+<div id="ref-yanez2023genome" class="csl-entry">
+Yanez, Jose M, Agustin Barria, Maria E Lopez, Thomas Moen, Baltasar F
+Garcia, Grazyella M Yoshida, and Peng Xu. 2023. <span>“Genome-Wide
+Association and Genomic Selection in Aquaculture.”</span> <em>Reviews in
+Aquaculture</em> 15 (2): 645–75.
+</div>
+<div id="ref-zhou2012genome" class="csl-entry">
+Zhou, Xiang, and Matthew Stephens. 2012. <span>“Genome-Wide Efficient
+Mixed-Model Analysis for Association Studies.”</span> <em>Nature
+Genetics</em> 44 (7): 821–24.
+</div>
+<div id="ref-zhou2014efficient" class="csl-entry">
+———. 2014. <span>“Efficient Multivariate Linear Mixed Model Algorithms
+for Genome-Wide Association Studies.”</span> <em>Nature Methods</em> 11
+(4): 407–9.
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
