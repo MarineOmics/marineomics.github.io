@@ -15,7 +15,7 @@
 
 <title>A MarineOmics overview of methods to detect signatures of selection</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -868,128 +868,6 @@ href="https://esnielsen.github.io/post/pool-seq-analyses-poolfstat-baypass/">Eri
 Nielson Tutorial</a></td>
 <td><a href="#refs">(<span class="citation">Gautier
 (2015)</span>)</a></td>
-</tr>
-</tbody>
-</table>
-<table>
-<colgroup>
-<col width="16%" />
-<col width="19%" />
-<col width="26%" />
-<col width="20%" />
-<col width="9%" />
-<col width="9%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Model &amp; Approach</th>
-<th>Demographic History</th>
-<th>Assumptions / Known issues</th>
-<th>False Positive Rate</th>
-<th>Tutorial</th>
-<th>Citation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>fdist &amp; fdist2 (Fst; using Arlequin software)</td>
-<td>* Accounts for loci with different heterozygosities and with finite
-sample sizes per subpopulation</td>
-<td>* Assumes populations are equal in size and migration rates <br> *
-Non-independence among populations</td>
-<td>High <a href="#refs"><span class="citation">Lotterhos and Whitlock
-(2014)</span></a>; <a href="#refs"><span class="citation">Narum and Hess
-(2011)</span></a>; <a href="#refs"><span class="citation">Pérez-Figueroa
-et al. (2010)</span></a>; <a href="#refs"><span
-class="citation">Whitlock and Lotterhos (2015)</span></a></td>
-<td>Outdated due to high false positive rates</td>
-<td><a href="#refs"><span class="citation">Beaumont and Nichols
-(1996)</span></a></td>
-</tr>
-<tr class="even">
-<td>Bayescan (Fst)</td>
-<td>* Populations defined ahead of time <br> * Dirichlet-multinomial
-distribution: each population has its own parameter for neutral
-model</td>
-<td>* Does not allow for non-random correlations among pairs of
-populations <br> * Slow run time <a href="#refs"><span
-class="citation">Luu, Bazin, and Blum (2017)</span></a></td>
-<td>Low to high depending on the demography</td>
-<td><a href="https://rpubs.com/lbenestan/outlier">Benestan tutorial
-(2020)</a></td>
-<td><a href="#refs"><span class="citation">Foll and Gaggiotti
-(2008)</span></a></td>
-</tr>
-<tr class="odd">
-<td>PCAdapt (PC loadings)</td>
-<td>* Latent factors estimate values of K <br> * Uses PC loadings; less
-reliant on assumptions about the underlying demography <a
-href="#refs"><span class="citation">Duforet-Frebourg et al.
-(2015)</span></a> <br> * Important to use a set of SNPs thinned for
-linkage disequilibrium <a href="#refs"><span class="citation">Lotterhos
-(2019)</span></a></td>
-<td>* Individuals not sorted into populations ahead of time <br> *
-Performs well in populations with high admixture</td>
-<td>Low to medium <a href="#refs"><span class="citation">Capblancq et
-al. (2018)</span></a>; <a href="#refs"><span class="citation">Luu,
-Bazin, and Blum (2017)</span></a> <br> Might not be suitable for
-populations with complex demographic histories</td>
-<td><a
-href="https://bcm-uga.github.io/pcadapt/articles/pcadapt.html">Luu,
-Privé and Blum tutorial</a>, <a
-href="https://baylab.github.io/MarineGenomics/week-7--fst-and-outlier-analysis.html#finding-outliers-using-pcadapt">UC
-Davis Marine Genomics tutorial</a></td>
-<td><a href="#refs"><span class="citation">Duforet-Frebourg et al.
-(2015)</span></a>; <a href="#refs"><span class="citation">Silliman
-(2019)</span></a></td>
-</tr>
-<tr class="even">
-<td>Outflank (Weir &amp; Cockerham’s Fst)</td>
-<td>* Populations defined ahead of time</td>
-<td>* Estimates the number of K clusters to inform a null Fst model <br>
-* Performs poorly in populations with admixture and PoolSeq <br> *
-Affected by finite sample sizes</td>
-<td>Low, but suffers from low power</td>
-<td><a
-href="https://github.com/whitlock/OutFLANK/blob/master/inst/doc/OutFLANKAnalysis.html">Lotterhos
-Tutorial</a>, <a
-href="https://baylab.github.io/MarineGenomics/week-7--fst-and-outlier-analysis.html#using-fst-to-find-outliers">UC
-Davis tutorial</a></td>
-<td><a href="#refs"><span class="citation">Lotterhos and Whitlock
-(2014)</span></a>; <a href="#refs"><span class="citation">Schlötterer et
-al. (2014)</span></a></td>
-</tr>
-<tr class="odd">
-<td>FLK / TF-LK</td>
-<td>* Sensitive to complex migration patterns and sharp differences in
-migration rates <a href="#refs"><span class="citation">Bonhomme et al.
-(2010)</span></a></td>
-<td>* Uses a population tree (without migration) to describe the
-covariance among populations to build a null Fst model</td>
-<td>Low <a href="#refs"><span class="citation">Bonhomme et al.
-(2010)</span></a></td>
-<td><a
-href="https://uofabioinformaticshub.github.io/GumCreek2012/scripts/S1_FLK">UoF
-Bioinformatics Hub Tutorial</a></td>
-<td>See Supplementary File 1 from <a href="#refs"><span
-class="citation">Bonhomme et al. (2010)</span></a></td>
-</tr>
-<tr class="even">
-<td>BayPass (XTX statistics)</td>
-<td>* Assumes HWE for PoolSeq data <a href="#refs"><span
-class="citation">Gautier (2015)</span></a></td>
-<td>* Uses a covariance matrix of allele frequencies among populations
-<a href="#refs"><span class="citation">Pickrell and Pritchard
-(2012)</span></a> <br> * Can be used with or without environmental
-data</td>
-<td>Low</td>
-<td><a
-href="https://eead-csic-compbio.github.io/barley-agroclimatic-association/HOWTOXtX_BAYPASS.html">Barley
-Agroclimatic Tutorial</a>, <a
-href="https://esnielsen.github.io/post/pool-seq-analyses-poolfstat-baypass/">Erica
-Nielsen Tutorial</a></td>
-<td><a href="#refs"><span class="citation">Gautier
-(2015)</span></a></td>
 </tr>
 </tbody>
 </table>
