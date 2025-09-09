@@ -14,6 +14,9 @@ bibliography: "POP_10_Signatures_Selection/common-bib_01.bib"
 
 *Created using [HackMD](https://hackmd.io/) and [tablesgenerator](https://www.tablesgenerator.com/markdown_tables)* 
 
+## Citation
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
 ## Target audience
 This page is designed for beginners (with some basic undergraduate-level of understanding of evolutionary biology) and provides a broad introduction to different methods commonly used to study natural selection in wild populations at a microevolutionary scale. On this page we will explore how techniques like outlier analyses, genotype-environment analysis (GEA) and genome-wide association studies (GWAS) can help us study natural selection. To learn more about specific methods, read through the suggested readings in each section and visit the tutorials where links are provided. 
 
@@ -341,6 +344,7 @@ A short list of a few resources for annotating your candidate SNPs under selecti
 |   REVIGO / rrvgo   | Functional enrichment            | [GUI Web App](http://revigo.irb.hr/), [rrvgo Manual](https://www.bioconductor.org/packages/release/bioc/vignettes/rrvgo/inst/doc/rrvgo.html)    | [@supek2011revigo](#refs)       |
 |   LD-annot         | Find overlap of SNPs with genes  | [GitHub Repository](https://github.com/ArnaudDroitLab/LD-annot)                                                                                  | [@prunier2019ld](#refs)         |
 |   Liftoff          | Annotate your genome             | [GitHub Repository](https://github.com/agshumate/Liftoff)                                                                                        | [@shumate2021liftoff](#refs)    |
+
 
 
 # References{#refs}
