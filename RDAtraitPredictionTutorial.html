@@ -15,7 +15,7 @@
 
 <title>RDA trait prediction tutorial</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -565,18 +565,36 @@ head(G[,1:10])</code></pre>
 back-transformation of the RDA “site score” of an individual to a chosen
 environmental variable (Equation 1 in the manuscript). It makes the
 prediction for all the individuals that were used to run the RDA.</p>
-<pre class="r"><code>rda_trait_pred &lt;- function(rdaobj, env_row, K){
-  #rdaobj is RDA object
-  #env_row is the row of the environment in the biplot output
-  #K is the number of RDA axes
-  scores &lt;- scores(rdaobj, choices=1:K)
-  ind.sc &lt;- scores$sites
-  pred &lt;- matrix(NA, nrow=nrow(ind.sc), ncol=K)
+<pre class="r"><code>#### old function from Katie with older version of vegan
+# rda_trait_pred &lt;- function(rdaobj, env_row, K){
+#   #rdaobj is RDA object
+#   #env_row is the row of the environment in the biplot output
+#   #K is the number of RDA axes
+#   scores &lt;- scores(rdaobj, choices=1:K)
+#   ind.sc &lt;- scores$sites
+#   pred &lt;- matrix(NA, nrow=nrow(ind.sc), ncol=K)
+#   for (k in 1:K){
+#     pred[,k] &lt;- ind.sc[,k]*eigenvals(rdaobj)[k]*summary(rdaobj)$biplot[env_row,k]
+#   }
+#   trait_pred &lt;- scale(rowSums(pred))
+#  return(trait_pred) 
+# }
+
+##### updated function that works with newer version of vegan
+rda_trait_pred &lt;- function(rdaobj, env_row, K){
+  # clamp K to available constrained axes
+  K &lt;- min(K, length(vegan::eigenvals(rdaobj)))
+
+  # site scores and biplot loadings for the first K axes
+  ind.sc &lt;- vegan::scores(rdaobj, display = &quot;sites&quot;, choices = 1:K)
+  bp     &lt;- vegan::scores(rdaobj, display = &quot;bp&quot;,    choices = 1:K)
+
+  pred &lt;- matrix(NA, nrow = nrow(ind.sc), ncol = K)
   for (k in 1:K){
-    pred[,k] &lt;- ind.sc[,k]*eigenvals(rdaobj)[k]*summary(rdaobj)$biplot[env_row,k]
+    pred[, k] &lt;- ind.sc[, k] * vegan::eigenvals(rdaobj)[k] * bp[env_row, k]
   }
   trait_pred &lt;- scale(rowSums(pred))
- return(trait_pred) 
+  return(trait_pred)
 }</code></pre>
 <div id="example-of-an-rda-predicted-environmental-trait-value"
 class="section level2">
@@ -870,13 +888,13 @@ clustering in the heatmap:</p>
 <p>Here is the information about the session when the tutorial was
 built:</p>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 4.4.3 (2025-02-28)
+<pre><code>## R version 4.5.1 (2025-06-13)
 ## Platform: aarch64-apple-darwin20
 ## Running under: macOS Sonoma 14.6.1
 ## 
 ## Matrix products: default
-## BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib 
-## LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -888,31 +906,19 @@ built:</p>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] gplots_3.1.3.1       lfmm_1.1             LEA_3.16.0          
-##  [4] vegan_2.6-8          lattice_0.22-6       permute_0.9-7       
-##  [7] reticulate_1.39.0    lubridate_1.9.3      forcats_1.0.0       
-## [10] stringr_1.5.1        dplyr_1.1.4          purrr_1.0.2         
-## [13] readr_2.1.5          tidyr_1.3.1          tibble_3.2.1        
-## [16] ggplot2_3.5.1        tidyverse_2.0.0      kableExtra_1.4.0    
-## [19] knitcitations_1.0.12 knitr_1.48          
+## [1] gplots_3.2.0  lfmm_1.1      LEA_3.20.0    vegan_2.7-2   permute_0.9-8
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] gtable_0.3.5       xfun_0.47          bslib_0.8.0        caTools_1.18.3    
-##  [5] tzdb_0.4.0         bitops_1.0-8       vctrs_0.6.5        tools_4.4.3       
-##  [9] generics_0.1.3     parallel_4.4.3     fansi_1.0.6        highr_0.11        
-## [13] cluster_2.1.8      RefManageR_1.4.0   pkgconfig_2.0.3    KernSmooth_2.23-26
-## [17] Matrix_1.7-2       lifecycle_1.0.4    compiler_4.4.3     munsell_0.5.1     
-## [21] codetools_0.2-20   htmltools_0.5.8.1  sass_0.4.9         yaml_2.3.10       
-## [25] pillar_1.9.0       jquerylib_0.1.4    MASS_7.3-64        cachem_1.1.0      
-## [29] iterators_1.0.14   foreach_1.5.2      nlme_3.1-167       gtools_3.9.5      
-## [33] tidyselect_1.2.1   digest_0.6.37      stringi_1.8.4      splines_4.4.3     
-## [37] bibtex_0.5.1       fastmap_1.2.0      grid_4.4.3         colorspace_2.1-1  
-## [41] cli_3.6.3          magrittr_2.0.3     utf8_1.2.4         withr_3.0.1       
-## [45] scales_1.3.0       backports_1.5.0    timechange_0.3.0   rmarkdown_2.28    
-## [49] httr_1.4.7         png_0.1-8          hms_1.1.3          evaluate_1.0.0    
-## [53] viridisLite_0.4.2  mgcv_1.9-1         rlang_1.1.4        Rcpp_1.0.13       
-## [57] glue_1.7.0         xml2_1.3.6         svglite_2.1.3      rstudioapi_0.16.0 
-## [61] jsonlite_1.8.9     R6_2.5.1           plyr_1.8.9         systemfonts_1.1.0</code></pre>
+##  [1] vctrs_0.6.5        nlme_3.1-168       cli_3.6.5          knitr_1.50        
+##  [5] rlang_1.1.6        xfun_0.53          KernSmooth_2.23-26 gtools_3.9.5      
+##  [9] jsonlite_2.0.0     htmltools_0.5.8.1  sass_0.4.10        rmarkdown_2.30    
+## [13] grid_4.5.1         caTools_1.18.3     evaluate_1.0.5     jquerylib_0.1.4   
+## [17] bitops_1.0-9       MASS_7.3-65        fastmap_1.2.0      foreach_1.5.2     
+## [21] yaml_2.3.10        lifecycle_1.0.4    cluster_2.1.8.1    compiler_4.5.1    
+## [25] codetools_0.2-20   Rcpp_1.1.0         mgcv_1.9-3         rstudioapi_0.17.1 
+## [29] lattice_0.22-7     digest_0.6.37      R6_2.6.1           parallel_4.5.1    
+## [33] splines_4.5.1      bslib_0.9.0        Matrix_1.7-4       tools_4.5.1       
+## [37] iterators_1.0.14   cachem_1.1.0</code></pre>
 </div>
 
 

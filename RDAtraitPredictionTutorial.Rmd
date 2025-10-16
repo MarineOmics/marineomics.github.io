@@ -99,18 +99,36 @@ head(G[,1:10])
 This function predicts an environmental trait through the back-transformation of the RDA "site score" of an individual to a chosen environmental variable (Equation 1 in the manuscript). It makes the prediction for all the individuals that were used to run the RDA.
 
 ```{r function}
+#### old function from Katie with older version of vegan
+# rda_trait_pred <- function(rdaobj, env_row, K){
+#   #rdaobj is RDA object
+#   #env_row is the row of the environment in the biplot output
+#   #K is the number of RDA axes
+#   scores <- scores(rdaobj, choices=1:K)
+#   ind.sc <- scores$sites
+#   pred <- matrix(NA, nrow=nrow(ind.sc), ncol=K)
+#   for (k in 1:K){
+#     pred[,k] <- ind.sc[,k]*eigenvals(rdaobj)[k]*summary(rdaobj)$biplot[env_row,k]
+#   }
+#   trait_pred <- scale(rowSums(pred))
+#  return(trait_pred) 
+# }
+
+##### updated function that works with newer version of vegan
 rda_trait_pred <- function(rdaobj, env_row, K){
-  #rdaobj is RDA object
-  #env_row is the row of the environment in the biplot output
-  #K is the number of RDA axes
-  scores <- scores(rdaobj, choices=1:K)
-  ind.sc <- scores$sites
-  pred <- matrix(NA, nrow=nrow(ind.sc), ncol=K)
+  # clamp K to available constrained axes
+  K <- min(K, length(vegan::eigenvals(rdaobj)))
+
+  # site scores and biplot loadings for the first K axes
+  ind.sc <- vegan::scores(rdaobj, display = "sites", choices = 1:K)
+  bp     <- vegan::scores(rdaobj, display = "bp",    choices = 1:K)
+
+  pred <- matrix(NA, nrow = nrow(ind.sc), ncol = K)
   for (k in 1:K){
-    pred[,k] <- ind.sc[,k]*eigenvals(rdaobj)[k]*summary(rdaobj)$biplot[env_row,k]
+    pred[, k] <- ind.sc[, k] * vegan::eigenvals(rdaobj)[k] * bp[env_row, k]
   }
   trait_pred <- scale(rowSums(pred))
- return(trait_pred) 
+  return(trait_pred)
 }
 ```
 
