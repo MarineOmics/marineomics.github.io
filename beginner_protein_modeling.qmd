@@ -1,0 +1,23 @@
+---
+title: "Protein Modeling (Test Page)"
+format: html
+---
+
+## What is Protein Modeling?
+
+Protein modeling is the process of predicting or analyzing the three-dimensional structure of a protein based on its amino acid sequence.
+
+These models help researchers understand protein function and assess whether genetic variants may affect stability or biological activity.
+
+---
+
+## Why It Matters
+
+In genomics, protein modeling provides a way to interpret sequence variation in a functional context, especially when working with non-model organisms where experimental structures are unavailable.
+
+---
+
+## This Is a Test Page
+
+This page exists only to test the Quarto → HTML → GitHub Pages workflow.
+
