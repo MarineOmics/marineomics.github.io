@@ -1,0 +1,66 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: MarineOmics
+  page-navigation: true
+  repo-url: https://github.com/MarineOmics/marineomics.github.io
+  repo-actions: [edit, issue]
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: ADMIN_04_best_principles.qmd
+        text: Best Principles
+      - href: ADMIN_03_panels.qmd
+        text: Panel Seminars
+      - text: Discussion Forum
+        href: https://github.com/MarineOmics/marineomics.github.io/discussions
+  sidebar:
+    style: "floating"
+    search: true
+    collapse-level: 1
+    contents:
+      - section: "Best Principles"
+        contents:
+          - ADMIN_04_best_principles.qmd
+      - section: "Contributions"
+        contents:
+          - ADMIN_01_submissions_instructions.qmd
+          - ADMIN_02_contributions.qmd
+      - section: "Population Genomics"
+        contents:
+          - POP_01_choosing_population_genetics.qmd
+          - POP_04_WGS_intro.qmd
+          - RADseq.qmd
+          - POP_03_poolseq.qmd
+          - RDAtraitPredictionTutorial.qmd
+          - POP_08_PCA.qmd
+          - POP_09_aDNA.qmd
+          - POP_10_Signatures_of_Selection.qmd
+      - section: "Functional Genomics"
+        contents:
+          - DGE_comparison_v2.qmd
+          - FUN_02_DNA_methylation.qmd
+      - section: "Protein Modeling"
+        contents:
+          - beginner_protein_modeling.qmd
+      - section: "Genome-Phenome"
+        contents:
+          - text: "Coming soon!"
+      - section: "Panel Seminars"
+        contents:
+          - ADMIN_03_panels.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    css: tutorial.css
+
+editor: visual
+
+execute:
+  freeze: auto
