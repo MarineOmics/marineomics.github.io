@@ -10,13 +10,18 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - href: ADMIN_04_best_principles.qmd
-        text: Best Principles
+        text: "Home"
+      - text: "Contributions"
+        menu:
+          - href: ADMIN_01_submissions_instructions.qmd
+            text: "Guide for Building a Page"
+          - href: ADMIN_02_contributions.qmd
+            text: "Past and Current Contributors"
       - href: ADMIN_03_panels.qmd
-        text: Panel Seminars
-      - text: Discussion Forum
-        href: https://github.com/MarineOmics/marineomics.github.io/discussions
+        text: "Panel Seminars"
+      - href: https://github.com/MarineOmics/marineomics.github.io/discussions
+        text: "Discussion Forum"
+
   sidebar:
     style: "floating"
     search: true
@@ -25,10 +30,6 @@ website:
       - section: "Best Principles"
         contents:
           - ADMIN_04_best_principles.qmd
-      - section: "Contributions"
-        contents:
-          - ADMIN_01_submissions_instructions.qmd
-          - ADMIN_02_contributions.qmd
       - section: "Population Genomics"
         contents:
           - POP_01_choosing_population_genetics.qmd
@@ -49,9 +50,6 @@ website:
       - section: "Genome-Phenome"
         contents:
           - text: "Coming soon!"
-      - section: "Panel Seminars"
-        contents:
-          - ADMIN_03_panels.qmd
 
 format:
   html:
