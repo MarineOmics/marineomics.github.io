@@ -1,73 +1,67 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
-<html>
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
 
-<head>
-
-<meta charset="utf-8" />
-<meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-
-
-<title>Instructions for developing new pages for the MarineOmics webpage</title>
-
-<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
-<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<style>h1 {font-size: 34px;}
-       h1.title {font-size: 38px;}
-       h2 {font-size: 30px;}
-       h3 {font-size: 24px;}
-       h4 {font-size: 18px;}
-       h5 {font-size: 16px;}
-       h6 {font-size: 12px;}
-       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
-       pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
-<script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-
-<style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
-
-<style type="text/css">code{white-space: pre;}</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
+<title>Instructions for developing new pages for the MarineOmics webpage – MarineOmics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
 }
-</script>
-
-
-
-
-
-<style type="text/css">
-/* for pandoc --citeproc since 2.11 */
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
   margin-bottom: 0em;
 }
-.hanging div.csl-entry {
+.hanging-indent div.csl-entry {
   margin-left:2em;
   text-indent:-2em;
 }
@@ -81,769 +75,583 @@ div.csl-right-inline {
 }
 div.csl-indent {
   margin-left: 2em;
-}
-</style>
-
-<link rel="stylesheet" href="tutorial.css" type="text/css" />
+}</style>
 
 
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
 
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-img {
-  max-width:100%;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-.html-widget {
-  margin-bottom: 20px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-summary {
-  display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
-}
-pre code {
-  padding: 0;
-}
-</style>
-
-
-<style type="text/css">
-.dropdown-submenu {
-  position: relative;
-}
-.dropdown-submenu>.dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  border-radius: 0 6px 6px 6px;
-}
-.dropdown-submenu:hover>.dropdown-menu {
-  display: block;
-}
-.dropdown-submenu>a:after {
-  display: block;
-  content: " ";
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #cccccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-.dropdown-submenu:hover>a:after {
-  border-left-color: #adb5bd;
-}
-.dropdown-submenu.pull-left {
-  float: none;
-}
-.dropdown-submenu.pull-left>.dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  border-radius: 6px 0 6px 6px;
-}
-</style>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-// manage active state of menu based on current page
-$(document).ready(function () {
-  // active menu anchor
-  href = window.location.pathname
-  href = href.substr(href.lastIndexOf('/') + 1)
-  if (href === "")
-    href = "index.html";
-  var menuAnchor = $('a[href="' + href + '"]');
-
-  // mark the anchor link active (and if it's in a dropdown, also mark that active)
-  var dropdown = menuAnchor.closest('li.dropdown');
-  if (window.bootstrap) { // Bootstrap 4+
-    menuAnchor.addClass('active');
-    dropdown.find('> .dropdown-toggle').addClass('active');
-  } else { // Bootstrap 3
-    menuAnchor.parent().addClass('active');
-    dropdown.addClass('active');
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
   }
-
-  // Navbar adjustments
-  var navHeight = $(".navbar").first().height() + 15;
-  var style = document.createElement('style');
-  var pt = "padding-top: " + navHeight + "px; ";
-  var mt = "margin-top: -" + navHeight + "px; ";
-  var css = "";
-  // offset scroll position for anchor links (for fixed navbar)
-  for (var i = 1; i <= 6; i++) {
-    css += ".section h" + i + "{ " + pt + mt + "}\n";
-  }
-  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
-  document.head.appendChild(style);
-});
+}
+window.Quarto = {
+  typesetMath
+};
 </script>
 
-<!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-  background-color: transparent;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
-<!-- code folding -->
-
-
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-.tocify-subheader {
-  display: inline;
-}
-.tocify-subheader .tocify-item {
-  font-size: 0.95em;
-}
-
-</style>
-
-
-
+<link rel="stylesheet" href="tutorial.css">
 </head>
 
-<body>
+<body class="nav-sidebar floating nav-fixed quarto-light">
 
-
-<div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
-
-
-<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.html">MarineOmics</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MarineOmics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-contributions" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Contributions</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-contributions">    
         <li>
-  <a href="ADMIN_04_best_principles.html">Best Principles</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Contributions
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="ADMIN_01_submissions_instructions.html">Guide for Building a Page</a>
-    </li>
-    <li>
-      <a href="ADMIN_02_contributions.html">Past and Current Contributors</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Population Genomics
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="POP_01_choosing_population_genetics.html">Choosing a Population Genomics Approach</a>
-    </li>
-    <li>
-      <a href="POP_04_WGS_intro.html">Whole Genome Resequencing</a>
-    </li>
-    <li>
-      <a href="RADseq.html">Reduced Representation Sequencing</a>
-    </li>
-    <li>
-      <a href="POP_03_poolseq.html">Poolseq</a>
-    </li>
-    <li>
-      <a href="RDAtraitPredictionTutorial.html">Redundancy Analysis (RDA) Trait Prediction</a>
-    </li>
-    <li>
-      <a href="POP_08_PCA.html">PCA</a>
-    </li>
-    <li>
-      <a href="POP_09_aDNA.html">Ancient &amp; Degraded DNA</a>
-    </li>
-    <li>
-      <a href="POP_10_Signatures_of_Selection.html">Methods to detect signatures of selection</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Functional Genomics
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="DGE_comparison_v2.html">Mutifactorial RNAseq</a>
-    </li>
-    <li>
-      <a href="FUN_02_DNA_methylation.html">DNA Methylation Assessment</a>
-    </li>
-  </ul>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Genome-Phenome
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">coming soon!</li>
-  </ul>
-</li>
-<li>
-  <a href="ADMIN_03_panels.html">Panel Seminars</a>
-</li>
-<li>
-  <a href="https://github.com/MarineOmics/marineomics.github.io/discussions">Discussion Forum</a>
+    <a class="dropdown-item" href="./ADMIN_01_submissions_instructions.html">
+ <span class="dropdown-text">Guide for Building a Page</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./ADMIN_02_contributions.qmd">
+ <span class="dropdown-text">Past and Current Contributors</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./ADMIN_03_panels.qmd"> 
+<span class="menu-text">Panel Seminars</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/MarineOmics/marineomics.github.io/discussions"> 
+<span class="menu-text">Discussion Forum</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Instructions for developing new pages for the MarineOmics webpage</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Best Principles</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ADMIN_04_best_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Best Principles in Genomics Research</span></a>
+  </div>
 </li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Population Genomics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./POP_01_choosing_population_genetics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Choosing a Population Genomics Approach</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+ <span class="menu-text">POP_04_WGS_intro.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">RADseq.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">POP_03_poolseq.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">RDAtraitPredictionTutorial.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">POP_08_PCA.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">POP_09_aDNA.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">POP_10_Signatures_of_Selection.qmd</span>
+  </li>
       </ul>
-    </div><!--/.nav-collapse -->
-  </div><!--/.container -->
-</div><!--/.navbar -->
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Functional Genomics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">DGE_comparison_v2.qmd</span>
+  </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FUN_02_DNA_methylation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DNA Methylation Assessment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Protein Modeling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./beginner_protein_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protein Modeling (Test Page)</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Genome-Phenome</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">Coming soon!</span>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#howtocite" id="toc-howtocite" class="nav-link active" data-scroll-target="#howtocite"></a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#marineomics-publishing-process" id="toc-marineomics-publishing-process" class="nav-link" data-scroll-target="#marineomics-publishing-process">MarineOmics publishing process</a></li>
+  </ul></li>
+  <li><a href="#r-markdown-basics" id="toc-r-markdown-basics" class="nav-link" data-scroll-target="#r-markdown-basics">R Markdown basics</a>
+  <ul class="collapse">
+  <li><a href="#formatting-basics" id="toc-formatting-basics" class="nav-link" data-scroll-target="#formatting-basics">Formatting basics</a>
+  <ul class="collapse">
+  <li><a href="#code-chunks" id="toc-code-chunks" class="nav-link" data-scroll-target="#code-chunks"><strong>code chunks</strong></a></li>
+  <li><a href="#formatting-text" id="toc-formatting-text" class="nav-link" data-scroll-target="#formatting-text"><strong>formatting text</strong></a></li>
+  <li><a href="#in-text-citations-from-your-.bib" id="toc-in-text-citations-from-your-.bib" class="nav-link" data-scroll-target="#in-text-citations-from-your-.bib"><strong>in-text citations from your .bib</strong></a></li>
+  <li><a href="#installing-loading-packages" id="toc-installing-loading-packages" class="nav-link" data-scroll-target="#installing-loading-packages"><strong>installing &amp; loading packages</strong></a></li>
+  <li><a href="#caching" id="toc-caching" class="nav-link" data-scroll-target="#caching"><strong>caching</strong></a></li>
+  </ul></li>
+  <li><a href="#examples-of-how-to-include-visual-feautures-such-as-tables-images-equations-etc." id="toc-examples-of-how-to-include-visual-feautures-such-as-tables-images-equations-etc." class="nav-link" data-scroll-target="#examples-of-how-to-include-visual-feautures-such-as-tables-images-equations-etc.">Examples of how to include visual feautures such as tables, images, equations, etc.</a>
+  <ul class="collapse">
+  <li><a href="#insert-a-table" id="toc-insert-a-table" class="nav-link" data-scroll-target="#insert-a-table"><strong>insert a table</strong></a></li>
+  <li><a href="#insert-an-image" id="toc-insert-an-image" class="nav-link" data-scroll-target="#insert-an-image"><strong>insert an image</strong></a></li>
+  <li><a href="#write-and-print-an-equation" id="toc-write-and-print-an-equation" class="nav-link" data-scroll-target="#write-and-print-an-equation"><strong>write and print an equation</strong></a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/MarineOmics/marineomics.github.io/edit/main/ADMIN_01_submissions_instructions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/MarineOmics/marineomics.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
 
-  ga('create', 'G-53GH9PV49T', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-<div id="header">
-
-
-
-<h1 class="title toc-ignore">Instructions for developing new pages for
-the MarineOmics webpage</h1>
-
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Instructions for developing new pages for the MarineOmics webpage</h1>
 </div>
 
 
-<div id="howtocite" class="section level2">
-<h2></h2>
-<p>Initial publication year: 2022 <br> <a
-href="https://marineomics.github.io/#How_to_Cite">How to cite</a></p>
-</div>
-<div id="overview" class="section level2">
-<h2>Overview</h2>
-<p>If you are interested in submitting new content to the
-MarineOmics.github.io website, this is the guide for you! While the
-website managers will work with you to help prepare and publish your new
-page, this guide can be a useful resource as you develop your content.
-Below we provide general instructions as well as examples of how to
-build specific features (eg., tables, code chunks). Prior to developing
-new pages, please first contact the current Website Manager Jason Johns
-(jasonjohns[at]ucsb.edu). Do not hesitate to reach out with any other
-questions, comments, or features you’d like added to this guide.</p>
-<p>The MarineOmics website is published through Github Pages directly
-from the <a
-href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics
-github repository</a>. In short, each page of the website is rendered as
-an .html from an RMarkdown (.Rmd) document. The two most important files
-for publishing the general website are the _site.yml and the
-index.Rmd/index.html.</p>
-<p>**_site.yml**: the ‘under the hood’ backbone of the website, where
-things like the visual appearance of the website and the navigation bar
-are specified</p>
-<p><strong>index.html</strong>: rendered from index.Rmd - the home page
-from which all other pages branch</p>
-<p>* The website manager will modify the index.html and .site_yml files
-for your page when you are ready to publish it, so you don’t need to
-know exactly how they work, but it’s good to know what they are at a
-basic level.</p>
-<div id="marineomics-publishing-process" class="section level3">
-<h3>MarineOmics publishing process</h3>
-<div id="content-development-and-review-process" class="section level4">
-<h4>Content development and review process</h4>
-<ol style="list-style-type: decimal">
-<li>Initiation: The potential contributor contacts the website manager
-via email (jasonjohns[at]ucsb.edu) or the discussion forum with an idea.
-<br></li>
-<li>Development: Meet with the website manager, Katherine Silliman
-and/or Sam Bogan (Working Group Co-leaders). <br>
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="howtocite" class="level2">
+<h2 class="anchored" data-anchor-id="howtocite"></h2>
+<p>Initial publication year: 2022</p>
+<p><a href="https://marineomics.github.io/#How_to_Cite">How to cite</a></p>
+</section>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>If you are interested in submitting new content to the MarineOmics.github.io website, this is the guide for you! While the website managers will work with you to help prepare and publish your new page, this guide can be a useful resource as you develop your content. Below we provide general instructions as well as examples of how to build specific features (eg., tables, code chunks). Prior to developing new pages, please first contact the current Website Manager Jason Johns (jasonjohns[at]ucsb.edu). Do not hesitate to reach out with any other questions, comments, or features you’d like added to this guide.</p>
+<p>The MarineOmics website is published through Github Pages directly from the <a href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics github repository</a>. In short, each page of the website is rendered as an .html from an RMarkdown (.Rmd) document. The two most important files for publishing the general website are the _site.yml and the index.Rmd/index.html.</p>
+<p>**_site.yml**: the ‘under the hood’ backbone of the website, where things like the visual appearance of the website and the navigation bar are specified</p>
+<p><strong>index.html</strong>: rendered from index.Rmd - the home page from which all other pages branch</p>
+<p>* The website manager will modify the index.html and .site_yml files for your page when you are ready to publish it, so you don’t need to know exactly how they work, but it’s good to know what they are at a basic level.</p>
+<section id="marineomics-publishing-process" class="level3">
+<h3 class="anchored" data-anchor-id="marineomics-publishing-process">MarineOmics publishing process</h3>
+<section id="content-development-and-review-process" class="level4">
+<h4 class="anchored" data-anchor-id="content-development-and-review-process">Content development and review process</h4>
+<ol type="1">
+<li><p>Initiation: The potential contributor contacts the website manager via email (jasonjohns[at]ucsb.edu) or the discussion forum with an idea.</p></li>
+<li><p>Development: Meet with the website manager, Katherine Silliman and/or Sam Bogan (Working Group Co-leaders).</p>
 <ul>
-<li>All active members will be invited to be involved in the review
-process. <br></li>
-<li>The contributor presents their idea for new material to any involved
-working group members. <br></li>
-<li>There will be regular meetings (frequency decided by those involved)
-with the website manager, Katherine Silliman and/or Sam Bogan, and any
-other participating members for progress updates and support. <br></li>
+<li>All active members will be invited to be involved in the review process.</li>
+<li>The contributor presents their idea for new material to any involved working group members.</li>
+<li>There will be regular meetings (frequency decided by those involved) with the website manager, Katherine Silliman and/or Sam Bogan, and any other participating members for progress updates and support.</li>
 </ul></li>
-<li>Review: Full drafts of content will be reviewed by the website
-manager, Katherine Silliman and/or Sam Bogan, and at least one other
-active MarineOmics member assigned to the project.</li>
-<li>Publishing: Final versions of content will be published with the
-help of the website manager. Please have a list of all software
-dependencies necessary for your .Rmd to be rendered so we can add it to
-our MarineOmics conda environment.</li>
+<li><p>Review: Full drafts of content will be reviewed by the website manager, Katherine Silliman and/or Sam Bogan, and at least one other active MarineOmics member assigned to the project.</p></li>
+<li><p>Publishing: Final versions of content will be published with the help of the website manager. Please have a list of all software dependencies necessary for your .Rmd to be rendered so we can add it to our MarineOmics conda environment.</p></li>
 </ol>
-<p>*See the <a href="#conflicts">bottom of the page</a> for our policy
-on disagreements or conflicts during the development process</p>
-</div>
-<div
-id="please-include-the-initial-publication-date-year-at-minimum-at-the-top-of-your-page-so-it-can-be-properly-cited.-we-also-ask-that-you-include-the-below-text-at-the-top-of-your-page-which-will-make-a-link-to-a-section-on-the-main-website-about-how-to-cite."
-class="section level4">
-<h4>Please include the initial publication date (year at minimum) at the
-top of your page so it can be properly cited. We also ask that you
-include the below text at the <a href="#howtocite">top of your page</a>,
-which will make a link to a section on the main website about how to
-cite.</h4>
+<p><em>See the <a href="#conflicts">bottom of the page</a> for our policy on disagreements or conflicts during the development process</em></p>
+</section>
+<section id="please-include-the-initial-publication-date-year-at-minimum-at-the-top-of-your-page-so-it-can-be-properly-cited.-we-also-ask-that-you-include-the-below-text-at-the-top-of-your-page-which-will-make-a-link-to-a-section-on-the-main-website-about-how-to-cite." class="level4">
+<h4 class="anchored" data-anchor-id="please-include-the-initial-publication-date-year-at-minimum-at-the-top-of-your-page-so-it-can-be-properly-cited.-we-also-ask-that-you-include-the-below-text-at-the-top-of-your-page-which-will-make-a-link-to-a-section-on-the-main-website-about-how-to-cite.">Please include the initial publication date (year at minimum) at the top of your page so it can be properly cited. We also ask that you include the below text at the <a href="#howtocite">top of your page</a>, which will make a link to a section on the main website about how to cite.</h4>
 <pre><code>  [How to cite](https://marineomics.github.io/#How_to_Cite)</code></pre>
-<hr />
-</div>
-</div>
-</div>
-<div id="r-markdown-basics" class="section level1">
+<hr>
+</section>
+</section>
+</section>
+<section id="r-markdown-basics" class="level1">
 <h1>R Markdown basics</h1>
-<p>The rendered .Rmd and .html files for each page on this site can be
-seen in the <a
-href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics
-github repository</a>. It is possible to use .Rmd files in base R, but
-we recommend using RStudio. If you don’t have much experience with
-RStudio, it’s quite intuitive with a shallow learning curve and many
-existing online resources for using it. It is possible to use .Rmd files
-in base R, but we recommend using RStudio.</p>
-<p><em>Note: it’s a good idea to look at existing .Rmd scripts
-(including <a
-href="https://github.com/MarineOmics/marineomics.github.io/blob/main/ADMIN_01_submissions_instructions.Rmd">the
-one that codes for this page</a>) to see examples of how a particular
-feature can be accomplished, such as citing references, linking a
-website, building a table, incorporating figures, etc. We will
-explicitly go over some of those features below, but there are many
-other bells and whistles that can be explored through online
-resources.</em></p>
-<p>Here are some general RMarkdown tutorials that we like to reference:
-<br> - <a
-href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">Chapter
-10 from RMarkdown the Definitive Guide: Xi, Allaire, &amp; Grolemund
-2022</a> <br> - <a
-href="https://garrettgman.github.io/rmarkdown/rmarkdown_websites.html">R
-Markdown Websites: Garrett Grolemund</a></p>
-<p><br></p>
-<div id="formatting-basics" class="section level2">
-<h2>Formatting basics</h2>
-<p>One of the strengths of .Rmd documents is their versatility. They can
-hold everything from code (not only in R but in other languages),
-formatted text, figure outputs, and more. Basically, code must be
-enclosed within ‘code chunks’ and anything outside of code chunks will
-be read as text, similar to a basic text file.</p>
-<div id="code-chunks" class="section level3">
-<h3><strong>code chunks</strong></h3>
-<p>Below is a basic R code chunk which can be inserted by clicking the
-green +C button on the RStudio toolbar or typing the keyboard shortcut:
-<br></p>
+<p>The rendered .Rmd and .html files for each page on this site can be seen in the <a href="https://github.com/MarineOmics/marineomics.github.io">MarineOmics github repository</a>. It is possible to use .Rmd files in base R, but we recommend using RStudio. If you don’t have much experience with RStudio, it’s quite intuitive with a shallow learning curve and many existing online resources for using it. It is possible to use .Rmd files in base R, but we recommend using RStudio.</p>
+<p><em>Note: it’s a good idea to look at existing .Rmd scripts (including <a href="https://github.com/MarineOmics/marineomics.github.io/blob/main/ADMIN_01_submissions_instructions.Rmd">the one that codes for this page</a>) to see examples of how a particular feature can be accomplished, such as citing references, linking a website, building a table, incorporating figures, etc. We will explicitly go over some of those features below, but there are many other bells and whistles that can be explored through online resources.</em></p>
+<p>Here are some general RMarkdown tutorials that we like to reference:</p>
 <ul>
-<li>macOS: command + option + I <br></li>
+<li><a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">Chapter 10 from RMarkdown the Definitive Guide: Xi, Allaire, &amp; Grolemund 2022</a></li>
+<li><a href="https://garrettgman.github.io/rmarkdown/rmarkdown_websites.html">R Markdown Websites: Garrett Grolemund</a></li>
+</ul>
+<section id="formatting-basics" class="level2">
+<h2 class="anchored" data-anchor-id="formatting-basics">Formatting basics</h2>
+<p>One of the strengths of .Rmd documents is their versatility. They can hold everything from code (not only in R but in other languages), formatted text, figure outputs, and more. Basically, code must be enclosed within ‘code chunks’ and anything outside of code chunks will be read as text, similar to a basic text file.</p>
+<section id="code-chunks" class="level3">
+<h3 class="anchored" data-anchor-id="code-chunks"><strong>code chunks</strong></h3>
+<p>Below is a basic R code chunk which can be inserted by clicking the green +C button on the RStudio toolbar or typing the keyboard shortcut:</p>
+<ul>
+<li>macOS: command + option + I</li>
 <li>Windows/Linux: control + alt + I</li>
 </ul>
 <!-- -->
-<pre><code>```{r, echo = TRUE, include = TRUE} 
-
-#Here&#39;s a simple linear model in R as an example
-my_lm &lt;- lm(y ~ x, data = df)
-
-```</code></pre>
-<p>Whether code chunks and/or their output are included in the knitted
-.html can be modified with the logical commands “echo” and “include”.
-<br></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: true</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Here's a simple linear model in R as an example</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>my_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> df)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Whether code chunks and/or their output are included in the knitted .html can be modified with the logical commands “echo” and “include”.</p>
 <ul>
-<li>echo: include the code chunk itself or not <br></li>
+<li>echo: include the code chunk itself or not</li>
 <li>include: include the output of the code chunk or not</li>
 </ul>
-<p>* Other options exist for code chunk output which can be explored
-online and in other .Rmd scripts in this repository.</p>
-<p><br></p>
-<div id="global-code-chunk-options" class="section level4">
-<h4><em>global code chunk options</em></h4>
-<p>This is the chunk where we establish global settings for the entire
-document. This is done with the command from the knitr package
-“opts_chunk$set” as shown in the example below. This command is
-typically included in the first code chunk, where we also load our page
-formatting packages and adjust the settings for citations. When a new
-.Rmd is made, this command is automatically included in the first chunk,
-which is named “setup” by default. The name of a code chunk can be
-specified after the r in ```{r ____}.</p>
+<p>* Other options exist for code chunk output which can be explored online and in other .Rmd scripts in this repository.</p>
+<section id="global-code-chunk-options" class="level4">
+<h4 class="anchored" data-anchor-id="global-code-chunk-options"><em>global code chunk options</em></h4>
+<p>This is the chunk where we establish global settings for the entire document. This is done with the command from the knitr package “opts_chunk$set” as shown in the example below. This command is typically included in the first code chunk, where we also load our page formatting packages and adjust the settings for citations. When a new .Rmd is made, this command is automatically included in the first chunk, which is named “setup” by default. The name of a code chunk can be specified after the r in ```{r ____}.</p>
 <p><a id="cite_options"></a></p>
-<pre><code>```{r setup} 
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
-# load page formatting packages
-library(knitr)
-library(knitcitations)
-library(kableExtra)
-knitr::opts_chunk$set(fig.width = 10, fig.height = 5) #setting the dimensions for figure outputs in a different line of code for cleanliness
-cite_options(citation_format = &quot;pandoc&quot;, max.names = 3, style = &quot;html&quot;, 
-             hyperlink = &quot;to.doc&quot;) #setting format for in-text citations for the references section at the bottom of the page
-```</code></pre>
-<p>* Note the “cache =” option. When set to “true” R will cache all of
-the output created from knitting the RMarkdown document. This is
-especially useful for pages with heavy computation that take a long time
-to knit.</p>
-<p><br></p>
-</div>
-<div id="including-code-from-another-language" class="section level4">
-<h4><em>including code from another language</em></h4>
-<p>In addition to R code, we can also run code such as bash shell script
-in the R markdown file by modifying the code chunk header as below:
-<br></p>
-<pre><code>```{bash, eval = T} 
-
-# Here&#39;s a simple line of bash as an example
-echo &quot;Hi world&quot;
-
-```</code></pre>
-<p><br></p>
-</div>
-</div>
-<div id="formatting-text" class="section level3">
-<h3><strong>formatting text</strong></h3>
-<p>Options abound for formatting text in .Rmd documents using <a
-href="https://pandoc.org/MANUAL.html">Pandoc Markdown</a>, and many of
-these can be found with a quick search, but we will go over a few basics
-here.<br></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: true</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">fig.width =</span> <span class="dv">10</span>, <span class="at">fig.height =</span> <span class="dv">5</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>* Note the “cache =” option. When set to “true” R will cache all of the output created from knitting the RMarkdown document. This is especially useful for pages with heavy computation that take a long time to knit.</p>
+</section>
+<section id="including-code-from-another-language" class="level4">
+<h4 class="anchored" data-anchor-id="including-code-from-another-language"><em>including code from another language</em></h4>
+<p>In addition to R code, we can also run code such as bash shell script in the R markdown file by modifying the code chunk header as below:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{bash}</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Here's a simple line of bash as an example</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Hi world"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="formatting-text" class="level3">
+<h3 class="anchored" data-anchor-id="formatting-text"><strong>formatting text</strong></h3>
+<p>Options abound for formatting text in .Rmd documents using <a href="https://pandoc.org/MANUAL.html">Pandoc Markdown</a>, and many of these can be found with a quick search, but we will go over a few basics here.</p>
 <ul>
-<li>As with writing code, any text symbol that codes for something, such
-as a # or a * must be escaped with a backslash (\) if you just want to
-use the symbol itself. <br></li>
-<li><strong>#</strong>: <em>Outside of a code chunk</em>, pound signs
-dictate the size and organizational level of the text. A single # will
-make large text and a main section in the navigation window. Two ## will
-make slightly smaller text and a sub-section in the navigation window.
-<br>
+<li>As with writing code, any text symbol that codes for something, such as a # or a * must be escaped with a backslash (\) if you just want to use the symbol itself.</li>
+<li><strong>#</strong>: <em>Outside of a code chunk</em>, pound signs dictate the size and organizational level of the text.
 <ul>
-<li>For example, the “RMarkdown formatting” text and category was
-created with “# RMarkdown formatting” while the “code chunks”
-subcategory was created with “## code chunks.”<br></li>
+<li>For example, the “RMarkdown formatting” text and category was created with “# RMarkdown formatting” while the “code chunks” subcategory was created with “## code chunks.”</li>
 </ul></li>
-<li><strong>*</strong>: Asterisks are used to bold and italicize when
-surrounding texts. Use **<strong>two asterisks to bold</strong>** and
-*<em>one asterisk</em>* to italicize.<br></li>
-<li><strong>&lt;br&gt;</strong>: adds a line break <br></li>
-<li><strong>&lt;hr /&gt;</strong>: adds a horizontal line across the
-page</li>
+<li><strong>*</strong>: Asterisks are used to bold and italicize when surrounding texts. Use **<strong>two asterisks to bold</strong>** and *<em>one asterisk</em>* to italicize.</li>
+<li><strong>&lt;br&gt;</strong>: adds a line break</li>
+<li><strong>&lt;hr /&gt;</strong>: adds a horizontal line across the page</li>
 </ul>
-<p><br></p>
-</div>
-<div id="in-text-citations-from-your-.bib" class="section level3">
-<h3><strong>in-text citations from your .bib</strong></h3>
-<p>In-text citations can be made throughout the document that will
-automatically add a reference to your reference section via the
-following steps: <br></p>
+</section>
+<section id="in-text-citations-from-your-.bib" class="level3">
+<h3 class="anchored" data-anchor-id="in-text-citations-from-your-.bib"><strong>in-text citations from your .bib</strong></h3>
+<p>In-text citations can be made throughout the document that will automatically add a reference to your reference section via the following steps:</p>
 <ul>
-<li>add your citations to the common-bib_01.bib document by exporting
-BibTeX-formatted citations from your reference manager</li>
-<li>add the line ‘bibliography: common-bib_01.bib’ to your header at the
-top of the .Rmd document, which looks like this:</li>
+<li>add your citations to the common-bib_01.bib document by exporting BibTeX-formatted citations from your reference manager</li>
+<li>add the line ‘bibliography: common-bib_01.bib’ to your header at the top of the .Rmd document, which looks like this:</li>
 </ul>
 <!-- -->
 <pre><code>---
-title: &quot;Instructions for developing new pages for the MarineOmics webpage&quot;
+title: "Instructions for developing new pages for the MarineOmics webpage"
 bibliography: common-bib_01.bib
 ---</code></pre>
 <ul>
-<li>include the ‘cite-options’ chunk in your ‘setup’ code chunk. See the
-initial <a href="#cite_options">‘r setup’ chunk</a> above for the syntax
-of the ‘cite_options’ command.</li>
+<li>include the ‘cite-options’ chunk in your ‘setup’ code chunk. See the initial <a href="#cite_options">‘r setup’ chunk</a> above for the syntax of the ‘cite_options’ command.</li>
 </ul>
-<p>After following these steps, you can cite them in the RMarkdown
-document. Let’s say you have a paper you want to cite by LastName et
-al. 2023 and the paper’s ID in your .bib file is ‘LastName2023-xy’. We
-can reference this paper in-text by adding [@LastName2023-xy] to the end
-of a sentence. This will produce a reference such as the one below for
-Tripp et al. 2017. <br> <br> <em>syntax in .Rmd text <strong>(not in a
-code chunk)</strong></em>:</p>
+<p>After following these steps, you can cite them in the RMarkdown document. Let’s say you have a paper you want to cite by LastName et al. 2023 and the paper’s ID in your .bib file is ‘LastName2023-xy’. We can reference this paper in-text by adding [@LastName2023-xy] to the end of a sentence. This will produce a reference such as the one below for Tripp et al.&nbsp;2017.</p>
+<p><em>syntax in .Rmd text <strong>(not in a code chunk)</strong></em>:</p>
 <pre><code>RADseq can produce insightful analyses even in the absence of data, if missing values are handled properly [@Tripp2017-cp].</code></pre>
-<p><em>knitted output</em>: <br> RADseq can produce insightful analyses
-even in the absence of data, if missing values are handled properly
-<span class="citation">(Tripp et al. 2017)</span>.</p>
-<p><br></p>
-<p>You can also add hyperlinks to each in text citation that direct to
-the References section at the bottom of the page. The in text citation
-keeps its normal format, but with brackets added around the parentheses.
-Directly after the citation (also in parentheses) is the ‘#’ link to the
-References section: (#refs) in this case.<br> <br>
-<strong>.Rmd</strong>: [(@Tripp2017-cp)](#refs) <br> <strong>rendered
-html</strong>: <a href="#refs">(<span class="citation">Tripp et al.
-(2017)</span>)</a> <br> <br> At the bottom of the .Rmd, where the ‘##
-References’ heading is, we have a ‘{#refs}’, which creates the target
-for all links with ‘(#refs)’. It looks like this on the .Rmd:<br> ##
-References {#refs}</p>
+<p><em>knitted output:</em> RADseq can produce insightful analyses even in the absence of data, if missing values are handled properly <span class="citation" data-cites="Tripp2017-cp">(<a href="#ref-Tripp2017-cp" role="doc-biblioref">Tripp et al. 2017</a>)</span>.</p>
+<p>You can also add hyperlinks to each in text citation that direct to the References section at the bottom of the page. The in text citation keeps its normal format, but with brackets added around the parentheses. Directly after the citation (also in parentheses) is the ‘#’ link to the References section: (#refs) in this case.</p>
+<p><strong>.Rmd</strong>: [(@Tripp2017-cp)](#refs)</p>
+<p><strong>rendered html</strong>: <a href="#refs">(@Tripp2017-cp)</a></p>
+<p>At the bottom of the .Rmd, where the ‘## References’ heading is, we have a ‘{#refs}’, which creates the target for all links with ‘(#refs)’. It looks like this on the .Rmd:</p>
+<pre><code>## References {#refs}</code></pre>
+</section>
+<section id="installing-loading-packages" class="level3">
+<h3 class="anchored" data-anchor-id="installing-loading-packages"><strong>installing &amp; loading packages</strong></h3>
+<p>If you will be using any R packages or external software for your content, it’s a good idea to highlight them toward the beginning of your page, including code for installing them. Here’s an example from the RADseq tutorial:</p>
+<p><em>If you would like to run the R code examples that are scattered throughout the guide (recommended but not required!), you will need to install some R packages. Only need to run this code once:</em></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#the BiocManager package facilitates the installation of packages from the Bioconductor project</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"SeqArray"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"SNPRelate"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="installing-loading-packages" class="section level3">
-<h3><strong>installing &amp; loading packages</strong></h3>
-<p>If you will be using any R packages or external software for your
-content, it’s a good idea to highlight them toward the beginning of your
-page, including code for installing them. Here’s an example from the
-RADseq tutorial: <br> <br> <em>If you would like to run the R code
-examples that are scattered throughout the guide (recommended but not
-required!), you will need to install some R packages. Only need to run
-this code once:</em></p>
-<pre class="r"><code>install.packages(&quot;tidyverse&quot;)
-if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
-    install.packages(&quot;BiocManager&quot;)
-#the BiocManager package facilitates the installation of packages from the Bioconductor project
-BiocManager::install(&quot;SeqArray&quot;)
-BiocManager::install(&quot;SNPRelate&quot;)</code></pre>
-<p><br> <em>These external software are referenced in the tutorial:</em>
-<br></p>
+<p><em>These external software are referenced in the tutorial:</em></p>
 <ul>
-<li><a
-href="https://vcftools.github.io/man_latest.html">vcftools</a></li>
-<li><a
-href="https://riptutorial.com/gnuplot/example/11275/installation-or-setup">gnuplot</a></li>
+<li><a href="https://vcftools.github.io/man_latest.html">vcftools</a></li>
+<li><a href="https://riptutorial.com/gnuplot/example/11275/installation-or-setup">gnuplot</a></li>
 </ul>
-</div>
-<div id="caching" class="section level3">
-<h3><strong>caching</strong></h3>
-<p>If your page includes any code that takes a long time to run, please
-set “cache = TRUE” in the knitr::opts_chunk$set command in your global
-code chunk.</p>
-<hr />
-</div>
-</div>
-<div
-id="examples-of-how-to-include-visual-feautures-such-as-tables-images-equations-etc."
-class="section level2">
-<h2>Examples of how to include visual feautures such as tables, images,
-equations, etc.</h2>
-<div id="insert-a-table" class="section level3">
-<h3><strong>insert a table</strong></h3>
+</section>
+<section id="caching" class="level3">
+<h3 class="anchored" data-anchor-id="caching"><strong>caching</strong></h3>
+<p>If your page includes any code that takes a long time to run, please set “cache = TRUE” in the knitr::opts_chunk$set command in your global code chunk.</p>
+<hr>
+</section>
+</section>
+<section id="examples-of-how-to-include-visual-feautures-such-as-tables-images-equations-etc." class="level2">
+<h2 class="anchored" data-anchor-id="examples-of-how-to-include-visual-feautures-such-as-tables-images-equations-etc.">Examples of how to include visual feautures such as tables, images, equations, etc.</h2>
+<section id="insert-a-table" class="level3">
+<h3 class="anchored" data-anchor-id="insert-a-table"><strong>insert a table</strong></h3>
 <p><em>text in .Rmd <strong>(not in a code chunk)</strong></em>:</p>
 <pre><code>| Term A | Term B | Term C | Term D | Term E | Term F | Term G |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | xxx | xxx | xxx | xxx | xxx | xxx | xxx |  
 | yyy | yyy | yyy | yyy | yyy | yyy | yyy | 
 | zzz | zzz | zzz | zzz | zzz | zzz | zzz | </code></pre>
-<p><br></p>
 <p><em>knitted output</em>:</p>
-<table>
+<table class="caption-top table">
 <thead>
 <tr class="header">
-<th align="left">Term A</th>
-<th align="left">Term B</th>
-<th align="left">Term C</th>
-<th align="left">Term D</th>
-<th align="left">Term E</th>
-<th align="left">Term F</th>
-<th align="left">Term G</th>
+<th style="text-align: left;">Term A</th>
+<th style="text-align: left;">Term B</th>
+<th style="text-align: left;">Term C</th>
+<th style="text-align: left;">Term D</th>
+<th style="text-align: left;">Term E</th>
+<th style="text-align: left;">Term F</th>
+<th style="text-align: left;">Term G</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-<td align="left">xxx</td>
-<td align="left">xxx</td>
+<td style="text-align: left;">xxx</td>
+<td style="text-align: left;">xxx</td>
+<td style="text-align: left;">xxx</td>
+<td style="text-align: left;">xxx</td>
+<td style="text-align: left;">xxx</td>
+<td style="text-align: left;">xxx</td>
+<td style="text-align: left;">xxx</td>
 </tr>
 <tr class="even">
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-<td align="left">yyy</td>
-<td align="left">yyy</td>
+<td style="text-align: left;">yyy</td>
+<td style="text-align: left;">yyy</td>
+<td style="text-align: left;">yyy</td>
+<td style="text-align: left;">yyy</td>
+<td style="text-align: left;">yyy</td>
+<td style="text-align: left;">yyy</td>
+<td style="text-align: left;">yyy</td>
 </tr>
 <tr class="odd">
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-<td align="left">zzz</td>
-<td align="left">zzz</td>
+<td style="text-align: left;">zzz</td>
+<td style="text-align: left;">zzz</td>
+<td style="text-align: left;">zzz</td>
+<td style="text-align: left;">zzz</td>
+<td style="text-align: left;">zzz</td>
+<td style="text-align: left;">zzz</td>
+<td style="text-align: left;">zzz</td>
 </tr>
 </tbody>
 </table>
-<p><br></p>
-<p>You can generate a Markdown-formatted table using a free online
-editor, such as <a
-href="https://tabletomarkdown.com/generate-markdown-table/">this
-one</a>. The <a
-href="https://bookdown.org/yihui/rmarkdown-cookbook/kableextra.html"><strong>kableExtra</strong></a>
-package has a lot of functionality for fancier tables.</p>
-<p><br></p>
-</div>
-<div id="insert-an-image" class="section level3">
-<h3><strong>insert an image</strong></h3>
-<p>To insert an image, you need the image file to also be uploaded to
-the Github repository. We store the images hosted on the website in each
-page’s folder and call them accordingly. For any image, please make sure
-you have permission to share the image and that it is appropriately
-cited.</p>
+<p>You can generate a Markdown-formatted table using a free online editor, such as <a href="https://tabletomarkdown.com/generate-markdown-table/">this one</a>. The <a href="https://bookdown.org/yihui/rmarkdown-cookbook/kableextra.html"><strong>kableExtra</strong></a> package has a lot of functionality for fancier tables.</p>
+</section>
+<section id="insert-an-image" class="level3">
+<h3 class="anchored" data-anchor-id="insert-an-image"><strong>insert an image</strong></h3>
+<p>To insert an image, you need the image file to also be uploaded to the Github repository. We store the images hosted on the website in each page’s folder and call them accordingly. For any image, please make sure you have permission to share the image and that it is appropriately cited.</p>
 <p><em>code chunk in .Rmd</em>:</p>
-<pre><code>```{r, echo = TRUE, include = TRUE, out.height = &quot;40%&quot;, fig.align = &quot;center&quot;, fig.cap=&quot;Figure from Rivera et al. 2021&quot;} 
-
-knitr::include_graphics(&quot;ADMIN_01_submissions_instructions_files/Rivera_etal_fig.png&quot;)
-
-```</code></pre>
-<p><br></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: true</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| out-height: "40%"</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: "center"</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Figure from Rivera et al. 2021"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"ADMIN_01_submissions_instructions/Rivera_etal_fig.png"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>knitted output</em>:</p>
-<pre class="r"><code>knitr::include_graphics(&quot;ADMIN_01_submissions_instructions_files/Rivera_etal_fig.png&quot;)</code></pre>
-<div class="figure" style="text-align: center">
-<img src="ADMIN_01_submissions_instructions_files/Rivera_etal_fig.png" alt="Figure from Rivera et al. 2021" width="1137" height="40%" />
-<p class="caption">
-Figure from Rivera et al. 2021
-</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"ADMIN_01_submissions_instructions/Rivera_etal_fig.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ADMIN_01_submissions_instructions/Rivera_etal_fig.png" style="height:40.0%" width="1137" class="figure-img"></p>
+<figcaption>Figure from Rivera et al.&nbsp;2021</figcaption>
+</figure>
 </div>
-<p><br></p>
 </div>
-<div id="write-and-print-an-equation" class="section level3">
-<h3><strong>write and print an equation</strong></h3>
+</div>
+</section>
+<section id="write-and-print-an-equation" class="level3">
+<h3 class="anchored" data-anchor-id="write-and-print-an-equation"><strong>write and print an equation</strong></h3>
 <p>Equations follow LaTeX style formatting.</p>
-<p>For illustrative purposes, here is a simple and famous equation. <br>
-<em>syntax in .Rmd</em>:</p>
+<p>For illustrative purposes, here is a simple and famous equation.</p>
+<p><em>syntax in .Rmd</em>:</p>
 <pre><code>$$
 E = mc^2
 $$</code></pre>
-<p><br></p>
 <p><em>knitted output</em>: <span class="math display">\[
 E = mc^2
-\]</span> <br></p>
-<p>As an example of a more complex equation, here is an equation for the
-t-statistic: <br> <em>syntax in .Rmd</em>:</p>
+\]</span></p>
+<p>As an example of a more complex equation, here is an equation for the t-statistic:</p>
+<p><em>syntax in .Rmd</em>:</p>
 <pre><code>$$
 t = \frac{\overline{x_{1}}-\overline{x_{2}}}
 {\sqrt{(s^2(
@@ -856,121 +664,432 @@ t = \frac{\overline{x_{1}}-\overline{x_{2}}}
 \frac{1}{n_{1}} + \frac{1}{n_{2}}
 ))}}
 \]</span></p>
-<p><br></p>
-<p>After you have finished editing your R markdown file, you can “knit”
-it to an HTML file by selecting the Knit button at the top of RStudio.
-You can review this HTML file to get an idea of what the page will look
-like on the website (minus the navigation bar and other site-specific
-formatting). You will need to upload both the R markdown file and the
-HTML file to Github prior to you page being added to the website.</p>
-<hr />
+<p>After you have finished editing your R markdown file, you can “knit” it to an HTML file by selecting the Knit button at the top of RStudio. You can review this HTML file to get an idea of what the page will look like on the website (minus the navigation bar and other site-specific formatting). You will need to upload both the R markdown file and the HTML file to Github prior to you page being added to the website.</p>
+<hr>
 <p><a id="conflicts"></a></p>
-<div id="contentwording-conflicts" class="section level4">
-<h4>Content/wording conflicts</h4>
-<p>At any point in the process, disagreements on what content to include
-may arise. These include but are not limited to: recommendations for
-experimental design, techniques, and phrasing. All disagreements will be
-approached with the same method(s). <br> <br> Disagreements will be
-discussed with all of those involved at the time that the disagreement
-arises. The first attempt at resolving the disagreement will be via
-discussion. If a resolution is not agreed upon by all parties through
-discussion, it will be put to a majority vote including all of those
-actively involved at the time, not including the content author. In case
-of a tie, a MarineOmics senior scientist will be assigned to break the
-tie.</p>
+<section id="contentwording-conflicts" class="level4">
+<h4 class="anchored" data-anchor-id="contentwording-conflicts">Content/wording conflicts</h4>
+<p>At any point in the process, disagreements on what content to include may arise. These include but are not limited to: recommendations for experimental design, techniques, and phrasing. All disagreements will be approached with the same method(s).</p>
+<p>Disagreements will be discussed with all of those involved at the time that the disagreement arises. The first attempt at resolving the disagreement will be via discussion. If a resolution is not agreed upon by all parties through discussion, it will be put to a majority vote including all of those actively involved at the time, not including the content author. In case of a tie, a MarineOmics senior scientist will be assigned to break the tie.</p>
+</section>
+</section>
+</section>
+<section id="references" class="level2">
+
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Tripp2017-cp" class="csl-entry" role="listitem">
+Tripp, Erin A, Yi-Hsin Erica Tsai, Yongbin Zhuang, and Kyle G Dexter. 2017. <span>“<span>RADseq</span> Dataset with 90% Missing Data Fully Resolves Recent Radiation of Petalidium (Acanthaceae) in the Ultra-Arid Deserts of Namibia.”</span> <em>Ecol. Evol.</em> 7 (19): 7920–36. <a href="https://doi.org/10.1002/ece3.3274">https://doi.org/10.1002/ece3.3274</a>.
 </div>
-</div>
-</div>
-<div id="refs" class="section level2 unnumbered">
-<h2 class="unnumbered">References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent"
-entry-spacing="0">
-<div id="ref-Tripp2017-cp" class="csl-entry">
-Tripp, Erin A, Yi-Hsin Erica Tsai, Yongbin Zhuang, and Kyle G Dexter.
-2017. <span>“<span>RADseq</span> Dataset with 90% Missing Data Fully
-Resolves Recent Radiation of Petalidium (Acanthaceae) in the Ultra-Arid
-Deserts of Namibia.”</span> <em>Ecol. Evol.</em> 7 (19): 7920–36. <a
-href="https://doi.org/10.1002/ece3.3274">https://doi.org/10.1002/ece3.3274</a>.
-</div>
-</div>
-</div>
-</div>
-
-
-
-</div>
-</div>
-
-</div>
-
-<script>
-
-// add bootstrap table styles to pandoc tables
-function bootstrapStylePandocTables() {
-  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
-}
-$(document).ready(function () {
-  bootstrapStylePandocTables();
-});
-
-
-</script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open');
-  });
-});
-</script>
-
-<!-- code folding -->
-
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    options.showAndHide = false;
-    options.smoothScroll = true;
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
 
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 
-</body>
-</html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/MarineOmics/marineomics.github.io/edit/main/ADMIN_01_submissions_instructions.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/MarineOmics/marineomics.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
