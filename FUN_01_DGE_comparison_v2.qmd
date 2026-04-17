@@ -1,7 +1,7 @@
 ---
 title: "Fitting Multifactorial Models of Differential Expression"
 author: "*Samuel N. Bogan*"
-bibliography: FUN_01_DGE_comparison_v2_files/DGE_Comp.bib
+bibliography: FUN_01_DGE_comparison_v2/DGE_Comp.bib
 ---
 
 Initial publication year: 2022
@@ -37,7 +37,7 @@ This walkthrough can be broken down into different types of predictor variables 
 Two important considerations when choosing a DE package to analyze RNA-seq data are the distribution family used by the package and the effect types it incorporate into a model. The DE packages we will cover assume the following read count distributions and are capable of fitting the following effect types:
 
 | Program | Distribution | Continuous fixed eff. | Random intercepts | Random slopes | Interactive eff. | Non-linear eff. |
-|:----------|:----------|:----------|:----------|:----------|:----------|:----------|
+|:---|:---|:---|:---|:---|:---|:---|
 | edgeR | Negative binomial generalized linear model | ✔ | ✖ | ✖ | ✔ | ✔ |
 | DESeq2 | Negative binomial generalized linear model | ✔ | ✖ | ✖ | ✔ | ✔ |
 | Voom | Mean-variance linear model | ✔ | ✔ | ✖ | ✔ | ✔ |
@@ -152,7 +152,7 @@ Now let's first plot the distribution of unfiltered reads from our dataset:
 #| warning: false
 
 # Read in matrix of RSEM expected read counts
-data <- read.delim("FUN_01_DGE_comparison_v2_files/RNA_data/GE2_expected_counts_gene.matrix", sep = "\t", header = T, row.names = 1)
+data <- read.delim("FUN_01_DGE_comparison_v2/RNA_data/GE2_expected_counts_gene.matrix", sep = "\t", header = T, row.names = 1)
 
 # Peak at data to check that it looks okay
 head(data)
@@ -354,7 +354,7 @@ Gene expression traits can exhibit non-linear performance curves across a contin
 #| out-height: "40%"
 #| fig-align: center
 
-knitr::include_graphics("FUN_01_DGE_comparison_v2_files/Rivera_etal_fig.png")
+knitr::include_graphics("FUN_01_DGE_comparison_v2/Rivera_etal_fig.png")
 ```
 
 From Rivera *et al.* 2021 - "Transcriptomic resilience and timing. (a) Gene expression reaction norms of four strategies during recovery after a stressor. We use triangles again for patterns that may confer tolerance and circles for patterns associated with stress sensitivity. While all triangle paths show a return to baseline (resilience) the pink (frontloading) and yellow (dampening) are also depicting differences in baseline and plasticity and are therefore labelled differently. (b) Adapted from the rolling ball analogy commonly used for ecological resilience and depicted in Hodgson et al. (2015). Each ball represents a gene showing a color-matched expression pattern in (a). Landscapes represent expression possibilities during a stress event. In the absence of stress, the ball will settle in a trough, representing baseline expression levels. Elasticity (rate of return to the baseline) is represented by the size of the arrow (i.e., larger arrows have faster rates of return). Pink dotted line is the expression landscape for the frontloaded ball. (c) Using Torres et al. (2016) loops through disease space as an alternative framework of an organism's path through stress response and recovery. The color gradient represents the resulting phenotype for a given path through stress and recovery space, though x-and y-axis can denote any two parameters that are correlated but with a time lag."
@@ -415,9 +415,9 @@ nl_pCO2 <-
 
 # Make contrasts
 is.de_nl_pCO2 <-
-  decideTestsDGE(nl_pCO2, adjust.method = "fdr", p.value = 0.05)
+  decideTests(nl_pCO2, adjust.method = "fdr", p.value = 0.05)
 is.de_nl_pCO2_2 <-
-  decideTestsDGE(nl_pCO2_2, adjust.method = "fdr", p.value = 0.05)
+  decideTests(nl_pCO2_2, adjust.method = "fdr", p.value = 0.05)
 
 # Summarize differential expression attributed to pCO2 and pCO2^2
 summary(is.de_nl_pCO2)
@@ -459,9 +459,9 @@ nl_pCO2_2_int <-
   
 # Make contrasts
 is.de_nl_pCO2_int <-
-  decideTestsDGE(nl_pCO2_int, adjust.method = "fdr", p.value = 0.05) # Make contrasts
+  decideTests(nl_pCO2_int, adjust.method = "fdr", p.value = 0.05) # Make contrasts
 is.de_nl_pCO2_2_int <-
-  decideTestsDGE(nl_pCO2_2_int, adjust.method = "fdr", p.value = 0.05)
+  decideTests(nl_pCO2_2_int, adjust.method = "fdr", p.value = 0.05)
   
 # Summarize differential expression attributed to pCO2 and pCO2^2
 summary(is.de_nl_pCO2_int)
@@ -793,7 +793,7 @@ tr_pCO2 <-
   ) # Estimate significant DEGs
   
 is.de_tr_pCO2 <-
-  decideTestsDGE(tr_pCO2, adjust.method = "fdr", p.value = 0.05) # Make contrasts
+  decideTests(tr_pCO2, adjust.method = "fdr", p.value = 0.05) # Make contrasts
   
 summary(is.de_tr_pCO2)
 
@@ -802,7 +802,7 @@ tr_int <-
   glmQLFTest(multi_fit, coef = 3, poisson.bound = FALSE) # Estimate significant DEGs
   
 is.de_int <-
-  decideTestsDGE(tr_int, adjust.method = "fdr", p.value = 0.05) # Make contrasts
+  decideTests(tr_int, adjust.method = "fdr", p.value = 0.05) # Make contrasts
   
 summary(is.de_int)
 
