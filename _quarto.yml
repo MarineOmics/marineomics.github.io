@@ -9,15 +9,9 @@ website:
   repo-actions: [edit, issue]
   navbar:
     left:
-      - href: index.qmd
+      - href: index.html
         text: "Home"
-      - text: "Contributions"
-        menu:
-          - href: ADMIN_01_submissions_instructions.qmd
-            text: "Guide for Building a Page"
-          - href: ADMIN_02_contributions.qmd
-            text: "Past and Current Contributors"
-      - href: ADMIN_03_panels.qmd
+      - href: ADMIN_03_panels.html
         text: "Panel Seminars"
       - href: https://github.com/MarineOmics/marineomics.github.io/discussions
         text: "Discussion Forum"
@@ -27,6 +21,10 @@ website:
     search: true
     collapse-level: 1
     contents:
+      - section: "Contributions"
+        contents:
+          - ADMIN_01_submissions_instructions.qmd
+          - ADMIN_02_contributions.qmd
       - section: "Best Principles"
         contents:
           - ADMIN_04_best_principles.qmd
@@ -34,7 +32,7 @@ website:
         contents:
           - POP_01_choosing_population_genetics.qmd
           - POP_04_WGS_intro.qmd
-          - RADseq.qmd
+          - POP_02_RADseq.qmd
           - POP_03_poolseq.qmd
           - RDAtraitPredictionTutorial.qmd
           - POP_08_PCA.qmd
@@ -42,7 +40,7 @@ website:
           - POP_10_Signatures_of_Selection.qmd
       - section: "Functional Genomics"
         contents:
-          - DGE_comparison_v2.qmd
+          - FUN_01_DGE_comparison_v2.qmd
           - FUN_02_DNA_methylation.qmd
       - section: "Protein Modeling"
         contents:
