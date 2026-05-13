@@ -86,7 +86,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./FUN_01_DGE_comparison_v2.html" rel="next">
+<link href="./POP_03_poolseq.html" rel="next">
 <link href="./POP_04_WGS_intro.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -251,20 +251,35 @@ div.csl-indent {
   </div>
 </li>
           <li class="sidebar-item">
- <span class="menu-text">POP_03_poolseq.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="./POP_03_poolseq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PoPoolation Pipeline</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
- <span class="menu-text">RDAtraitPredictionTutorial.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="./RDAtraitPredictionTutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RDA trait prediction tutorial</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
- <span class="menu-text">POP_08_PCA.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="./POP_08_PCA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PCA</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
- <span class="menu-text">POP_09_aDNA.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="./POP_09_aDNA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ancient and Degraded DNA</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
- <span class="menu-text">POP_10_Signatures_of_Selection.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="./POP_10_Signatures_of_Selection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A MarineOmics overview of methods to detect signatures of selection</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -413,7 +428,7 @@ div.csl-indent {
 ✔ forcats   1.0.1     ✔ stringr   1.6.0
 ✔ ggplot2   4.0.2     ✔ tibble    3.3.1
 ✔ lubridate 1.9.5     ✔ tidyr     1.3.2
-✔ purrr     1.2.1     </code></pre>
+✔ purrr     1.2.2     </code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
@@ -609,7 +624,7 @@ GGAGAAA.&lt;AGAA.G.GGAGA&lt;.GGA.&lt;GAAGGAAGGIA&lt;...&lt;GA&lt;..&lt;G.&lt;.&l
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1 . Convert VCF to GDS</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>SeqArray<span class="sc">::</span><span class="fu">seqVCF2GDS</span>(<span class="at">vcf.fn =</span> filename.vcf, <span class="at">out.fn =</span> filename.gds, <span class="at">storage.option=</span><span class="st">"ZIP_RA"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>##&lt; 2026-04-17 11:45:26
+<pre><code>##&lt; 2026-05-13 11:21:52
 Variant Call Format (VCF) Import:
     file:
         OL_subset.vcf (22.3M)
@@ -642,7 +657,7 @@ Digests:
     annotation/info/DP  [md5: c0e5e2a0856c1f43788d2fa9842d2e7a]
     annotation/format/DP  [md5: ae6991de5adbf082a733198faf0f11ca]
     annotation/format/CATG  [md5: 71d62ffa848999a375e8bb5f329be275]
-Done.  # 2026-04-17 11:45:27
+Done.  # 2026-05-13 11:21:53
 Optimize the access efficiency ...
 Clean up the fragments of GDS file:
     open the file 'POP_02_RADseq/OL_subset.gds' (2.8M)
@@ -650,7 +665,7 @@ Clean up the fragments of GDS file:
     save to 'POP_02_RADseq/OL_subset.gds.tmp'
     rename 'POP_02_RADseq/OL_subset.gds.tmp' (2.8M, reduced: 1.8K)
     # of fragments: 64
-##&gt; 2026-04-17 11:45:27</code></pre>
+##&gt; 2026-05-13 11:21:53</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gdsin <span class="ot">=</span> SeqArray<span class="sc">::</span><span class="fu">seqOpen</span>(filename.gds)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"The number of SAMPLES in data: "</span>, <span class="fu">length</span>(<span class="fu">c</span>(SeqArray<span class="sc">::</span><span class="fu">seqGetData</span>(gdsin, <span class="st">"sample.id"</span>)))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -843,8 +858,9 @@ BC2_16_C6   69989   0   8523    0.121776</code></pre>
 </div>
 <p>Whether your data are denovo or reference-based, it is important to filter out linked sites before performing a PCA. Here’s how to do it in SeqArray. Note, if you have already filtered your VCF file to have only 1 SNP per RAD locus, you don’t need to do this:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>snpset <span class="ot">&lt;-</span> SNPRelate<span class="sc">::</span><span class="fu">snpgdsLDpruning</span>(gdsin, <span class="at">ld.threshold=</span><span class="fl">0.2</span>, <span class="at">autosome.only =</span> F, <span class="at">start.pos=</span><span class="st">"random"</span>, <span class="at">num.thread=</span><span class="dv">1</span>, <span class="at">remove.monosnp =</span> T, <span class="at">sample.id =</span> keep)  </span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>snpset.id <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">unname</span>(snpset))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>snpset <span class="ot">&lt;-</span> SNPRelate<span class="sc">::</span><span class="fu">snpgdsLDpruning</span>(gdsin, <span class="at">ld.threshold=</span><span class="fl">0.2</span>, <span class="at">autosome.only =</span> F, <span class="at">start.pos=</span><span class="st">"random"</span>, <span class="at">num.thread=</span><span class="dv">1</span>, <span class="at">remove.monosnp =</span> T, <span class="at">sample.id =</span> keep)  </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>snpset.id <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">unname</span>(snpset))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now we will actually run the PCA, again removing the samples with missing data, keeping unlinked SNPs, and removing SNPs with less than 5% minor allele frequency.</p>
 <div class="cell">
@@ -861,25 +877,24 @@ Calculating allele counts/frequencies ...
 [==================================================] 100%, used 0s (2/6)    
 [..................................................]  0%, ETC: --- (3/6)    
 [==================================================] 100%, used 0s (3/6)    
-[..................................................]  0%, ETC: --- (4/6)    
 [==================================================] 100%, used 0s (4/6)    
 [..................................................]  0%, ETC: --- (5/6)    
 [==================================================] 100%, used 0s (5/6)    
 [==================================================] 100%, used 0s (6/6)    
 [==================================================] 100%, complete, 0s    
-# of selected variants: 4,310
-Excluding 3,126 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
+# of selected variants: 4,285
+Excluding 3,132 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
     # of samples: 12
-    # of SNVs: 4,310
+    # of SNVs: 4,285
     using 2 threads
     # of principal components: 32
 CPU capabilities:
-Fri Apr 17 11:45:42 2026    (internal increment: 40960)
+Wed May 13 11:22:12 2026    (internal increment: 40960)
 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-Fri Apr 17 11:45:42 2026    Begin (eigenvalues and eigenvectors)
-Fri Apr 17 11:45:42 2026    Done.</code></pre>
+Wed May 13 11:22:12 2026    Begin (eigenvalues and eigenvectors)
+Wed May 13 11:22:12 2026    Done.</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">#close the gds file (saves memory)</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co">#seqClose(gdsin)</span></span>
@@ -1055,14 +1070,14 @@ Another useful approach is to visually inspect alignments for SNPs or loci that 
 <div class="cell-output cell-output-stdout">
 <pre><code>SNP Loading:
     # of samples: 12
-    # of SNPs: 4,310
+    # of SNPs: 4,285
     using 1 thread
     using the top 12 eigenvectors
-Fri Apr 17 11:45:43 2026    (internal increment: 65536)
+Wed May 13 11:22:14 2026    (internal increment: 65536)
 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-Fri Apr 17 11:45:43 2026    Done.</code></pre>
+Wed May 13 11:22:14 2026    Done.</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(SnpLoad)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1071,7 +1086,7 @@ Fri Apr 17 11:45:43 2026    Done.</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(SnpLoad<span class="sc">$</span>snploading)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]   12 4310</code></pre>
+<pre><code>[1]   12 4285</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plot a histogram of absolute PC loading values for PC1, with larger loading meaning more effect on PC1</span></span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>pc<span class="ot">&lt;-</span><span class="dv">1</span></span>
@@ -1100,27 +1115,29 @@ Calculating allele counts/frequencies ...
 
 [..................................................]  0%, ETC: --- (1/6)    
 [==================================================] 100%, used 0s (1/6)    
+[..................................................]  0%, ETC: --- (2/6)    
 [==================================================] 100%, used 0s (2/6)    
 [..................................................]  0%, ETC: --- (3/6)    
 [==================================================] 100%, used 0s (3/6)    
 [==================================================] 100%, used 0s (4/6)    
 [..................................................]  0%, ETC: --- (5/6)    
 [==================================================] 100%, used 0s (5/6)    
+[..................................................]  0%, ETC: --- (6/6)    
 [==================================================] 100%, used 0s (6/6)    
 [==================================================] 100%, complete, 0s    
-# of selected variants: 1,944
-Excluding 3,126 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
+# of selected variants: 1,844
+Excluding 3,132 SNVs (monomorphic: TRUE, MAF: 0.05, missing rate: NaN)
     # of samples: 12
-    # of SNVs: 1,944
+    # of SNVs: 1,844
     using 2 threads
     # of principal components: 32
 CPU capabilities:
-Fri Apr 17 11:45:43 2026    (internal increment: 40960)
+Wed May 13 11:22:14 2026    (internal increment: 40960)
 
 [..................................................]  0%, ETC: ---        
 [==================================================] 100%, completed, 0s
-Fri Apr 17 11:45:43 2026    Begin (eigenvalues and eigenvectors)
-Fri Apr 17 11:45:43 2026    Done.</code></pre>
+Wed May 13 11:22:14 2026    Begin (eigenvalues and eigenvectors)
+Wed May 13 11:22:14 2026    Done.</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>(pca.out.pcfilt<span class="sc">$</span>eigenvect) <span class="sc">%&gt;%</span></span>
@@ -1150,7 +1167,7 @@ Fri Apr 17 11:45:43 2026    Done.</code></pre>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">seqSetFilter</span>(gdsin, <span class="at">sample.id=</span>keep,<span class="at">variant.id=</span>snp.id.allfilt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># of selected samples: 12
-# of selected variants: 5,070</code></pre>
+# of selected variants: 4,976</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to vcf</span></span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">seqGDS2VCF</span>(gdsin, <span class="st">"POP_02_RADseq/OL-miss-pc1-linkage-filt.vcf.gz"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1158,16 +1175,16 @@ Fri Apr 17 11:45:43 2026    Done.</code></pre>
 <pre><code>Loading required namespace: Rsamtools</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Fri Apr 17 11:45:44 2026
+<pre><code>Wed May 13 11:22:15 2026
 VCF Export: OL-miss-pc1-linkage-filt.vcf.gz
-    12 samples, 5,070 variants
+    12 samples, 4,976 variants
     INFO Field: NS, DP
     FORMAT Field: DP, CATG
     output to a BGZF-format gzip file
 
 [..................................................]  0%, ETC: ---    
 [==================================================] 100%, used 0s    
-Fri Apr 17 11:45:44 2026    Done.</code></pre>
+Wed May 13 11:22:15 2026    Done.</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#close the gds file to save memory</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">closefn.gds</span>(gdsin)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1793,8 +1810,8 @@ Zheng, Xiuwen, Stephanie M Gogarten, Michael Lawrence, Adrienne Stilp, Matthew P
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./FUN_01_DGE_comparison_v2.html" class="pagination-link" aria-label="Fitting Multifactorial Models of Differential Expression">
-        <span class="nav-page-text">Fitting Multifactorial Models of Differential Expression</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./POP_03_poolseq.html" class="pagination-link" aria-label="PoPoolation Pipeline">
+        <span class="nav-page-text">PoPoolation Pipeline</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
