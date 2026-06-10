@@ -44,7 +44,7 @@ website:
           - FUN_02_DNA_methylation.qmd
       - section: "Protein Modeling"
         contents:
-          - beginner_protein_modeling.qmd
+          - text: "Coming soon!"
       - section: "Genome-Phenome"
         contents:
           - text: "Coming soon!"
