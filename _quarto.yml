@@ -25,6 +25,7 @@ website:
         contents:
           - ADMIN_01_submissions_instructions.qmd
           - ADMIN_02_contributions.qmd
+          - ADMIN_05_major_versions.qmd
       - section: "Best Principles"
         contents:
           - ADMIN_04_best_principles.qmd
@@ -42,19 +43,20 @@ website:
         contents:
           - FUN_01_DGE_comparison_v2.qmd
           - FUN_02_DNA_methylation.qmd
-      - section: "Protein Modeling"
+      - section: "Molecular Modeling"
         contents:
-          - text: "Coming soon!"
+          - MOL_01_RNAdist_tutorial.qmd
       - section: "Genome-Phenome"
         contents:
           - text: "Coming soon!"
 
 format:
   html:
-    theme: cosmo
+    theme: yeti
     toc: true
     toc-depth: 3
     css: tutorial.css
+    include-before-body: _banner.html
 
 editor: visual
 

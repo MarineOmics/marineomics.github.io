@@ -10,27 +10,27 @@ The backbone underlying the content on the website comes from a general set of "
 
 # Population Genomics
 
-- [Choosing a population genomics sequencing approach](POP_01_choosing_population_genetics.html)
-- [Whole Genome Resequencing (WGS)](POP_04_WGS_intro.html)
-    - [Low coverage WGS](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md)
-- [Reduced Representation Sequencing](RADseq.html)
-- [Poolseq](POP_03_poolseq.html)
-- [Redundancy Analysis (RDA) Trait Prediction](RDAtraitPredictionTutorial.html)
-- [PCA](POP_08_PCA.html)
-- [Ancient & Degraded DNA](POP_09_aDNA.html)
-- [Methods to detect signatures of selection](POP_10_Signatures_of_Selection.html)
+-   [Choosing a population genomics sequencing approach](POP_01_choosing_population_genetics.html)
+-   [Whole Genome Resequencing (WGS)](POP_04_WGS_intro.html)
+    -   [Low coverage WGS](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md)
+-   [Reduced Representation Sequencing](RADseq.html)
+-   [Poolseq](POP_03_poolseq.html)
+-   [Redundancy Analysis (RDA) Trait Prediction](RDAtraitPredictionTutorial.html)
+-   [PCA](POP_08_PCA.html)
+-   [Ancient & Degraded DNA](POP_09_aDNA.html)
+-   [Methods to detect signatures of selection](POP_10_Signatures_of_Selection.html)
 
 # Functional Genomics
 
-- [Multifactorial RNAseq analyses](DGE_comparison_v2.html)
-- [DNA Methylation Assessment](FUN_02_DNA_methylation.html)
-- Align and count RNAseq reads (coming soon!)
-    - De novo, reference-based, and Tag-seq methods
-- [Protein Modeling (Beginner)](beginner_protein_modeling.html)
+-   [Multifactorial RNAseq analyses](DGE_comparison_v2.html)
+-   [DNA Methylation Assessment](FUN_02_DNA_methylation.html)
+-   Align and count RNAseq reads (coming soon!)
+    -   De novo, reference-based, and Tag-seq methods
+-   [Protein Modeling (Beginner)](beginner_protein_modeling.html)
 
 # Genome-Phenome
 
-- coming soon!
+-   coming soon!
 
 # Panel Seminars
 
@@ -45,7 +45,7 @@ To facilitate discussions about practices and pitfalls in applying 'omics to non
 
 # How to Contribute
 
-We are excited to incorporate new material from contributors of various backgrounds, expertise, and experience. To date these tutorials, guidelines, and discussions have been authored and led by graduate students and postdocs with contributions from scientists at all levels, including undergraduates and faculty members. If you are interested in developing an information page or tutorial for the website, we ask that you review our [page with instructions for developing content](ADMIN_01_submissions_instructions.html) and contact our Website Manager Jason Johns (jasonjohns[at]ucsb.edu).
+We are excited to incorporate new material from contributors of various backgrounds, expertise, and experience. To date these tutorials, guidelines, and discussions have been authored and led by graduate students and postdocs with contributions from scientists at all levels, including undergraduates and faculty members. If you are interested in developing an information page or tutorial for the website, we ask that you review our [page with instructions for developing content](ADMIN_01_submissions_instructions.html) and contact our Website Manager Jason Johns (jasonjohns\[at\]ucsb.edu).
 
 # Background {#marineomics}
 
@@ -75,4 +75,4 @@ Silliman, K. and Lou, R. N. (2022). Choosing a Population Genomics Approach. Mar
 
 # Contact {#contact}
 
-For questions about the website and its materials, post to the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions)! For inquiries about the MarineOmics Working Group activities, please contact us at rcnecs.marineomics@gmail.com.
+For questions about the website and its materials, post to the [Discussion Forum](https://github.com/MarineOmics/marineomics.github.io/discussions)! For inquiries about the MarineOmics Working Group activities, please contact us at rcnecs.marineomics\@gmail.com.

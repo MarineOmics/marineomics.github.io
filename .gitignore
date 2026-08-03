@@ -6,3 +6,7 @@ vendor
 .Rproj.user
 .Rhistory
 .DS_Store
+
+/.quarto/
+**/*.quarto_ipynb
+packrat/lib*/

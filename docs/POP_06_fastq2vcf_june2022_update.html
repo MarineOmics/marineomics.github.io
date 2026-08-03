@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-a26f3680889bc016604be2101547878f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -190,6 +190,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Contributions</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ADMIN_05_major_versions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Major Versions</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -294,15 +300,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Protein Modeling</span></a>
+ <span class="menu-text">Molecular Modeling</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
- <span class="menu-text">Coming soon!</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="./MOL_01_RNAdist_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comparing mRNA structures between alleles using RNAdistance</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -344,6 +353,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+<div style="background-color: #f8f9fa; border-left: 4px solid #6c757d; padding: 8px 14px; margin-bottom: 16px; font-size: 0.85em;">
+  Last rendered: July 2026 — see <a href="ADMIN_05_major_versions.html">Major Versions</a> for full environment details.
+</div>
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -392,7 +404,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem <span class="at">-M</span> <span class="at">-R</span> {string} {ref} {r1} {r2} <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-u</span> <span class="at">-</span> <span class="op">&gt;</span> {output.bam}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Where <br> <code>-M</code> marks shorter split hits as secondary (required for Picard compatibility downstream) <br> <code>-R</code> defines a read group header e.g., <span class="citation" data-cites="RG">@RG</span>\tID:{sample}\tSM:{sample}\tPL:ILLUMINA <br> <code>iwuay</code> is the indexed reference genome <br> <code>cbjrybzgdbmbrjjwdyg</code> are the first and second reads you are aligning <br> <code>-u</code> is for uncompressed output</p>
+<p>Where <br> <code>-M</code> marks shorter split hits as secondary (required for Picard compatibility downstream) <br> <code>-R</code> defines a read group header e.g., <span class="citation" data-cites="RG">@RG</span>\tID:{sample}\tSM:{sample}\tPL:ILLUMINA <br> <code>hgsew</code> is the indexed reference genome <br> <code>maoilanrnsvducafooc</code> are the first and second reads you are aligning <br> <code>-u</code> is for uncompressed output</p>
 <p>Once you have a sorted and indexed alignment, you can locate and tag duplicate records, which are reads that have originated from a single fragment of DNA. This can happen during sample preparation (e.g., during PCR) or from sequencing artifacts (e.g., optical duplicates).If you have multiple runs for the same sample, you would want to merge and index the BAMs before the deduplication tagging, which you can do with <code>samtools merge</code> (integrated in snpArcher under <code>merge_bams</code> rule).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sabamba</span> markup {input} {output}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

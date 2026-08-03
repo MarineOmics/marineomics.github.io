@@ -21,7 +21,7 @@ navbar:
         - text: "Whole Genome Resequencing"
           href: POP_04_WGS_intro.html
         - text: "Reduced Representation Sequencing"
-          href: RADseq.html
+          href: POP_02_RADseq.html
         - text: "Poolseq"
           href: POP_03_poolseq.html
         - text: "Redundancy Analysis (RDA) Trait Prediction"
@@ -35,7 +35,7 @@ navbar:
     - text: "Functional Genomics"
       menu:
         - text: "Mutifactorial RNAseq"
-          href: DGE_comparison_v2.html
+          href: FUN_01_DGE_comparison_v2.html
         - text: "DNA Methylation Assessment"
           href: FUN_02_DNA_methylation.html
     - text: "Genome-Phenome"

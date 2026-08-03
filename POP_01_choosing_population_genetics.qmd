@@ -105,7 +105,7 @@ Empirical comparisons:
 
 Presently, our site covers four approaches:
 
--   [RADseq](RADseq.html)
+-   [RADseq](POP_02_RADseq.html)
 -   [hcWGS](POP_04_WGS_intro.html)
 -   [lcWGS, maintained by MarineOmics member Nicolas Lou](https://github.com/therkildsen-lab/genomic-data-analysis/blob/master/lcwgs_data_analysis.md)
 -   [Poolseq](POP_03_poolseq.html)

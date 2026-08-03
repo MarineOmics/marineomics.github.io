@@ -331,6 +331,7 @@ Whether your data are denovo or reference-based, it is important to filter out l
 
 ```{r}
 #| results: hide
+set.seed(123)
 snpset <- SNPRelate::snpgdsLDpruning(gdsin, ld.threshold=0.2, autosome.only = F, start.pos="random", num.thread=1, remove.monosnp = T, sample.id = keep)  
 snpset.id <- unlist(unname(snpset))
 ```

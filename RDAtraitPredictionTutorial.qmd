@@ -12,12 +12,13 @@ This tutorial accompanies the paper ["The paradox of adaptive trait clines with 
 
 Multivariate climate change presents an urgent need to understand how species adapt to complex environments. Population genetic theory predicts that loci under selection will form monotonic allele frequency clines with their selective environment, which has led to the wide use of genotype-environment associations (GEAs). However, the accuracy of GEA methods to identify adapted loci is limited, as shown in the main paper.
 
-This tutorial shows how to apply a novel extension of multivariate ordination, which accurately predicted individual multivariate traits from genotype and environmental data on simulated data regardless of whether inference from GEAs was accurate. 
+This tutorial shows how to apply a novel extension of multivariate ordination, which accurately predicted individual multivariate traits from genotype and environmental data on simulated data regardless of whether inference from GEAs was accurate.
 
 # Install packages
 
 If the following packages are not installed, be sure to install them first:
-```
+
+```         
 install.packages("vegan")
 install.packages("lfmm")
 install.packages("gplots")
@@ -29,7 +30,6 @@ BiocManager::install("LEA")
 ```
 
 ## Load the libraries:
-
 
 ```{r}
 #| label: setup
@@ -48,25 +48,23 @@ for (i in 1:length(libraries_needed)){
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = FALSE) 
 ```
 
-
 Don't forget to set your working directory!
 
 # Background on the simulation
 
 This data was simulated in SLiM and is associated with the complex multivariate simulation presented in Figure 6 in the paper. Briefly, a non-Wright-Fisher model was simulated on a landscape with 6 environmental variables that reflect different aspects of thermal stress and precipitation in British Columbia. The simulation included 6 environmental traits, each of which adapted to a different environmental variable.
 
-The six environmental variables are based on real data from western Canada and are shown below, clockwise from upper right: Clockwise from upper left: precipitation of driest month, precipitation of warmest quarter, mean annual temperature, precipitation of wettest month, mean temperature of wettest quarter, mean temperature of driest quarter. Background colors correspond to the optimum trait value on each landscape, and each small square is a simulated individual, with its color representing its trait value in that environment. 
+The six environmental variables are based on real data from western Canada and are shown below, clockwise from upper right: Clockwise from upper left: precipitation of driest month, precipitation of warmest quarter, mean annual temperature, precipitation of wettest month, mean temperature of wettest quarter, mean temperature of driest quarter. Background colors correspond to the optimum trait value on each landscape, and each small square is a simulated individual, with its color representing its trait value in that environment.
 
 ![](POP_05_RDAtraitPredictionTutorial/multivar.png)
 
-
 # Load the data
 
-* A matrix of genotypes in 012 format (counts of reference allele)
-  * number of rows = number of individuals
-  * number of columns = number of SNPs
-* A table with information about sampled individuals (each individual in a row)
-* A table with information about SNPs (each SNP in a row)
+-   A matrix of genotypes in 012 format (counts of reference allele)
+    -   number of rows = number of individuals
+    -   number of columns = number of SNPs
+-   A table with information about sampled individuals (each individual in a row)
+-   A table with information about SNPs (each SNP in a row)
 
 The `ind` table includes the xy location for each individual, the 6 exact trait values (note that these won't exactly equal the trait value calculated from the genotype matrix because of MAF filtering), and the 6 environmental values at their xy location.
 
@@ -138,9 +136,10 @@ rda_trait_pred <- function(rdaobj, env_row, K){
 
 ## Example of an RDA-predicted environmental trait value
 
-1. First, run the RDA:
+1.  First, run the RDA:
 
 Scale the environmental variables to have a mean of 0 and standard deviation of 1.
+
 ```{r}
 #| label: example
 
@@ -163,7 +162,7 @@ rdaout <- rda(G ~ ind$env1_mat +
 
 ```
 
-2. Next, check the biplot output and decide how many RDA axes to use in the prediction. 
+2.  Next, check the biplot output and decide how many RDA axes to use in the prediction.
 
 ```{r}
 # Check the biplot output
@@ -179,7 +178,8 @@ rdaout$CCA$biplot
        ylab="Cumulative percent of variation explained", ylim=c(0,1))
 ```
 
-3. In this case, the first 3 RDA axes explain 80% of the variance. Note that choosing too many axes may result in overfitting. Here is an example of a trait prediction for MAT using the first 3 RDA axes:
+3.  In this case, the first 3 RDA axes explain 80% of the variance. Note that choosing too many axes may result in overfitting. Here is an example of a trait prediction for MAT using the first 3 RDA axes:
+
 ```{r}
 # Make the trait prediction for MAT (1st row in biplot output)
 K = 3 # use 3 RDA axes to make the trait prediction
@@ -231,13 +231,11 @@ str(ind_scores_predict)
 
 The `predict` function and its variations make predictions in RDA space, and therefore do not output the same kind of predictions as `rda_trait_predict` and Equation 1 in the paper.
 
-
-
 # Understanding how the RDA is built on multiple regressions
 
 Prior to ordination in the RDA, each locus is used in a multiple regression model with the environmental variables to produce fitted values for that locus across individuals.
 
-_SNP Genotype_ ~ _Env1_ + _Env2_ + _Env3_ etc.
+*SNP Genotype* \~ *Env1* + *Env2* + *Env3* etc.
 
 For example for the first SNP in the data:
 
@@ -263,13 +261,11 @@ pred <- t(newdata)*(coef(summary(mod))[2:7,1]) + coef(summary(mod))[1,1]
 plot(seq(-1,1, by=0.01), colSums(pred), xlab="Temperature", ylab="Genotype prediction")
 ```
 
-
 Thus, there is flexibility with the RDA to capture the way environmental variables may influence the patterns at one locus in a different way than at another locus, which may not correlate with the relationship between the environment and population structure.
 
 It may be interesting for some studies to understand how each locus is shaped by the environment - in other words, what are the slopes associated with the environmental variables in the multiple regression model for each locus?
 
-Unfortunately there is not a way to output these slopes in the R package `vegan`, but we can reproduce the first step of the RDA to get the regression coefficients:
-(vegan source code at https://github.com/cran/vegan/blob/master/R/simpleRDA2.R)
+Unfortunately there is not a way to output these slopes in the R package `vegan`, but we can reproduce the first step of the RDA to get the regression coefficients: (vegan source code at https://github.com/cran/vegan/blob/master/R/simpleRDA2.R)
 
 ```{r}
 
@@ -328,9 +324,9 @@ heatmap.2(t(Qr.coeff[,which(muts$causal)]),
         cexCol=1)
 ```
 
-In the above heatmap, each row is a SNP. The SNPs are named according to their linkage group (1 through 10) and cumulative position in the genome (e.g. 9-448632 is on the 9th linkage group). Each linkage group was 50,000 bases long, so the cumulative position ranges from 1 to 500,000 over the 10 linkage groups. Each column in the heatmap is an environment, which is an explanatory variable in the model. 
+In the above heatmap, each row is a SNP. The SNPs are named according to their linkage group (1 through 10) and cumulative position in the genome (e.g. 9-448632 is on the 9th linkage group). Each linkage group was 50,000 bases long, so the cumulative position ranges from 1 to 500,000 over the 10 linkage groups. Each column in the heatmap is an environment, which is an explanatory variable in the model.
 
-The color of the heatmap cells for a SNP shows the coefficients in the multiple regression model for each corresponding environment. In other words, the colors show how environments are combined in a multiple regression model to predict the patterns at that SNP on the landscape. 
+The color of the heatmap cells for a SNP shows the coefficients in the multiple regression model for each corresponding environment. In other words, the colors show how environments are combined in a multiple regression model to predict the patterns at that SNP on the landscape.
 
 If we want to visualize clusters of SNPs that have similar coefficients in the multiple regression model, we can allow for clustering in the heatmap:
 
@@ -349,8 +345,8 @@ heatmap.2(t(Qr.coeff[,which(muts$causal)]),
         cexCol=1)
 ```
 
- 
 Here is the information about the session when the tutorial was built:
+
 ```{r}
 sessionInfo()
 ```

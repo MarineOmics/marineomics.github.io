@@ -1,0 +1,29 @@
+---
+title: "Major Versions"
+date: "2026-07-07"
+---
+
+This page documents the R environment used to render the MarineOmics website pages. The goal is to make it easier for others to reproduce the rendered pages in the future.
+
+## Version 1 — July 2026
+
+All pages were converted from R Markdown to Quarto and rendered in June–July 2026. A PackRat lockfile (`packrat/packrat.lock`) is included in the repository, which records the exact versions of all R packages used to render the pages.
+
+To restore the environment from the lockfile:
+
+```r
+packrat::restore()
+```
+
+Note: Bioconductor packages (e.g. DESeq2, edgeR, SeqArray, SNPRelate) are recorded in the lockfile but may need to be installed separately via BiocManager:
+
+```r
+BiocManager::install()
+```
+
+### R Session Info
+
+```{r}
+#| echo: true
+sessionInfo()
+```

@@ -21,11 +21,11 @@ opts_chunk$set(fig.width = 10,
 cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
              hyperlink = "to.doc")
 ```
-## {#howtocite}
 
-Initial publication year: 2022
-<br>
-[How to cite](https://marineomics.github.io/#How_to_Cite)
+##  {#howtocite}
+
+Initial publication year: 2022 <br> [How to
+cite](https://marineomics.github.io/#How_to_Cite)
 
 ## Overview
 
@@ -36,7 +36,7 @@ page, this guide can be a useful resource as you develop your content.
 Below we provide general instructions as well as examples of how to
 build specific features (eg., tables, code chunks). Prior to developing
 new pages, please first contact the current Website Manager Jason Johns
-(jasonjohns[at]ucsb.edu). Do not hesitate to reach out with any other
+(jasonjohns\[at\]ucsb.edu). Do not hesitate to reach out with any other
 questions, comments, or features you'd like added to this guide.
 
 The MarineOmics website is published through Github Pages directly from
@@ -58,27 +58,41 @@ for your page when you are ready to publish it, so you don't need to
 know exactly how they work, but it's good to know what they are at a
 basic level.
 
-
 ### MarineOmics publishing process
-#### Content development and review process
-1. Initiation: The potential contributor contacts the website manager via email  (jasonjohns[at]ucsb.edu) or the discussion forum with an idea.
-<br>
-2. Development: Meet with the website manager, Katherine Silliman and/or Sam Bogan (Working Group Co-leaders). <br>
-    + All active members will be invited to be involved in the review process. <br>
-    + The contributor presents their idea for new material to any involved working group members. <br>
-    + There will be regular meetings (frequency decided by those involved) with the website manager, Katherine Silliman and/or Sam Bogan, and any other participating members for progress updates and support. <br>
-3. Review: Full drafts of content will be reviewed by the website manager, Katherine Silliman and/or Sam Bogan, and at least one other active MarineOmics member assigned to the project.
-4. Publishing: Final versions of content will be published with the help of the website manager. Please have a list of all software dependencies necessary for your .Rmd to be rendered so we can add it to our MarineOmics conda environment.
 
-*See the [bottom of the page](#conflicts) for our policy on disagreements or conflicts during the development process
+#### Content development and review process
+
+1.  Initiation: The potential contributor contacts the website manager
+    via email (jasonjohns\[at\]ucsb.edu) or the discussion forum with an
+    idea. <br>
+2.  Development: Meet with the website manager, Katherine Silliman
+    and/or Sam Bogan (Working Group Co-leaders). <br>
+    -   All active members will be invited to be involved in the review
+        process. <br>
+    -   The contributor presents their idea for new material to any
+        involved working group members. <br>
+    -   There will be regular meetings (frequency decided by those
+        involved) with the website manager, Katherine Silliman and/or
+        Sam Bogan, and any other participating members for progress
+        updates and support. <br>
+3.  Review: Full drafts of content will be reviewed by the website
+    manager, Katherine Silliman and/or Sam Bogan, and at least one other
+    active MarineOmics member assigned to the project.
+4.  Publishing: Final versions of content will be published with the
+    help of the website manager. Please have a list of all software
+    dependencies necessary for your .Rmd to be rendered so we can add it
+    to our MarineOmics conda environment.
+
+\*See the [bottom of the page](#conflicts) for our policy on
+disagreements or conflicts during the development process
 
 #### Please include the initial publication date (year at minimum) at the top of your page so it can be properly cited. We also ask that you include the below text at the [top of your page](#howtocite), which will make a link to a section on the main website about how to cite.
 
-      [How to cite](https://marineomics.github.io/#How_to_Cite)
-
+```         
+  [How to cite](https://marineomics.github.io/#How_to_Cite)
+```
 
 <hr />
-
 
 # R Markdown basics
 
@@ -128,12 +142,14 @@ green +C button on the RStudio toolbar or typing the keyboard shortcut:
 
 <!-- -->
 
-    ```{r, echo = TRUE, include = TRUE} `r ''`
+````         
+```{r, echo = TRUE, include = TRUE} `r ''`
 
-    #Here's a simple linear model in R as an example
-    my_lm <- lm(y ~ x, data = df)
+#Here's a simple linear model in R as an example
+my_lm <- lm(y ~ x, data = df)
 
-    ```
+```
+````
 
 Whether code chunks and/or their output are included in the knitted
 .html can be modified with the logical commands "echo" and "include".
@@ -160,16 +176,18 @@ specified after the r in \`\`\`{r \_\_\_\_}.
 
 <a id="cite_options"></a>
 
-    ```{r setup} `r ''`
-    knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
-    # load page formatting packages
-    library(knitr)
-    library(knitcitations)
-    library(kableExtra)
-    knitr::opts_chunk$set(fig.width = 10, fig.height = 5) #setting the dimensions for figure outputs in a different line of code for cleanliness
-    cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
-                 hyperlink = "to.doc") #setting format for in-text citations for the references section at the bottom of the page
-    ```
+````         
+```{r setup} `r ''`
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE) 
+# load page formatting packages
+library(knitr)
+library(knitcitations)
+library(kableExtra)
+knitr::opts_chunk$set(fig.width = 10, fig.height = 5) #setting the dimensions for figure outputs in a different line of code for cleanliness
+cite_options(citation_format = "pandoc", max.names = 3, style = "html", 
+             hyperlink = "to.doc") #setting format for in-text citations for the references section at the bottom of the page
+```
+````
 
 \* Note the "cache =" option. When set to "true" R will cache all of the
 output created from knitting the RMarkdown document. This is especially
@@ -182,12 +200,14 @@ useful for pages with heavy computation that take a long time to knit.
 In addition to R code, we can also run code such as bash shell script in
 the R markdown file by modifying the code chunk header as below: <br>
 
-    ```{bash, eval = T} `r ''`
+````         
+```{bash, eval = T} `r ''`
 
-    # Here's a simple line of bash as an example
-    echo "Hi world"
+# Here's a simple line of bash as an example
+echo "Hi world"
 
-    ```
+```
+````
 
 <br>
 
@@ -224,30 +244,33 @@ following steps: <br>
 
 -   add your citations to the common-bib_01.bib document by exporting
     BibTeX-formatted citations from your reference manager
--   add the line 'bibliography: common-bib_01.bib' to your header at
-    the top of the .Rmd document, which looks like this:
+-   add the line 'bibliography: common-bib_01.bib' to your header at the
+    top of the .Rmd document, which looks like this:
 
 <!-- -->
 
-    ---
-    title: "Instructions for developing new pages for the MarineOmics webpage"
-    bibliography: common-bib_01.bib
-    ---
+```         
+---
+title: "Instructions for developing new pages for the MarineOmics webpage"
+bibliography: common-bib_01.bib
+---
+```
 
 -   include the 'cite-options' chunk in your 'setup' code chunk. See the
     initial ['r setup' chunk](#cite_options) above for the syntax of the
     'cite_options' command.
 
-After following these steps, you can cite them in the RMarkdown document.
-Let's say you have a paper you want to cite by LastName et al. 2023 and
-the paper's ID in your .bib file is 'LastName2023-xy'. We can reference
-this paper in-text by adding [\@LastName2023-xy] to the end of a
-sentence. This will produce a reference such as the one below for Tripp
-et al. 2017. <br>
-<br>
-*syntax in .Rmd text **(not in a code chunk)***:
+After following these steps, you can cite them in the RMarkdown
+document. Let's say you have a paper you want to cite by LastName et al.
+2023 and the paper's ID in your .bib file is 'LastName2023-xy'. We can
+reference this paper in-text by adding \[\@LastName2023-xy\] to the end
+of a sentence. This will produce a reference such as the one below for
+Tripp et al. 2017. <br> <br> *syntax in .Rmd text **(not in a code
+chunk)***:
 
-    RADseq can produce insightful analyses even in the absence of data, if missing values are handled properly [@Tripp2017-cp].
+```         
+RADseq can produce insightful analyses even in the absence of data, if missing values are handled properly [@Tripp2017-cp].
+```
 
 *knitted output*: <br> RADseq can produce insightful analyses even in
 the absence of data, if missing values are handled properly
@@ -255,13 +278,16 @@ the absence of data, if missing values are handled properly
 
 <br>
 
-You can also add hyperlinks to each in text citation that direct to the References section at the bottom of the page. The in text citation keeps its normal format, but with brackets added around the parentheses. Directly after the citation (also in parentheses) is the '#' link to the References section: (#refs) in this case.<br>
-<br>
-**.Rmd**: [(\@Tripp2017-cp)]\(#refs) <br>
-**rendered html**: [(@Tripp2017-cp)](#refs) <br>
-<br>
-At the bottom of the .Rmd, where the '## References' heading is, we have a '{#refs}', which creates the target for all links with '(#refs)'. It looks like this on the .Rmd:<br>
-## References {#refs} 
+You can also add hyperlinks to each in text citation that direct to the
+References section at the bottom of the page. The in text citation keeps
+its normal format, but with brackets added around the parentheses.
+Directly after the citation (also in parentheses) is the '\#' link to
+the References section: (#refs) in this case.<br> <br> **.Rmd**:
+\[(\@Tripp2017-cp)\](#refs) <br> **rendered html**:
+[(\@Tripp2017-cp)](#refs) <br> <br> At the bottom of the .Rmd, where the
+'\## References' heading is, we have a '{#refs}', which creates the
+target for all links with '(#refs)'. It looks like this on the .Rmd:<br>
+\## References {#refs}
 
 ### **installing & loading packages**
 
@@ -301,11 +327,13 @@ chunk.
 
 *text in .Rmd **(not in a code chunk)***:
 
-    | Term A | Term B | Term C | Term D | Term E | Term F | Term G |
-    | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-    | xxx | xxx | xxx | xxx | xxx | xxx | xxx |  
-    | yyy | yyy | yyy | yyy | yyy | yyy | yyy | 
-    | zzz | zzz | zzz | zzz | zzz | zzz | zzz | 
+```         
+| Term A | Term B | Term C | Term D | Term E | Term F | Term G |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| xxx | xxx | xxx | xxx | xxx | xxx | xxx |  
+| yyy | yyy | yyy | yyy | yyy | yyy | yyy | 
+| zzz | zzz | zzz | zzz | zzz | zzz | zzz | 
+```
 
 <br>
 
@@ -330,16 +358,20 @@ package has a lot of functionality for fancier tables.
 ### **insert an image**
 
 To insert an image, you need the image file to also be uploaded to the
-Github repository. We store the images hosted on the website in each page's folder and call them accordingly. For any image, please make sure you have permission to
-share the image and that it is appropriately cited.
+Github repository. We store the images hosted on the website in each
+page's folder and call them accordingly. For any image, please make sure
+you have permission to share the image and that it is appropriately
+cited.
 
 *code chunk in .Rmd*:
 
-    ```{r, echo = TRUE, include = TRUE, out.height = "40%", fig.align = "center", fig.cap="Figure from Rivera et al. 2021"} `r ''`
+````         
+```{r, echo = TRUE, include = TRUE, out.height = "40%", fig.align = "center", fig.cap="Figure from Rivera et al. 2021"} `r ''`
 
-    knitr::include_graphics("ADMIN_01_submissions_instructions_files/Rivera_etal_fig.png")
+knitr::include_graphics("ADMIN_01_submissions_instructions_files/Rivera_etal_fig.png")
 
-    ```
+```
+````
 
 <br>
 
@@ -360,9 +392,11 @@ Equations follow LaTeX style formatting.
 For illustrative purposes, here is a simple and famous equation. <br>
 *syntax in .Rmd*:
 
-    $$
-    E = mc^2
-    $$
+```         
+$$
+E = mc^2
+$$
+```
 
 <br>
 
@@ -373,12 +407,14 @@ $$ <br>
 As an example of a more complex equation, here is an equation for the
 t-statistic: <br> *syntax in .Rmd*:
 
-    $$
-    t = \frac{\overline{x_{1}}-\overline{x_{2}}}
-    {\sqrt{(s^2(
-    \frac{1}{n_{1}} + \frac{1}{n_{2}}
-    ))}}
-    $$ 
+```         
+$$
+t = \frac{\overline{x_{1}}-\overline{x_{2}}}
+{\sqrt{(s^2(
+\frac{1}{n_{1}} + \frac{1}{n_{2}}
+))}}
+$$ 
+```
 
 *knitted output*: $$
 t = \frac{\overline{x_{1}}-\overline{x_{2}}}
@@ -401,10 +437,17 @@ HTML file to Github prior to you page being added to the website.
 <a id="conflicts"></a>
 
 #### Content/wording conflicts
-At any point in the process, disagreements on what content to include may arise. These include but are not limited to: recommendations for experimental design, techniques, and phrasing. All disagreements will be approached with the same method(s).
-<br>
-<br>
-Disagreements will be discussed with all of those involved at the time that the disagreement arises. The first attempt at resolving the disagreement will be via discussion. If a resolution is not agreed upon by all parties through discussion, it will be put to a majority vote including all of those actively involved at the time, not including the content author. In case of a tie, a MarineOmics senior scientist will be assigned to break the tie.
 
+At any point in the process, disagreements on what content to include
+may arise. These include but are not limited to: recommendations for
+experimental design, techniques, and phrasing. All disagreements will be
+approached with the same method(s). <br> <br> Disagreements will be
+discussed with all of those involved at the time that the disagreement
+arises. The first attempt at resolving the disagreement will be via
+discussion. If a resolution is not agreed upon by all parties through
+discussion, it will be put to a majority vote including all of those
+actively involved at the time, not including the content author. In case
+of a tie, a MarineOmics senior scientist will be assigned to break the
+tie.
 
 ## References {#refs}
