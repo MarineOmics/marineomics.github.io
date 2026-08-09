@@ -45,7 +45,7 @@ website:
           - FUN_02_DNA_methylation.qmd
       - section: "Molecular Modeling"
         contents:
-          - MOL_01_RNAdist_tutorial.qmd
+          - text: "Coming soon!"
       - section: "Genome-Phenome"
         contents:
           - text: "Coming soon!"
