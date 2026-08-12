@@ -1,7 +1,7 @@
 ---
 title: "Comparing mRNA structures between alleles using RNAdistance"
 author: "Megha Prasad"
-date: "2026-07-30"
+date: "2026-08-06"
 bibliography: "MOL_01_RNAdist_tutorial/RNAdist_refs.bib"
 ---
 
@@ -48,6 +48,46 @@ To follow along you will need:
 
 We assume throughout that all variants are biallelic SNPs. Indels and multiallelic sites need extra handling that isn't covered here.
 
+### Installing ViennaRNA
+
+On macOS with Homebrew:
+
+``` bash
+brew install viennarna
+```
+
+On Linux with conda:
+
+``` bash
+conda install -c bioconda viennarna
+```
+
+If you're on a compute cluster, check whether ViennaRNA is already available as a module before installing it yourself:
+
+``` bash
+module avail RNA
+# If available, load it with something like:
+module load ViennaRNA
+```
+
+After installation, verify that `RNAfold` and `RNAdistance` are on your path:
+
+``` bash
+RNAfold --version
+RNAdistance --version
+```
+
+### Installing R packages
+
+In R, install `Biostrings` from Bioconductor:
+
+```{r}
+#| eval: false
+
+if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+BiocManager::install("Biostrings")
+```
+
 ## Getting example data
 
 If you don't have your own dataset yet and want to try the pipeline, most of the input you need is available from public repositories:
@@ -57,6 +97,30 @@ If you don't have your own dataset yet and want to try the pipeline, most of the
 -   **Variant data** for testing purposes can be pulled from public sources like [dbSNP](https://www.ncbi.nlm.nih.gov/snp/) (common human variants) or from published population genomic studies deposited in [ENA](https://www.ebi.ac.uk/ena/browser/home) or [SRA](https://www.ncbi.nlm.nih.gov/sra).
 
 For a small test run, a handful of transcripts with a few variants each is enough to work through the pipeline end-to-end without waiting on long computations.
+
+### Downloading a transcript FASTA from NCBI
+
+If you know the accession number for your transcript, you can download the FASTA a few ways. For example, to get `XM_022442574.1` (the transcript used in the worked example later):
+
+**Via the web browser:** Go to `https://www.ncbi.nlm.nih.gov/nuccore/XM_022442574.1`, click "Send to" → "File" → choose format "FASTA" → save.
+
+**Via the command line** (using NCBI's E-utilities):
+
+``` bash
+curl -o transcripts.fa "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=XM_022442574.1&rettype=fasta&retmode=text"
+```
+
+**Via R** using the `rentrez` package:
+
+```{r}
+#| eval: false
+
+library(rentrez)
+seq <- entrez_fetch(db = "nuccore", id = "XM_022442574.1", rettype = "fasta")
+writeLines(seq, "transcripts.fa")
+```
+
+For genome-scale analyses, downloading a species-level cDNA FASTA from Ensembl or NCBI's genomes portal is more efficient than fetching individual transcripts.
 
 ## Step 1: Preparing the input
 
@@ -174,7 +238,7 @@ If your question is specifically about thermal stability, fold at multiple tempe
 
 **Long sequences.** Very long transcripts (roughly longer than 5000 nucleotides) take substantially longer to fold and can approach memory limits. One option is to fold a window of sequence around each variant rather than the whole transcript. A few hundred nucleotides on either side of the variant is a common choice. Whatever window size you pick, use the same size for every variant so the comparisons stay consistent.
 
-**Running at scale.** `RNAfold` is easy to parallelize because each sequence is folded independently of the others. On a compute cluster, a SLURM job array where each task folds a chunk of sequences works well. Locally, tools like `xargs -P` or GNU `parallel` provide similar parallelism.
+**Running at scale.** `RNAfold` is easy to parallelize because each sequence is folded independently of the others. On a compute cluster, a SLURM job array where each task folds a chunk of sequences works well. 
 
 ## Step 4: Comparing structures with RNAdistance
 
@@ -186,6 +250,15 @@ The input is a text file with two structures per comparison, one per line:
 (((((....)))))..(((....))).......
 (((((....)))))..(((....)))((...))..
 ```
+
+If you're working from the `RNAfold` output file, you'll need to extract just the dot-bracket structure lines and strip off the trailing MFE values. `RNAfold` writes three lines per input sequence (header, sequence, then structure followed by MFE), so a small `awk` command can pull out just the structures:
+
+``` bash
+# Extract every third line (the structures), and strip the " (MFE)" suffix
+awk 'NR%3==0 {sub(/ .*/, ""); print}' structures.txt > structures_only.txt
+```
+
+Now `structures_only.txt` has one clean dot-bracket string per line, ordered the same way as the input FASTA. If you folded your sequences with ref first and alt second, they'll already be in the right order for `RNAdistance`.
 
 Then run:
 
@@ -208,33 +281,31 @@ For the all-combinations case (multiple variants per gene, each combination comp
 
 `RNAdistance` outputs one distance per pair, in the same order they appeared in the input.
 
-## Worked example: a single variant end-to-end
+## Worked example: an end-to-end run on a real gene
 
-To make the pipeline concrete, here's a small worked example for a single variant. Say we have a transcript `TRANSCRIPT_042` of length 480 nucleotides, and a single SNP at position 215 (ref = A, alt = G). We'd generate two sequences (ref and alt), fold each with `RNAfold`, then run `RNAdistance` on the two structures.
+Here's a worked example using a real transcript that was run through this pipeline. The transcript is `XM_022442574.1`, which encodes a xanthine dehydrogenase/oxidase-like protein (gene `LOC111107393`), 4506 nt long. In the samples we're working from, this gene has 6 SNPs, but only one is a coding variant: a splice-synonymous SNP. The other five are intronic and get spliced out of the mature mRNA, so they don't affect its folded structure. That means we can focus on this one coding SNP as a straightforward single-variant example.
 
-The MFE outputs from `RNAfold` might look something like this:
+To reproduce this on your own machine, you would:
 
-```         
->TRANSCRIPT_042_pos215_REF
-...
-............(((((....)))))..(((....))).......  (-142.30)
->TRANSCRIPT_042_pos215_ALT
-...
-............(((((....)))))..(((....)))((...))..  (-135.70)
-```
+1.  Download the transcript FASTA from NCBI (see the "Downloading a transcript FASTA from NCBI" section above).
+2.  Build the reference and alternate sequences by substituting the alt allele at the splice-synonymous SNP position (see Step 2). The splice-synonymous SNP for this gene is at position `3194` in the transcript, with reference allele `T` and alternate allele `C`.
+3.  Fold both sequences with `RNAfold` at 37°C (see Step 3).
+4.  Compare the two structures with `RNAdistance` (see Step 4).
+5.  Divide the raw distance by transcript length to normalize (see Step 5).
 
-The reference structure has an MFE of -142.3 kcal/mol and the alternate has -135.7 kcal/mol, so the alternate is slightly less stable (ΔMFE = 6.6 kcal/mol).
-
-Running `RNAdistance` on the two structures gives a raw distance of, say, 18. To make that comparable across genes of different lengths, we divide by the transcript length:
+Running through the pipeline gave the following:
 
 ```         
-raw RNA distance         = 18
-transcript length        = 480 nt
-normalized distance      = 18 / 480 = 0.0375
-ΔMFE                     = 6.6 kcal/mol
+Reference sequence MFE (at 37°C):  -1470.1 kcal/mol
+Alternate sequence MFE (at 37°C):  -1468.9 kcal/mol
+                             ΔMFE:  +1.2 kcal/mol
+
+Raw RNA distance:                   150
+Transcript length:                  4506 nt
+Normalized distance:                150 / 4506 = 0.0333
 ```
 
-So this single variant has a normalized RNA distance of 0.0375 and a ΔMFE of 6.6 kcal/mol. Whether that counts as a large or small change depends on the distribution across your full candidate set — but this is the kind of per-variant summary you'd end up with once you've run the pipeline.
+So this splice-synonymous SNP produces a normalized RNA distance of 0.0333 and a ΔMFE of +1.2 kcal/mol. The MFE difference is small — the two folded structures have very similar stabilities — but there is a real structural difference between them, 150 units of tree edit distance. Whether that counts as a meaningful change depends on the distribution across your full candidate set, but this is the kind of per-variant summary you'd end up with once you've run the pipeline.
 
 ## Step 5: Normalizing the distance score
 
@@ -268,7 +339,7 @@ This is easy to compute and easy to interpret. The main caveat is that the relat
 Once you have normalized RNA distance scores for your variants, several downstream analyses are possible:
 
 -   **Permutation tests**: compare your observed distances against a null distribution built from randomly-selected variant positions in the same set of transcripts. This tests whether your candidate variants collectively show larger structural effects than expected by chance.
--   **Combining with protein-level scores**: if you also have variant effect predictions from tools like EVCouplings (@Hopf2019-jd), SIFT, or AlphaMissense, combining structure-level and protein-level scores gives a fuller picture of variant impact. This is especially useful when your candidate set includes both synonymous and missense variants.
+-   **Combining with protein-level scores**: if you also have variant effect predictions from tools like EVCouplings (@Hopf2019-jd) or AlphaMissense, combining structure-level and protein-level scores gives a fuller picture of variant impact. This is especially useful when your candidate set includes both synonymous and missense variants.
 -   **Cross-population comparisons**: if your candidates came out of a population comparison, ranking genes by the magnitude of structural change gives you a natural starting point for follow-up work or experimental validation.
 
 ## Session info

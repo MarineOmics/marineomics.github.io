@@ -7,7 +7,7 @@ website:
   page-navigation: true
   repo-url: https://github.com/MarineOmics/marineomics.github.io
   repo-actions: [edit, issue]
-  google-analytics:"G-ET7MZWPN0Z"
+  google-analytics: "G-ET7MZWPN0Z"
   navbar:
     left:
       - href: index.html
