@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Joanna Griffiths">
+<meta name="dcterms.date" content="2021-08-12">
+
+<title>PoPoolation Pipeline – MarineOmics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./RDAtraitPredictionTutorial.html" rel="next">
+<link href="./POP_02_RADseq.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-ef9afd74c936c907027de2a6fad25a4d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-ET7MZWPN0Z"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ET7MZWPN0Z', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="tutorial.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MarineOmics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./ADMIN_03_panels.html"> 
+<span class="menu-text">Panel Seminars</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/MarineOmics/marineomics.github.io/discussions"> 
+<span class="menu-text">Discussion Forum</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./POP_01_choosing_population_genetics.html">Population Genomics</a></li><li class="breadcrumb-item"><a href="./POP_03_poolseq.html">PoPoolation Pipeline</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Contributions</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ADMIN_01_submissions_instructions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Instructions for developing new pages for the MarineOmics webpage</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ADMIN_02_contributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Contributions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ADMIN_05_major_versions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Major Versions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Best Principles</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ADMIN_04_best_principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Best Principles in Genomics Research</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Population Genomics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./POP_01_choosing_population_genetics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Choosing a Population Genomics Approach</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./POP_04_WGS_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Whole Genome Resequencing for Population Genomics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./POP_02_RADseq.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RADseq</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./POP_03_poolseq.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">PoPoolation Pipeline</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./RDAtraitPredictionTutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RDA trait prediction tutorial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./POP_08_PCA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PCA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./POP_09_aDNA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ancient and Degraded DNA</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./POP_10_Signatures_of_Selection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A MarineOmics overview of methods to detect signatures of selection</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Functional Genomics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FUN_01_DGE_comparison_v2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fitting Multifactorial Models of Differential Expression</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./FUN_02_DNA_methylation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DNA Methylation Assessment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Molecular Modeling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">Coming soon!</span>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Genome-Phenome</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+ <span class="menu-text">Coming soon!</span>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#filter-raw-sequences" id="toc-filter-raw-sequences" class="nav-link active" data-scroll-target="#filter-raw-sequences">Filter Raw Sequences</a></li>
+  <li><a href="#map-reads-to-reference-genome" id="toc-map-reads-to-reference-genome" class="nav-link" data-scroll-target="#map-reads-to-reference-genome">Map Reads to Reference Genome</a></li>
+  <li><a href="#determine-mean-coverage-across-the-genome" id="toc-determine-mean-coverage-across-the-genome" class="nav-link" data-scroll-target="#determine-mean-coverage-across-the-genome">Determine mean coverage across the genome</a></li>
+  <li><a href="#compiling-snps-for-all-samples" id="toc-compiling-snps-for-all-samples" class="nav-link" data-scroll-target="#compiling-snps-for-all-samples">Compiling SNPs for all samples</a></li>
+  <li><a href="#pop-gen-and-downstream-statistical-analyses" id="toc-pop-gen-and-downstream-statistical-analyses" class="nav-link" data-scroll-target="#pop-gen-and-downstream-statistical-analyses">Pop Gen and Downstream Statistical Analyses</a></li>
+  <li><a href="#calculate-sliding-window-fst" id="toc-calculate-sliding-window-fst" class="nav-link" data-scroll-target="#calculate-sliding-window-fst">Calculate sliding window Fst</a></li>
+  <li><a href="#calculate-fishers-exact-test" id="toc-calculate-fishers-exact-test" class="nav-link" data-scroll-target="#calculate-fishers-exact-test">Calculate Fisher’s Exact Test</a></li>
+  <li><a href="#calculate-exact-allele-frequencies-in-samples" id="toc-calculate-exact-allele-frequencies-in-samples" class="nav-link" data-scroll-target="#calculate-exact-allele-frequencies-in-samples">Calculate Exact Allele Frequencies in Samples</a></li>
+  <li><a href="#cochran-mantel-haenszel-cmh-test" id="toc-cochran-mantel-haenszel-cmh-test" class="nav-link" data-scroll-target="#cochran-mantel-haenszel-cmh-test">Cochran-Mantel-Haenszel (CMH) test</a></li>
+  <li><a href="#popoolation-pipelines-for-analyses" id="toc-popoolation-pipelines-for-analyses" class="nav-link" data-scroll-target="#popoolation-pipelines-for-analyses">PoPoolation Pipelines for analyses</a></li>
+  <li><a href="#nucleotide-diversity" id="toc-nucleotide-diversity" class="nav-link" data-scroll-target="#nucleotide-diversity">Nucleotide Diversity</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/MarineOmics/marineomics.github.io/edit/main/POP_03_poolseq.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/MarineOmics/marineomics.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<div style="background-color: #f8f9fa; border-left: 4px solid #6c757d; padding: 8px 14px; margin-bottom: 16px; font-size: 0.85em;">
+  Last rendered: July 2026 — see <a href="ADMIN_05_major_versions.html">Major Versions</a> for full environment details.
+</div>
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./POP_01_choosing_population_genetics.html">Population Genomics</a></li><li class="breadcrumb-item"><a href="./POP_03_poolseq.html">PoPoolation Pipeline</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">PoPoolation Pipeline</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><em>Joanna Griffiths</em> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 12, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Initial publication year: 2022 <a href="https://marineomics.github.io/#How_to_Cite">How to cite</a></p>
+<p>I mostly followed the PoPoolation and PoPoolation2 pipelines by Robert Kofler and Christian Schlötterer (<a href="https://sourceforge.net/p/popoolation2/wiki/Main/" class="uri">https://sourceforge.net/p/popoolation2/wiki/Main/</a>). The website has an easy-to-follow tutorial for using PoPoolation2 and how to use their scripts. This pipeline extends the use of the scripts for running on a Linux cluster. I highly recommend following the PoPoolation2 tutorial and manual and using these scripts if you have any modifications from default flags. *Note: These scripts were written for use on Louisiana State University’s high performance cluster “SuperMike-II” running Red Hat Enterprise Linux 6 (more info found here: <a href="http://www.hpc.lsu.edu/resources/hpc/system.php?system=SuperMike-II" class="uri">http://www.hpc.lsu.edu/resources/hpc/system.php?system=SuperMike-II</a>)</p>
+<p>The following scripts were used to analyze data from an experimental evolution study on <em>Tigriopus californicus</em> copepods <span class="citation" data-cites="Griffiths2020">(<a href="#ref-Griffiths2020" role="doc-biblioref">Griffiths et al. 2020</a>)</span>. Raw sequencing data are deposited in NCBI’s Short Reads Archive (<a href="https://www.ncbi.nlm.nih.gov/bioproject/PRJNA597336/" class="uri">https://www.ncbi.nlm.nih.gov/bioproject/PRJNA597336/</a>). To download this dataset, go to: <a href="https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=run_browser" class="uri">https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=run_browser</a> , then type in the accession number for the identified files you want to download (e.g., the accession no. for the file Bodega population file is SRR10760095, identified under the “Run” heading). Then click on the “Data access” tab, and there will be a downloadable link. Additional analyses and scripts can be found at: <a href="https://github.com/JoannaGriffiths/Tigriopus_HER" class="uri">https://github.com/JoannaGriffiths/Tigriopus_HER</a></p>
+<p><strong><em>Strengths and weaknesses of Pool-seq</em></strong><br>
+Due to the nature of Pool-seq where multiple individuals are pooled to prepare a single library, this results in a loss of haplotype information. Therefore, analyses rely on allele frequency estimates rather than hard “genotype calls”. PoPoolation2 is primarily used for comparing allele frequency differences between populations or treatments in comparison to a reference genome. The pooling of many individuals can be a cost-effective tool to characterize genetic variation present at the population level (e.g., genome wide association studies and experimental evolution). For example, to identify small changes in allele frequencies, you would need to genotype hundreds of individuals across the entire genome, which may be too cost-prohibitive with individual barcoding. However, individual genotype information is lost, as well as information on dominance and effect sizes. For example, individual genotypes cannot be linked to individual phenotypes. Additionally, estimations of linkage disequilibrium are limited to a single sequencing read since that is the known limit of haplotype information for a single individual. Finally, distinguishing between sequencing errors and rare, low-frequency alleles is limited. Unlike sequencing of individuals, this cannot be solved by analyzing multiple reads from the same region of a single chromosome. One way to ameliorate this issue is to sequence replicates of pools. In addition, Pool-seq analyses can be prone to inaccurate estimations of allele frequencies based on the experimental methods. Care must be taken to ensure the the experimental design maximizes the ratio sequencing coverage to the number of individuals pooled.</p>
+<p><strong><em>Notes on Experimental Design for Downstream Analyses:</em></strong><br>
+It is important to try to standardize the number of individuals (and thus DNA) pooled for each sample. Robert Kofler and team also recommend that the pool size should be larger than the goal coverage for sequencing, because this minimizes re-sampling the same allele from a single individual several times. Because PoPoolation is designed for comparing differences in allele frequencies among treatments/population, accuracy will depend on the pool size and sequencing coverage. For example, smaller differences in allele frequency changes can be seen if you have a large number of individuals in a single pool and more coverage. The PoPoolation2 Manual page provides the following calculation to detect significant allele frequency differences:“To detect a significant (Fisher’s exact test; p=0.01) allele frequency difference between two populations of 30%, a coverage (and pool size) of 50 will be sufficient. If however significant (Fisher’s exact test; p=0.01) allele frequency differences of 10% need to be detected the coverage as well as the pool size should be about 400.”<br>
+It is critical to note, the sequencing accuracy of Pool-seq increases with larger pool sizes; if the number of sequenced individuals is approximately equal to the coverage, then the sequency accuracy is no longer superior to an individual level of sequencing (see Fig. 1a from <span class="citation" data-cites="Schlotterer2014">(<a href="#ref-Schlotterer2014" role="doc-biblioref">Schlötterer et al. 2014</a>)</span>).</p>
+<p><strong><em>Alternative Pipelines</em></strong><br>
+Low Coverage Pool-seq <a href="Data:\" class="uri">Data:\</a> <a href="https://github.com/petrov-lab/HAFpipe-line" class="uri">https://github.com/petrov-lab/HAFpipe-line</a><br>
+Alternative pipelines have been created for low coverage (&lt;5x) pool-seq data that can provide accurate estimates of allele frequencies. This pipeline is designed for Evolve and Re-sequence studies where the founder haplotypes are known.</p>
+<p>Customizable Filtering and Assessing Quality of Pool-Seq <a href="Data:\" class="uri">Data:\</a> <a href="https://github.com/ToBoDev/assessPool" class="uri">https://github.com/ToBoDev/assessPool</a><br>
+This pipeline filters SNPs based on adjustable criterion with suggestions for pooled data. It determines pool number and prepares proper data structure for analysis, creates a customizable run script for Popoolation2 for all pairwise comparisons, runs Popoolation2 and poolfstat, imports Popoolation2 and poolfstat output, and finally, generates population genetic statistics and plots for data visualization.</p>
+<section id="filter-raw-sequences" class="level2">
+<h2 class="anchored" data-anchor-id="filter-raw-sequences">Filter Raw Sequences</h2>
+<p>The script below uses the wrapper TrimGalore to remove Adapter/Barcode sequences and removes poor quality reads. This example dataset uses paired end sequencing so I used the flag (–paired) in TrimGalore. Because these example files had high coverage, I was able to use conservative filters. For example, the default length of reads is 20 bp (so if a read is less than 20 bp then the read will be removed). Since I had high coverage and long read lengths (150 bp), I used a minimum read length of 40 bp. The –max_n flag specifies how many “Ns” can be in the read before the read if discarded as “poor quality”. Again, depending on your sequencing depth you may want to be more or less conservative. There is no default value specified in TrimGalore, but I used a highly conservative value of 1 (ie any instances of N in the read and that read will be discarded). This is probably more conservative than you need to be, because the read may still contain informative sequencing data. Please note that these parameters are not specific to a Pool Seq dataset.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -q checkpt</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -A hpc_kelly_19_3</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l nodes=1:ppn=16</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l walltime=72:00:00</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -o /work/jgrif61/Tigs/output_files</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -j oe</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -M jgrif61@lsu.edu</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -N trimgalore_Tigs</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Go to the directory where the raw sequencing files are located</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-1S_S6_L008_R1_001.fastq.gz Tig-1S_S6_L008_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-1U_S3_L001_R1_001.fastq.gz Tig-1U_S3_L001_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-2S_S7_L008_R1_001.fastq.gz  Tig-2S_S7_L008_R2_001.fastq.gz  <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-2U_S9_L008_R1_001.fastq.gz Tig-2U_S9_L008_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-3S_S1_L001_R1_001.fastq.gz Tig-3S_S1_L001_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-4S_S2_L001_R1_001.fastq.gz Tig-4S_S2_L001_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-4U_S10_L008_R1_001.fastq.gz Tig-4U_S10_L008_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-5S_S8_L008_R1_001.fastq.gz Tig-5S_S8_L008_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-5U_S4_L001_R1_001.fastq.gz Tig-5U_S4_L001_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-6U_S11_L008_R1_001.fastq.gz Tig-6U_S11_L008_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-BR_S5_L001_R1_001.fastq.gz Tig-BR_S5_L001_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ex">trim_galore</span> <span class="at">--paired</span> <span class="at">--length</span> 40 <span class="at">--max_n</span> 1 Tig-SD_S12_L008_R1_001.fastq.gz Tig-SD_S12_L008_R2_001.fastq.gz <span class="at">-o</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span> 0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="map-reads-to-reference-genome" class="level2">
+<h2 class="anchored" data-anchor-id="map-reads-to-reference-genome">Map Reads to Reference Genome</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -q workq</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -A hpc_kelly_19_3</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l nodes=1:ppn=16</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l walltime=72:00:00</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -o /work/jgrif61/Tigs/output_files</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -j oe</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -M jgrif61@lsu.edu</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -N bowtie_tigs_BRSD</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#prepare and index the reference genome so you can map reads to it</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2-build</span> reference/full_genome_mito_tigs.fasta reference/reference_index</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-1S_S6_L008_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-1S_S6_L008_R2_001_val_2.fq.gz <span class="at">-S</span> 1S_out_PE.sam</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-1U_S3_L001_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-1U_S3_L001_R2_001_val_2.fq.gz <span class="at">-S</span> 1U_out_PE.sam</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-2S_S7_L008_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-2S_S7_L008_R2_001_val_2.fq.gz <span class="at">-S</span> 2S_out_PE.sam</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-2U_S9_L008_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-2U_S9_L008_R2_001_val_2.fq.gz <span class="at">-S</span> 2U_out_PE.sam</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-3S_S1_L001_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-3S_S1_L001_R2_001_val_2.fq.gz <span class="at">-S</span> 3S_out_PE.sam</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-4S_S2_L001_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-4S_S2_L001_R2_001_val_2.fq.gz <span class="at">-S</span> 4S_out_PE.sam</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-4U_S10_L008_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-4U_S10_L008_R2_001_val_2.fq.gz <span class="at">-S</span> 4U_out_PE.sam</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-5S_S8_L008_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-5S_S8_L008_R2_001_val_2.fq.gz <span class="at">-S</span> 5S_out_PE.sam</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-5U_S4_L001_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-5U_S4_L001_R2_001_val_2.fq.gz <span class="at">-S</span> 5U_out_PE.sam</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-6U_S11_L008_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-6U_S11_L008_R2_001_val_2.fq.gz <span class="at">-S</span> 6U_out_PE.sam</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-BR_S5_L001_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-BR_S5_L001_R2_001_val_2.fq.gz <span class="at">-S</span> BR_out_PE.sam</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-SD_S12_L008_R1_001_val_1.fq.gz <span class="at">-2</span> Tig-SD_S12_L008_R2_001_val_2.fq.gz <span class="at">-S</span> SD_out_PE.sam</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="ex">bowtie2</span> <span class="at">-x</span> ../reference/reference_index <span class="at">-1</span> Tig-allU_R1_001_val1_new.fq <span class="at">-2</span> Tig-allU_R2_001_val2_new.fq <span class="at">-S</span> allU_out_PE.sam</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co">#turn mapped sam files into bam file and then sort and remove ambiguously mapped reads</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> 1S_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> 1S_out.sorted</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> 1U_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> 1U_out.sorted</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> 2S_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> 2S_out.sorted</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> 2U_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> 2U_out.sorted</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> 3S_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> 3S_out.sorted</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> 4S_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> 4S_out.sorted</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> 4U_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> 4U_out.sorted</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> 5S_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> 5S_out.sorted</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> 5U_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> 5U_out.sorted</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> 6U_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> 6U_out.sorted</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> BR_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> BR_out.sorted</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> SD_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> SD_out.sorted</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-bS</span> allU_out_PE.sam <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-o</span> allU_out.sorted</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> </span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="determine-mean-coverage-across-the-genome" class="level2">
+<h2 class="anchored" data-anchor-id="determine-mean-coverage-across-the-genome">Determine mean coverage across the genome</h2>
+<p>This code can be used to determine the mean coverage across the genome for each sample/library. This information can be used to inform the min and max coverage used in downstream analyses (such as the Fisher’s exact test and Fst analyses). You will want to choose a min and max coverage window spanning the mean coverage.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -q workq</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -A hpc_kelly_19_3</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l nodes=1:ppn=16</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l walltime=24:00:00</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -o /work/jgrif61/Tigs/output_files</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -j oe</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -M jgrif61@lsu.edu</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -N coverage</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage 1S_out.sorted <span class="at">-o</span> 1S.coverage</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage 1U_out.sorted <span class="at">-o</span> 1U.coverage</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage 2S_out.sorted <span class="at">-o</span> 2U.coverage</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage 3S_out.sorted <span class="at">-o</span> 3S.coverage</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage 4S_out.sorted <span class="at">-o</span> 4S.coverage</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage 4U_out.sorted <span class="at">-o</span> 4U.coverage</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage 5S_out.sorted <span class="at">-o</span> 5S.coverage</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage 5U_out.sorted <span class="at">-o</span> 5U.coverage</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage 6U_out.sorted <span class="at">-o</span> 6U.coverage</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage BR_out.sorted <span class="at">-o</span> BR.coverage</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage SD_out.sorted <span class="at">-o</span> SD.coverage</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/jgrif61/samtools-1.13/samtools</span> coverage allU_out.sorted <span class="at">-o</span> allU.coverage</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="compiling-snps-for-all-samples" class="level2">
+<h2 class="anchored" data-anchor-id="compiling-snps-for-all-samples">Compiling SNPs for all samples</h2>
+<p>This script compiles all the identified SNPs for each sample into a matrix. This sync file format is required for downstream analyses such as Fst, creating Manhattan plots, or CMH tests to be used in both the PoPoolation and PoPoolation2 pipelines. You will want to make sure that the –fastq-type flag is set to “sanger” (this is for Phred quality score matching–yes, this is correct even if you used Illumina sequencing). The min-qual flag must be above 0, the default is 20 which gives you a 99% base call accuracy rate).</p>
+<p><strong>What is an Mpileup file?</strong><br>
+Pileup format is a text-based format for summarizing the base calls of aligned reads to a reference sequence. This format facilitates visual display of SNP/indel calling and alignment. (Source: Wikipedia)</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -q checkpt</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -A hpc_kelly_19_3</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l nodes=1:ppn=16</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l walltime=72:00:00</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -o /work/jgrif61/Tigs/output_files</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -j oe</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -M jgrif61@lsu.edu</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -N mpileup</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /work/jgrif61/Tigs/raw_data/raw</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 1S_out.sorted 1U_out.sorted 2S_out.sorted 2U_out.sorted 3S_out.sorted 4S_out.sorted 4U_out.sorted 5S_out.sorted 5U_out.sorted 6U_out.sorted BR_out.sorted SD_out.sorted <span class="op">&gt;</span> all_indiv.mpileup</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> /work/jgrif61/Tigs/popoolation2_1201/mpileup2sync.pl <span class="at">--fastq-type</span> sanger <span class="at">--min-qual</span> 20 <span class="at">--input</span> all_indiv.mpileup <span class="at">--output</span> all_indiv.sync</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Alternative code for generation sync file that is 78x faster</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">-ea</span> <span class="at">-Xmx7g</span> <span class="at">-jar</span> /work/jgrif61/Tigs/popoolation2_1201/mpileup2sync.jar <span class="at">--input</span> all_indiv.mpileup <span class="at">--output</span> all_indiv_java.sync <span class="at">--fastq-type</span> sanger <span class="at">--min-qual</span> 20 <span class="at">--threads</span> 8</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#Making mpileup files for each sample. Can be used for calculating nucleotide diversity for each sample.</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 1S_out.sorted BR_out.sorted <span class="op">&gt;</span> 1S.mpileup</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 1U_out.sorted <span class="op">&gt;</span> 1U.mpileup</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 2S_out.sorted <span class="op">&gt;</span> 2S.mpileup</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 1U_out.sorted <span class="op">&gt;</span> 2U.mpileup</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 3S_out.sorted <span class="op">&gt;</span> 3S.mpileup</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 4S_out.sorted <span class="op">&gt;</span> 4S.mpileup</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 4U_out.sorted <span class="op">&gt;</span> 4U.mpileup</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 5S_out.sorted <span class="op">&gt;</span> 5S.mpileup</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 5U_out.sorted <span class="op">&gt;</span> 5U.mpileup</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta 6U_out.sorted <span class="op">&gt;</span> 6U.mpileup</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta BR_out.sorted <span class="op">&gt;</span> BR.mpileup</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> mpileup <span class="at">-f</span> full_genome_mito_tigs.fasta SD_out.sorted <span class="op">&gt;</span> SD.mpileup</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Sample of a synchronized file:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span>  2302    N   0:7:0:0:0:0 0:7:0:0:0:0</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span>  2303    N   0:8:0:0:0:0 0:8:0:0:0:0</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span>  2304    N   0:0:9:0:0:0 0:0:9:0:0:0</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span>  2305    N   1:0:9:0:0:0 0:0:9:1:0:0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>col1: reference contig</li>
+<li>col2: position within the refernce contig</li>
+<li>col3: reference character</li>
+<li>col4: allele frequencies of population number 1</li>
+<li>col5: allele frequencies of population number 2</li>
+<li>coln: allele frequencies of population number n</li>
+</ul>
+<p>The allele frequencies are in the format A:T:C:G:N:del, i.e: count of bases ‘A’, count of bases ‘T’,… and deletion count in the end (character ‘*’ in the mpileup)</p>
+</section>
+<section id="pop-gen-and-downstream-statistical-analyses" class="level2">
+<h2 class="anchored" data-anchor-id="pop-gen-and-downstream-statistical-analyses">Pop Gen and Downstream Statistical Analyses</h2>
+<p>These in-depth notes are not on the tutorial or manual page, but detailed descriptions for each flag can be found using the <code>--help</code> option when running each script. e.g.&nbsp;<code>perl fst-sliding.pl --help</code></p>
+<p>You will want to play around with the min-coverage, max-coverage, and min-count based on the mean coverage of your samples/populations. Minimum coverages that are too high and max coverages that are too low may result in an empty output file, which is why it’s a good idea to have an estimate of your mean/min/max coverage for each sample/population. The minimum count must be less than the minimum coverage. You may want to modify this flag based on the number of individuals pooled per sample/population.</p>
+<p><strong><em>Important considerations:</em></strong><br>
+<code>--suppress-noninformative</code>: Output files will not report results for windows with no SNPs or insufficient coverage. Including this flag will make it easier for downstream manipulation of the output file, such as creating figures.</p>
+<p><code>--pool-size</code>: the number of individuals pooled per sample; If the pool sizes differ among each sample, you can provide the size for each sample individually: –pool-size 500 .. all samples/populations have a pool size of 500 –pool-size 500:300:600 .. first sample/population has a pool size of 500, the second of 300 etc;</p>
+<p><code>--min-coverage</code>: the minimum coverage used for SNP identification, the coverage in ALL samples/populations has to be higher or equal to this threshold, otherwise no SNP will be called. default=4</p>
+<p><code>--max-coverage</code>: The maximum coverage; All populations are required to have coverages lower or equal than the maximum coverage; Mandatory.<br>
+The maximum coverage may be provided as one of the following:<br>
+<code>500</code> a maximum coverage of 500 will be used for all samples/populations<br>
+<code>300,400,500</code> a maximum coverage of 300 will be used for the first sample/population, a maximum coverage of 400 for the second sample/population and so on<br>
+<code>2%</code> the 2% highest coverages will be ignored, this value is independently estimated for every sample/population</p>
+<p><strong><em>NOTE ABOUT MAX COVERAGE</em></strong><br>
+When genotyping individually barcoded samples, max coverage requirements are generally not recommended. However, pool-seq analyses require a max coverage for calculating Fst, cmh, allele frequency changes, etc. because allele frequency estimates are based on the number allele count, which are prone to PCR duplicates. PCR duplicates from a single individual in the pool may skew allele frequency estimates.</p>
+<p><code>--min-covered-fraction</code>:the minimum fraction of a window being between min-coverage and max-coverage in ALL samples/populations; float; default=0.0<br>
+The tutorial provides an example script with a min-covered fraction of 1, however, you will most likely run into an error or an empty output file. The min-covered-fraction flag must be smaller than 1: this flag defines what percent of the window must meet the requirements (e.g.&nbsp;flags: min-count, min-coverage, max-coverage). It is most likely impossible that your entire sequencing window will meet all of these requirements (unless of course you chose a window size of 1 bp!).</p>
+<p><code>--min-count</code>: the minimum count of the minor allele, used for SNP identification. SNPs will be identified considering all samples/populations simultaneously. default=2. The minimum count MUST be smaller than the min-coverage flag for this script to run.</p>
+</section>
+<section id="calculate-sliding-window-fst" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-sliding-window-fst">Calculate sliding window Fst</h2>
+<p>This script will calculate Fst pair-wise comparisons for all samples.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -q workq</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -A hpc_Kelly_19_3</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l nodes=1:ppn=16</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l walltime=4:00:00</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -o /work/jgrif61/Tigs/output_files</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -j oe</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -M jgrif61@lsu.edu</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -N stats</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /work/jgrif61/Tigs/raw_data</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> /work/jgrif61/Tigs/popoolation2_1201/fst-sliding.pl <span class="at">--input</span> all_indiv.sync <span class="at">--output</span> all_PE_w10000_step10000.fst <span class="at">--suppress-noninformative</span> <span class="at">--min-count</span> 5 <span class="at">--min-coverage</span> 20 <span class="at">--max-coverage</span> 200 <span class="at">--min-covered-fraction</span> 0.2 <span class="at">--window-size</span> 10000 <span class="at">--step-size</span> 10000 <span class="at">--pool-size</span> 100</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The following R script can be used to plot Fst results in a Manhattan plot</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"qqman"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"DataCombine"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>fst <span class="ot">=</span> <span class="fu">read.table</span>(<span class="st">"all_PE_w10000_step10000.fst"</span>, <span class="at">header =</span> T) </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>fst <span class="ot">&lt;-</span> fst[<span class="fu">c</span>(<span class="st">"CHR"</span>, <span class="st">"BP"</span>, <span class="st">"X1.11"</span>, <span class="st">"X1.12"</span>, <span class="st">"X2.11"</span>, <span class="st">"X2.12"</span>, <span class="st">"X3.11"</span>, <span class="st">"X3.12"</span>, <span class="st">"X4.11"</span>, <span class="st">"X4.12"</span>, <span class="st">"X5.11"</span>, <span class="st">"X5.12"</span>, <span class="st">"X6.11"</span>, <span class="st">"X6.12"</span>, <span class="st">"X7.11"</span>, <span class="st">"X7.12"</span>, <span class="st">"X8.11"</span>, <span class="st">"X8.12"</span>, <span class="st">"X9.11"</span>, <span class="st">"X9.12"</span>, <span class="st">"X10.11"</span>, <span class="st">"X10.12"</span>, <span class="st">"X11.12"</span>)] <span class="co">#rename column headers</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>fst<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(fst<span class="sc">$</span>CHR,fst<span class="sc">$</span>BP,<span class="at">sep=</span><span class="st">"."</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#tidying file</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>Replaces <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">from=</span><span class="fu">c</span>(<span class="st">"Chromosome_"</span>), <span class="at">to=</span><span class="fu">c</span>(<span class="st">""</span>))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>fst2 <span class="ot">&lt;-</span> <span class="fu">FindReplace</span>(<span class="at">data =</span> fst, <span class="at">Var =</span> <span class="st">"CHR"</span>, <span class="at">replaceData =</span> Replaces,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">from =</span> <span class="st">"from"</span>, <span class="at">to =</span> <span class="st">"to"</span>, <span class="at">exact =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>fst2<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(fst2<span class="sc">$</span>CHR)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">manhattan</span>(fst2, <span class="at">chr=</span><span class="st">"CHR"</span>, <span class="at">bp=</span><span class="st">"BP"</span>, <span class="at">snp=</span><span class="st">"ID"</span>, <span class="at">p=</span><span class="st">"X1.11"</span>, <span class="at">suggestiveline =</span> F, <span class="at">genomewideline =</span> F, <span class="at">logp =</span> F, <span class="at">ylim =</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="co">#p here refers to pvalue or in this case the Fst value, substitute with which column comparison you are interested in graphing</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="POP_03_poolseq/Fst_SvsBR_SDmap.png" class="img-fluid figure-img"></p>
+<figcaption>Manhattan plot of mean Fst values for 10,000-bp windows of all the selected lines versus the pure Bodega population.</figcaption>
+</figure>
+</div>
+</section>
+<section id="calculate-fishers-exact-test" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-fishers-exact-test">Calculate Fisher’s Exact Test</h2>
+<p>This script will calculate significant allele frequency differences for each SNP position between two samples. Results can be plotted in a Manhattan plot. Depending on the experimental method, the <code>--window-summary-method</code> flag can be used to determine p-value for windows of SNPs. The default is to multiply the p-value of all SNPs for the window. Alternatively, you can specify how p-values within a window should be summarized. Options include multiply, geometric mean, or median. The summary of p-values within a window is dependent on the experimental design and how recent selection was expected to occur. For example, the default parameter might be appropriate if your treatment comparisons are geographically separated populations, where selection is expected to have occurred over hundreds of thousands of years. However, this might be inappropriate for short-term experimental evolution studies, such as the example dataset here. In this dataset, copepods were selected in the lab for 15-20 generations, therefore, we expect relatively large linkage blocks that prevent us from identifying the true targets of selection, and therefore I use the geometric mean option.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -q workq</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -A hpc_Kelly_19_3</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l nodes=1:ppn=16</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l walltime=4:00:00</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -o /work/jgrif61/Tigs/output_files</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -j oe</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -M jgrif61@lsu.edu</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -N stats</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /work/jgrif61/Tigs/raw_data</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> /work/jgrif61/Tigs/popoolation2_1201/fisher-test.pl <span class="at">--input</span> all_indiv.sync <span class="at">--output</span> all_indiv.fet <span class="at">--suppress-noninformative</span> <span class="at">--min-count</span> 2 <span class="at">--min-coverage</span> 20 <span class="at">--max-coverage</span> 200 <span class="at">--min-covered-fraction</span> 0.2 <span class="at">--window-summary-method</span> geometricmean</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You may need to run the following code on the command line (not in the queues) to install twotailed perl Module before running Fisher-test.pl. See LSU HPC for details: <a href="http://www.hpc.lsu.edu/docs/faq/installation-details.php" class="uri">http://www.hpc.lsu.edu/docs/faq/installation-details.php</a></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> <span class="at">-MCPAN</span> <span class="at">-e</span> <span class="st">'install Text::NSP::Measures::2D::Fisher2::twotailed'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="calculate-exact-allele-frequencies-in-samples" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-exact-allele-frequencies-in-samples">Calculate Exact Allele Frequencies in Samples</h2>
+<p>Exact allele frequencies can be used to determine differences in allele frequencies among populations or before and after a selection experiment, for example. These result could be plotted in a PCA or Manhattan plot.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -q workq</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -A hpc_Kelly_19_3</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l nodes=1:ppn=16</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l walltime=4:00:00</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -o /work/jgrif61/Tigs/output_files</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -j oe</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -M jgrif61@lsu.edu</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -N stats</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /work/jgrif61/Tigs/raw_data</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> /work/jgrif61/Tigs/popoolation2_1201/snp-frequency-diff.pl <span class="at">--input</span> all_indiv.sync <span class="at">--output-prefix</span> all_indiv <span class="at">--min-count</span> 6 <span class="at">--min-coverage</span> 20 <span class="at">--max-coverage</span> 200</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This script creates two output files having two different extensions:</p>
+<p><code>_rc</code>: this file contains the major and minor alleles for every SNP in a concise format <code>_pwc</code>: this file contains the differences in allele frequencies for every pairwise comparision of the populations present in the synchronized file For details see the man pages of the script The allele frequency differences can be found in the <code>_pwc</code> file, a small sample:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">##chr   pos     rc      allele_count    allele_states   deletion_sum    snp_type        most_variable_allele    diff:1-2</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span>      4459    N       2       C/T     0       pop     T       0.133</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span>      9728    N       2       T/C     0       pop     T       0.116</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The last column contains the obtained differences in allele frequencies for the allele provided in column 8. Note that in this example the last column refers to a pairwise comparison between population 1 vs 2, in case several populations are provided all pairwise comparisons will be appended in additional columns.</p>
+</section>
+<section id="cochran-mantel-haenszel-cmh-test" class="level2">
+<h2 class="anchored" data-anchor-id="cochran-mantel-haenszel-cmh-test">Cochran-Mantel-Haenszel (CMH) test</h2>
+<p>This script will detect consistent allele frequency changes in biological replicates. In my case, I was comparing selected samples to one control sample, but if you have replicates of treatments and controls, you can compare columns 1-2, 3-4, etc.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -q workq</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -A hpc_Kelly_19_3</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l nodes=1:ppn=16</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l walltime=4:00:00</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -o /work/jgrif61/Tigs/output_files</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -j oe</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -M jgrif61@lsu.edu</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -N stats</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /work/jgrif61/Tigs/raw_data </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#perl /work/jgrif61/Tigs/popoolation2_1201/cmh-test.pl --input all_indiv.sync_for_cmh --output all_perl_PE_2.cmh --min-count 12 --min-coverage 50 --max-coverage 200 --population 1-6,2-6,3-6,4-6,5-6</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Due to constraints of the test, you can only compare allele frequency changes for individual SNPs and not windows. I expected high levels of linkage disequilibrium in my samples because individuals were exposed to strong selection pressure. Depending on the amount of linkage disequilibrium you expect in your populations, you may want to account for the non-independence of SNPs following the CMH test. One way to do this, would be to calculate the mean (or geometric mean) p-value for all SNPs in a window. I provide some example R code below for how to do this. I used the program SeqMonk to map cmh results to the genome and an annotated genome file I created with probes for the desired window size (i.e.&nbsp;10,000 bp). Output files from SeqMonk will tell you which 10,000 bp window a particular SNP falls into. Thus, SNPs can be grouped for each 10,000bp window on each chromosome.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"psych"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>cmh <span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">"10000window_BR_cmh_overlap.txt"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>cmh <span class="ot">&lt;-</span> cmh[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">6</span>)] <span class="co">#Keeping only the columns I care about</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>cmh<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(cmh<span class="sc">$</span>Chromosome,cmh<span class="sc">$</span>Start,<span class="at">sep=</span><span class="st">"."</span>) <span class="co">#creating an ID column so each SNP location is tied to its chromosome</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>cmh_p <span class="ot">&lt;-</span><span class="fu">read.table</span>(<span class="st">"Tig.cmh"</span>, <span class="at">header=</span><span class="cn">TRUE</span>) <span class="co">#read in the original output from the CMH test, because SeqMonk output discards the important p-value column.</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(cmh_p) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"CHR"</span>, <span class="st">"BP"</span>, <span class="st">"Allele"</span>, <span class="st">"1S"</span>, <span class="st">"2S"</span>, <span class="st">"3S"</span>, <span class="st">"4S"</span>, <span class="st">"5S"</span>, <span class="st">"U"</span>, <span class="st">"p"</span>) <span class="co">#rename columns based on sample names</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>cmh_p<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(cmh_p<span class="sc">$</span>CHR,cmh_p<span class="sc">$</span>BP,<span class="at">sep=</span><span class="st">"."</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>cmh_p <span class="ot">&lt;-</span> cmh_p[<span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">11</span>)]</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>cmh_all <span class="ot">&lt;-</span> <span class="fu">merge</span>(cmh, cmh_p, <span class="at">by=</span><span class="st">"ID"</span>, <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we can calculate the geometric mean for each window one chromosome at a time</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"EnvStats"</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>chr1<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_1"</span>,]</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>Chr1_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr1, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>Chr1_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="fu">nrow</span>(Chr1_ave))</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>Chr1_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_1"</span>,<span class="fu">nrow</span>(Chr1_ave))</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>chr2<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_2"</span>,]</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>Chr2_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr2, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>Chr2_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">2</span>,<span class="fu">nrow</span>(Chr2_ave))</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>Chr2_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_2"</span>,<span class="fu">nrow</span>(Chr2_ave))</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>chr3<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_3"</span>,]</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>Chr3_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr3, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>Chr3_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">3</span>,<span class="fu">nrow</span>(Chr3_ave))</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>Chr3_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_3"</span>,<span class="fu">nrow</span>(Chr3_ave))</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>chr4<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_4"</span>,]</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>Chr4_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr4, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>Chr4_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">4</span>,<span class="fu">nrow</span>(Chr4_ave))</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>Chr4_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_4"</span>,<span class="fu">nrow</span>(Chr4_ave))</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>chr5<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_5"</span>,]</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>Chr5_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr5, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>Chr5_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">5</span>,<span class="fu">nrow</span>(Chr5_ave))</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>Chr5_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_5"</span>,<span class="fu">nrow</span>(Chr5_ave))</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>chr6<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_6"</span>,]</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>Chr6_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr6, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>Chr6_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">6</span>,<span class="fu">nrow</span>(Chr6_ave))</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>Chr6_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_6"</span>,<span class="fu">nrow</span>(Chr6_ave))</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>chr7<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_7"</span>,]</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>Chr7_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr7, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>Chr7_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">7</span>,<span class="fu">nrow</span>(Chr7_ave))</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>Chr7_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_7"</span>,<span class="fu">nrow</span>(Chr7_ave))</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>chr8<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_8"</span>,]</span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>Chr8_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr8, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>Chr8_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">8</span>,<span class="fu">nrow</span>(Chr8_ave))</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>Chr8_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_8"</span>,<span class="fu">nrow</span>(Chr8_ave))</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>chr9<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_9"</span>,]</span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>Chr9_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr9, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>Chr9_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">9</span>,<span class="fu">nrow</span>(Chr9_ave))</span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>Chr9_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_9"</span>,<span class="fu">nrow</span>(Chr9_ave))</span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>chr10<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_10"</span>,]</span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>Chr10_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr10, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a>Chr10_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">10</span>,<span class="fu">nrow</span>(Chr10_ave))</span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>Chr10_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_10"</span>,<span class="fu">nrow</span>(Chr10_ave))</span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a>chr11<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_11"</span>,]</span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>Chr11_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr11, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>Chr11_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">11</span>,<span class="fu">nrow</span>(Chr11_ave))</span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a>Chr11_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_11"</span>,<span class="fu">nrow</span>(Chr11_ave))</span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>chr12<span class="ot">&lt;-</span> cmh_all[cmh_all<span class="sc">$</span>Chromosome <span class="sc">==</span> <span class="st">"Chromosome_12"</span>,]</span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a>Chr12_ave <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(p<span class="sc">~</span>FeatureID, <span class="at">data=</span>chr12, <span class="at">FUN=</span><span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean=</span><span class="fu">geoMean</span>(x)))</span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a>Chr12_ave<span class="sc">$</span>CHR <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">12</span>,<span class="fu">nrow</span>(Chr12_ave))</span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a>Chr12_ave<span class="sc">$</span>CHR2 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Chromosome_12"</span>,<span class="fu">nrow</span>(Chr12_ave))</span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a>cmh_p_ave_allchr <span class="ot">&lt;-</span> <span class="fu">rbind</span>(Chr1_ave, Chr2_ave, Chr3_ave, Chr4_ave, Chr5_ave, Chr6_ave, Chr7_ave,Chr8_ave, Chr9_ave, Chr10_ave, Chr11_ave, Chr12_ave)</span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a>cmh_p_ave_allchr2 <span class="ot">&lt;-</span> <span class="fu">separate</span>(cmh_p_ave_allchr, FeatureID, <span class="fu">c</span>(<span class="st">"BP_start"</span>, <span class="st">"BP_end"</span>))</span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a>cmh_p_ave_allchr2<span class="sc">$</span>BP_start <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(cmh_p_ave_allchr2<span class="sc">$</span>BP_start)</span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a>cmh_p_ave_allchr2<span class="sc">$</span>BP_ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(cmh_p_ave_allchr2<span class="sc">$</span>BP_start <span class="sc">+</span> <span class="dv">5000</span>) <span class="co">#I wanted the window ID to start in the middle of the window</span></span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a>cmh_p_ave_allchr2<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(cmh_p_ave_allchr2<span class="sc">$</span>CHR,cmh_p_ave_allchr2<span class="sc">$</span>BP_start,<span class="at">sep=</span><span class="st">"."</span>)</span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(cmh_p_ave_allchr2, <span class="at">file =</span> <span class="st">"cmh_window_geomean_p"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>I then analyzed the results of the CMH test by plotting the geometric mean for each 10,000bp window on a Manhattan plot.</p>
+</section>
+<section id="popoolation-pipelines-for-analyses" class="level2">
+<h2 class="anchored" data-anchor-id="popoolation-pipelines-for-analyses">PoPoolation Pipelines for analyses</h2>
+</section>
+<section id="nucleotide-diversity" class="level2">
+<h2 class="anchored" data-anchor-id="nucleotide-diversity">Nucleotide Diversity</h2>
+<p>Calculate Pi (nucleotide diversity) for individual samples. Use mpileup files that were created for a single sample as the input. Below is an example for one sample.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -q workq</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -A hpc_Kelly_19_3</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l nodes=1:ppn=16</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -l walltime=4:00:00</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -o /work/jgrif61/Tigs/output_files</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -j oe</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -M jgrif61@lsu.edu</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#PBS -N stats</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /work/jgrif61/Tigs/raw_data </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> /work/jgrif61/Tigs/popoolation_1.2.2/Variance-sliding.pl <span class="at">--measure</span> pi <span class="at">--input</span> 1S.mpileup <span class="at">--output</span> 1S.pi <span class="at">--min-count</span> 2 <span class="at">--min-coverage</span> 10 <span class="at">--max-coverage</span> 200 <span class="at">--window-size</span> 10000 <span class="at">--step-size</span> 10000 <span class="at">--pool-size</span> 100 <span class="at">--fastq-type</span> sanger </span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>I used nucleotide diversity for creating a PCA plot to compare genetic diversity among my samples and to look for broad patterns across my data and I ran an Adonis test to determine if there were significant differences among groups (in this example, selected vs control lines)</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#import each pi file and do some cleanup:</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>pi_1S <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"1S.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_1S) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_1S"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>pi_1S<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_1S<span class="sc">$</span>Chromosome, pi_1S<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>pi_1S <span class="ot">&lt;-</span> pi_1S[<span class="sc">!</span>pi_1S<span class="sc">$</span>pi_1S <span class="sc">==</span> <span class="st">"na"</span>,] <span class="co">#remove rows with na</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>pi_1S <span class="ot">&lt;-</span> pi_1S[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>pi_1U <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"1U.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_1U) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_1U"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>pi_1U<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_1U<span class="sc">$</span>Chromosome, pi_1U<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>pi_1U <span class="ot">&lt;-</span> pi_1U[<span class="sc">!</span>pi_1U<span class="sc">$</span>pi_1U <span class="sc">==</span> <span class="st">"na"</span>,]</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>pi_1U <span class="ot">&lt;-</span> pi_1U[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>pi_2S <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"2S.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_2S) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_2S"</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>pi_2S<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_2S<span class="sc">$</span>Chromosome, pi_2S<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>pi_2S <span class="ot">&lt;-</span> pi_2S[<span class="sc">!</span>pi_2S<span class="sc">$</span>pi_2S <span class="sc">==</span> <span class="st">"na"</span>,] <span class="co">#remove rows with na</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>pi_2S <span class="ot">&lt;-</span> pi_2S[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>pi_2U <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"2U.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_2U) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_2U"</span>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>pi_2U<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_2U<span class="sc">$</span>Chromosome, pi_2U<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>pi_2U <span class="ot">&lt;-</span> pi_2U[<span class="sc">!</span>pi_2U<span class="sc">$</span>pi_2U <span class="sc">==</span> <span class="st">"na"</span>,]</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>pi_2U <span class="ot">&lt;-</span> pi_2U[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>pi_3S <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"3S.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_3S) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_3S"</span>)</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>pi_3S<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_3S<span class="sc">$</span>Chromosome, pi_3S<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>pi_3S <span class="ot">&lt;-</span> pi_3S[<span class="sc">!</span>pi_3S<span class="sc">$</span>pi_3S <span class="sc">==</span> <span class="st">"na"</span>,] <span class="co">#remove rows with na</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>pi_3S <span class="ot">&lt;-</span> pi_3S[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>pi_4S <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"4S.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_4S) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_4S"</span>)</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>pi_4S<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_4S<span class="sc">$</span>Chromosome, pi_4S<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>pi_4S <span class="ot">&lt;-</span> pi_4S[<span class="sc">!</span>pi_4S<span class="sc">$</span>pi_4S <span class="sc">==</span> <span class="st">"na"</span>,] <span class="co">#remove rows with na</span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>pi_4S <span class="ot">&lt;-</span> pi_4S[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>pi_4U <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"4U.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_4U) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_4U"</span>)</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>pi_4U<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_4U<span class="sc">$</span>Chromosome, pi_4U<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>pi_4U <span class="ot">&lt;-</span> pi_4U[<span class="sc">!</span>pi_4U<span class="sc">$</span>pi_4U <span class="sc">==</span> <span class="st">"na"</span>,]</span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>pi_4U <span class="ot">&lt;-</span> pi_4U[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>pi_5S <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"5S.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_5S) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_5S"</span>)</span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>pi_5S<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_5S<span class="sc">$</span>Chromosome, pi_5S<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>pi_5S <span class="ot">&lt;-</span> pi_5S[<span class="sc">!</span>pi_5S<span class="sc">$</span>pi_5S <span class="sc">==</span> <span class="st">"na"</span>,] <span class="co">#remove rows with na</span></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>pi_5S <span class="ot">&lt;-</span> pi_5S[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>pi_5U <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"5U.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_5U) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_5U"</span>)</span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>pi_5U<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_5U<span class="sc">$</span>Chromosome, pi_5U<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>pi_5U <span class="ot">&lt;-</span> pi_5U[<span class="sc">!</span>pi_5U<span class="sc">$</span>pi_5U <span class="sc">==</span> <span class="st">"na"</span>,]</span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>pi_5U <span class="ot">&lt;-</span> pi_5U[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>pi_6U <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"6U.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_6U) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_6U"</span>)</span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>pi_6U<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_6U<span class="sc">$</span>Chromosome, pi_6U<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>pi_6U <span class="ot">&lt;-</span> pi_6U[<span class="sc">!</span>pi_6U<span class="sc">$</span>pi_6U <span class="sc">==</span> <span class="st">"na"</span>,]</span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>pi_6U <span class="ot">&lt;-</span> pi_6U[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>pi_SD <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"SD.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_SD) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_SD"</span>)</span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>pi_SD<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_SD<span class="sc">$</span>Chromosome, pi_SD<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a>pi_SD <span class="ot">&lt;-</span> pi_SD[<span class="sc">!</span>pi_SD<span class="sc">$</span>pi_SD <span class="sc">==</span> <span class="st">"na"</span>,]</span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a>pi_SD <span class="ot">&lt;-</span> pi_SD[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a>pi_BR <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"BR.pi"</span>, <span class="at">header =</span> F)</span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pi_BR) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chromosome"</span>, <span class="st">"window"</span>, <span class="st">"num.snps"</span>, <span class="st">"frac"</span>, <span class="st">"pi_BR"</span>)</span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a>pi_BR<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">paste</span>(pi_BR<span class="sc">$</span>Chromosome, pi_BR<span class="sc">$</span>window, <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a>pi_BR <span class="ot">&lt;-</span> pi_BR[<span class="sc">!</span>pi_BR<span class="sc">$</span>pi_BR <span class="sc">==</span> <span class="st">"na"</span>,]</span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a>pi_BR <span class="ot">&lt;-</span> pi_BR[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">5</span>)]</span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a><span class="co">#merge all pi results into one file</span></span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a>pi_all1 <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_1S, pi_1U, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>pi_all2 <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_all1, pi_2S, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a>pi_all3 <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_all2, pi_2U, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>pi_all4 <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_all3, pi_3S, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a>pi_all5 <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_all4, pi_4S, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a>pi_all6 <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_all5, pi_4U, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a>pi_all7 <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_all6, pi_5S, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>pi_all8 <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_all7, pi_5U, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a>pi_all9 <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_all8, pi_6U, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a>pi_all10 <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_all9, pi_SD, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a>pi_all <span class="ot">&lt;-</span> <span class="fu">merge</span>(pi_all10, pi_BR, <span class="at">by=</span><span class="st">"ID"</span>)</span>
+<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_1S <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_1S)</span>
+<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_1U <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_1U)</span>
+<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_2S <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_2S)</span>
+<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_2U <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_2U)</span>
+<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_3S <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_3S)</span>
+<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_4S <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_4S)</span>
+<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_4U <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_4U)</span>
+<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_5S <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_5S)</span>
+<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_5U <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_5U)</span>
+<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_6U <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_6U)</span>
+<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_BR <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_BR)</span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a>pi_all<span class="sc">$</span>pi_SD <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pi_all<span class="sc">$</span>pi_SD)</span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a>dds.pcoa<span class="ot">=</span><span class="fu">pcoa</span>(<span class="fu">vegdist</span>(<span class="fu">t</span>((pi_all[,<span class="dv">2</span><span class="sc">:</span><span class="dv">13</span>])), <span class="at">method=</span><span class="st">"euclidean"</span>)<span class="sc">/</span><span class="dv">1000</span>)</span>
+<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a>scores<span class="ot">=</span>dds.pcoa<span class="sc">$</span>vectors</span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a>percent <span class="ot">&lt;-</span> dds.pcoa<span class="sc">$</span>values<span class="sc">$</span>Eigenvalues</span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a>percent <span class="sc">/</span> <span class="fu">sum</span>(percent) <span class="co">#percent for each axes; change in caption below</span></span>
+<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a><span class="fu">windows</span>()</span>
+<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(scores[,<span class="dv">1</span>], scores[,<span class="dv">2</span>],</span>
+<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>, <span class="st">"black"</span>), </span>
+<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">19</span>,<span class="dv">19</span>,<span class="dv">19</span>,<span class="dv">19</span>,<span class="dv">19</span>,<span class="dv">19</span>,<span class="dv">19</span>,<span class="dv">19</span>,<span class="dv">19</span>,<span class="dv">19</span>,<span class="dv">1</span>,<span class="dv">19</span>),</span>
+<span id="cb15-110"><a href="#cb15-110" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"PC1 (24.33%)"</span>, <span class="at">ylab =</span> <span class="st">"PC2 (21.24%)"</span>)</span>
+<span id="cb15-111"><a href="#cb15-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a>treat_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> <span class="fu">c</span>(<span class="st">"1S_pi"</span>, <span class="st">"1U_pi"</span>, <span class="st">"2S_pi"</span>, <span class="st">"2U_pi"</span>, <span class="st">"3S_pi"</span>, <span class="st">"4S_pi"</span>, <span class="st">"4U_pi"</span>, <span class="st">"5S_pi"</span>, <span class="st">"5U_pi"</span>,<span class="st">"6U_pi"</span>),</span>
+<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a>  <span class="at">line =</span> <span class="fu">c</span>(<span class="st">"S"</span>, <span class="st">"U"</span>, <span class="st">"S"</span>, <span class="st">"U"</span>, <span class="st">"S"</span>, <span class="st">"S"</span>, <span class="st">"U"</span>, <span class="st">"S"</span>, <span class="st">"U"</span>, <span class="st">"U"</span>)</span>
+<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a>line <span class="ot">&lt;-</span> treat_df<span class="sc">$</span>line</span>
+<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a><span class="fu">adonis2</span>(<span class="fu">t</span>(pi_all[,<span class="dv">2</span><span class="sc">:</span><span class="dv">11</span>])<span class="sc">~</span>line, <span class="at">data =</span> treat_df, <span class="at">permutations =</span> <span class="dv">1000000</span>, <span class="at">method =</span> <span class="st">"manhattan"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="POP_03_poolseq/pi_PCA.png" class="img-fluid figure-img"></p>
+<figcaption>Principle coordinate analysis of allele frequencies for selected lines (red), control lines (blue), the pure Bodega population (white), and the pure San Diego population (black).</figcaption>
+</figure>
+</div>
+</section>
+<section id="references" class="level2">
+
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Griffiths2020" class="csl-entry" role="listitem">
+Griffiths, Joanna S, Yasmeen Kawji, and Morgan W Kelly. 2020. <span>“<span class="nocase">An Experimental Test of Adaptive Introgression in Locally Adapted Populations of Splash Pool Copepods</span>.”</span> <em>Molecular Biology and Evolution</em> 38 (4): 1306–16. <a href="https://doi.org/10.1093/molbev/msaa289">https://doi.org/10.1093/molbev/msaa289</a>.
+</div>
+<div id="ref-Schlotterer2014" class="csl-entry" role="listitem">
+Schlötterer, Christian, Raymond Tobler, Robert Kofler, and Viola Nolte. 2014. <span>“<span class="nocase">Sequencing pools of individuals-mining genome-wide polymorphism data without big funding</span>.”</span> <em>Nature Reviews Genetics</em> 15 (11): 749–63. <a href="https://doi.org/10.1038/nrg3803">https://doi.org/10.1038/nrg3803</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/MarineOmics\.github\.io\/marineomics\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./POP_02_RADseq.html" class="pagination-link" aria-label="RADseq">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">RADseq</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./RDAtraitPredictionTutorial.html" class="pagination-link" aria-label="RDA trait prediction tutorial">
+        <span class="nav-page-text">RDA trait prediction tutorial</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/MarineOmics/marineomics.github.io/edit/main/POP_03_poolseq.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/MarineOmics/marineomics.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
