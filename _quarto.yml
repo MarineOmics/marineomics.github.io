@@ -1,0 +1,65 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: MarineOmics
+  page-navigation: true
+  repo-url: https://github.com/MarineOmics/marineomics.github.io
+  repo-actions: [edit, issue]
+  google-analytics: "G-ET7MZWPN0Z"
+  navbar:
+    left:
+      - href: index.html
+        text: "Home"
+      - href: ADMIN_03_panels.html
+        text: "Panel Seminars"
+      - href: https://github.com/MarineOmics/marineomics.github.io/discussions
+        text: "Discussion Forum"
+
+  sidebar:
+    style: "floating"
+    search: true
+    collapse-level: 1
+    contents:
+      - section: "Contributions"
+        contents:
+          - ADMIN_01_submissions_instructions.qmd
+          - ADMIN_02_contributions.qmd
+          - ADMIN_05_major_versions.qmd
+      - section: "Best Principles"
+        contents:
+          - ADMIN_04_best_principles.qmd
+      - section: "Population Genomics"
+        contents:
+          - POP_01_choosing_population_genetics.qmd
+          - POP_04_WGS_intro.qmd
+          - POP_02_RADseq.qmd
+          - POP_03_poolseq.qmd
+          - RDAtraitPredictionTutorial.qmd
+          - POP_08_PCA.qmd
+          - POP_09_aDNA.qmd
+          - POP_10_Signatures_of_Selection.qmd
+      - section: "Functional Genomics"
+        contents:
+          - FUN_01_DGE_comparison_v2.qmd
+          - FUN_02_DNA_methylation.qmd
+      - section: "Molecular Modeling"
+        contents:
+          - text: "Coming soon!"
+      - section: "Genome-Phenome"
+        contents:
+          - text: "Coming soon!"
+
+format:
+  html:
+    theme: yeti
+    toc: true
+    toc-depth: 3
+    css: tutorial.css
+    include-before-body: _banner.html
+
+editor: visual
+
+execute:
+  freeze: auto
