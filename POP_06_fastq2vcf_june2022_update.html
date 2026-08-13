@@ -81,7 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ef9afd74c936c907027de2a6fad25a4d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-89bf13ec4319bff50ce537e56bf4cb29.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -415,7 +415,7 @@ gtag('config', 'G-ET7MZWPN0Z', { 'anonymize_ip': true});
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem <span class="at">-M</span> <span class="at">-R</span> {string} {ref} {r1} {r2} <span class="kw">|</span> <span class="ex">samtools</span> sort <span class="at">-u</span> <span class="at">-</span> <span class="op">&gt;</span> {output.bam}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Where <br> <code>-M</code> marks shorter split hits as secondary (required for Picard compatibility downstream) <br> <code>-R</code> defines a read group header e.g., <span class="citation" data-cites="RG">@RG</span>\tID:{sample}\tSM:{sample}\tPL:ILLUMINA <br> <code>ngvgx</code> is the indexed reference genome <br> <code>jlbfbvoeijumoscheae</code> are the first and second reads you are aligning <br> <code>-u</code> is for uncompressed output</p>
+<p>Where <br> <code>-M</code> marks shorter split hits as secondary (required for Picard compatibility downstream) <br> <code>-R</code> defines a read group header e.g., <span class="citation" data-cites="RG">@RG</span>\tID:{sample}\tSM:{sample}\tPL:ILLUMINA <br> <code>ztlem</code> is the indexed reference genome <br> <code>ardzlrouhvnogfbdvyf</code> are the first and second reads you are aligning <br> <code>-u</code> is for uncompressed output</p>
 <p>Once you have a sorted and indexed alignment, you can locate and tag duplicate records, which are reads that have originated from a single fragment of DNA. This can happen during sample preparation (e.g., during PCR) or from sequencing artifacts (e.g., optical duplicates).If you have multiple runs for the same sample, you would want to merge and index the BAMs before the deduplication tagging, which you can do with <code>samtools merge</code> (integrated in snpArcher under <code>merge_bams</code> rule).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sabamba</span> markup {input} {output}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
