@@ -818,20 +818,3 @@ freebayes-parallel regionsFiles/NC_044048.1_100kbRegions.txt 128 -f ${REF} -b ..
 Time: 6-12 hours each (total about 36 hours)   
 Memory: 60-65GB 
 
-```{r}
-#| echo: false
-#| eval: false
-library(knitr)
-my.jekyll.site <- "marineomics.github.io"
-KnitPost <- function(input, base.url = my.jekyll.site) {
-  opts_knit$set(base.url = base.url)
-  fig.path <- paste0("images/", sub(".Rmd$", "", basename(input)), "/")
-  opts_chunk$set(fig.path = fig.path)
-  opts_chunk$set(fig.cap = "center")
-  render_jekyll()
-  knit(input, envir = parent.frame())
-}
-setwd("~/Postdoc_Projects/RCN_MarineOmics/Website/marineomics.github.io/guidelines")
-KnitPost("~/Postdoc_Projects/RCN_MarineOmics/Website/marineomics.github.io/guidelines/WGSFullWalkthrough.Rmd")
-```
-

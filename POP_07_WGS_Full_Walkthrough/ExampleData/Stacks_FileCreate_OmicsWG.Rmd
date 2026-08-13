@@ -1,11 +1,4 @@
----
-title: "Comparing mRNA structures between alleles using RNAdistance"
-author: "Megha Prasad"
-date: "2026-08-06"
-bibliography: "MOL_01_RNAdist_tutorial/RNAdist_refs.bib"
----
-
-### Stacks 
+### Stacks
 
 ## Add stack output file names to summary file
 This code may need altering depending on your needs for file and sample naming. For the provided dataset, sample IDs are in the form of two digit year,  "_" three digit sample ID, "_", and then two character species ID (i.e., Gm for Gadus morhua). We will download a file that includes the 8 columns with data already populated and 6 columns that this code will populate. The prefilled columns are: Column 1- sample ids, Column 2 - population IDs, Column 3 - i5 primer ID, Column 4 - i7 primer ID, Column 5 - Adapter ID, Column 6 -  i5 sequence, Column 7 - i7 sequence, Column 8 - adapter sequence. The columns we will populate are file_name_R1, file_name_R2, file_name_R1rem, and file_name_R2rem, & PopID. These are just so we have a record of the names of the files that will be created for each sample after stacks is run. 
