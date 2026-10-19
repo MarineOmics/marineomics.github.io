@@ -2,86 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://MarineOmics.github.io/marineomics.github.io/ADMIN_03_panels.html</loc>
-    <lastmod>2026-08-13T20:25:11.003Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_01_choosing_population_genetics.html</loc>
-    <lastmod>2026-08-13T20:25:11.617Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/FUN_01_DGE_comparison_v2.html</loc>
-    <lastmod>2026-08-13T20:25:11.434Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_06_fastq2vcf_june2022_update.html</loc>
-    <lastmod>2026-08-13T20:25:11.733Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/RDAtraitPredictionTutorial.html</loc>
-    <lastmod>2026-08-13T20:25:11.775Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_07_WGS_Full_Walkthrough.html</loc>
-    <lastmod>2026-08-13T20:25:11.745Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_04_WGS_intro.html</loc>
-    <lastmod>2026-08-13T20:25:11.711Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/MOL_01_RNAdist_tutorial.html</loc>
-    <lastmod>2026-08-13T20:25:11.617Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_08_PCA.html</loc>
-    <lastmod>2026-08-13T20:25:11.749Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_09_aDNA.html</loc>
-    <lastmod>2026-08-13T20:25:11.771Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/ADMIN_05_major_versions.html</loc>
-    <lastmod>2026-08-13T20:25:11.004Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/ADMIN_02_contributions.html</loc>
-    <lastmod>2026-08-13T20:25:11.003Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/ADMIN_04_best_principles.html</loc>
-    <lastmod>2026-08-13T20:25:11.003Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_10_Signatures_of_Selection.html</loc>
-    <lastmod>2026-08-13T20:25:11.775Z</lastmod>
-  </url>
-  <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/beginner_protein_modeling.html</loc>
-    <lastmod>2026-08-13T20:25:11.789Z</lastmod>
+    <lastmod>2026-10-19T13:47:38.891Z</lastmod>
   </url>
   <url>
     <loc>https://MarineOmics.github.io/marineomics.github.io/POP_02_RADseq.html</loc>
-    <lastmod>2026-08-13T20:25:11.620Z</lastmod>
+    <lastmod>2026-10-19T13:47:39.525Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/beginner_protein_modeling.html</loc>
+    <lastmod>2026-10-19T13:47:39.671Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_10_Signatures_of_Selection.html</loc>
+    <lastmod>2026-10-19T13:47:39.661Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/FUN_01_DGE_comparison_v2.html</loc>
+    <lastmod>2026-10-19T13:47:39.354Z</lastmod>
   </url>
   <url>
     <loc>https://MarineOmics.github.io/marineomics.github.io/FUN_02_DNA_methylation.html</loc>
-    <lastmod>2026-08-13T20:25:11.609Z</lastmod>
+    <lastmod>2026-10-19T13:47:39.516Z</lastmod>
   </url>
   <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/ADMIN_01_submissions_instructions.html</loc>
-    <lastmod>2026-08-13T20:25:09.882Z</lastmod>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/RDAtraitPredictionTutorial.html</loc>
+    <lastmod>2026-10-19T13:47:39.661Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_04_WGS_intro.html</loc>
+    <lastmod>2026-10-19T13:47:39.604Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_06_fastq2vcf_june2022_update.html</loc>
+    <lastmod>2026-10-19T13:47:39.627Z</lastmod>
   </url>
   <url>
     <loc>https://MarineOmics.github.io/marineomics.github.io/index.html</loc>
-    <lastmod>2026-08-13T20:25:11.902Z</lastmod>
+    <lastmod>2026-10-19T13:47:39.776Z</lastmod>
   </url>
   <url>
-    <loc>https://MarineOmics.github.io/marineomics.github.io/QUERY-TEST-README.html</loc>
-    <lastmod>2026-08-13T20:25:11.775Z</lastmod>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/ADMIN_02_contributions.html</loc>
+    <lastmod>2026-10-19T13:47:38.891Z</lastmod>
   </url>
   <url>
     <loc>https://MarineOmics.github.io/marineomics.github.io/POP_03_poolseq.html</loc>
-    <lastmod>2026-08-13T20:25:11.705Z</lastmod>
+    <lastmod>2026-10-19T13:47:39.601Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_07_WGS_Full_Walkthrough.html</loc>
+    <lastmod>2026-10-19T13:47:39.633Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_09_aDNA.html</loc>
+    <lastmod>2026-10-19T13:47:39.657Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/ADMIN_04_best_principles.html</loc>
+    <lastmod>2026-10-19T13:47:38.891Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/MOL_01_RNAdist_tutorial.html</loc>
+    <lastmod>2026-10-19T13:47:39.523Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/QUERY-TEST-README.html</loc>
+    <lastmod>2026-10-19T13:47:39.661Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/ADMIN_01_submissions_instructions.html</loc>
+    <lastmod>2026-10-19T13:47:38.834Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_01_choosing_population_genetics.html</loc>
+    <lastmod>2026-10-19T13:47:39.523Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/POP_08_PCA.html</loc>
+    <lastmod>2026-10-19T13:47:39.637Z</lastmod>
+  </url>
+  <url>
+    <loc>https://MarineOmics.github.io/marineomics.github.io/ADMIN_05_major_versions.html</loc>
+    <lastmod>2026-10-19T13:47:38.891Z</lastmod>
   </url>
 </urlset>
