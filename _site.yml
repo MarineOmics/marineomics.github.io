@@ -14,6 +14,12 @@ navbar:
           href: ADMIN_01_submissions_instructions.html     
         - text: "Past and Current Contributors"
           href: ADMIN_02_contributions.html
+    - text: "MacroMar Workflow"
+      menu:
+        - text: "Workflow Overview and Checklist"
+          href: MacroMar_01_Overview.html
+        - text: "Metadata Worflow"
+          href: MacroMar_02_Metadata.html
     - text: "Population Genomics"
       menu:
         - text: "Choosing a Population Genomics Approach"

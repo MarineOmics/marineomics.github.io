@@ -5,8 +5,8 @@ _site
 vendor
 .Rproj.user
 .Rhistory
-.DS_Store
-
+*.DS_Store
+site_libs/
 /.quarto/
 **/*.quarto_ipynb
 packrat/lib*/
