@@ -92,6 +92,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./FUN_02_DNA_methylation.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -101,7 +102,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-38838b12d2c25e08a8e0512b421f47c2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-76646622bee5b395ff1d3cc8572e5606.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -215,7 +216,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Comparing mRNA structures between alleles using RNAdistance</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./MOL_01_RNAdist_tutorial.html">Molecular Modeling</a></li><li class="breadcrumb-item"><a href="./MOL_01_RNAdist_tutorial.html">Comparing mRNA structures between alleles using RNAdistance</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -365,16 +366,19 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Molecular Modeling</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
- <span class="menu-text">Coming soon!</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="./MOL_01_RNAdist_tutorial.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Comparing mRNA structures between alleles using RNAdistance</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -433,7 +437,7 @@ window.Quarto = {
   Last rendered: July 2026 — see <a href="ADMIN_05_major_versions.html">Major Versions</a> for full environment details.
 </div>
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./MOL_01_RNAdist_tutorial.html">Molecular Modeling</a></li><li class="breadcrumb-item"><a href="./MOL_01_RNAdist_tutorial.html">Comparing mRNA structures between alleles using RNAdistance</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Comparing mRNA structures between alleles using RNAdistance</h1>
 </div>
@@ -613,7 +617,8 @@ TRANSCRIPT_002      88          G       A</code></pre>
 <p>One thing to note: <code>RNAfold</code> expects RNA sequences (U instead of T). Because transcript FASTAs are usually distributed as DNA, you’ll need to convert T’s to U’s before writing the input file.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert DNA to RNA (T -&gt; U) before passing sequences to RNAfold</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>rna_seq <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"T"</span>, <span class="st">"U"</span>, <span class="fu">as.character</span>(dna_seq))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ref_rna <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"T"</span>, <span class="st">"U"</span>, <span class="fu">as.character</span>(ref_seq))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>alt_rna <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"T"</span>, <span class="st">"U"</span>, <span class="fu">as.character</span>(alt_seq))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="step-3-folding-sequences-with-rnafold" class="level2">
@@ -651,7 +656,7 @@ AUGCUAGCUAGCUACGUACGGACGUAGCUAGCUAG...
 <p>Now <code>structures_only.txt</code> has one clean dot-bracket string per line, ordered the same way as the input FASTA. If you folded your sequences with ref first and alt second, they’ll already be in the right order for <code>RNAdistance</code>.</p>
 <p>Then run:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># One distance per pair of structures</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">RNAdistance</span> <span class="op">&lt;</span> structure_pairs.txt <span class="op">&gt;</span> distances.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">RNAdistance</span> <span class="op">&lt;</span> structures_only.txt <span class="op">&gt;</span> distances.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You get one distance value per pair. A distance of 0 means the two structures are identical, and larger distances mean more different. What counts as “large” depends on the length of the sequences involved, which is why the next step is to normalize.</p>
 <p>For the all-combinations case (multiple variants per gene, each combination compared to all-ref), stack the pairs in the input file:</p>
 <pre><code>&lt;all-ref structure&gt;
@@ -748,7 +753,7 @@ loaded via a namespace (and not attached):
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-Cingolani2012-zm" class="csl-entry" role="listitem">
-Cingolani, Pablo, Adrian Platts, Le Lily Wang, et al. 2012. <span>“A Program for Annotating and Predicting the Effects of Single Nucleotide Polymorphisms, <span>SnpEff</span>: <span>SNPs</span> in the Genome of Drosophila Melanogaster Strain <span class="nocase">w1118</span>; Iso-2; Iso-3: <span>SNPs</span> in the Genome of Drosophila Melanogaster Strain w <span class="math inline">\(^{1118}\)</span> ; Iso-2; Iso-3.”</span> <em>Fly (Austin)</em> 6 (2): 80–92.
+Cingolani, Pablo, Adrian Platts, Le Lily Wang, et al. 2012. <span>“A Program for Annotating and Predicting the Effects of Single Nucleotide Polymorphisms, <span>SnpEff</span>: <span>SNPs</span> in the Genome of Drosophila Melanogaster Strain <span class="nocase">w1118</span>; Iso-2; Iso-3.”</span> <em>Fly (Austin)</em> 6 (2): 80–92.
 </div>
 <div id="ref-Hopf2019-jd" class="csl-entry" role="listitem">
 Hopf, Thomas A, Anna G Green, Benjamin Schubert, et al. 2019. <span>“The <span>EVcouplings</span> Python Framework for Coevolutionary Sequence Analysis.”</span> <em>Bioinformatics</em> 35 (9): 1582–84.
@@ -1157,6 +1162,15 @@ Lorenz, Ronny, Stephan H Bernhart, Christian Höner Zu Siederdissen, et al. 2011
     }
   });
   </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./FUN_02_DNA_methylation.html" class="pagination-link" aria-label="DNA Methylation Assessment">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">DNA Methylation Assessment</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
