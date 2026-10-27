@@ -196,7 +196,8 @@ One thing to note: `RNAfold` expects RNA sequences (U instead of T). Because tra
 #| eval: false
 
 # Convert DNA to RNA (T -> U) before passing sequences to RNAfold
-rna_seq <- gsub("T", "U", as.character(dna_seq))
+ref_rna <- gsub("T", "U", as.character(ref_seq))
+alt_rna <- gsub("T", "U", as.character(alt_seq))
 ```
 
 ## Step 3: Folding sequences with RNAfold
@@ -264,7 +265,7 @@ Then run:
 
 ``` bash
 # One distance per pair of structures
-RNAdistance < structure_pairs.txt > distances.txt
+RNAdistance < structures_only.txt > distances.txt
 ```
 
 You get one distance value per pair. A distance of 0 means the two structures are identical, and larger distances mean more different. What counts as "large" depends on the length of the sequences involved, which is why the next step is to normalize.
