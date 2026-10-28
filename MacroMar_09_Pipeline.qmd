@@ -1,0 +1,247 @@
+---
+title: "Quantifying repeated local adaptation to climate with RepAdapt"
+author: "Your Name Here"
+date: "2026-10-19"
+bibliography: "MacroMar/RepAdapt_refs.bib"
+---
+
+## Citation
+
+[How to cite](https://marineomics.github.io/#How_to_Cite)
+
+## Target audience
+
+This page is for people who have genomic data (whole-genome resequencing, exome capture, or Pool-seq) from multiple populations, species, or lineages, and want to test whether the same genes are repeatedly associated with climate across those datasets. You should be comfortable on the command line, have some experience running R scripts, and ideally have access to a SLURM-based HPC cluster, since several steps are computationally intensive. No prior experience with genotype-environment association (GEA) analysis or orthology inference is assumed. For the full source code and documentation, see the [RepAdapt GitHub repository](https://github.com/JimWhiting91/RepAdapt).
+
+## Introduction
+
+Local adaptation to climate often involves different genes in different species, but it can also involve the *same* genes being used repeatedly across independent lineages. Telling these two scenarios apart requires comparing genotype-environment associations across many datasets at once, in a way that accounts for the fact that distantly related species don't share gene identifiers directly.
+
+**RepAdapt** is the pipeline and associated scripts from @Whiting2024-rp, *"The genetic architecture of repeated local adaptation to climate in distantly related plants"*. For each dataset, RepAdapt quantifies population structure, runs a genotype-environment association (GEA) using the Weighted-Z Analysis (WZA), and collates per-SNP associations up to gene level. It then uses orthology information to lift gene-level scores up to orthogroup level across species, and tests whether the same orthogroups are repeatedly associated with climate more often than expected by chance, using a method called **PicMin**.
+
+This page walks through the full pipeline end-to-end: preparing data and metadata, SNP calling, orthology, climate data, the GEA analysis itself, repeatability testing, and downstream biological interpretation.
+
+## Pipeline overview
+
+The pipeline has eight main stages, run roughly in order. Not every stage needs to be re-run if you already have some of the inputs (for example, you may already have called SNPs or built orthogroups for your dataset).
+
+```{mermaid}
+flowchart TD
+    A[Metadata & data prep] --> B[SNP calling]
+    B --> C[Orthology OrthoFinder2]
+    C --> D[Climate data]
+    D --> E[General setup scripts]
+    E --> F[GEA: population structure,<br/>WZA, gene collation, RDA]
+    F --> G[Repeatability: PicMin]
+    G --> H[Results analysis & plotting]
+```
+
+Each of these is covered in its own step below.
+
+## Prerequisites
+
+To follow along you will need:
+
+-   **R** with the packages used across the pipeline (data manipulation, GEA/RDA, and network/enrichment packages). An RStudio project file (`RepAdapt.Rproj`) is included in the repository if you prefer to work interactively.
+-   **git**, to clone the repository.
+-   **OrthoFinder2**, for the orthology step.
+-   **samtools**/**bcftools**-style tools, if you are generating your own VCFs upstream of this pipeline.
+-   Access to a **SLURM-based HPC cluster** (recommended). The scripts were originally written for a SLURM cluster and a local 48-CPU server, and several steps — population structure, GEA, and especially OrthoFinder2 — are CPU- and memory-intensive.
+
+We assume throughout that you already have called SNPs for at least one dataset (a VCF for WGS/Capture data, or a SNPTable for Pool-seq data). If you don't, see Step 2 below.
+
+### Cloning the repository
+
+``` bash
+cd /path/to/your/project/space
+git clone https://github.com/JimWhiting91/RepAdapt.git
+cd RepAdapt
+```
+
+The repository is organized as follows:
+
+| Folder/File | Contents |
+|------------------------------------|------------------------------------|
+| `R/` | All R scripts, organized into numbered subfolders by pipeline stage |
+| `bin/` | Helper binaries/scripts |
+| `climate_viewer/` | Tools for viewing climate data |
+| `data/` | Where VCFs, SNPTables, and reference genomes are placed |
+| `figs/` | Figures used in the manuscript |
+| `metadata/` | Metadata files describing datasets, genomes, and annotations |
+| `outputs/` | Pipeline outputs |
+| `scripts/` | Shell scripts/runners that loop the R scripts over datasets |
+| `snp_calling_pipeline/mpileup_pipeline/` | SNP calling scripts for WGS/capture data |
+| `tables/` | Summary tables |
+| `RepAdapt.Rproj` | RStudio project file |
+
+### Installing R packages
+
+The pipeline draws on several R packages across its stages (population genetics, RDA, network analysis). Install the ones relevant to the stage you're running as you reach it; there isn't a single combined package list, since different scripts have different dependencies. If you're on a compute cluster, check whether an R or conda module already provides what you need before installing from scratch:
+
+``` bash
+module avail
+module load anaconda3/2024.06
+```
+
+### If you're on a SLURM cluster
+
+Run each stage as a batch job rather than on a login node, especially population structure, GEA, and OrthoFinder2. A minimal example:
+
+``` bash
+#!/bin/bash
+#SBATCH -J RepAdapt_GEA
+#SBATCH -p short
+#SBATCH -N 1
+#SBATCH -n 16
+#SBATCH --mem=50GB
+#SBATCH --time=08:00:00
+
+module load anaconda3/2024.06
+source activate repadapt
+
+cd /path/to/your/project/space/RepAdapt
+bash scripts/GEA_pipeline_runner.sh
+```
+
+Submit it with `sbatch`, check queued/running jobs with `squeue -u your_username`, and once a job finishes, check how efficiently it used the requested resources with `seff <job_id>` so you can right-size future requests.
+
+## Step 1: Preparing data and metadata
+
+Each dataset used by RepAdapt is a single VCF (WGS/Capture) or SNPTable (Pool-seq). These are not included in the repository — supply your own, or obtain the manuscript's datasets from FigShare — and place them into `data/VCFs/`.
+
+Links to the reference genomes used are listed in `metadata/fastq_accessions_and_doi.csv`. Each reference genome needs its own subdirectory under `data/reference_genomes/`, including the corresponding `.gff` annotation.
+
+Every dataset also requires a `sampling_data.csv` file, placed in the same directory as its VCF/SNPTable, which assigns individuals to populations and provides geospatial information:
+
+| Taxon_name | Pop_ID | Sample_name | Country | Pool_Size | Lat | Long | Alt | Author | Data_type |
+|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| Arabidopsis lyrata | Grovudalen | Alyr_Norway_Grovudalen_T3-6 | Norway |  | 62.44 | 8.9 | 900 | Savolainen | WGS |
+
+This file is used to build dataset names as `Taxon_name_Author_Data_type`, and the `Lat`/`Long` columns group individuals into populations for site-level allele frequency calculations.
+
+Two further metadata files coordinate everything downstream, and are worth getting right before running anything else, since nearly every later script reads from them:
+
+-   `vcf_paths.txt` — a list of relative paths to VCF files, used to loop over datasets for GEA analyses.
+-   `vcf_genome_gff_map.txt` — a table matching each VCF to its genome and annotation, plus flags for whether it's Pool-seq data and whether it's ready to run:
+
+| #VCF | GENOME | GFF | IS_POOL | GENOME_SPECIES | READY | RUN_OUTPUT | OUTPUT_DIR |
+|---------|---------|---------|---------|---------|---------|---------|---------|
+| data/VCFs/.../Alyr_full_concatened...SNPTable.txt | data/reference_genomes/A.lyrata_reference/Alyr_v.1.0_genomic.fasta | data/reference_genomes/A.lyrata_reference/Alyr_v.1.0_genomic.gff | TRUE | Alyrata | YES | YES | Arabidopsis_lyrata_Willi_PoolSeq |
+
+## Step 2: SNP calling
+
+If you don't already have called SNPs, there are two separate paths depending on data type:
+
+-   **WGS / Capture data** — scripts in `snp_calling_pipeline/mpileup_pipeline/` (an mpileup-based pipeline; see the README in that directory for details).
+-   **Pool-seq data** — maintained in a separate repository: <https://github.com/CoAdapTree/varscan_pipeline>.
+
+Run the pipeline that matches your data type. The output should be a VCF (WGS/Capture) or SNPTable (Pool-seq) placed in `data/VCFs/` as described in Step 1.
+
+## Step 3: Orthology
+
+Because RepAdapt compares genes across distantly related species, orthologous genes need to be identified across all reference genomes using **OrthoFinder2**. This is a two-step process (both wrapped by `run_orthofinder.sh`, which loops over both):
+
+``` bash
+# Export a proteome (.faa) from each reference genome + annotation
+bash scripts/prepare_proteome.sh <reference_genome.fasta> <annotation.gff>
+
+# Run OrthoFinder2 across a directory of proteomes
+bash scripts/run_orthofinder.sh <path/to/proteomes_directory>
+```
+
+The orthogroup assignments produced here are what let the pipeline later ask whether the *same* orthogroup is repeatedly associated with climate across species. OrthoFinder2 can be memory- and time-hungry for many proteomes, so it's worth testing on a small subset of genomes before scaling up to your full dataset.
+
+## Step 4: Climate data
+
+Climate data comes from WorldClim (<https://www.worldclim.org/data/bioclim.html>), used at two resolutions (2.5 and 10 arc-minutes):
+
+-   **Current climate** (2.5 min) is pulled automatically during the GEA analysis in Step 6 — no manual download needed.
+-   **Historical climate**, used to estimate site-level climate change, was downloaded at source and stored in `data/worldclim/`. If you're running this on new data, download the equivalent historical WorldClim layers into that same location.
+
+## Step 5: General setup scripts
+
+Before running the GEA pipeline itself, run the setup scripts in `R/00_setup/`:
+
+``` bash
+cd R/00_setup
+Rscript create_liftover_mapping_files_for_OF2_ids_and_gffs.R
+Rscript calculating_climatechange_clines.R
+Rscript process_recombination_maps.R
+Rscript filter_snptable_add_maf.R   # only needed if your SNP table still needs MAF/quality filtering
+```
+
+| Script | Purpose |
+|------------------------------------|------------------------------------|
+| `create_liftover_mapping_files_for_OF2_ids_and_gffs.R` | Builds liftover maps between genome coordinates and OrthoFinder2 gene IDs |
+| `calculating_climatechange_clines.R` | Calculates climate-change variables per site |
+| `process_recombination_maps.R` | General processing/smoothing of recombination maps, where available |
+| `filter_snptable_add_maf.R` | Filters SNP tables by MAF and quality, if required |
+
+## Step 6: Genotype x Environment Associations (GEA)
+
+The GEA stage lives in `R/01_GEA_pipeline/` and is split into four ordered steps. Each script takes command-line arguments for a single dataset, so a runner script loops it over every dataset listed in `vcf_genome_gff_map.txt`:
+
+1.  `quantify_population_structure.R` — quantify population structure and summarize the dataset.
+2.  `perform_GEA.R` — run the GEA using the Weighted-Z Analysis (WZA).
+3.  `collate_GEA_to_gene_WZA.R` — collate per-SNP GEA results into gene-level summaries.
+4.  `partition_variance_with_RDA.R` — partition genetic variance between space and climate using RDA.
+
+To run all four steps across every dataset in one go:
+
+``` bash
+bash scripts/GEA_pipeline_runner.sh
+```
+
+See `R/01_GEA_pipeline/README` in the repository for the full argument list expected by each script.
+
+## Step 7: Quantifying repeatability with PicMin
+
+Once every dataset has gene-level WZA scores, `R/02_repeatability_calculating/` asks whether orthogroups are repeatedly associated with climate more often than expected by chance, using **PicMin**:
+
+1.  `process_GEA_WZA_to_corrected_OG_pvals_withOFcodes.R` — convert per-gene WZA scores into corrected per-orthogroup p-values.
+2.  `calculate_orthogroup_GEA_repeatability_picmin.R` — run PicMin to calculate orthogroup-level repeatability.
+3.  `Orthogroup_summary_stats.R` — summarize orthogroups and how many were testable.
+4.  `CrossVal_SpeciesEffects_calculate_orthogroup_GEA_repeatability_picmin.R` — cross-validate the effect of individual species on repeatability.
+5.  `brassica_ONLY_calculate_orthogroup_GEA_repeatability_picmin` — repeat the PicMin analysis restricted to Brassicaceae only.
+6.  `pval_fdr_demo.R` — a demo of expected p-value/FDR behavior, useful for sanity-checking your run.
+
+## Step 8: Analysis of PicMin results and plotting
+
+With PicMin results in hand, `R/03_picmin_results_analysis/` contains the downstream biological analyses used in the manuscript: a general summary of convergence results, a STRING network analysis of repeatedly adapting orthogroups (RAOs) and GO enrichment, co-expression network statistics, pleiotropy enrichment, gene duplication analysis, niche-breadth and recombination-rate comparisons, a cross-validation-based sampling bias check, and identification of species-specific genes linked to repeatability. Additional plotting scripts for the manuscript's main figures live in `R/04_plot_figures/`.
+
+Two files of shared functions are used throughout the whole pipeline and are worth reading before writing your own extensions: `PicMin.R` (vectorized functions for running the PicMin analysis) and `repadapt_functions.R` (general-purpose functions used across scripts).
+
+## Worked example
+
+As a sanity check that your setup is working end-to-end, the manuscript's dataset for *Arabidopsis lyrata* (Willi lab Pool-seq data) is a reasonable first dataset to run through the pipeline, since it's flagged `READY: YES` in the example `vcf_genome_gff_map.txt` shown in Step 1. Running Steps 5–7 on just this one dataset (by restricting the runner scripts to a single row of `vcf_genome_gff_map.txt`) will produce gene-level WZA scores and let you confirm the setup scripts, GEA scripts, and file paths are all correctly configured before scaling up to your full set of datasets.
+
+## Practical notes and caveats
+
+**Get the metadata right first.** Nearly every script after Step 1 depends on `vcf_genome_gff_map.txt` and `sampling_data.csv` being correctly formatted. Errors here propagate silently through the whole pipeline rather than causing an obvious failure.
+
+**Strand and coordinate systems matter for orthology.** Orthogroup assignment depends on correctly matched proteomes and annotations; a mismatched `.gff`/genome pair will produce orthogroups that don't actually correspond across species.
+
+**OrthoFinder2 scales poorly with very large proteome sets.** Start with a handful of genomes to confirm the pipeline runs end-to-end before running it on your full species set.
+
+**Resource requests should scale with dataset size.** Population structure and GEA steps on large WGS datasets can need substantially more memory than the Pool-seq examples. If you're not sure how much to request, start modestly and use `seff` on a finished job to see whether you under- or over-requested, then adjust.
+
+**PicMin requires enough comparable orthogroups.** Repeatability testing is only meaningful once you have GEA results across multiple independent datasets/species for the same orthogroups — this isn't a single-dataset analysis.
+
+**This is a research pipeline, not a packaged tool.** There is no single installer and few command-line help flags; reading the per-directory READMEs in the repository alongside this page is expected.
+
+## Where to go from here
+
+-   Read the full manuscript for the biological context and results: @Whiting2024-rp.
+-   For questions about the pipeline itself, see the repository's README and per-directory READMEs: <https://github.com/JimWhiting91/RepAdapt>, or contact the authors (Jim Whiting; Sam Yeaman, [sam.yeaman\@ucalgary.ca](mailto:sam.yeaman@ucalgary.ca){.email}).
+-   If you're adapting this pipeline for your own species set, the STRING network and GO enrichment analyses in Step 8 are a natural place to extend with your own functional annotation resources.
+
+## Session info
+
+```{r}
+#| echo: true
+#| eval: true
+
+sessionInfo()
+```
+
+## References

@@ -1,6 +1,30 @@
 ---
-title: "MacroMar_02_Metadata"
+title: "MacroMar protocols for Sampling and Metadata"
 format: html
 ---
 
-# MacroMar protocols for sampling and Metadata
+## Sampling design
+
+This section is under construction. Check back soon for updates!
+
+## Minimum required metadata for each sample
+
+This section is under construction. Check back soon for updates!
+
+## Guidelines and best practices for working with local and Indigenous groups (CARE-first)
+
+## Guidelines and best practices for rare/endangered species
+
+This section is under construction. Check back soon for updates!
+
+## Guidelines and best practices for sampling international waters
+
+This section is under construction. Check back soon for updates!
+
+## Compliance with Nagoya protocol
+
+This section is under construction. Check back soon for updates!
+
+## Interactive App
+
+This section is under construction. Check back soon for updates!

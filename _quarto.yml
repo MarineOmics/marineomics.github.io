@@ -27,6 +27,10 @@ website:
           - ADMIN_01_submissions_instructions.qmd
           - ADMIN_02_contributions.qmd
           - ADMIN_05_major_versions.qmd
+      - section: "MacroMar"
+          - MacroMar_01_Overview.qmd
+          - MacroMar_02_Metdata.qmd
+          - 
       - section: "Best Principles"
         contents:
           - ADMIN_04_best_principles.qmd

@@ -9,34 +9,38 @@ Authors: K.E. Lotterhos, \<add authors as contributions are made\>
 
 The [MacroMar project](https://macromarnet.github.io/MacroMar/index.html) seeks to make population and seascape genomic data interoperable for marine eukaryotic species. Achieving this goal requires a coordinated effort across the field to standardize metadata, sequencing methods, and bioinformatics workflows. These data will be made available to consortium members for meta-analysis and will form the foundation of a global survey of marine intraspecific diversity.
 
-We aim to be the first organization to adopt a [FAIR](https://www.gofair.foundation/fair-principles)-first and [CARE](https://www.gida-global.org/careprinciples)-first approach. Basically, we are developing a bioinformatics workflow that works by accessing metadata and sequencing reads from online repositories that connect the metadata to the reads. This workflow is designed to:
+We aim to be the first organization to adopt a [FAIR](https://www.gofair.foundation/fair-principles)-first and [CARE](https://www.gida-global.org/careprinciples)-first approach. Basically, we have developed a workflow in which investigators upload their data to on online repository first, and then the bioinformatics workflow will access the metadata and sequencing reads from that respository. This workflow is designed to:
 
 -   drastically reduce the amount of time individual investigators spend doing bioinformatics,
 
 -   eliminate the need to store sequencing reads on local servers for long periods of time,
 
--   provide a mechanism to control use of metadata that is co-owned by multiple investigtors or with Indigenous groups,
+-   provide a mechanism to control use of metadata that is co-owned by multiple investigtors or with Indigenous groups (CARE-first),
 
 -   reduce hurdles that we have experienced with insufficient, incomplete, or erroneous metadata not matching variant call format (VCF) files,
 
--   and facilitate reuse and reanalysis of data as newer methods become available.
+-   spend less time preparing supplemental files to run bioinformatics pipelines,
 
-In a nutshell, the workflow involves uploading metadata to GEOME (private or public as desired) and linking the metadata to sequencing reads that are uploaded the SRA (with embargo as desired); then, SNPArcher can run the bioinformatics workflow with one line of code on a high performance computing cluster.
+-   and facilitate findbility, accessibility, interoperability, and reuse (FAIR-first), as well as reproducibility and reanalysis of data as newer methods become available.
+
+In a nutshell, the workflow involves uploading metadata to [GEOME](https://geome-db.org/) (private or public as desired) and linking the metadata to sequencing reads that are uploaded the [Short Read Archive on NCBI](Sequence Read Archive (SRA)) (with embargo as desired). Then, [SNPArcher](https://snparcher.github.io/) is used to run the bioinformatics workflow with one line of code on a high performance computing cluster.
 
 -   [ ] **Have a reference genome**
-
     -   [ ] The scope of MacroMar is on eukaryotic genomes from marine species.
-    -   [ ] A species is considered marine if \_\_\_\_.
+    -   [ ] A species is considered marine if it spends at least part of its life-cycle in a marine environment.
+
+## Step 1: Collect samples and metadata
 
 -   [ ] **Collect samples and metadata**
 
-    See the page XXX for more information. In a nutshell:
+    See the [Sampling and Metadata](MacroMar-02_Metadata.qmd) page for more information. In a nutshell:
 
-    -   [ ] Ideally collect at least individual 60 samples spanning an environmental or phenotype gradient and representative of the species geographic range. Datasets from species without strong population structure, as well as complex population structure (e.g. hybrid zones) are welcome. But if there is population structure in the species, it would be ideal to have some representation of it in the samples. Lower sample sizes accepted for rare or hard-to-sample species.
+    -   [ ] Collect at least individual 60 samples (ideally, 100 is recommended) spanning an environmental or phenotype gradient and representative of the species geographic range. Datasets from species *without* strong population structure, as well as *with* complex population structure (e.g. hybrid zones) are welcome. If there is population structure in the species, it would be ideal to have some representation of it in the samples. Lower sample sizes accepted for rare or hard-to-sample species.
         -   [ ] Poolseq is accepted. We recommend 40 individuals and 100x coverage per pool, and at least 20 pools spanning the species range or an environmental gradient.
     -   [ ] Collect information about each sample that is required in our metadata template (TO DO ADD LINK).
         -   [ ] Briefly, this includes the lat/long and time of collection, permit information, co-owners of the data, XXXX
     -   [ ] We are currently working on:
+        -   [ ] Guidelines and best practices for working with local and Indigenous groups (CARE-first)
         -   [ ] Guidelines and best practices for rare/endangered species
         -   [ ] Guidelines and best practices for sampling international waters
         -   [ ] compliance with Nagoya protocol
@@ -44,7 +48,7 @@ In a nutshell, the workflow involves uploading metadata to GEOME (private or pub
 
 -   [ ] **Collect environmental data for each site**
 
-    See the page XXX for more information. In a nutshell:
+    See the [Environmental Data](MacroMar_03_EnvironmentalData.qmd) page for more information. In a nutshell:
 
     -   [ ] Timeseries data, ideally with hourly or daily sampling for multiple decades, for each site. Keep information about the instruments used in sampling, as well as how to identify errors in the data (e.g. outrageous or missing values). We recognize that some seasons are hard to sample and data may have gaps. Recently some long-term monitoring bouys have been disbanded???, so we recommend saving the entire time series on a local hard drive and not relying on a web link.
     -   [ ] We are working on:
@@ -53,57 +57,74 @@ In a nutshell, the workflow involves uploading metadata to GEOME (private or pub
 
 -   [ ] **Collect phenotype data for each individual**
 
-    See the page XXX for more information. In a nutshell:
+    See the page [Phenotype and Trait Data](MacroMar_04_Phenotype.qmd) page for more information. In a nutshell:
 
     -   [ ] Trait data is hard to standardize, so document the trait with a technical description, example photos of the measurement or a link to a citation figure, the measurement tools or method, and the measurement unit.
 
--   [ ] **Prep samples for sequencing**
+## Step 2: Obtain a MacroMarID
 
-    See the page XXX for more information. In a nutshell:
+-   [ ] Obtain a MacroMar ID for your dataset by filling out the [Intent to Contribute a Dataset Form](https://forms.gle/9xaCrmggy3tjBtDE9) for each species.
 
-    -   [ ] It is important to reduce batch effects by randomizing samples on plates.
-    -   [ ] Keep track of the sequencing plate ID and if relevant, the sequencing lane ID (e.g. plate-03_lane-1; plate-04_lane-2) so that we may identify potential batch effects.
-    -   [ ] Prep samples for Illumina short-read sequencing. We will also accept AVITI because the chemistry is similar. ULTIMA uses a slightly different chemistry and we are not accepting this type of sequencing until it is benchmarked.
+## Step 3: Sequencing
 
--   [ ] **Sequence samples**
+-   [ ] **Prep samples for sequencing and sequence samples**
 
-    See the page XXX for more information. In a nutshell:
+    See the [Sequencing](MacroMar_05_SequencingPrep.qmd) for more information. In a nutshell:
 
-    -   [ ] Sequence each individual to 15x coverage (12x minimum)
-        -   [ ] Sequence pools to 100x coverage per pool
-    -   [ ] Add link to sequencing calculator
-    -   [ ] This will produce fastq files
+    -   [ ] Sample prepped following best practices
+        -   [ ] It is important to reduce batch effects by randomizing samples on plates.
+        -   [ ] Keep track of the sequencing plate ID and if relevant, the sequencing lane ID (e.g. plate-03_lane-1; plate-04_lane-2) so that we may identify potential batch effects.
+        -   [ ] Prep samples for Illumina short-read sequencing. We will also accept AVITI because the chemistry is similar. ULTIMA uses a slightly different chemistry and we are not accepting this type of sequencing until it is benchmarked.
+    -   Choose a library prep and calculate coverage for sequencing
+        -   [ ] Sequence each individual to 15x coverage (12x minimum)
+            -   [ ] Sequence pools to 100x coverage per pool
+        -   [ ] Add link to sequencing calculator
+        -   [ ] This will produce fastq files
 
--   [ ] **Upload Metadata to GEOME and link to reads uploaded to SRA**
+## Step 4: Upload metadata and reads to online repositories (FAIR-first)
 
-    See the page XXX for more information. In a nutshell:
+Note: you may notice that the following steps are in a different order than historical practice. In the past, it was common to download fastq files to your local/cloud storage, match your custom metadata with the sequenced reads, and perform the analysis. *At the end of the project*, it was then common to upload the reads to a public repository like the SRA, but reuse of the data would be limited because the metadata was not made public, or was made public but was insufficient or difficult to match with the sequences. Different metadata formats also made it difficult to synthesize data across different projects.
 
-    -   [ ] 
+Our FAIR-first workflow is designed such that the metadata and fastq files are uploaded to databases *prior to starting the bioinformatics, rather than at the end of a project*. In this workflow, ownership of the metadata can still remain private to the investigators and the people they choose to share it with, but the metadata: (i) uses a standard template that maintains interoperability with other projects and public databases; and (ii) is linked to the fastq files in the SRA. Then, a single bioinformatics command "gets" the metadata and reads from these databases and runs the pipeline to produce a Variant Call Format (VCF) file. This workflow guarantees that the data is FAIR. Because the metadata are "linked" to the reads directly, this approach also facilitates reproducibility of the pipeline.
 
--   [ ] **Upload reads to SRA and link to GEOME**
+-   [ ] **Upload Metadata to GEOME and link to reads uploaded to SRA (FAIR-first)**
 
-    See the page XXX for more information. In a nutshell:
+    GEOME is a repository that does XXX.
 
-    -   [ ] 
+    See the [Upload Metadata to GEOME](MacroMar_06_MetadataToGEOME.qmd) page for more information.
 
--   [ ] **Run sequences through the RepAdapt/MacroMar standard bioinformatics pipeline implemented in SNPArcher**
+-   [ ] **Upload reads to SRA and link to GEOME (FAIR-first)**
 
-    -   [ ] See the page XXX for more information. In a nutshell:
+    See the page [Upload reads to SRA](MacroMar_07_SRA.qmd) for more information.
 
+## Step 5 (optional): OGL 
+
+## Step 6 (optional): Upload VCF file to shared server
+
+-   [ ] **Run sequences through the RepAdapt/MacroMar standard bioinformatics pipeline implemented in [SNPArcher](https://snparcher.github.io/)**
+    -   [ ] See the page \[MacroMar in SNPArcher\]() for more information on running the pipeline, and the page \[RepAdapt and MacroMar Pipeline\]() for more information on the pipeline. In a nutshell:
+        -   [ ] We can provide bioinformatics help, or run it for you
 -   [ ] **Upload the resulting VCF file to the shared repository via Globus**
+    -   [ ] See the page \[Provide VCF to Working Groups\]() for more information
 
-    -   [ ] recommend save BED files? bam files?
+## Final step: Get a stipend for completing the workflow
 
-## Stipends for completing the workflow
+Participants who complete Steps 1-5 will receive a \$400 stipend. There is an extra \$100 stipend for step 5 and \$100 for step 6 at time of stipend request. To request a stipend, provide the following information in this online form \[TO DO ADD LINK\]:
 
-Participants who complete the following checklist will receive a \$500 stipend:
+\$400 Stipend requires:
 
--   [ ] Reference genome publicly available on NCBI
+-   [ ] DOI to reference genome publicly available on NCBI
 
--   [ ] Metadata uploaded to GEOME and linked to reads on the SRA
+<!-- -->
 
--   [ ] Short-read data archived on the SRA and linked to metadata in GEOME
+-   [ ] MacroMarID
 
--   [ ] VCF file produced from the standard bioinformatics pipeline and uploaded to the project repository with Globus
+-   [ ] DOI to metadata uploaded to GEOME and linked to reads on the SRA, with access granted to MacroMar
 
-ADD LINK TO HOW TO CLAIM STIPEND.
+-   [ ] DOI to short-read data archived on the SRA and linked to metadata in GEOME
+
+Extra stipend at time of submission of form:
+
+-   [ ] \$100 for VCF file produced from the standard bioinformatics pipeline and uploaded to the project repository with Globus
+
+-   [ ] \$100 for DOI to OGL
